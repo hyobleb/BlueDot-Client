@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import EditAccount from "../../Routes/EditAccount";
 import Home from "../../Routes/Home";
-import OutHome from "../../Routes/OutHome";
+import Login from "../../Routes/Login";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import Settings from "../../Routes/Settings";
 import SocialLogin from "../../Routes/SocialLogin";
@@ -19,7 +19,7 @@ const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) => (
 
 const LoggedOutRoute: React.SFC = () => (
   <Switch>
-    <Route path={"/"} exact={true} component={OutHome} />
+    <Route path={"/"} exact={true} component={Login} />
     <Route path={"/phone-login"} component={PhoneLogin} />
     {/* <Route path={"/verify-phone/:number"} component={VerifyPhone} /> */}
     {/* ex) /verify-phone/01021231222 */}
