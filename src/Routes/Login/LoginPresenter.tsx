@@ -1,6 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import Form from "../../Components/Form";
 import Input from "../../Components/Input";
@@ -31,7 +31,7 @@ const LogoImg = styled.img`
   width: 200px;
 `;
 
-const Body = styled.body``;
+const Body = styled.div``;
 const Footer = styled.div`
   margin-top: 15px;
   text-align: center;
@@ -51,7 +51,14 @@ const FormContainer = styled.div`
   margin-right: auto;
 `;
 
-interface IProps extends RouteComponentProps<any> {}
+interface IProps {
+  userId: string;
+  password: string;
+  onInputChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}
 // RouteComponentProps에 any를 넣은 이유는 가끔 Route를 받고 되고 그 Route들은
 // pros가 있기 때문
 // RouteComponentProps 에는 history, location, match등등 들어있음
@@ -59,7 +66,12 @@ interface IProps extends RouteComponentProps<any> {}
 
 // const LoginPresenter:React.SFC<RouteComponentProps<IProps>>=()=>(
 // 위와 같은 식으로도 가능함
-const LoginPresenter: React.SFC<IProps> = () => (
+const LoginPresenter: React.SFC<IProps> = ({
+  userId,
+  password,
+  onInputChange,
+  onSubmit
+}) => (
   <Container>
     <Helmet>
       <title>Login | BlueDot</title>
@@ -75,17 +87,18 @@ const LoginPresenter: React.SFC<IProps> = () => (
         <Form submitFn={() => console.log("tempSubmitFn")}>
           <Input
             placeholder={"아이디"}
-            value={""}
-            name={"phoneNumber"}
-            onChange={() => console.log("tempOnChange")}
+            value={userId}
+            name={"userId"}
+            onChange={onInputChange}
           />
           <Input
             placeholder={"비밀번호"}
-            value={""}
-            name={"phoneNumber"}
-            onChange={() => console.log("tempOnChange")}
+            value={password}
+            name={"password"}
+            onChange={onInputChange}
+            type={"password"}
           />
-          <Button value={"로그인"} onClick={() => console.log("tempButton")} />
+          <Button value={"로그인"} onClick={onSubmit} />
         </Form>
       </FormContainer>
     </Body>
