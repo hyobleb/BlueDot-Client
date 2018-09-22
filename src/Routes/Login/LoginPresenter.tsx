@@ -1,58 +1,54 @@
 import React from "react";
 import Helmet from "react-helmet";
 import { Link, RouteComponentProps } from "react-router-dom";
-import bgImage from "../../images/bg.png";
+import Button from "../../Components/Button";
+import Form from "../../Components/Form";
+import Input from "../../Components/Input";
 import styled from "../../typed-component";
 
 const Container = styled.div`
-  height: 100vh;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 const Header = styled.header`
-  height: 70%;
-  background: linear-gradient(rgba(0, 153, 196, 0.5), rgba(0, 153, 196, 0.4)),
-    url(${bgImage});
+  height: 30%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
 const Logo = styled.div`
-  width: 110px;
-  height: 110px;
-  background-color: white;
+  height: 123px;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 -14px 28px rgba(0, 0, 0, 0.22);
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 25px;
+  margin-bottom: 20px;
 `;
-const Title = styled.h1``;
-const Footer = styled.div``;
-const Subtitle = styled.h2`
-  font-size: 30px;
+
+const LogoImg = styled.img`
+  width: 200px;
 `;
-const FakeInput = styled.div`
-  margin: 50px 0px;
-  font-size: 25px;
-  font-weight: 300;
-`;
-const PhoneLogin = styled.div`
-  padding: 20px;
-  cursor: pointer;
-`;
-const Grey = styled.span`
-  color: ${props => props.theme.greyColor};
-  margin-left: 10px;
-`;
-const SocialLogin = styled.div`
-  border-top: 1px solid ${props => props.theme.greyColor};
-  padding: 30px 20px;
-`;
-const SocialLink = styled.span`
+
+const Body = styled.body``;
+const Footer = styled.div`
+  margin-top: 15px;
+  text-align: center;
   color: ${props => props.theme.blueColor};
-  font-size: 20px;
-  cursor: pointer;
+`;
+
+const FooterColumn = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const Title = styled.h1``;
+
+const FormContainer = styled.div`
+  width: 320px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 interface IProps extends RouteComponentProps<any> {}
@@ -70,23 +66,37 @@ const LoginPresenter: React.SFC<IProps> = () => (
     </Helmet>
     <Header>
       <Logo>
-        <Title>Nuber</Title>
+        <LogoImg src={require("src/images/logo.png")} />
       </Logo>
+      <Title>합리적인 가격에 최고의 학습공간을 경험하세요!</Title>
     </Header>
+    <Body>
+      <FormContainer>
+        <Form submitFn={() => console.log("tempSubmitFn")}>
+          <Input
+            placeholder={"아이디"}
+            value={""}
+            name={"phoneNumber"}
+            onChange={() => console.log("tempOnChange")}
+          />
+          <Input
+            placeholder={"비밀번호"}
+            value={""}
+            name={"phoneNumber"}
+            onChange={() => console.log("tempOnChange")}
+          />
+          <Button value={"로그인"} onClick={() => console.log("tempButton")} />
+        </Form>
+      </FormContainer>
+    </Body>
     <Footer>
-      <Link to={"/phone-login"}>
-        <PhoneLogin>
-          <Subtitle>Get moving with Nuber</Subtitle>
-          <FakeInput>
-            🇰🇷 +82 <Grey>Enter your mobile number</Grey>
-          </FakeInput>
-        </PhoneLogin>
-      </Link>
-      <Link to={"/social-login"}>
-        <SocialLogin>
-          <SocialLink>Or connect with social</SocialLink>
-        </SocialLogin>
-      </Link>
+      <FooterColumn>
+        <Link to={"/sign-up"}>아직 계정이 없으신가요?</Link>
+      </FooterColumn>
+      <FooterColumn>
+        <Link to={"/find-id"}>아이디 찾기</Link> |
+        <Link to={"/find-password"}>비밀번호 찾기</Link>
+      </FooterColumn>
     </Footer>
   </Container>
 );

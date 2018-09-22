@@ -2,11 +2,15 @@ import PropTypes from "prop-types";
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import EditAccount from "../../Routes/EditAccount";
+import FindId from "../../Routes/FindId";
+import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import Settings from "../../Routes/Settings";
+import SignUp from "../../Routes/SignUp";
 import SocialLogin from "../../Routes/SocialLogin";
+
 interface IProps {
   isLoggedIn: boolean;
 }
@@ -20,7 +24,10 @@ const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) => (
 const LoggedOutRoute: React.SFC = () => (
   <Switch>
     <Route path={"/"} exact={true} component={Login} />
+    <Route path={"/sign-up"} component={SignUp} />
     <Route path={"/phone-login"} component={PhoneLogin} />
+    <Route path={"/find-id"} component={FindId} />
+    <Route path={"/find-password"} component={FindPassword} />
     {/* <Route path={"/verify-phone/:number"} component={VerifyPhone} /> */}
     {/* ex) /verify-phone/01021231222 */}
     <Route path={"/social-phone"} component={SocialLogin} />
