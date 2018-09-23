@@ -9,6 +9,7 @@ export interface userIdSignIn_UserIdSignIn {
   __typename: "UserIdSignInResponse";
   ok: boolean;
   error: string | null;
+  token: string | null;
 }
 
 export interface userIdSignIn {
