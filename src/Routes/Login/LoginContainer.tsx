@@ -1,5 +1,6 @@
 import React from "react";
 import { RouteComponentProps } from "react-router-dom";
+import { toast } from "react-toastify";
 import LoginPresenter from "./LoginPresenter";
 
 interface IState {
@@ -40,8 +41,9 @@ export default class LoginContainer extends React.Component<
 
   public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
-    const { userId, password } = this.state;
+    // const { userId, password } = this.state;
     // tslint: disalbe-next-line
-    console.log(userId, password);
+
+    toast.info("Suup");
   };
 }
