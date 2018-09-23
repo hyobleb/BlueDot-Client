@@ -4,6 +4,7 @@ export const USER_ID_SIGN_IN = gql`
     UserIdSignIn(userId: $userId, password: $password) {
       ok
       error
+      token
     }
   }
 `;

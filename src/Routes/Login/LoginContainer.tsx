@@ -22,6 +22,7 @@ export default class LoginContainer extends React.Component<
     userId: ""
   };
   public render() {
+    const { history } = this.props;
     const { userId, password } = this.state;
     return (
       <SignInMutation
@@ -33,6 +34,17 @@ export default class LoginContainer extends React.Component<
         onCompleted={data => {
           const { UserIdSignIn } = data;
           if (UserIdSignIn.ok) {
+            console.log(UserIdSignIn);
+            toast.success("로그인이 성공했습니다. 홈으로 이동합니다...");
+            setTimeout(() => {
+              history.push({
+                pathname: "/temp-home",
+                state: {
+                  name: "ty"
+                }
+              });
+            }, 2000);
+
             return;
           } else {
             toast.error(UserIdSignIn.error);
@@ -44,7 +56,6 @@ export default class LoginContainer extends React.Component<
       >
         {(mutation, { loading }) => {
           const onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
-            event.preventDefault();
             mutation();
           };
 

@@ -5,8 +5,6 @@ const Container = styled.input`
   border-bottom: 2px solid ${props => props.theme.blueColor};
   font-size: 20px;
   width: 100%;
-  padding-top: 18px;
-  padding-bottom: 6px;
   font-weight: 500;
   transition: border-bottom 0.1s linear;
   &:-webkit-autofill {

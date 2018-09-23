@@ -13,7 +13,6 @@ const Container = styled.div`
   justify-content: center;
 `;
 const Header = styled.header`
-  height: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,9 +45,16 @@ const FooterColumn = styled.div`
 const Title = styled.h1``;
 
 const FormContainer = styled.div`
-  width: 320px;
+  max-width: 320px;
+  min-width: 280px;
+  width: 90vw;
   margin-left: auto;
   margin-right: auto;
+`;
+
+const ExtendInput = styled(Input)`
+  padding-top: 18px;
+  padding-bottom: 6px;
 `;
 
 interface IProps {
@@ -87,14 +93,14 @@ const LoginPresenter: React.SFC<IProps> = ({
     <Body>
       <FormContainer>
         <Form submitFn={() => console.log("tempSubmitFn")}>
-          <Input
+          <ExtendInput
             placeholder={"아이디"}
             value={userId}
             name={"userId"}
             onChange={onInputChange}
             autoComplete={"username"}
           />
-          <Input
+          <ExtendInput
             placeholder={"비밀번호"}
             value={password}
             name={"password"}

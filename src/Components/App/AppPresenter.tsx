@@ -10,6 +10,7 @@ import PhoneLogin from "../../Routes/PhoneLogin";
 import Settings from "../../Routes/Settings";
 import SignUp from "../../Routes/SignUp";
 import SocialLogin from "../../Routes/SocialLogin";
+import TempHome from "../../Routes/TempHome";
 
 interface IProps {
   isLoggedIn: boolean;
@@ -24,6 +25,7 @@ const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) => (
 const LoggedOutRoute: React.SFC = () => (
   <Switch>
     <Route path={"/"} exact={true} component={Login} />
+    <Route path={"/temp-home"} exact={true} component={TempHome} />
     <Route path={"/sign-up"} component={SignUp} />
     <Route path={"/phone-login"} component={PhoneLogin} />
     <Route path={"/find-id"} component={FindId} />
