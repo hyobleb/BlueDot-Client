@@ -58,6 +58,7 @@ interface IProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  loading: boolean;
 }
 // RouteComponentProps에 any를 넣은 이유는 가끔 Route를 받고 되고 그 Route들은
 // pros가 있기 때문
@@ -70,7 +71,8 @@ const LoginPresenter: React.SFC<IProps> = ({
   userId,
   password,
   onInputChange,
-  onSubmit
+  onSubmit,
+  loading
 }) => (
   <Container>
     <Helmet>
@@ -90,6 +92,7 @@ const LoginPresenter: React.SFC<IProps> = ({
             value={userId}
             name={"userId"}
             onChange={onInputChange}
+            autoComplete={"username"}
           />
           <Input
             placeholder={"비밀번호"}
@@ -97,8 +100,13 @@ const LoginPresenter: React.SFC<IProps> = ({
             name={"password"}
             onChange={onInputChange}
             type={"password"}
+            autoComplete={"current-password"}
           />
-          <Button value={"로그인"} onClick={onSubmit} />
+          {loading ? (
+            <Button value={"로그인 중입니다"} />
+          ) : (
+            <Button value={"로그인"} onClick={onSubmit} />
+          )}
         </Form>
       </FormContainer>
     </Body>

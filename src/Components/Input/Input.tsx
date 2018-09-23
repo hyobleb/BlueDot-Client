@@ -5,7 +5,7 @@ const Container = styled.input`
   border-bottom: 2px solid ${props => props.theme.blueColor};
   font-size: 20px;
   width: 100%;
-  padding-top:18px;
+  padding-top: 18px;
   padding-bottom: 6px;
   font-weight: 500;
   transition: border-bottom 0.1s linear;
@@ -30,6 +30,7 @@ interface IProps {
   name?: string;
   onChange?: any;
   className?: string;
+  autoComplete?: string;
 }
 
 const Input: React.SFC<IProps> = ({
@@ -39,7 +40,8 @@ const Input: React.SFC<IProps> = ({
   value,
   name = "",
   onChange,
-  className
+  className,
+  autoComplete
 }) => (
   <Container
     className={className}
@@ -49,6 +51,7 @@ const Input: React.SFC<IProps> = ({
     required={required}
     value={value}
     placeholder={placeholder}
+    autoComplete={autoComplete}
   />
 );
 export default Input;

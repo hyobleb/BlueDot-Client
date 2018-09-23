@@ -22,7 +22,7 @@ const Container = styled.input`
 `;
 interface IProps {
   value: string;
-  onClick: any;
+  onClick?: any;
   disabled?: boolean;
 }
 const Button: React.SFC<IProps> = ({ value, onClick, disabled = false }) => (

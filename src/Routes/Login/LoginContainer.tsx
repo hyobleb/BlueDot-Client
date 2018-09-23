@@ -1,12 +1,17 @@
 import React from "react";
+import { Mutation, MutationUpdaterFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
+import { userIdSignIn, userIdSignInVariables } from "../../types/api";
 import LoginPresenter from "./LoginPresenter";
+import { USER_ID_SIGN_IN } from "./LoginQueries";
 
 interface IState {
   userId: string;
   password: string;
 }
+
+class SignInMutation extends Mutation<userIdSignIn, userIdSignInVariables> {}
 
 export default class LoginContainer extends React.Component<
   RouteComponentProps<any>,
@@ -17,13 +22,34 @@ export default class LoginContainer extends React.Component<
     userId: ""
   };
   public render() {
+    const { userId, password } = this.state;
     return (
-      <LoginPresenter
-        userId={this.state.userId}
-        password={this.state.password}
-        onInputChange={this.onInputChange}
-        onSubmit={this.onSubmit}
-      />
+      <SignInMutation
+        mutation={USER_ID_SIGN_IN}
+        variables={{
+          password,
+          userId
+        }}
+        update={this.afterSbumit}
+        // mutation은 child로 함수를 받아야함
+      >
+        {(mutation, { loading }) => {
+          const onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+            event.preventDefault();
+            mutation();
+          };
+
+          return (
+            <LoginPresenter
+              userId={this.state.userId}
+              password={this.state.password}
+              onInputChange={this.onInputChange}
+              onSubmit={onSubmit}
+              loading={loading}
+            />
+          );
+        }}
+      </SignInMutation>
     );
   }
 
@@ -39,11 +65,16 @@ export default class LoginContainer extends React.Component<
     } as any);
   };
 
-  public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
-    event.preventDefault();
-    // const { userId, password } = this.state;
-    // tslint: disalbe-next-line
-
-    toast.info("Suup");
+  public afterSbumit: MutationUpdaterFn = (
+    cache,
+    result: { data: userIdSignIn }
+  ) => {
+    const data: userIdSignIn = result.data;
+    const { UserIdSignIn } = data;
+    if (UserIdSignIn.ok) {
+      return;
+    } else {
+      toast.error(UserIdSignIn.error);
+    }
   };
 }

@@ -7,25 +7,27 @@
     "apollo-boost": "^0.1.16",
     "graphql": "^14.0.2",
     "prop-types": "^15.6.2",
-    "react": "^16.5.1",
+    "react": "^16.5.2",
     "react-apollo": "^2.1.11",
-    "react-dom": "^16.5.1",
+    "react-dom": "^16.5.2",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "2.17.0",
     "react-toastify": "^4.3.1",
-    "styled-components": "^3.4.6",
-    "styled-reset": "^1.4.0"
+    "styled-components": "^3.4.9",
+    "styled-reset": "^1.5.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "precodegen": "apollo schema:download --endpoint=http://localhost:4000/graphql",
+    "codegen": "apollo codegen:generate src/types/api.d.ts --queries='src/**/!(*.local).ts' --addTypename --schema schema.json --target typescript --outputFlat"
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
-    "@types/node": "^10.9.4",
+    "@types/node": "^10.10.3",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "typescript": "^3.0.3"
