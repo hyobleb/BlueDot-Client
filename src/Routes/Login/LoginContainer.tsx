@@ -1,5 +1,5 @@
 import React from "react";
-import { Mutation, MutationUpdaterFn } from "react-apollo";
+import { Mutation } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import { userIdSignIn, userIdSignInVariables } from "../../types/api";
@@ -30,7 +30,16 @@ export default class LoginContainer extends React.Component<
           password,
           userId
         }}
-        update={this.afterSbumit}
+        onCompleted={data => {
+          const { UserIdSignIn } = data;
+          if (UserIdSignIn.ok) {
+            return;
+          } else {
+            toast.error(UserIdSignIn.error);
+          }
+        }}
+        // onCompleted에서는 data가 이미 type이 되어 있음
+        // update={this.afterSbumit}
         // mutation은 child로 함수를 받아야함
       >
         {(mutation, { loading }) => {
@@ -65,16 +74,8 @@ export default class LoginContainer extends React.Component<
     } as any);
   };
 
-  public afterSbumit: MutationUpdaterFn = (
-    cache,
-    result: { data: userIdSignIn }
-  ) => {
-    const data: userIdSignIn = result.data;
-    const { UserIdSignIn } = data;
-    if (UserIdSignIn.ok) {
-      return;
-    } else {
-      toast.error(UserIdSignIn.error);
-    }
-  };
+  // public afterSbumit: MutationUpdaterFn = (
+  //   cache,
+  //   result: { data: userIdSignIn }
+  // ) => {};
 }
