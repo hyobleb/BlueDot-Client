@@ -1,6 +1,7 @@
 import React from "react";
 import { Mutation, MutationFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
+import { toast } from "react-toastify";
 import { facebookConnect, facebookConnectVariables } from "../../types/api";
 import SocialLoginPresenter from "./SocialLoginPresenter";
 import { FACEBOOK_CONNECT } from "./SocialLoginQueries";
@@ -19,28 +20,41 @@ interface IState {
 interface IProps extends RouteComponentProps<any> {}
 
 class SocialLoginContainer extends React.Component<IProps, IState> {
-  public mutation: MutationFn;
+  public state = {
+    email: "",
+    fbId: "",
+    name: ""
+  };
+  public facebookMutation: MutationFn;
 
   public render() {
-    const { name, email, fbId } = this.state;
+    // const { name, email, fbId } = this.state;
     return (
-      <LoginMutation
-        mutation={FACEBOOK_CONNECT}
-        variables={{ name, email, fbId }}
-      >
-        {(mutation, { loading }) => {
-          this.mutation = mutation;
-          return <SocialLoginPresenter loginCallback={this.callback} />;
+      <LoginMutation mutation={FACEBOOK_CONNECT}>
+        {(facebookMutation, { loading }) => {
+          this.facebookMutation = facebookMutation;
+          return <SocialLoginPresenter loginCallback={this.loginCallback} />;
         }}
       </LoginMutation>
     );
   }
 
-  public callback = fbData => {
-    this.setState({
-      email: fbData.email
-    });
-    this.mutation();
+  public loginCallback = response => {
+    const { name, email, id, accessToken } = response;
+    if (accessToken) {
+      toast.success(`${name}님 환영합니다!`);
+      this.facebookMutation({
+        variables: {
+          email,
+          fbId: id,
+          name
+        }
+      });
+    } else {
+      toast.error("로그인할 수 없습니다😥");
+    }
+
+    // this.mutation();
   };
 }
 

@@ -31,7 +31,7 @@ const BackArrowExtended = styled(BackArrow)`
 `;
 
 interface IProps {
-  loginCallback: (fbData: any) => void;
+  loginCallback: (response) => void;
 }
 
 const SocialLoginPresenter: React.SFC<IProps> = ({ loginCallback }) => (
@@ -44,7 +44,7 @@ const SocialLoginPresenter: React.SFC<IProps> = ({ loginCallback }) => (
     <FacebookLogin
       appId="1718196768212364"
       autoLoad={true}
-      fields="name,email,picture"
+      fields="name,email" // 받아올 데이터들
       callback={loginCallback}
       render={renderProps => (
         <Link onClick={renderProps.onClick}>
