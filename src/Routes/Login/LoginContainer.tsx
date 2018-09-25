@@ -51,10 +51,9 @@ export default class LoginContainer extends React.Component<
                 //     }
                 //   });
                 // }, 2000);
-
-                return;
               } else {
                 toast.error(UserIdSignIn.error);
+                return;
               }
             }}
             // onCompleted에서는 data가 이미 type이 되어 있음
@@ -62,6 +61,7 @@ export default class LoginContainer extends React.Component<
             // mutation은 child로 함수를 받아야함
           >
             {(signInMutation, { loading }) => {
+              this.signInMutation = signInMutation;
               return (
                 <LoginPresenter
                   userId={this.state.userId}
