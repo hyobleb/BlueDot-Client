@@ -1,5 +1,5 @@
 import React from "react";
-import { Mutation } from "react-apollo";
+import { Mutation, MutationFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import { LOG_USER_IN } from "../../sharedQueries.local";
@@ -18,6 +18,7 @@ export default class LoginContainer extends React.Component<
   RouteComponentProps<any>,
   IState
 > {
+  public signInMutation: MutationFn;
   public state = {
     password: "",
     userId: ""
@@ -60,19 +61,13 @@ export default class LoginContainer extends React.Component<
             // update={this.afterSbumit}
             // mutation은 child로 함수를 받아야함
           >
-            {(mutation, { loading }) => {
-              const onSubmit: React.FormEventHandler<
-                HTMLFormElement
-              > = event => {
-                mutation();
-              };
-
+            {(signInMutation, { loading }) => {
               return (
                 <LoginPresenter
                   userId={this.state.userId}
                   password={this.state.password}
                   onInputChange={this.onInputChange}
-                  onSubmit={onSubmit}
+                  onSubmit={this.onSubmit}
                   loading={loading}
                 />
               );
@@ -93,6 +88,11 @@ export default class LoginContainer extends React.Component<
     this.setState({
       [name]: value
     } as any);
+  };
+
+  public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+    event.preventDefault();
+    this.signInMutation();
   };
 
   // public afterSbumit: MutationUpdaterFn = (

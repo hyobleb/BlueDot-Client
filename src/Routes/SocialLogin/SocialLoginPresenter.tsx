@@ -43,7 +43,7 @@ const SocialLoginPresenter: React.SFC<IProps> = ({ loginCallback }) => (
     <BackArrowExtended backTo={"/"} />
     <FacebookLogin
       appId="1718196768212364"
-      autoLoad={true}
+      autoLoad={false}
       fields="name,email" // 받아올 데이터들
       callback={loginCallback}
       render={renderProps => (
