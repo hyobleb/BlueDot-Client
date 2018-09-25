@@ -2,7 +2,7 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { LOG_USER_IN } from "../../Components/sharedQueries.local";
+import { LOG_USER_IN } from "../../sharedQueries.local";
 import { userIdSignIn, userIdSignInVariables } from "../../types/api";
 import LoginPresenter from "./LoginPresenter";
 import { USER_ID_SIGN_IN } from "./LoginQueries";

@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "../../typed-component";
+import styled from "../../typed-components";
 const Container = styled.input`
   border: none;
   border-bottom: 2px solid ${props => props.theme.blueColor};

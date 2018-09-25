@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import Form from "../../Components/Form";
 import Input from "../../Components/Input";
-import styled from "../../typed-component";
+import styled from "../../typed-components";
 
 const Container = styled.div`
   height: 90vh;
