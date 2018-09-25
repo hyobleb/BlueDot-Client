@@ -7,6 +7,7 @@ export const USER_PROFILE = gql`
       user {
         profilePhoto
         name
+        email
         isHead
         isSupervisor
         isFranchiser

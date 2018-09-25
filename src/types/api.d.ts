@@ -9,6 +9,7 @@ export interface userProfile_GetMyProfile_user {
   __typename: "User";
   profilePhoto: string | null;
   name: string | null;
+  email: string | null;
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;
@@ -23,6 +24,29 @@ export interface userProfile_GetMyProfile {
 
 export interface userProfile {
   GetMyProfile: userProfile_GetMyProfile;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: updateProfile
+// ====================================================
+
+export interface updateProfile_UpdateMyProfile {
+  __typename: "UpdateMyProfileResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface updateProfile {
+  UpdateMyProfile: updateProfile_UpdateMyProfile;
+}
+
+export interface updateProfileVariables {
+  email: string;
+  password: string;
+  profilePhoto: string;
 }
 
 /* tslint:disable */

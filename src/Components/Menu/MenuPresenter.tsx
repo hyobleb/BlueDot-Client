@@ -67,7 +67,6 @@ const ToggleAuthor = styled<IToggleProps, any>("button")`
   font-size: 18px;
   border: 0;
   padding: 15px 0px;
-  cursor: pointer;
 `;
 
 interface IProps {
