@@ -56,11 +56,19 @@ export interface updateProfileVariables {
 // GraphQL mutation operation: userIdSignIn
 // ====================================================
 
+export interface userIdSignIn_UserIdSignIn_user {
+  __typename: "User";
+  isHead: boolean;
+  isSupervisor: boolean;
+  isFranchiser: boolean;
+}
+
 export interface userIdSignIn_UserIdSignIn {
   __typename: "UserIdSignInResponse";
   ok: boolean;
   error: string | null;
   token: string | null;
+  user: userIdSignIn_UserIdSignIn_user | null;
 }
 
 export interface userIdSignIn {

@@ -1,4 +1,5 @@
-import PropTypes from "prop-types";
+import BranchSetting from "../../Routes/BranchSetting";
+
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import EditAccount from "../../Routes/EditAccount";
@@ -13,13 +14,37 @@ import SocialLogin from "../../Routes/SocialLogin";
 
 interface IProps {
   isLoggedIn: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
+  isFranchiser: boolean;
 }
 
-const AppPresenter: React.SFC<IProps> = ({ isLoggedIn }) => (
-  <BrowserRouter>
-    {isLoggedIn ? <LoggedInRoute /> : <LoggedOutRoute />}
-  </BrowserRouter>
-);
+interface ILoginRouteProps {
+  isHead: boolean;
+  isSupervisor: boolean;
+  isFranchiser: boolean;
+}
+
+const AppPresenter: React.SFC<IProps> = ({
+  isLoggedIn,
+  isHead,
+  isSupervisor,
+  isFranchiser
+}) => {
+  return (
+    <BrowserRouter>
+      {isLoggedIn ? (
+        <LoggedInRoute
+          isHead={isHead}
+          isSupervisor={isSupervisor}
+          isFranchiser={isFranchiser}
+        />
+      ) : (
+        <LoggedOutRoute />
+      )}
+    </BrowserRouter>
+  );
+};
 
 const LoggedOutRoute: React.SFC = () => (
   <Switch>
@@ -35,23 +60,33 @@ const LoggedOutRoute: React.SFC = () => (
   </Switch>
 );
 
-const LoggedInRoute: React.SFC = () => (
-  <Switch>
-    <Route path={"/"} exact={true} component={Home} />
-    {/* <Route path={"/ride"} exact={true} component={Ride} /> */}
-    {/* ride also need id so wen can user '/ride:rideID' but we use method to using memory */}
-    <Route path={"/edit-account"} exact={true} component={EditAccount} />
-    <Route path={"/settings"} exact={true} component={Settings} />
-    {/* <Route path={"/places"} exact={true} component={Places} />
+const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
+  isHead,
+  isSupervisor,
+  isFranchiser
+}) => {
+  return (
+    <Switch>
+      <Route path={"/"} exact={true} component={Home} />
+      {/* <Route path={"/ride"} exact={true} component={Ride} /> */}
+      {/* ride also need id so wen can user '/ride:rideID' but we use method to using memory */}
+      <Route path={"/edit-account"} exact={true} component={EditAccount} />
+      <Route path={"/settings"} exact={true} component={Settings} />
+      {/* <Route path={"/places"} exact={true} component={Places} />
     <Route path={"/add-place"} exact={true} component={AddPlace} />
     <Route path={"/find-address"} exact={true} component={FindAddress} /> */}
-    <Redirect from={"*"} to={"/"} />
-    {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}
-  </Switch>
-);
+      {isHead && (
+        <Route
+          path={"/branch-setting"}
+          exact={true}
+          component={BranchSetting}
+        />
+      )}
 
-AppPresenter.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired
+      <Redirect from={"*"} to={"/"} />
+      {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}
+    </Switch>
+  );
 };
 
 export default AppPresenter;

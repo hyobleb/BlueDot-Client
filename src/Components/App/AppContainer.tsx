@@ -6,13 +6,24 @@ import theme from "../../theme";
 import { ThemeProvider } from "../../typed-components";
 import AppPresenter from "./AppPresenter";
 import { IS_LOGGED_IN } from "./AppQueries.local";
-const AppContainer = ({ data }) => (
-  <React.Fragment>
-    <ThemeProvider theme={theme}>
-      <AppPresenter isLoggedIn={data.auth.isLoggedIn} />
-    </ThemeProvider>
-    <ToastContainer draggable={true} position={toast.POSITION.BOTTOM_CENTER} />
-  </React.Fragment>
-);
+const AppContainer = ({ data }) => {
+  console.log(data);
+  return (
+    <React.Fragment>
+      <ThemeProvider theme={theme}>
+        <AppPresenter
+          isLoggedIn={data.auth.isLoggedIn}
+          isHead={data.auth.isHead}
+          isSupervisor={data.auth.isSupervisor}
+          isFranchiser={data.auth.isFranchiser}
+        />
+      </ThemeProvider>
+      <ToastContainer
+        draggable={true}
+        position={toast.POSITION.BOTTOM_CENTER}
+      />
+    </React.Fragment>
+  );
+};
 
 export default graphql(IS_LOGGED_IN)(AppContainer);

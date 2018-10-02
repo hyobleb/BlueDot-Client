@@ -5,6 +5,11 @@ export const USER_ID_SIGN_IN = gql`
       ok
       error
       token
+      user {
+        isHead
+        isSupervisor
+        isFranchiser
+      }
     }
   }
 `;

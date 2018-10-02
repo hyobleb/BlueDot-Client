@@ -39,7 +39,16 @@ export default class LoginContainer extends React.Component<
               const { UserIdSignIn } = data;
               if (UserIdSignIn.ok) {
                 if (UserIdSignIn.token) {
-                  logUserIn({ variables: { token: UserIdSignIn.token } });
+                  if (UserIdSignIn.user) {
+                    logUserIn({
+                      variables: {
+                        isFranchiser: UserIdSignIn.user.isFranchiser,
+                        isHead: UserIdSignIn.user.isHead,
+                        isSupervisor: UserIdSignIn.user.isSupervisor,
+                        token: UserIdSignIn.token
+                      }
+                    });
+                  }
                 }
                 toast.success("로그인되었습니다! 오늘도 알찬 시간보내세요!");
 

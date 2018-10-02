@@ -10,7 +10,10 @@ const client = new ApolloClient({
     defaults: {
       auth: {
         __typename: "Auth",
-        isLoggedIn: Boolean(localStorage.getItem("jwt")) || false
+        isFranchiser: false,
+        isHead: false,
+        isLoggedIn: Boolean(localStorage.getItem("jwt")) || false,
+        isSupervisor: false
       }
     },
     resolvers: {
@@ -18,13 +21,21 @@ const client = new ApolloClient({
         // cache는 clientState를 defaults를 뜻함
         // cache object가 resovler의 컨텍스트 위에 있는 형태
         // token은 args가 된다
-        logUserIn: (_, { token }, { cache }) => {
+
+        logUserIn: (
+          _,
+          { token, isHead, isSupervisor, isFranchiser },
+          { cache }
+        ) => {
           localStorage.setItem("jwt", token);
           cache.writeData({
             data: {
               auth: {
                 __typename: "Auth",
-                isLoggedIn: true
+                isFranchiser,
+                isHead,
+                isLoggedIn: true,
+                isSupervisor
               }
             }
           });
@@ -36,7 +47,9 @@ const client = new ApolloClient({
             data: {
               auth: {
                 __typename: "Auth",
-                isLoggedIn: false
+                isHead: false,
+                isLoggedIn: false,
+                isManager: false
               }
             }
           });
