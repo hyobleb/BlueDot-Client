@@ -10,10 +10,10 @@ const client = new ApolloClient({
     defaults: {
       auth: {
         __typename: "Auth",
-        isFranchiser: false,
-        isHead: false,
+        isFranchiser: Boolean(localStorage.getItem("isFranchiser")) || false,
+        isHead: Boolean(localStorage.getItem("isHead")) || false,
         isLoggedIn: Boolean(localStorage.getItem("jwt")) || false,
-        isSupervisor: false
+        isSupervisor: Boolean(localStorage.getItem("isSupervisor")) || false
       }
     },
     resolvers: {
@@ -28,6 +28,15 @@ const client = new ApolloClient({
           { cache }
         ) => {
           localStorage.setItem("jwt", token);
+          if (isHead) {
+            localStorage.setItem("isHead", token);
+          }
+          if (isSupervisor) {
+            localStorage.setItem("isSupervisor", token);
+          }
+          if (isFranchiser) {
+            localStorage.setItem("isFranchiser", token);
+          }
           cache.writeData({
             data: {
               auth: {
@@ -47,7 +56,7 @@ const client = new ApolloClient({
             data: {
               auth: {
                 __typename: "Auth",
-                isHead: false,
+                isHead: null,
                 isLoggedIn: false,
                 isManager: false
               }

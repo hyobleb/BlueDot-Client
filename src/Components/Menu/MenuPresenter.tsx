@@ -108,6 +108,7 @@ const MenuPresenter: React.SFC<IProps> = ({
           ) : (
             ""
           )}
+          <SLink to="/settings">Settings</SLink>
         </React.Fragment>
       )}
   </Container>

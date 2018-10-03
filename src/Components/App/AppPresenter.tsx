@@ -65,6 +65,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
   isSupervisor,
   isFranchiser
 }) => {
+  console.log({ isHead });
   return (
     <Switch>
       <Route path={"/"} exact={true} component={Home} />

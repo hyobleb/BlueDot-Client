@@ -2,9 +2,9 @@ import { gql } from "apollo-boost";
 export const IS_LOGGED_IN = gql`
   {
     auth {
-      isLoggedIn
-      isHead
-      isSupervisor
+      isLoggedIn @client
+      isHead @client
+      isSupervisor @client
       isFranchiser @client
     }
   }
