@@ -7,7 +7,6 @@ import { ThemeProvider } from "../../typed-components";
 import AppPresenter from "./AppPresenter";
 import { IS_LOGGED_IN } from "./AppQueries.local";
 const AppContainer = ({ data }) => {
-  console.log({ data });
   return (
     <React.Fragment>
       <ThemeProvider theme={theme}>

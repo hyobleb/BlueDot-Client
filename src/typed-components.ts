@@ -7,6 +7,8 @@ interface IThemeInterface {
   greyColor: string;
   yellowColor: string;
   greenColor: string;
+  orangeColor: string;
+  smallFontSize: string;
 }
 
 const {

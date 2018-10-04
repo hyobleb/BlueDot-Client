@@ -2,6 +2,7 @@ import BranchSetting from "../../Routes/BranchSetting";
 
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import AddBranch from "../../Routes/AddBranch";
 import EditAccount from "../../Routes/EditAccount";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
@@ -65,7 +66,6 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
   isSupervisor,
   isFranchiser
 }) => {
-  console.log({ isHead });
   return (
     <Switch>
       <Route path={"/"} exact={true} component={Home} />
@@ -77,11 +77,14 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
     <Route path={"/add-place"} exact={true} component={AddPlace} />
     <Route path={"/find-address"} exact={true} component={FindAddress} /> */}
       {isHead && (
-        <Route
-          path={"/branch-setting"}
-          exact={true}
-          component={BranchSetting}
-        />
+        <React.Fragment>
+          <Route
+            path={"/branch-setting"}
+            exact={true}
+            component={BranchSetting}
+          />
+          <Route path={"/add-branch"} exact={true} component={AddBranch} />
+        </React.Fragment>
       )}
 
       <Redirect from={"*"} to={"/"} />

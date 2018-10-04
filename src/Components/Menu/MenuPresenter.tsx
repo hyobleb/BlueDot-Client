@@ -19,6 +19,7 @@ const SLink = styled(Link)`
   margin-bottom: 25px;
   font-weight: 400;
 `;
+
 const Image = styled.img`
   height: 80px;
   width: 80px;
@@ -67,6 +68,7 @@ const ToggleAuthor = styled<IToggleProps, any>("button")`
   font-size: 18px;
   border: 0;
   padding: 15px 0px;
+  margin-bottom: 15px;
 `;
 
 interface IProps {
@@ -108,7 +110,7 @@ const MenuPresenter: React.SFC<IProps> = ({
           ) : (
             ""
           )}
-          <SLink to="/settings">Settings</SLink>
+          <SLink to="/branch-setting">지점 관리</SLink>
         </React.Fragment>
       )}
   </Container>

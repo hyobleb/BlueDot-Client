@@ -92,7 +92,7 @@ const LoginPresenter: React.SFC<IProps> = ({
     </Header>
     <Body>
       <FormContainer>
-        <Form submitFn={() => console.log("tempSubmitFn")}>
+        <Form submitFn={onSubmit}>
           <ExtendInput
             placeholder={"아이디"}
             value={userId}
