@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "../../typed-components";
 const Container = styled.input`
-  width: 40%;
+  width: 100px;
   min-width: 50px;
   max-width: 150px;
   background-color: ${props => props.theme.blueColor};

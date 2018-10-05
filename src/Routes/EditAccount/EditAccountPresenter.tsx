@@ -42,6 +42,8 @@ const EditAccountPresenter: React.SFC<IProps> = ({
         uploading={uploading}
         fileUrl={profilePhoto}
         onChange={onInputChange}
+        dispalyText={"프로필 이미지"}
+        name={"profilePhoto"}
       />
       <ExtendedInput
         onChange={onInputChange}

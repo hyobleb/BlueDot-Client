@@ -1,29 +1,21 @@
 import React from "react";
 import styled from "../../typed-components";
-const Container = styled.div`
-  width: 65%;
-  display: flex;
-  flex-direction: column;
-`;
+const Container = styled.div``;
 const Image = styled.label`
   cursor: pointer;
+  height: 80px;
+  width: 80px;
   border: 2px solid black;
   display: block;
-  margin-top: auto;
-  margin-bottom: auto;
+  margin-bottom: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 15px;
   overflow: hidden;
-
   & img {
     width: 80px;
     height: 80px;
-  }
-  :hover {
-    color: ${props => props.theme.blueColor};
-    border-color: ${props => props.theme.blueColor};
   }
 `;
 const Input = styled.input`
@@ -41,9 +33,8 @@ interface IProps {
   dispalyText: string;
   name: string;
 }
-const PhotoInput: React.SFC<IProps> = ({
+const PhotosInput: React.SFC<IProps> = ({
   uploading,
-  fileUrl,
   onChange,
   dispalyText,
   name
@@ -62,4 +53,4 @@ const PhotoInput: React.SFC<IProps> = ({
     </Image>
   </Container>
 );
-export default PhotoInput;
+export default PhotosInput;

@@ -2,21 +2,11 @@ import React from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 import BackArrow from "../../Components/BackArrow";
+import BackContainer from "../../Components/BackContainer";
 import Form from "../../Components/Form";
 import Input from "../../Components/Input";
 import SmallButton from "../../Components/SmallButton";
 import styled from "../../typed-components";
-
-const BackContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-const Container = styled.div`
-  width: 95vw;
-  max-width: 600px;
-  margin-top: 20px;
-`;
 
 const InputContainer = styled.div`
   min-width: 150px;
@@ -37,7 +27,7 @@ const HeadContainer = styled.div`
   justify-content: space-between;
 `;
 
-const BracnhSearchButton = styled(SmallButton)``;
+const BranchSearchButton = styled(SmallButton)``;
 
 const ExtendForm = styled(Form)`
   display: flex;
@@ -129,168 +119,166 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
       <title>Branch-Setting | BlueDot</title>
     </Helmet>
     <BackArrowExtended backTo="/" />
-    <Container>
-      <HeadContainer>
-        <InputContainer>
-          <ExtendForm submitFn={onSubmit}>
-            <ExtendInput
-              placeholder={"지점명 or 주소를 입력해주세요"}
-              value={branchInput}
-              name={"branchInput"}
-              onChange={onInputChange}
-              autoComplete={"username"}
-            />
-            <BracnhSearchButton value="찾기" onClick={onSubmit} />
-          </ExtendForm>
-        </InputContainer>
-        <SLink to="/add-branch">지점 추가</SLink>
-      </HeadContainer>
-      <BodyContainer>
-        <BranchContainer>
-          <ContentsContainer>
-            <PhotoContainer>
-              <Image src={require("src/images/default_profile.png")} />
-            </PhotoContainer>
-            <ContextContainer>
-              <ContextRow>화명본점</ContextRow>
-              <ContextRow>화명 맥도날드 근처</ContextRow>
-              <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
-              <ContextRow>화명역점 이용 가능</ContextRow>
-            </ContextContainer>
-          </ContentsContainer>
-          <ButtonContainer>
-            <RoomSettingButton value="열람실 및 좌석 세팅" />
-            <CabinetsettingButton value="사물함 세팅" />
-          </ButtonContainer>
-        </BranchContainer>
+    <HeadContainer>
+      <InputContainer>
+        <ExtendForm submitFn={onSubmit}>
+          <ExtendInput
+            placeholder={"지점명 or 주소를 입력해주세요"}
+            value={branchInput}
+            name={"branchInput"}
+            onChange={onInputChange}
+            autoComplete={"username"}
+          />
+          <BranchSearchButton value="찾기" onClick={onSubmit} />
+        </ExtendForm>
+      </InputContainer>
+      <SLink to="/add-branch">지점 추가</SLink>
+    </HeadContainer>
+    <BodyContainer>
+      <BranchContainer>
+        <ContentsContainer>
+          <PhotoContainer>
+            <Image src={require("src/images/default_profile.png")} />
+          </PhotoContainer>
+          <ContextContainer>
+            <ContextRow>화명본점</ContextRow>
+            <ContextRow>화명 맥도날드 근처</ContextRow>
+            <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
+            <ContextRow>화명역점 이용 가능</ContextRow>
+          </ContextContainer>
+        </ContentsContainer>
+        <ButtonContainer>
+          <RoomSettingButton value="열람실 및 좌석 세팅" />
+          <CabinetsettingButton value="사물함 세팅" />
+        </ButtonContainer>
+      </BranchContainer>
 
-        <BranchContainer>
-          <ContentsContainer>
-            <PhotoContainer>
-              <Image src={require("src/images/default_profile.png")} />
-            </PhotoContainer>
-            <ContextContainer>
-              <ContextRow>화명본점</ContextRow>
-              <ContextRow>화명 맥도날드 근처</ContextRow>
-              <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
-              <ContextRow>화명역점 이용 가능</ContextRow>
-            </ContextContainer>
-          </ContentsContainer>
-          <ButtonContainer>
-            <RoomSettingButton value="열람실 및 좌석 세팅" />
-            <CabinetsettingButton value="사물함 세팅" />
-          </ButtonContainer>
-        </BranchContainer>
+      <BranchContainer>
+        <ContentsContainer>
+          <PhotoContainer>
+            <Image src={require("src/images/default_profile.png")} />
+          </PhotoContainer>
+          <ContextContainer>
+            <ContextRow>화명본점</ContextRow>
+            <ContextRow>화명 맥도날드 근처</ContextRow>
+            <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
+            <ContextRow>화명역점 이용 가능</ContextRow>
+          </ContextContainer>
+        </ContentsContainer>
+        <ButtonContainer>
+          <RoomSettingButton value="열람실 및 좌석 세팅" />
+          <CabinetsettingButton value="사물함 세팅" />
+        </ButtonContainer>
+      </BranchContainer>
 
-        <BranchContainer>
-          <ContentsContainer>
-            <PhotoContainer>
-              <Image src={require("src/images/default_profile.png")} />
-            </PhotoContainer>
-            <ContextContainer>
-              <ContextRow>화명본점</ContextRow>
-              <ContextRow>화명 맥도날드 근처</ContextRow>
-              <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
-              <ContextRow>화명역점 이용 가능</ContextRow>
-            </ContextContainer>
-          </ContentsContainer>
-          <ButtonContainer>
-            <RoomSettingButton value="열람실 및 좌석 세팅" />
-            <CabinetsettingButton value="사물함 세팅" />
-          </ButtonContainer>
-        </BranchContainer>
+      <BranchContainer>
+        <ContentsContainer>
+          <PhotoContainer>
+            <Image src={require("src/images/default_profile.png")} />
+          </PhotoContainer>
+          <ContextContainer>
+            <ContextRow>화명본점</ContextRow>
+            <ContextRow>화명 맥도날드 근처</ContextRow>
+            <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
+            <ContextRow>화명역점 이용 가능</ContextRow>
+          </ContextContainer>
+        </ContentsContainer>
+        <ButtonContainer>
+          <RoomSettingButton value="열람실 및 좌석 세팅" />
+          <CabinetsettingButton value="사물함 세팅" />
+        </ButtonContainer>
+      </BranchContainer>
 
-        <BranchContainer>
-          <ContentsContainer>
-            <PhotoContainer>
-              <Image src={require("src/images/default_profile.png")} />
-            </PhotoContainer>
-            <ContextContainer>
-              <ContextRow>화명본점</ContextRow>
-              <ContextRow>화명 맥도날드 근처</ContextRow>
-              <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
-              <ContextRow>화명역점 이용 가능</ContextRow>
-            </ContextContainer>
-          </ContentsContainer>
-          <ButtonContainer>
-            <RoomSettingButton value="열람실 및 좌석 세팅" />
-            <CabinetsettingButton value="사물함 세팅" />
-          </ButtonContainer>
-        </BranchContainer>
+      <BranchContainer>
+        <ContentsContainer>
+          <PhotoContainer>
+            <Image src={require("src/images/default_profile.png")} />
+          </PhotoContainer>
+          <ContextContainer>
+            <ContextRow>화명본점</ContextRow>
+            <ContextRow>화명 맥도날드 근처</ContextRow>
+            <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
+            <ContextRow>화명역점 이용 가능</ContextRow>
+          </ContextContainer>
+        </ContentsContainer>
+        <ButtonContainer>
+          <RoomSettingButton value="열람실 및 좌석 세팅" />
+          <CabinetsettingButton value="사물함 세팅" />
+        </ButtonContainer>
+      </BranchContainer>
 
-        <BranchContainer>
-          <ContentsContainer>
-            <PhotoContainer>
-              <Image src={require("src/images/default_profile.png")} />
-            </PhotoContainer>
-            <ContextContainer>
-              <ContextRow>화명본점</ContextRow>
-              <ContextRow>화명 맥도날드 근처</ContextRow>
-              <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
-              <ContextRow>화명역점 이용 가능</ContextRow>
-            </ContextContainer>
-          </ContentsContainer>
-          <ButtonContainer>
-            <RoomSettingButton value="열람실 및 좌석 세팅" />
-            <CabinetsettingButton value="사물함 세팅" />
-          </ButtonContainer>
-        </BranchContainer>
+      <BranchContainer>
+        <ContentsContainer>
+          <PhotoContainer>
+            <Image src={require("src/images/default_profile.png")} />
+          </PhotoContainer>
+          <ContextContainer>
+            <ContextRow>화명본점</ContextRow>
+            <ContextRow>화명 맥도날드 근처</ContextRow>
+            <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
+            <ContextRow>화명역점 이용 가능</ContextRow>
+          </ContextContainer>
+        </ContentsContainer>
+        <ButtonContainer>
+          <RoomSettingButton value="열람실 및 좌석 세팅" />
+          <CabinetsettingButton value="사물함 세팅" />
+        </ButtonContainer>
+      </BranchContainer>
 
-        <BranchContainer>
-          <ContentsContainer>
-            <PhotoContainer>
-              <Image src={require("src/images/default_profile.png")} />
-            </PhotoContainer>
-            <ContextContainer>
-              <ContextRow>화명본점</ContextRow>
-              <ContextRow>화명 맥도날드 근처</ContextRow>
-              <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
-              <ContextRow>화명역점 이용 가능</ContextRow>
-            </ContextContainer>
-          </ContentsContainer>
-          <ButtonContainer>
-            <RoomSettingButton value="열람실 및 좌석 세팅" />
-            <CabinetsettingButton value="사물함 세팅" />
-          </ButtonContainer>
-        </BranchContainer>
+      <BranchContainer>
+        <ContentsContainer>
+          <PhotoContainer>
+            <Image src={require("src/images/default_profile.png")} />
+          </PhotoContainer>
+          <ContextContainer>
+            <ContextRow>화명본점</ContextRow>
+            <ContextRow>화명 맥도날드 근처</ContextRow>
+            <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
+            <ContextRow>화명역점 이용 가능</ContextRow>
+          </ContextContainer>
+        </ContentsContainer>
+        <ButtonContainer>
+          <RoomSettingButton value="열람실 및 좌석 세팅" />
+          <CabinetsettingButton value="사물함 세팅" />
+        </ButtonContainer>
+      </BranchContainer>
 
-        <BranchContainer>
-          <ContentsContainer>
-            <PhotoContainer>
-              <Image src={require("src/images/default_profile.png")} />
-            </PhotoContainer>
-            <ContextContainer>
-              <ContextRow>화명본점</ContextRow>
-              <ContextRow>화명 맥도날드 근처</ContextRow>
-              <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
-              <ContextRow>화명역점 이용 가능</ContextRow>
-            </ContextContainer>
-          </ContentsContainer>
-          <ButtonContainer>
-            <RoomSettingButton value="열람실 및 좌석 세팅" />
-            <CabinetsettingButton value="사물함 세팅" />
-          </ButtonContainer>
-        </BranchContainer>
+      <BranchContainer>
+        <ContentsContainer>
+          <PhotoContainer>
+            <Image src={require("src/images/default_profile.png")} />
+          </PhotoContainer>
+          <ContextContainer>
+            <ContextRow>화명본점</ContextRow>
+            <ContextRow>화명 맥도날드 근처</ContextRow>
+            <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
+            <ContextRow>화명역점 이용 가능</ContextRow>
+          </ContextContainer>
+        </ContentsContainer>
+        <ButtonContainer>
+          <RoomSettingButton value="열람실 및 좌석 세팅" />
+          <CabinetsettingButton value="사물함 세팅" />
+        </ButtonContainer>
+      </BranchContainer>
 
-        <BranchContainer>
-          <ContentsContainer>
-            <PhotoContainer>
-              <Image src={require("src/images/default_profile.png")} />
-            </PhotoContainer>
-            <ContextContainer>
-              <ContextRow>화명본점</ContextRow>
-              <ContextRow>화명 맥도날드 근처</ContextRow>
-              <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
-              <ContextRow>화명역점 이용 가능</ContextRow>
-            </ContextContainer>
-          </ContentsContainer>
-          <ButtonContainer>
-            <RoomSettingButton value="열람실 및 좌석 세팅" />
-            <CabinetsettingButton value="사물함 세팅" />
-          </ButtonContainer>
-        </BranchContainer>
-      </BodyContainer>
-    </Container>
+      <BranchContainer>
+        <ContentsContainer>
+          <PhotoContainer>
+            <Image src={require("src/images/default_profile.png")} />
+          </PhotoContainer>
+          <ContextContainer>
+            <ContextRow>화명본점</ContextRow>
+            <ContextRow>화명 맥도날드 근처</ContextRow>
+            <ContextRow>북구 양달로 4번길 11 세흥빌딩 4층</ContextRow>
+            <ContextRow>화명역점 이용 가능</ContextRow>
+          </ContextContainer>
+        </ContentsContainer>
+        <ButtonContainer>
+          <RoomSettingButton value="열람실 및 좌석 세팅" />
+          <CabinetsettingButton value="사물함 세팅" />
+        </ButtonContainer>
+      </BranchContainer>
+    </BodyContainer>
   </BackContainer>
 );
 export default BranchSettingPresenter;
