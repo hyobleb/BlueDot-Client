@@ -1,10 +1,13 @@
 import "node_modules/react-toggle-switch/dist/css/switch.min.css";
 import React from "react";
+import { MutationFn } from "react-apollo";
+import { AddressData } from "react-daum-postcode";
 import Helmet from "react-helmet";
 import Switch from "react-toggle-switch";
 import BackArrow from "../../Components/BackArrow";
 import BackContainer from "../../Components/BackContainer";
 import Button from "../../Components/Button";
+import DaumPostCodePopUp from "../../Components/DaumPostCodePopUp";
 import Form from "../../Components/Form";
 import Input from "../../Components/Input";
 import PhotoInput from "../../Components/PhotoInput";
@@ -29,7 +32,7 @@ const InputTitle = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 130px;
+  width: 200px;
   margin-left: 10px;
 `;
 
@@ -42,27 +45,9 @@ const SnapShotContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const DetailOptionContainer = styled.div`
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding: 15px;
-  -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
-`;
-const DetailOptionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const DetailOptionTitle = styled.div``;
-const DetailOptionBody = styled.div`
-  margin-top: 10px;
-`;
-const DetailOptionDataRow = styled.div`
-  padding-bottom: 10px;
-`;
-
 const SwitchTitle = styled.div`
   margin: 5px;
+  flex-basis: 130px;
 `;
 
 const SwitchBox = styled.div``;
@@ -82,10 +67,64 @@ const BackArrowExtended = styled(BackArrow)`
 `;
 
 interface IProps {
+  branchName: string;
+  branchNumber: number | string;
+  postCode: string;
+  address: string;
+  detailAddress: string;
+  branchComment: string;
+  branchPhotos: any;
+  loungeImg: string;
+  minimapImg: string;
+  isMaleAvailable: boolean;
+  isFemaleAvailable: boolean;
+  isBoyAvailable: boolean;
+  isGirlAvailable: boolean;
+  manMax: number | string;
+  womanMax: number | string;
+  branchPhotosUploading: boolean;
+  loungeImgUploading: boolean;
+  minimapImgUploading: boolean;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleAddress: (data: AddressData) => void;
+  showDaumPostApi: boolean;
+  toggleShowDaumPostApi: () => void;
+  descriptionPosition: string;
+  directManage: boolean;
+  subtractSnapshot: (e: any) => void;
+  toggleSwitch: (event: any) => void;
+  addBranchFn: MutationFn;
 }
 
-const AddBranchPresenter: React.SFC<IProps> = ({ onInputChange }) => (
+const AddBranchPresenter: React.SFC<IProps> = ({
+  onInputChange,
+  branchName,
+  branchNumber,
+  postCode,
+  address,
+  detailAddress,
+  branchComment,
+  branchPhotos,
+  loungeImg,
+  minimapImg,
+  isMaleAvailable,
+  isFemaleAvailable,
+  isBoyAvailable,
+  isGirlAvailable,
+  manMax,
+  womanMax,
+  branchPhotosUploading,
+  loungeImgUploading,
+  minimapImgUploading,
+  handleAddress,
+  showDaumPostApi,
+  toggleShowDaumPostApi,
+  descriptionPosition,
+  directManage,
+  subtractSnapshot,
+  toggleSwitch,
+  addBranchFn
+}) => (
   <BackContainer>
     <Helmet>
       <title>Branch-Add | BlueDot</title>
@@ -95,84 +134,99 @@ const AddBranchPresenter: React.SFC<IProps> = ({ onInputChange }) => (
       <Row>
         <InputLabel>
           <InputTitle>지점명 : </InputTitle>
-          <InputExtended value={""} />
+          <InputExtended
+            value={branchName}
+            onChange={onInputChange}
+            name={"branchName"}
+          />
         </InputLabel>
       </Row>
       <Row>
         <InputLabel>
           <InputTitle>지점 번호 : </InputTitle>
-          <InputExtended value={""} />
+          <InputExtended
+            value={branchNumber}
+            onChange={onInputChange}
+            name={"branchNumber"}
+          />
         </InputLabel>
       </Row>
       <Row>
         <InputLabel>
           <InputTitle>우편 번호 : </InputTitle>
-          <InputExtended value={""} />
+          <InputExtended value={postCode} name={"postCode"} readonly={true} />
         </InputLabel>
-        <SmallButtonExtended value={"우편번호 검색"} />
+        <SmallButtonExtended
+          value={"우편번호 검색"}
+          onClick={toggleShowDaumPostApi}
+        />
+        {showDaumPostApi && <DaumPostCodePopUp onConfirm={handleAddress} />}
       </Row>
       <Row>
         <InputLabel>
           <InputTitle>주소 : </InputTitle>
-          <InputExtended value={""} />
+          <InputExtended value={address} readonly={true} />
         </InputLabel>
       </Row>
       <Row>
         <InputLabel>
           <InputTitle>상세 주소 : </InputTitle>
-          <InputExtended value={""} />
+          <InputExtended
+            value={detailAddress}
+            onChange={onInputChange}
+            name={"detailAddress"}
+          />
+        </InputLabel>
+      </Row>
+
+      <Row>
+        <InputLabel>
+          <InputTitle>위치 설명 : </InputTitle>
+          <InputExtended
+            value={descriptionPosition}
+            onChange={onInputChange}
+            name={"descriptionPosition"}
+            placeholder={"ex. 화명 맥도날드 뒤쪽"}
+          />
         </InputLabel>
       </Row>
 
       <Row>
         <InputLabel>
           <InputTitle>지점 설명 : </InputTitle>
-          <InputExtended value={""} />
-        </InputLabel>
-      </Row>
-
-      <Row>
-        <InputLabel>
-          <InputTitle>지점 설명 : </InputTitle>
-          <InputExtended value={""} />
+          <InputExtended
+            value={branchComment}
+            onChange={onInputChange}
+            name={"branchComment"}
+          />
         </InputLabel>
       </Row>
       <Row>
         <InputLabel>
           <InputTitle>지점 이미지 : </InputTitle>
           <PhotoInput
-            uploading={false}
-            fileUrl={""}
+            uploading={branchPhotosUploading}
             onChange={onInputChange}
             dispalyText={"지점 이미지 올리기"}
-            name={"bracnhPhotos"}
+            name={"branchPhotos"}
           />
         </InputLabel>
 
         <SnapShotContainer>
-          <SnapShot
-            url={
-              "https://scontent.cdninstagram.com/vp/104e27f1b10abdb67edf3bc6ef246ff9/5C2C8DC2/t51.2885-15/sh0.08/e35/p640x640/28152943_2030521387229675_6668475367478525952_n.jpg"
-            }
-          />
-          <SnapShot
-            url={
-              "https://scontent.cdninstagram.com/vp/104e27f1b10abdb67edf3bc6ef246ff9/5C2C8DC2/t51.2885-15/sh0.08/e35/p640x640/28152943_2030521387229675_6668475367478525952_n.jpg"
-            }
-          />
-          <SnapShot
-            url={
-              "https://scontent.cdninstagram.com/vp/104e27f1b10abdb67edf3bc6ef246ff9/5C2C8DC2/t51.2885-15/sh0.08/e35/p640x640/28152943_2030521387229675_6668475367478525952_n.jpg"
-            }
-          />
+          {branchPhotos.map(branchPhoto => (
+            <SnapShot
+              onCloseClick={subtractSnapshot}
+              url={branchPhoto}
+              key={branchPhoto}
+            />
+          ))}
         </SnapShotContainer>
       </Row>
       <Row>
         <InputLabel>
           <InputTitle>라운지 이미지 : </InputTitle>
           <PhotoInput
-            uploading={false}
-            fileUrl={""}
+            uploading={loungeImgUploading}
             onChange={onInputChange}
             dispalyText={"라운지 이미지 올리기"}
             name={"loungeImg"}
@@ -180,11 +234,9 @@ const AddBranchPresenter: React.SFC<IProps> = ({ onInputChange }) => (
         </InputLabel>
 
         <SnapShotContainer>
-          <SnapShot
-            url={
-              "https://scontent.cdninstagram.com/vp/104e27f1b10abdb67edf3bc6ef246ff9/5C2C8DC2/t51.2885-15/sh0.08/e35/p640x640/28152943_2030521387229675_6668475367478525952_n.jpg"
-            }
-          />
+          {loungeImg && (
+            <SnapShot onCloseClick={subtractSnapshot} url={loungeImg} />
+          )}
         </SnapShotContainer>
       </Row>
 
@@ -192,114 +244,98 @@ const AddBranchPresenter: React.SFC<IProps> = ({ onInputChange }) => (
         <InputLabel>
           <InputTitle>미니맵 이미지 : </InputTitle>
           <PhotoInput
-            uploading={false}
-            fileUrl={""}
+            uploading={minimapImgUploading}
             onChange={onInputChange}
             dispalyText={"미니맵 이미지 올리기"}
-            name={"minimapIng"}
+            name={"minimapImg"}
           />
         </InputLabel>
 
         <SnapShotContainer>
-          <SnapShot
-            url={
-              "https://scontent.cdninstagram.com/vp/104e27f1b10abdb67edf3bc6ef246ff9/5C2C8DC2/t51.2885-15/sh0.08/e35/p640x640/28152943_2030521387229675_6668475367478525952_n.jpg"
-            }
-          />
+          {minimapImg && (
+            <SnapShot onCloseClick={subtractSnapshot} url={minimapImg} />
+          )}
         </SnapShotContainer>
-      </Row>
-      <Row>
-        <DetailOptionContainer>
-          <DetailOptionHeader>
-            <DetailOptionTitle>협력지점</DetailOptionTitle>
-            <SmallButtonExtended value={"추가"} />
-          </DetailOptionHeader>
-          <DetailOptionBody>
-            <DetailOptionDataRow>
-              동래 안락점 : 동래구 연안로 41 6층
-            </DetailOptionDataRow>
-          </DetailOptionBody>
-        </DetailOptionContainer>
-      </Row>
-
-      <Row>
-        <DetailOptionContainer>
-          <DetailOptionHeader>
-            <DetailOptionTitle>가맹주</DetailOptionTitle>
-            <SmallButtonExtended value={"변경"} />
-          </DetailOptionHeader>
-          <DetailOptionBody>
-            <DetailOptionDataRow>
-              김진완 나이 : 31 01098258816
-            </DetailOptionDataRow>
-          </DetailOptionBody>
-        </DetailOptionContainer>
-      </Row>
-
-      <Row>
-        <DetailOptionContainer>
-          <DetailOptionHeader>
-            <DetailOptionTitle>슈퍼바이저</DetailOptionTitle>
-            <SmallButtonExtended value={"추가"} />
-          </DetailOptionHeader>
-          <DetailOptionBody>
-            <DetailOptionDataRow>
-              김진완 나이 : 31 01098258816
-            </DetailOptionDataRow>
-            <DetailOptionDataRow>
-              김진완 나이 : 31 01098258816
-            </DetailOptionDataRow>
-          </DetailOptionBody>
-        </DetailOptionContainer>
       </Row>
 
       <Row>
         <InputLabel>
           <InputTitle>남자 최대 수용: </InputTitle>
-          <InputExtended value={""} />
+          <InputExtended
+            value={manMax}
+            name={"manMax"}
+            onChange={onInputChange}
+          />
         </InputLabel>
       </Row>
 
       <Row>
         <InputLabel>
           <InputTitle>여자 최대 수용 : </InputTitle>
-          <InputExtended value={""} />
+          <InputExtended
+            value={womanMax}
+            name={"womanMax"}
+            onChange={onInputChange}
+          />
         </InputLabel>
       </Row>
 
       <Row>
         <SwitchBox>
           <SwitchRow>
+            <SwitchTitle>직영매장</SwitchTitle>
+            <SwitchItem>
+              <Switch
+                onClick={() => toggleSwitch("directManage")}
+                on={directManage}
+              >
+                <i className="some-icon" />
+              </Switch>
+            </SwitchItem>
+          </SwitchRow>
+          <SwitchRow>
             <SwitchTitle>남자 성인 등록 가능</SwitchTitle>
             <SwitchItem>
-              <Switch onClick={() => console.log("click")} on={true}>
+              <Switch
+                onClick={() => toggleSwitch("isMaleAvailable")}
+                on={isMaleAvailable}
+              >
                 <i className="some-icon" />
               </Switch>
             </SwitchItem>
           </SwitchRow>
 
           <SwitchRow>
-            <SwitchTitle>남자 성인 등록 가능</SwitchTitle>
+            <SwitchTitle>여자 성인 등록 가능</SwitchTitle>
             <SwitchItem>
-              <Switch onClick={() => console.log("click")} on={true}>
+              <Switch
+                onClick={() => toggleSwitch("isFemaleAvailable")}
+                on={isFemaleAvailable}
+              >
                 <i className="some-icon" />
               </Switch>
             </SwitchItem>
           </SwitchRow>
 
           <SwitchRow>
-            <SwitchTitle>남자 성인 등록 가능</SwitchTitle>
+            <SwitchTitle>남자 청소년 등록 가능</SwitchTitle>
             <SwitchItem>
-              <Switch onClick={() => console.log("click")} on={true}>
+              <Switch
+                onClick={() => toggleSwitch("isBoyAvailable")}
+                on={isBoyAvailable}
+              >
                 <i className="some-icon" />
               </Switch>
             </SwitchItem>
           </SwitchRow>
 
           <SwitchRow>
-            <SwitchTitle>남자 성인 등록 가능</SwitchTitle>
+            <SwitchTitle>여자 청소년 등록 가능</SwitchTitle>
             <SwitchItem>
-              <Switch onClick={() => console.log("click")} on={true}>
+              <Switch
+                onClick={() => toggleSwitch("isGirlAvailable")}
+                on={isGirlAvailable}
+              >
                 <i className="some-icon" />
               </Switch>
             </SwitchItem>
@@ -307,7 +343,7 @@ const AddBranchPresenter: React.SFC<IProps> = ({ onInputChange }) => (
         </SwitchBox>
       </Row>
       <Row>
-        <Button value={"등록하기"} />
+        <Button value={"등록하기"} onClick={addBranchFn} />
       </Row>
     </Form>
   </BackContainer>

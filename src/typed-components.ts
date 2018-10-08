@@ -9,6 +9,7 @@ interface IThemeInterface {
   greenColor: string;
   orangeColor: string;
   smallFontSize: string;
+  redColor: string;
 }
 
 const {

@@ -1,21 +1,29 @@
 import React from "react";
 import styled from "../../typed-components";
-const Container = styled.div``;
+const Container = styled.div`
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+`;
 const Image = styled.label`
   cursor: pointer;
-  height: 80px;
-  width: 80px;
   border: 2px solid black;
   display: block;
-  margin-bottom: 35px;
+  margin-top: auto;
+  margin-bottom: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 12px;
   overflow: hidden;
+
   & img {
     width: 80px;
     height: 80px;
+  }
+  :hover {
+    color: ${props => props.theme.blueColor};
+    border-color: ${props => props.theme.blueColor};
   }
 `;
 const Input = styled.input`
@@ -28,16 +36,17 @@ const Input = styled.input`
 `;
 interface IProps {
   uploading: boolean;
-  fileUrl: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   dispalyText: string;
   name: string;
+  fileUrl?: string;
 }
-const PhotosInput: React.SFC<IProps> = ({
+const EditAccountPhotoInput: React.SFC<IProps> = ({
   uploading,
   onChange,
   dispalyText,
-  name
+  name,
+  fileUrl
 }) => (
   <Container>
     <Input
@@ -49,8 +58,9 @@ const PhotosInput: React.SFC<IProps> = ({
     />
     <Image htmlFor={name}>
       {uploading && "⏰"}
-      {!uploading && dispalyText}
+      {!uploading && fileUrl && <img src={fileUrl} />}
+      {!uploading && !fileUrl && dispalyText}
     </Image>
   </Container>
 );
-export default PhotosInput;
+export default EditAccountPhotoInput;

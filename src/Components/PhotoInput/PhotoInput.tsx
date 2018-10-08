@@ -36,14 +36,12 @@ const Input = styled.input`
 `;
 interface IProps {
   uploading: boolean;
-  fileUrl: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   dispalyText: string;
   name: string;
 }
 const PhotoInput: React.SFC<IProps> = ({
   uploading,
-  fileUrl,
   onChange,
   dispalyText,
   name

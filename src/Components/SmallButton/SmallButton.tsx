@@ -38,7 +38,7 @@ const SmallButton: React.SFC<IProps> = ({
     value={value}
     disabled={false}
     onClick={onClick}
-    type={"submit"}
+    type={"button"}
     className={className}
   />
 );

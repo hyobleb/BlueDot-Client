@@ -29,6 +29,7 @@ interface IProps {
   onChange?: any;
   className?: string;
   autoComplete?: string;
+  readonly?: boolean;
 }
 
 const Input: React.SFC<IProps> = ({
@@ -39,7 +40,8 @@ const Input: React.SFC<IProps> = ({
   name = "",
   onChange,
   className,
-  autoComplete
+  autoComplete,
+  readonly = false
 }) => (
   <Container
     className={className}
@@ -50,6 +52,7 @@ const Input: React.SFC<IProps> = ({
     value={value}
     placeholder={placeholder}
     autoComplete={autoComplete}
+    readOnly={readonly}
   />
 );
 export default Input;

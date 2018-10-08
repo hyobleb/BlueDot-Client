@@ -2,10 +2,10 @@ import React from "react";
 import { MutationFn } from "react-apollo";
 import Helmet from "react-helmet";
 import Button from "../../Components/Button";
+import EditAccountPhotoInput from "../../Components/EditAccountPhotoInput";
 import Form from "../../Components/Form";
 import Header from "../../Components/Header";
 import Input from "../../Components/Input";
-import PhotoInput from "../../Components/PhotoInput";
 import styled from "../../typed-components";
 const Container = styled.div``;
 const ExtendedForm = styled(Form)`
@@ -38,7 +38,7 @@ const EditAccountPresenter: React.SFC<IProps> = ({
     </Helmet>
     <Header title={"회원정보 수정"} backTo={"/"} />
     <ExtendedForm submitFn={onSubmit}>
-      <PhotoInput
+      <EditAccountPhotoInput
         uploading={uploading}
         fileUrl={profilePhoto}
         onChange={onInputChange}

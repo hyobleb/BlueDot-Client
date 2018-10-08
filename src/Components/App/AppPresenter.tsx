@@ -76,16 +76,20 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
       {/* <Route path={"/places"} exact={true} component={Places} />
     <Route path={"/add-place"} exact={true} component={AddPlace} />
     <Route path={"/find-address"} exact={true} component={FindAddress} /> */}
-      {isHead && (
-        <React.Fragment>
-          <Route
-            path={"/branch-setting"}
-            exact={true}
-            component={BranchSetting}
-          />
-          <Route path={"/add-branch"} exact={true} component={AddBranch} />
-        </React.Fragment>
-      )}
+      {isHead && [
+        <Route
+          key={1}
+          path={"/branch-setting"}
+          exact={true}
+          component={BranchSetting}
+        />,
+        <Route
+          key={2}
+          path={"/add-branch"}
+          exact={true}
+          component={AddBranch}
+        />
+      ]}
 
       <Redirect from={"*"} to={"/"} />
       {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}
