@@ -64,6 +64,65 @@ export interface userProfile {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: searchBranch
+// ====================================================
+
+export interface searchBranch_SearchBranch_branches_alliedBranches {
+  __typename: "Branch";
+  name: string;
+}
+
+export interface searchBranch_SearchBranch_branches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  descriptionPosition: string;
+  address: string;
+  detailAddress: string;
+  alliedBranches: (searchBranch_SearchBranch_branches_alliedBranches | null)[] | null;
+}
+
+export interface searchBranch_SearchBranch {
+  __typename: "SearchBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branches: (searchBranch_SearchBranch_branches | null)[] | null;
+}
+
+export interface searchBranch {
+  SearchBranch: searchBranch_SearchBranch;
+}
+
+export interface searchBranchVariables {
+  text: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: certificateUser
+// ====================================================
+
+export interface certificateUser_CertificateUser {
+  __typename: "CertificateUserResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface certificateUser {
+  CertificateUser: certificateUser_CertificateUser;
+}
+
+export interface certificateUserVariables {
+  imp_uid: string;
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -138,43 +197,6 @@ export interface getBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: searchBranch
-// ====================================================
-
-export interface searchBranch_SearchBranch_branches_alliedBranches {
-  __typename: "Branch";
-  name: string;
-}
-
-export interface searchBranch_SearchBranch_branches {
-  __typename: "Branch";
-  id: number;
-  name: string;
-  descriptionPosition: string;
-  address: string;
-  detailAddress: string;
-  alliedBranches: (searchBranch_SearchBranch_branches_alliedBranches | null)[] | null;
-}
-
-export interface searchBranch_SearchBranch {
-  __typename: "SearchBranchResponse";
-  ok: boolean;
-  error: string | null;
-  branches: (searchBranch_SearchBranch_branches | null)[] | null;
-}
-
-export interface searchBranch {
-  SearchBranch: searchBranch_SearchBranch;
-}
-
-export interface searchBranchVariables {
-  text: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: updateProfile
 // ====================================================
 
@@ -223,6 +245,34 @@ export interface userIdSignIn {
 export interface userIdSignInVariables {
   userId: string;
   password: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getCertification
+// ====================================================
+
+export interface getCertification_GetCertification {
+  __typename: "GetCertificationResponse";
+  ok: boolean;
+  error: string | null;
+  unique_key: string | null;
+  name: string | null;
+  gender: string | null;
+  birthYear: number | null;
+  birthMonth: number | null;
+  birthDay: number | null;
+}
+
+export interface getCertification {
+  GetCertification: getCertification_GetCertification;
+}
+
+export interface getCertificationVariables {
+  imp_uid: string;
+  branchId: number;
 }
 
 /* tslint:disable */

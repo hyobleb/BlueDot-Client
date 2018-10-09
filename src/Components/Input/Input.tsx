@@ -30,6 +30,9 @@ interface IProps {
   className?: string;
   autoComplete?: string;
   readonly?: boolean;
+  autoFocus?: boolean;
+  pattern?: string;
+  maxlength?: number;
 }
 
 const Input: React.SFC<IProps> = ({
@@ -41,7 +44,10 @@ const Input: React.SFC<IProps> = ({
   onChange,
   className,
   autoComplete,
-  readonly = false
+  readonly = false,
+  autoFocus = false,
+  pattern,
+  maxlength = 524288
 }) => (
   <Container
     className={className}
@@ -53,6 +59,9 @@ const Input: React.SFC<IProps> = ({
     placeholder={placeholder}
     autoComplete={autoComplete}
     readOnly={readonly}
+    autoFocus={autoFocus}
+    pattern={pattern}
+    maxLength={maxlength}
   />
 );
 export default Input;

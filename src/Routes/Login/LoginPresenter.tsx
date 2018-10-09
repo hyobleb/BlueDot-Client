@@ -100,6 +100,7 @@ const LoginPresenter: React.SFC<IProps> = ({
             name={"userId"}
             onChange={onInputChange}
             autoComplete={"username"}
+            autoFocus={true}
           />
           <ExtendInput
             placeholder={"비밀번호"}

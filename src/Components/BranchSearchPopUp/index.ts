@@ -1,2 +1,2 @@
-// import BranchSearchPopUpContainer from "./BranchSearchPopUpContainer";
-// export default BranchSearchPopUpContainer;
+import BranchSearchPopUpContainer from "./BranchSearchPopUpContainer";
+export default BranchSearchPopUpContainer;

@@ -2,9 +2,9 @@ import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
+import { SEARCH_BRANCH } from "../../Components/sharedQueries";
 import { searchBranch, searchBranchVariables } from "../../types/api";
 import BranchSettingPresenter from "./BranchSettingPresenter";
-import { SEARCH_BRANCH } from "./BranchSettingQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {

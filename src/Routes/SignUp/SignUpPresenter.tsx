@@ -63,6 +63,13 @@ const ConfirmButton = styled(Button)`
   max-width: 414px;
 `;
 
+const Label = styled.label`
+  cursor: pointer;
+  &:hover {
+    color: ${props => props.theme.blueColor};
+  }
+`;
+
 const SignUpPresenter: React.SFC<IProps> = ({
   personalDataCheck,
   termsAndConditionsCheck,
@@ -84,25 +91,27 @@ const SignUpPresenter: React.SFC<IProps> = ({
     <Body>
       <Row>
         <Content>
-          <input
-            type="checkbox"
-            defaultChecked={false}
-            checked={allChecked}
-            onClick={toggleAllCheck}
-          />{" "}
-          이용약관, 개인정보 수집 및 이용에 모두 동의 합니다
+          <Label>
+            <input
+              type="checkbox"
+              checked={allChecked}
+              onChange={toggleAllCheck}
+            />
+            이용약관, 개인정보 수집 및 이용에 모두 동의 합니다
+          </Label>
         </Content>
       </Row>
       <Row>
         <Content>
           <SubRow>
-            <input
-              type="checkbox"
-              defaultChecked={false}
-              checked={termsAndConditionsCheck}
-              onClick={toggleTermsAndConditionCheck}
-            />{" "}
-            블루닷라운지 이용약관 동의(필수)
+            <Label>
+              <input
+                type="checkbox"
+                checked={termsAndConditionsCheck}
+                onChange={toggleTermsAndConditionCheck}
+              />
+              블루닷라운지 이용약관 동의(필수)
+            </Label>
           </SubRow>
           <SubRow>
             <DetailContent>
@@ -148,13 +157,14 @@ const SignUpPresenter: React.SFC<IProps> = ({
       <Row>
         <Content>
           <SubRow>
-            <input
-              type="checkbox"
-              defaultChecked={false}
-              checked={personalDataCheck}
-              onClick={togglePersonalDataCheck}
-            />{" "}
-            블루닷라운지 개인정보 수집 및 이용 동의(필수)
+            <Label>
+              <input
+                type="checkbox"
+                checked={personalDataCheck}
+                onChange={togglePersonalDataCheck}
+              />
+              블루닷라운지 개인정보 수집 및 이용 동의(필수)
+            </Label>
           </SubRow>
           <SubRow>
             <DetailContent>

@@ -132,7 +132,7 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
             value={tempInput}
             name={"tempInput"}
             onChange={onInputChange}
-            autoComplete={"username"}
+            autoComplete={"off"}
           />
           <BranchSearchButton value="찾기" onClick={onSubmit} />
         </ExtendForm>
