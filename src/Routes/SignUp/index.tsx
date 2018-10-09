@@ -1,5 +1,3 @@
-import React from "react";
+import SignUpContainer from "./SignUpContainer";
 
-const R = () => <span>lala</span>;
-
-export default R;
+export default SignUpContainer;

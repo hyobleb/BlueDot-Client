@@ -3,6 +3,7 @@ import BranchSetting from "../../Routes/BranchSetting";
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AddBranch from "../../Routes/AddBranch";
+import AddLounge from "../../Routes/AddLounge";
 import EditAccount from "../../Routes/EditAccount";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
@@ -11,6 +12,7 @@ import Login from "../../Routes/Login";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import Settings from "../../Routes/Settings";
 import SignUp from "../../Routes/SignUp";
+import SignUpDetail from "../../Routes/SignUpDetail";
 import SocialLogin from "../../Routes/SocialLogin";
 
 interface IProps {
@@ -51,6 +53,8 @@ const LoggedOutRoute: React.SFC = () => (
   <Switch>
     <Route path={"/"} exact={true} component={Login} />
     <Route path={"/sign-up"} component={SignUp} />
+    <Route path={"/sign-up-detail"} component={SignUpDetail} />
+
     <Route path={"/phone-login"} component={PhoneLogin} />
     <Route path={"/find-id"} component={FindId} />
     <Route path={"/find-password"} component={FindPassword} />
@@ -88,6 +92,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/add-branch"}
           exact={true}
           component={AddBranch}
+        />,
+        <Route
+          key={3}
+          path={"/add-lounge"}
+          exact={true}
+          component={AddLounge}
         />
       ]}
 

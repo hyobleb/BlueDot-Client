@@ -7,10 +7,11 @@ import Input from "../../Components/Input";
 import styled from "../../typed-components";
 
 const Container = styled.div`
-  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  height: 100vh;
+  min-height: 600px;
 `;
 const Header = styled.header`
   display: flex;

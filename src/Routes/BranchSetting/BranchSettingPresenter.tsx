@@ -97,29 +97,27 @@ const Image = styled.img`
 `;
 
 const BackArrowExtended = styled(BackArrow)`
-  position: absolute;
+  position: fixed;
   bottom: 20px;
   left: 20px;
 `;
 
 interface IProps {
-  branchInput: string;
   onInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  loading: boolean;
   data?: searchBranch;
   tempInput: string;
+  onLoungeSettingClick: (branchId: any) => void;
 }
 
 const BranchSettingPresenter: React.SFC<IProps> = ({
-  branchInput,
   onInputChange,
   onSubmit,
-  loading,
   data,
-  tempInput
+  tempInput,
+  onLoungeSettingClick
 }) => (
   <BackContainer>
     <Helmet>
@@ -170,7 +168,10 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
                   </ContextContainer>
                 </ContentsContainer>
                 <ButtonContainer>
-                  <RoomSettingButton value="열람실 및 좌석 세팅" />
+                  <RoomSettingButton
+                    value="열람실 및 좌석 세팅"
+                    onClick={() => onLoungeSettingClick(branch.id)}
+                  />
                   <CabinetsettingButton value="사물함 세팅" />
                 </ButtonContainer>
               </BranchContainer>

@@ -101,6 +101,43 @@ export interface addBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getBranch
+// ====================================================
+
+export interface getBranch_HeadGetBranch_branch_rooms {
+  __typename: "Room";
+  id: number;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+}
+
+export interface getBranch_HeadGetBranch_branch {
+  __typename: "Branch";
+  loungeImage: string;
+  rooms: (getBranch_HeadGetBranch_branch_rooms | null)[] | null;
+}
+
+export interface getBranch_HeadGetBranch {
+  __typename: "HeadGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: getBranch_HeadGetBranch_branch | null;
+}
+
+export interface getBranch {
+  HeadGetBranch: getBranch_HeadGetBranch;
+}
+
+export interface getBranchVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: searchBranch
 // ====================================================
 

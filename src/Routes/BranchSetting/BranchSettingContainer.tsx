@@ -39,19 +39,17 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
           });
         }}
       >
-        {({ loading, error, data }) => {
-          console.log(data);
+        {({ data, error }) => {
           if (error) {
             toast.error(error.message);
           }
           return (
             <BranchSettingPresenter
-              branchInput={this.state.branchInput}
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
-              loading={loading}
               data={data}
               tempInput={this.state.tempInput}
+              onLoungeSettingClick={this.onLoungeSettingClick}
             />
           );
         }}
@@ -77,6 +75,16 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
       branchInput: this.state.tempInput
     });
     // this.signInMutation();
+  };
+
+  public onLoungeSettingClick = branchId => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/add-lounge",
+      state: {
+        branchId
+      }
+    });
   };
 }
 
