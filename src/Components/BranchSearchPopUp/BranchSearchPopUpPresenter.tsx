@@ -1,10 +1,7 @@
 import { ApolloError } from "apollo-boost";
 import React from "react";
 import styled from "../../typed-components";
-import {
-  searchBranch,
-  searchBranch_SearchBranch_branches
-} from "../../types/api";
+import { searchBranch } from "../../types/api";
 import Button from "../Button";
 import Form from "../Form";
 import Input from "../Input";
@@ -17,7 +14,7 @@ interface IProps {
   error: ApolloError | undefined;
   loading: boolean;
   setSearchText: () => void;
-  onBranchClick: (branchData: searchBranch_SearchBranch_branches) => void;
+  onBranchClick: (id: number) => void;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -172,7 +169,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
               branch && (
                 <BranchContainer
                   key={branch.id}
-                  onClick={() => onBranchClick(branch)}
+                  onClick={() => onBranchClick(branch.id)}
                 >
                   <ContentsContainer>
                     <PhotoContainer>

@@ -123,6 +123,37 @@ export interface certificateUserVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: headGetBranch
+// ====================================================
+
+export interface headGetBranch_HeadGetBranch_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  impId: string | null;
+  impKey: string | null;
+  impSecret: string | null;
+}
+
+export interface headGetBranch_HeadGetBranch {
+  __typename: "HeadGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: headGetBranch_HeadGetBranch_branch | null;
+}
+
+export interface headGetBranch {
+  HeadGetBranch: headGetBranch_HeadGetBranch;
+}
+
+export interface headGetBranchVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -147,10 +178,6 @@ export interface addBranchVariables {
   descriptionPosition: string;
   loungeImg: string;
   minimapImg: string;
-  isMaleAvailable: boolean;
-  isFemaleAvailable: boolean;
-  isBoyAvailable: boolean;
-  isGirlAvailable: boolean;
   manMax: number;
   womanMax: number;
   directManage: boolean;
@@ -279,6 +306,100 @@ export interface getCertificationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: userIdsignUpMutation
+// ====================================================
+
+export interface userIdsignUpMutation_UserIdSignUp {
+  __typename: "UserIdSignUpResponse";
+  ok: boolean;
+  error: string | null;
+  token: string | null;
+}
+
+export interface userIdsignUpMutation {
+  UserIdSignUp: userIdsignUpMutation_UserIdSignUp;
+}
+
+export interface userIdsignUpMutationVariables {
+  userId: string;
+  password: string;
+  phoneNumber: string;
+  unique_key: string;
+  name: string;
+  gender: UserIdSignUpGender;
+  birthYear: number;
+  birthMonth: number;
+  birthDay: number;
+  baseBranchId: number;
+  imp_uid: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: tempUserIdSignUpMutation
+// ====================================================
+
+export interface tempUserIdSignUpMutation_TempUserIdSignUp {
+  __typename: "TempUserIdSignUpResponse";
+  ok: boolean;
+  error: string | null;
+  token: string | null;
+}
+
+export interface tempUserIdSignUpMutation {
+  TempUserIdSignUp: tempUserIdSignUpMutation_TempUserIdSignUp;
+}
+
+export interface tempUserIdSignUpMutationVariables {
+  userId: string;
+  password: string;
+  phoneNumber: string;
+  unique_key: string;
+  name: string;
+  gender: UserIdSignUpGender;
+  birthYear: number;
+  birthMonth: number;
+  birthDay: number;
+  baseBranchId: number;
+  imp_uid: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: guetGetBranch
+// ====================================================
+
+export interface guetGetBranch_GuestGetBranch_branch {
+  __typename: "SimpleBranch";
+  id: number;
+  name: string | null;
+  impKey: string | null;
+  impId: string | null;
+}
+
+export interface guetGetBranch_GuestGetBranch {
+  __typename: "GuestGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: guetGetBranch_GuestGetBranch_branch | null;
+}
+
+export interface guetGetBranch {
+  GuestGetBranch: guetGetBranch_GuestGetBranch;
+}
+
+export interface guetGetBranchVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: facebookConnect
 // ====================================================
 
@@ -310,6 +431,11 @@ export enum SearchType {
   NAME = "NAME",
   PHONE = "PHONE",
   USERID = "USERID",
+}
+
+export enum UserIdSignUpGender {
+  FEMALE = "FEMALE",
+  MALE = "MALE",
 }
 
 //==============================================================

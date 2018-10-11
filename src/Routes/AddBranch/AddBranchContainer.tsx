@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { Mutation } from "react-apollo";
+import { Mutation, MutationFn } from "react-apollo";
 import { AddressData } from "react-daum-postcode";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -22,10 +22,6 @@ interface IState {
   descriptionPosition: string;
   loungeImg: string;
   minimapImg: string;
-  isMaleAvailable: boolean;
-  isFemaleAvailable: boolean;
-  isBoyAvailable: boolean;
-  isGirlAvailable: boolean;
   manMax: number | string;
   womanMax: number | string;
   branchPhotosUploading: boolean;
@@ -33,10 +29,15 @@ interface IState {
   minimapImgUploading: boolean;
   showDaumPostApi: boolean;
   directManage: boolean;
-  inputBranch: string;
+  impId: string;
+  impKey: string;
+  impSecret: string;
+  tempIp: string;
+  ips: string[];
 }
 
 class AddBranchContainer extends React.Component<IProps, IState> {
+  public addBranchMutationFn: MutationFn;
   public state = {
     address: "",
     branchComment: "",
@@ -47,11 +48,10 @@ class AddBranchContainer extends React.Component<IProps, IState> {
     descriptionPosition: "",
     detailAddress: "",
     directManage: false,
-    inputBranch: "",
-    isBoyAvailable: true,
-    isFemaleAvailable: true,
-    isGirlAvailable: true,
-    isMaleAvailable: true,
+    impId: "",
+    impKey: "",
+    impSecret: "",
+    ips: [""],
     loungeImg: "",
     loungeImgUploading: false,
     manMax: 80,
@@ -59,6 +59,7 @@ class AddBranchContainer extends React.Component<IProps, IState> {
     minimapImgUploading: false,
     postCode: "",
     showDaumPostApi: false,
+    tempIp: "",
     womanMax: 80
   };
 
@@ -74,17 +75,18 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       branchPhotos,
       loungeImg,
       minimapImg,
-      isMaleAvailable,
-      isFemaleAvailable,
-      isBoyAvailable,
-      isGirlAvailable,
       manMax,
       womanMax,
       branchPhotosUploading,
       loungeImgUploading,
       minimapImgUploading,
       showDaumPostApi,
-      directManage
+      directManage,
+      impId,
+      impKey,
+      impSecret,
+      ips,
+      tempIp
     } = this.state;
     const { history } = this.props;
     return (
@@ -99,10 +101,6 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           descriptionPosition,
           detailAddress,
           directManage,
-          isBoyAvailable,
-          isFemaleAvailable,
-          isGirlAvailable,
-          isMaleAvailable,
           loungeImg,
           manMax,
           minimapImg,
@@ -126,37 +124,44 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           }
         }}
       >
-        {(addBranchFn, { loading }) => (
-          <AddBranchPresenter
-            onInputChange={this.onInputChange}
-            branchName={branchName}
-            branchNumber={branchNumber}
-            postCode={postCode}
-            address={address}
-            detailAddress={detailAddress}
-            branchComment={branchComment}
-            branchPhotos={branchPhotos}
-            loungeImg={loungeImg}
-            minimapImg={minimapImg}
-            isMaleAvailable={isMaleAvailable}
-            isFemaleAvailable={isFemaleAvailable}
-            isBoyAvailable={isBoyAvailable}
-            isGirlAvailable={isGirlAvailable}
-            manMax={manMax}
-            womanMax={womanMax}
-            branchPhotosUploading={branchPhotosUploading}
-            loungeImgUploading={loungeImgUploading}
-            minimapImgUploading={minimapImgUploading}
-            handleAddress={this.handleAddress}
-            showDaumPostApi={showDaumPostApi}
-            toggleShowDaumPostApi={this.toggleShowDaumPostApi}
-            descriptionPosition={descriptionPosition}
-            directManage={directManage}
-            subtractSnapshot={this.subtractSnapshot}
-            toggleSwitch={this.toggleSwitch}
-            addBranchFn={addBranchFn}
-          />
-        )}
+        {(addBranchFn, { loading }) => {
+          this.addBranchMutationFn = addBranchFn;
+          return (
+            <AddBranchPresenter
+              onInputChange={this.onInputChange}
+              branchName={branchName}
+              branchNumber={branchNumber}
+              postCode={postCode}
+              address={address}
+              detailAddress={detailAddress}
+              branchComment={branchComment}
+              branchPhotos={branchPhotos}
+              loungeImg={loungeImg}
+              minimapImg={minimapImg}
+              manMax={manMax}
+              womanMax={womanMax}
+              branchPhotosUploading={branchPhotosUploading}
+              loungeImgUploading={loungeImgUploading}
+              minimapImgUploading={minimapImgUploading}
+              handleAddress={this.handleAddress}
+              showDaumPostApi={showDaumPostApi}
+              toggleShowDaumPostApi={this.toggleShowDaumPostApi}
+              descriptionPosition={descriptionPosition}
+              directManage={directManage}
+              subtractSnapshot={this.subtractSnapshot}
+              toggleSwitch={this.toggleSwitch}
+              addBranchFn={addBranchFn}
+              impId={impId}
+              impKey={impKey}
+              impSecret={impSecret}
+              onSubmit={this.onSubmit}
+              ips={ips}
+              tempIp={tempIp}
+              addIp={this.addIp}
+              subtractIp={this.subtractIp}
+            />
+          );
+        }}
       </AddBranchMutation>
     );
   }
@@ -264,35 +269,103 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           [name]: !this.state.directManage
         } as any);
         break;
-      case "isMaleAvailable":
-        this.setState({
-          ...this.state,
-          [name]: !this.state.isMaleAvailable
-        } as any);
-        break;
-      case "isFemaleAvailable":
-        this.setState({
-          ...this.state,
-          [name]: !this.state.isFemaleAvailable
-        } as any);
-        break;
-      case "isBoyAvailable":
-        this.setState({
-          ...this.state,
-          [name]: !this.state.isBoyAvailable
-        } as any);
-        break;
+      // case "isMaleAvailable":
+      //   this.setState({
+      //     ...this.state,
+      //     [name]: !this.state.isMaleAvailable
+      //   } as any);
+      //   break;
+      // case "isFemaleAvailable":
+      //   this.setState({
+      //     ...this.state,
+      //     [name]: !this.state.isFemaleAvailable
+      //   } as any);
+      //   break;
+      // case "isBoyAvailable":
+      //   this.setState({
+      //     ...this.state,
+      //     [name]: !this.state.isBoyAvailable
+      //   } as any);
+      //   break;
 
-      case "isGirlAvailable":
-        this.setState({
-          ...this.state,
-          [name]: !this.state.isGirlAvailable
-        } as any);
-        break;
+      // case "isGirlAvailable":
+      //   this.setState({
+      //     ...this.state,
+      //     [name]: !this.state.isGirlAvailable
+      //   } as any);
+      //   break;
 
       default:
         break;
     }
+  };
+
+  public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+    event.preventDefault();
+    const {
+      branchName,
+      branchNumber,
+      loungeImg,
+      minimapImg,
+      manMax,
+      womanMax
+    } = this.state;
+
+    if (!branchName) {
+      toast.error("지점이름을 입력해주세요!");
+    } else if (!branchNumber) {
+      toast.error("지점 번호를 입력해주세요!");
+    } else if (!loungeImg) {
+      toast.error("열람실 이미지를 업로드 해주세요");
+    } else if (!minimapImg) {
+      toast.error("미니맵 이미지를 업로드해주세요");
+    } else if (!manMax) {
+      toast.error("남자 최대 수용인원수를 입력해주세요");
+    } else if (!womanMax) {
+      toast.error("여자 최대 수용인원수를 입력해주세요");
+    }
+
+    this.addBranchMutationFn();
+  };
+
+  public addIp = () => {
+    const { tempIp } = this.state;
+    if (
+      /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+        tempIp
+      )
+    ) {
+      if (tempIp) {
+        const { ips } = this.state;
+        if (ips.find(ip => ip === tempIp)) {
+          toast.error("해당 아이피는 이미 존재합니다");
+          return;
+        }
+        if (ips.length === 1 && ips[0] === "") {
+          ips[0] = tempIp;
+        } else {
+          ips.push(tempIp);
+        }
+        this.setState({
+          ...this.state,
+          ips,
+          tempIp: ""
+        });
+        return;
+      }
+    } else {
+      toast.error("아이피가 제대로 입력되지 않았습니다");
+    }
+  };
+
+  public subtractIp = targetIp => {
+    const { ips } = this.state;
+
+    const newIps = ips.filter(ip => ip !== targetIp);
+    this.setState({
+      ...this.state,
+      ips: newIps
+    });
   };
 }
 

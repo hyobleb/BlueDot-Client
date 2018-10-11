@@ -104,13 +104,22 @@ const MenuPresenter: React.SFC<IProps> = ({
           <SLink to="/trips">Your Trips</SLink>
           <SLink to="/settings">Settings</SLink>
           {user.isFranchiser || user.isHead ? (
-            <ToggleAuthor isHead={user.isHead} isFrenchiser={user.isFranchiser}>
-              {user.isFranchiser ? "관리자" : user.isHead ? "슈퍼 관리자" : ""}
-            </ToggleAuthor>
+            <>
+              <ToggleAuthor
+                isHead={user.isHead}
+                isFrenchiser={user.isFranchiser}
+              >
+                {user.isFranchiser
+                  ? "관리자"
+                  : user.isHead
+                    ? "슈퍼 관리자"
+                    : ""}
+              </ToggleAuthor>
+              <SLink to="/branch-setting">지점 관리</SLink>
+            </>
           ) : (
             ""
           )}
-          <SLink to="/branch-setting">지점 관리</SLink>
         </React.Fragment>
       )}
   </Container>

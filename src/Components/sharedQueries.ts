@@ -43,3 +43,19 @@ export const CERTIFICATE_USER = gql`
     }
   }
 `;
+
+export const HEAD_GET_BRANCH = gql`
+  query headGetBranch($branchId: Int!) {
+    HeadGetBranch(branchId: $branchId) {
+      ok
+      error
+      branch {
+        id
+        name
+        impId
+        impKey
+        impSecret
+      }
+    }
+  }
+`;

@@ -50,6 +50,7 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
               data={data}
               tempInput={this.state.tempInput}
               onLoungeSettingClick={this.onLoungeSettingClick}
+              onIamportSettingClick={this.onIamportSettingClick}
             />
           );
         }}
@@ -81,6 +82,16 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
     const { history } = this.props;
     history.push({
       pathname: "/add-lounge",
+      state: {
+        branchId
+      }
+    });
+  };
+
+  public onIamportSettingClick = branchId => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/add-iamport",
       state: {
         branchId
       }

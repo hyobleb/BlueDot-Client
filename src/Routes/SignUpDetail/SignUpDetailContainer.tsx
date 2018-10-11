@@ -1,18 +1,27 @@
 import React from "react";
-import { ApolloConsumer } from "react-apollo";
+import { ApolloConsumer, Mutation, MutationFn } from "react-apollo";
 import Script from "react-load-script";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { searchBranch_SearchBranch_branches } from "../../types/api";
+import { LOG_USER_IN } from "../../sharedQueries.local";
+import {
+  tempUserIdSignUpMutation,
+  tempUserIdSignUpMutationVariables
+} from "../../types/api";
+
 import SignUpDetailPresenter from "./SignUpDetailPresenter";
-import { GET_CERTIFICATION } from "./SignUpDetailQueries";
+import {
+  GET_CERTIFICATION,
+  GUEST_GET_BRANCH,
+  TEMP_USER_ID_SIGN_UP_MUTATION
+} from "./SignUpDetailQueries";
 
 interface IState {
   userId: string;
   password: string;
   repassword: string;
   phoneNumber: string;
-  baseBrachId: number | string;
+  baseBranchId: number | null;
   baseBranchName: string;
   showBranchSearch: boolean;
   IMP: any;
@@ -20,19 +29,29 @@ interface IState {
   importLoad: boolean;
   unique_key: string;
   name: string;
-  gender: string;
+  gender: string | null;
   birthYear: number | null;
   birthMonth: number | null;
   birthDay: number | null;
+  imp_uid: string;
+  impId: string;
+  impKey: string;
 }
 
 interface IProps extends RouteComponentProps<any> {}
+
+class UserIdSignUpMutation extends Mutation<
+  tempUserIdSignUpMutation,
+  tempUserIdSignUpMutationVariables
+> {}
 
 export default class SignUpDetailContainer extends React.Component<
   IProps,
   IState
 > {
-  public certificateUser;
+  public certificateUser: (impUid: string, branchId: number) => {};
+  public userIdSignUpMutation: MutationFn;
+  public getBranch;
 
   constructor(props: IProps) {
     super(props);
@@ -47,12 +66,15 @@ export default class SignUpDetailContainer extends React.Component<
 
     this.state = {
       IMP: null,
-      baseBrachId: "",
+      baseBranchId: null,
       baseBranchName: "",
       birthDay: null,
       birthMonth: null,
       birthYear: null,
-      gender: "",
+      gender: null,
+      impId: "",
+      impKey: "",
+      imp_uid: "",
       importLoad: false,
       jqueryLoad: false,
       name: "",
@@ -93,33 +115,73 @@ export default class SignUpDetailContainer extends React.Component<
           url="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"
           onLoad={this.setImportLoad}
         />
-        <ApolloConsumer>
-          {client => {
-            this.certificateUser = async (impUid: string, branchId: number) => {
-              const { data } = await client.query({
-                query: GET_CERTIFICATION,
-                variables: { imp_uid: impUid, branchId }
-              });
-              return data;
-            };
+        <Mutation mutation={LOG_USER_IN}>
+          {logUserIn => (
+            <UserIdSignUpMutation
+              mutation={TEMP_USER_ID_SIGN_UP_MUTATION}
+              onCompleted={data => {
+                const { TempUserIdSignUp } = data;
+                if (TempUserIdSignUp.ok) {
+                  logUserIn({
+                    variables: {
+                      token: TempUserIdSignUp.token
+                    }
+                  });
+                  toast.success("가입이 완료되었습니다!");
+                  return;
+                } else {
+                  toast.error(TempUserIdSignUp.error);
+                }
+              }}
+            >
+              {(userIdSignUpMutation, { loading }) => {
+                this.userIdSignUpMutation = userIdSignUpMutation;
+                return (
+                  <ApolloConsumer>
+                    {client => {
+                      this.certificateUser = async (
+                        impUid: string,
+                        branchId: number
+                      ) => {
+                        const { data } = await client.query({
+                          query: GET_CERTIFICATION,
+                          variables: { imp_uid: impUid, branchId }
+                        });
+                        return data;
+                      };
 
-            return (
-              <SignUpDetailPresenter
-                password={this.state.password}
-                phoneNumber={this.state.phoneNumber}
-                repassword={this.state.repassword}
-                userId={this.state.userId}
-                onInputChange={this.onInputChange}
-                onSubmit={this.onSubmit}
-                showBranchSearch={this.state.showBranchSearch}
-                toggleShowBranchSearch={this.toggleShowBranchSearch}
-                onBranchClick={this.onBranchClick}
-                baseBranchName={this.state.baseBranchName}
-                onVerifyingButtonClick={this.onVerifyingButtonClick}
-              />
-            );
-          }}
-        </ApolloConsumer>
+                      this.getBranch = async (branchId: number) => {
+                        const { data } = await client.query({
+                          query: GUEST_GET_BRANCH,
+                          variables: { branchId }
+                        });
+                        return data;
+                      };
+
+                      return (
+                        <SignUpDetailPresenter
+                          password={this.state.password}
+                          phoneNumber={this.state.phoneNumber}
+                          repassword={this.state.repassword}
+                          userId={this.state.userId}
+                          onInputChange={this.onInputChange}
+                          onSubmit={this.onSubmit}
+                          showBranchSearch={this.state.showBranchSearch}
+                          toggleShowBranchSearch={this.toggleShowBranchSearch}
+                          onBranchClick={this.onBranchClick}
+                          baseBranchName={this.state.baseBranchName}
+                          onVerifyingButtonClick={this.onVerifyingButtonClick}
+                          loading={loading}
+                          userIdSignUp={this.onSubmit}
+                        />
+                      );
+                    }}
+                  </ApolloConsumer>
+                );
+              }}
+            </UserIdSignUpMutation>
+          )}
+        </Mutation>
       </>
     );
   }
@@ -136,16 +198,30 @@ export default class SignUpDetailContainer extends React.Component<
     } as any);
   };
 
-  public onBranchClick = (branchData: searchBranch_SearchBranch_branches) => {
-    console.log(branchData);
-    const { name, id } = branchData;
+  public onBranchClick = async (branchId: number) => {
+    const { GuestGetBranch } = await this.getBranch(branchId);
+
+    if (!GuestGetBranch.ok) {
+      toast.error("지점 정보를 제대로 받아오지 못했습니다");
+      return;
+    }
+
+    const { id, impId, impKey, name } = GuestGetBranch.branch;
+
+    console.log(GuestGetBranch);
+
     this.setState(
       {
         ...this.state,
-        baseBrachId: id,
-        baseBranchName: name
+        baseBranchId: id,
+        baseBranchName: name,
+        impId,
+        impKey
       },
-      () => this.toggleShowBranchSearch()
+      () => {
+        this.toggleShowBranchSearch();
+        console.log(this.state);
+      }
     );
   };
 
@@ -170,66 +246,128 @@ export default class SignUpDetailContainer extends React.Component<
     });
   };
 
-  public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
-    event.preventDefault();
-    console.log("click");
+  public onSubmit: React.FormEventHandler<HTMLFormElement> = async event => {
+    const {
+      userId,
+      password,
+      repassword,
+      phoneNumber,
+      baseBranchId,
+      name,
+      gender,
+      birthYear,
+      birthMonth,
+      birthDay,
+      imp_uid,
+      unique_key
+    } = this.state;
+
+    if (!userId) {
+      toast.error("아이디가 입력되지 않았습니다");
+    } else if (!password || !repassword) {
+      toast.error("비밀번호가 입력되지 않았습니다");
+    } else if (password !== repassword) {
+      toast.error("비밀번호를 다시 확인해주세요");
+    } else if (!phoneNumber) {
+      toast.error("전화번호를 입력해주세요");
+    } else if (!baseBranchId) {
+      toast.error("지점을 선택해주세요");
+    } else if (!name || !gender || !birthYear || !birthMonth || !birthDay) {
+      toast.error("본인인증을 해주세요!");
+    }
+
+    await this.userIdSignUpMutation({
+      variables: {
+        baseBranchId,
+        birthDay,
+        birthMonth,
+        birthYear,
+        gender,
+        imp_uid,
+        name,
+        password,
+        phoneNumber,
+        unique_key,
+        userId
+      }
+    });
   };
 
   public onVerifyingButtonClick = async () => {
-    if (!this.state.baseBrachId) {
-      toast.error("지점을 먼저 설정하셔야 됩니다");
+    if (!this.state.baseBranchId) {
+      toast.error("지점을 먼저 선택해주세요!");
       return;
     }
-    if (this.state.IMP) {
-      // IMP.certification(param, callback) 호출
-      await this.state.IMP.certification(
-        {
-          // param
-          // merchant_uid: "ORD20180131-0000011" // 옵션 값
-        },
-        rsp => {
-          // callback
-          if (rsp.success) {
-            // 인증 성공 시 로직,
+    this.setState({
+      ...this.state,
+      birthDay: 1,
+      birthMonth: 1,
+      birthYear: 1989,
+      gender: "MALE",
+      name: "방문자"
+    });
 
-            const data = this.certificateUser(rsp.imp_uid);
-            if (
-              data &&
-              data.unique_key &&
-              data.name &&
-              data.gender &&
-              data.birthYear &&
-              data.birthMonth &&
-              data.birthDay
-            ) {
-              this.setState({
-                ...this.state,
-                birthDay: data.birthDay,
-                birthMonth: data.birthMonth,
-                birthYear: data.birthYear,
-                gender: data.gender,
-                name: data.name,
-                unique_key: data.unique_key
-              });
-            }
+    toast.success("본인인증에 성공했습니다");
 
-            // const {
-            //   data: { secure_url }
-            // } = await axios.post(
-            //   "https://api.cloudinary.com/v1_1/drijcu8ak/image/upload/",
-            //   formData
-            // );
-          } else {
-            // 인증 실패 시 로직,
-            toast.error(
-              `인증에 실패했습니다. 에러 내용 :  ${rsp.error_msg &&
-                rsp.error_msg}`
-            );
-          }
-        }
-      );
-    } else {
-      toast.error("인증 모듈이 로드 되지 않았습니다");
-    }
+    // ------------------------------------------------------------
+
+    // if (!this.state.baseBranchId) {
+    //   toast.error("지점을 먼저 설정하셔야 됩니다");
+    //   return;
+    // }
+
+    // if (this.state.IMP) {
+    //   // IMP.certification(param, callback) 호출
+    //   await this.state.IMP.certification(
+    //     {
+    //       // param
+    //       // merchant_uid: "ORD20180131-0000011" // 옵션 값
+    //     },
+    //     rsp => {
+    //       // callback
+    //       if (rsp.success) {
+    //         // 인증 성공 시 로직,
+
+    //         const data = this.certificateUser(rsp.imp_uid);
+    //         if (
+    //           data &&
+    //           data.unique_key &&
+    //           data.name &&
+    //           data.gender &&
+    //           data.birthYear &&
+    //           data.birthMonth &&
+    //           data.birthDay
+    //         ) {
+    //           this.setState({
+    //             ...this.state,
+    //             birthDay: data.birthDay,
+    //             birthMonth: data.birthMonth,
+    //             birthYear: data.birthYear,
+    //             gender: data.gender,
+    //             imp_uid: rsp.imp_uid,
+    //             name: data.name,
+    //             unique_key: data.unique_key
+    //           });
+    //         }
+
+    //         // const {
+    //         //   data: { secure_url }
+    //         // } = await axios.post(
+    //         //   "https://api.cloudinary.com/v1_1/drijcu8ak/image/upload/",
+    //         //   formData
+    //         // );
+    //       } else {
+    //         // 인증 실패 시 로직,
+    //         toast.error(
+    //           `인증에 실패했습니다. 에러 내용 :  ${rsp.error_msg &&
+    //             rsp.error_msg}`
+    //         );
+    //       }
+    //     }
+    //   );
+    // } else {
+    //   toast.error("인증 모듈이 로드 되지 않았습니다");
+    // }
+    // ------------------------------------------------------------
   };
 }

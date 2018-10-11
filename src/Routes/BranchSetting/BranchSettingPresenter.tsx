@@ -71,6 +71,13 @@ const RoomSettingButton = styled(SmallButton)`
   font-size: 12px;
   margin: 5px 5px;
 `;
+
+const ImportSettingButton = styled(SmallButton)`
+  background-color: ${props => props.theme.lightBlueColor};
+  font-size: 12px;
+  margin: 5px 5px;
+`;
+
 const CabinetsettingButton = styled(SmallButton)`
   background-color: ${props => props.theme.greenColor};
   font-size: 12px;
@@ -110,6 +117,7 @@ interface IProps {
   data?: searchBranch;
   tempInput: string;
   onLoungeSettingClick: (branchId: any) => void;
+  onIamportSettingClick: (branchId: any) => void;
 }
 
 const BranchSettingPresenter: React.SFC<IProps> = ({
@@ -117,7 +125,8 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
   onSubmit,
   data,
   tempInput,
-  onLoungeSettingClick
+  onLoungeSettingClick,
+  onIamportSettingClick
 }) => (
   <BackContainer>
     <Helmet>
@@ -173,6 +182,10 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
                     onClick={() => onLoungeSettingClick(branch.id)}
                   />
                   <CabinetsettingButton value="사물함 세팅" />
+                  <ImportSettingButton
+                    value="결제 모듈 세팅"
+                    onClick={() => onIamportSettingClick(branch.id)}
+                  />
                 </ButtonContainer>
               </BranchContainer>
             );

@@ -11,13 +11,10 @@ export const ADD_BRANCH = gql`
     $descriptionPosition: String!
     $loungeImg: String!
     $minimapImg: String!
-    $isMaleAvailable: Boolean!
-    $isFemaleAvailable: Boolean!
-    $isBoyAvailable: Boolean!
-    $isGirlAvailable: Boolean!
     $manMax: Int!
     $womanMax: Int!
     $directManage: Boolean!
+    $ips: [String]
   ) {
     HeadCreateBranch(
       name: $branchName
@@ -30,13 +27,10 @@ export const ADD_BRANCH = gql`
       descriptionPosition: $descriptionPosition
       loungeImage: $loungeImg
       minimapImage: $minimapImg
-      manAcceptable: $isMaleAvailable
-      womanAcceptable: $isFemaleAvailable
-      boyAcceptable: $isBoyAvailable
-      girlAcceptable: $isGirlAvailable
       maleMax: $manMax
       femaleMax: $womanMax
       directManaged: $directManage
+      ips: $ips
     ) {
       ok
       error

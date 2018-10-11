@@ -1,15 +1,12 @@
 import React from "react";
 import { Query } from "react-apollo";
-import {
-  searchBranch,
-  searchBranch_SearchBranch_branches
-} from "../../types/api";
+import { searchBranch } from "../../types/api";
 import { SEARCH_BRANCH } from "../sharedQueries";
 import BranchSearchPopUpPresenter from "./BranchSearchPopUpPresenter";
 
 interface IProps {
   closeFunc: any;
-  onBranchClick: (branchData: searchBranch_SearchBranch_branches) => void;
+  onBranchClick: (branchId: number) => void;
 }
 
 interface IState {
@@ -79,8 +76,8 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onBranchClick = (branchData: searchBranch_SearchBranch_branches) => {
-    this.props.onBranchClick(branchData);
+  public onBranchClick = (branchId: number) => {
+    this.props.onBranchClick(branchId);
   };
 }
 

@@ -1,12 +1,13 @@
 import React from "react";
 import Helmet from "react-helmet";
+import { Link } from "react-router-dom";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 import Button from "../../Components/Button";
 import Form from "../../Components/Form";
 import Input from "../../Components/Input";
+import Loading from "../../Components/Loading";
 import SmallButton from "../../Components/SmallButton";
 import styled from "../../typed-components";
-import { searchBranch_SearchBranch_branches } from "../../types/api";
 
 interface IProps {
   userId: string;
@@ -19,9 +20,11 @@ interface IProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   showBranchSearch: boolean;
   toggleShowBranchSearch: () => void;
-  onBranchClick: (branchData: searchBranch_SearchBranch_branches) => void;
+  onBranchClick: (branchId: number) => void;
   baseBranchName: string;
   onVerifyingButtonClick: () => void;
+  userIdSignUp: any;
+  loading: boolean;
 }
 
 const Container = styled.div`
@@ -108,7 +111,9 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
   toggleShowBranchSearch,
   onBranchClick,
   baseBranchName,
-  onVerifyingButtonClick
+  onVerifyingButtonClick,
+  loading,
+  userIdSignUp
 }) => (
   <Container>
     <Helmet>
@@ -117,14 +122,16 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
 
     <Head>
       <LogoContainer>
-        <LogoImg src={require("src/images/logo.png")} />
+        <Link to="/">
+          <LogoImg src={require("src/images/logo.png")} />
+        </Link>
       </LogoContainer>
     </Head>
     <Body>
       <Title>합리적인 가격에 최고의 학습공간을 경험하세요!</Title>
 
       <FormContainer>
-        <Form submitFn={onSubmit}>
+        <Form submitFn={userIdSignUp}>
           <ExtendInput
             placeholder={"아이디"}
             value={userId}
@@ -149,6 +156,20 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
             type={"password"}
             autoComplete={"current-password"}
           />
+
+          <SelBranchButton
+            value={"지점선택"}
+            onClick={toggleShowBranchSearch}
+            type={"button"}
+          />
+          {baseBranchName ? (
+            <SelBranchDisplay>
+              {baseBranchName}을 선택하셨습니다
+            </SelBranchDisplay>
+          ) : (
+            ""
+          )}
+
           <ExtendInput
             placeholder={"핸드폰번호('-'없이 입력해주세요)"}
             value={phoneNumber}
@@ -163,19 +184,17 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
               onClick={() => onVerifyingButtonClick()}
             />
           </IdentificationButtonCon>
-          <SelBranchButton
-            value={"지점선택"}
-            onClick={toggleShowBranchSearch}
-            type={"button"}
-          />
-          {baseBranchName ? (
-            <SelBranchDisplay>
-              {baseBranchName}을 선택하셨습니다
-            </SelBranchDisplay>
+
+          {loading ? (
+            <Loading />
           ) : (
-            ""
+            <ConifirmButton
+              value={"가입하기"}
+              type={"submit"}
+              onClick={userIdSignUp}
+            />
           )}
-          <ConifirmButton value={"가입하기"} type={"submit"} />
+
           {/* {loading ? (
             <Button value={"로그인 중입니다"} />
           ) : (

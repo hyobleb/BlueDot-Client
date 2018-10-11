@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
 import styled from "../../typed-components";
 
@@ -85,7 +86,9 @@ const SignUpPresenter: React.SFC<IProps> = ({
     </Helmet>
     <Head>
       <LogoContainer>
-        <LogoImg src={require("src/images/logo.png")} />
+        <Link to="/">
+          <LogoImg src={require("src/images/logo.png")} />
+        </Link>
       </LogoContainer>
     </Head>
     <Body>

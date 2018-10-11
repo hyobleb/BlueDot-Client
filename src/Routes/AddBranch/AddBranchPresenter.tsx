@@ -66,6 +66,19 @@ const BackArrowExtended = styled(BackArrow)`
   left: 20px;
 `;
 
+const IpDisplayContainer = styled.div``;
+
+const IpDisplay = styled.div`
+  text-align: right;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const IpDeleteButton = styled(SmallButton)`
+  background-color: ${props => props.theme.redColor};
+  color: white;
+`;
+
 interface IProps {
   branchName: string;
   branchNumber: number | string;
@@ -76,10 +89,6 @@ interface IProps {
   branchPhotos: any;
   loungeImg: string;
   minimapImg: string;
-  isMaleAvailable: boolean;
-  isFemaleAvailable: boolean;
-  isBoyAvailable: boolean;
-  isGirlAvailable: boolean;
   manMax: number | string;
   womanMax: number | string;
   branchPhotosUploading: boolean;
@@ -94,6 +103,14 @@ interface IProps {
   subtractSnapshot: (e: any) => void;
   toggleSwitch: (event: any) => void;
   addBranchFn: MutationFn;
+  impId: string;
+  impKey: string;
+  impSecret: string;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  ips: string[];
+  tempIp: string;
+  addIp: () => void;
+  subtractIp: (targetIp: any) => void;
 }
 
 const AddBranchPresenter: React.SFC<IProps> = ({
@@ -107,10 +124,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
   branchPhotos,
   loungeImg,
   minimapImg,
-  isMaleAvailable,
-  isFemaleAvailable,
-  isBoyAvailable,
-  isGirlAvailable,
   manMax,
   womanMax,
   branchPhotosUploading,
@@ -123,14 +136,22 @@ const AddBranchPresenter: React.SFC<IProps> = ({
   directManage,
   subtractSnapshot,
   toggleSwitch,
-  addBranchFn
+  addBranchFn,
+  impId,
+  impKey,
+  impSecret,
+  onSubmit,
+  tempIp,
+  addIp,
+  ips,
+  subtractIp
 }) => (
   <BackContainer>
     <Helmet>
       <title>Branch-Add | BlueDot</title>
     </Helmet>
     <BackArrowExtended backTo="/branch-setting" />
-    <Form submitFn={() => console.log("!")}>
+    <Form submitFn={onSubmit}>
       <Row>
         <InputLabel>
           <InputTitle>지점명 : </InputTitle>
@@ -281,6 +302,63 @@ const AddBranchPresenter: React.SFC<IProps> = ({
       </Row>
 
       <Row>
+        <InputLabel>
+          <InputTitle>IP : </InputTitle>
+          <InputExtended
+            value={tempIp}
+            name={"tempIp"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+        <SmallButtonExtended value={"IP 추가"} onClick={addIp} />
+        <IpDisplayContainer>
+          {ips.map(ip => (
+            <IpDisplay>
+              {ip}{" "}
+              {ip && (
+                <IpDeleteButton value={"삭제"} onClick={() => subtractIp(ip)} />
+              )}
+            </IpDisplay>
+          ))}
+        </IpDisplayContainer>
+      </Row>
+
+      <Row>
+        <InputLabel>
+          <InputTitle>아임포트 가맹점 식별코드: </InputTitle>
+          <InputExtended
+            value={impId}
+            name={"impId"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>아임포트 API 키 : </InputTitle>
+          <InputExtended
+            value={impKey}
+            name={"impKey"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>아임포트 API secret : </InputTitle>
+          <InputExtended
+            value={impSecret}
+            name={"impSecret"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+
+      <Row>
         <SwitchBox>
           <SwitchRow>
             <SwitchTitle>직영매장</SwitchTitle>
@@ -293,7 +371,7 @@ const AddBranchPresenter: React.SFC<IProps> = ({
               </Switch>
             </SwitchItem>
           </SwitchRow>
-          <SwitchRow>
+          {/* <SwitchRow>
             <SwitchTitle>남자 성인 등록 가능</SwitchTitle>
             <SwitchItem>
               <Switch
@@ -339,11 +417,11 @@ const AddBranchPresenter: React.SFC<IProps> = ({
                 <i className="some-icon" />
               </Switch>
             </SwitchItem>
-          </SwitchRow>
+          </SwitchRow> */}
         </SwitchBox>
       </Row>
       <Row>
-        <Button value={"등록하기"} onClick={addBranchFn} />
+        <Button value={"등록하기"} onClick={onSubmit} />
       </Row>
     </Form>
   </BackContainer>
