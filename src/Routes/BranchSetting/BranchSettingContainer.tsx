@@ -49,6 +49,7 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
               onSubmit={this.onSubmit}
               data={data}
               tempInput={this.state.tempInput}
+              onBranchModifyClick={this.onBranchModifyClick}
               onLoungeSettingClick={this.onLoungeSettingClick}
               onIamportSettingClick={this.onIamportSettingClick}
             />
@@ -76,6 +77,16 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
       branchInput: this.state.tempInput
     });
     // this.signInMutation();
+  };
+
+  public onBranchModifyClick = branchId => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/branch-modfiy",
+      state: {
+        branchId
+      }
+    });
   };
 
   public onLoungeSettingClick = branchId => {

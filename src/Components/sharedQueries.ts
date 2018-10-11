@@ -55,6 +55,23 @@ export const HEAD_GET_BRANCH = gql`
         impId
         impKey
         impSecret
+        branchNumber
+        postalCode
+        address
+        detailAddress
+        descriptionPosition
+        comment
+        branchImage
+        loungeImage
+        minimapImage
+        ips
+        directManaged
+        maleMax
+        femaleMax
+        manAcceptable
+        womanAcceptable
+        boyAcceptable
+        girlAcceptable
       }
     }
   }

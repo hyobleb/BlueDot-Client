@@ -66,13 +66,13 @@ const ButtonContainer = styled.div`
   text-align: center;
 `;
 
-const RoomSettingButton = styled(SmallButton)`
+const BranchModifyButton = styled(SmallButton)`
   background-color: ${props => props.theme.orangeColor};
   font-size: 12px;
   margin: 5px 5px;
 `;
 
-const ImportSettingButton = styled(SmallButton)`
+const RoomSettingButton = styled(SmallButton)`
   background-color: ${props => props.theme.lightBlueColor};
   font-size: 12px;
   margin: 5px 5px;
@@ -116,6 +116,7 @@ interface IProps {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   data?: searchBranch;
   tempInput: string;
+  onBranchModifyClick: (branchId: any) => void;
   onLoungeSettingClick: (branchId: any) => void;
   onIamportSettingClick: (branchId: any) => void;
 }
@@ -126,7 +127,8 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
   data,
   tempInput,
   onLoungeSettingClick,
-  onIamportSettingClick
+  onIamportSettingClick,
+  onBranchModifyClick
 }) => (
   <BackContainer>
     <Helmet>
@@ -177,15 +179,15 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
                   </ContextContainer>
                 </ContentsContainer>
                 <ButtonContainer>
+                  <BranchModifyButton
+                    value="지점 정보 수정"
+                    onClick={() => onBranchModifyClick(branch.id)}
+                  />
                   <RoomSettingButton
                     value="열람실 및 좌석 세팅"
                     onClick={() => onLoungeSettingClick(branch.id)}
                   />
                   <CabinetsettingButton value="사물함 세팅" />
-                  <ImportSettingButton
-                    value="결제 모듈 세팅"
-                    onClick={() => onIamportSettingClick(branch.id)}
-                  />
                 </ButtonContainer>
               </BranchContainer>
             );

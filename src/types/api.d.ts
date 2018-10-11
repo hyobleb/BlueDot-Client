@@ -133,6 +133,23 @@ export interface headGetBranch_HeadGetBranch_branch {
   impId: string | null;
   impKey: string | null;
   impSecret: string | null;
+  branchNumber: number;
+  postalCode: string;
+  address: string;
+  detailAddress: string;
+  descriptionPosition: string;
+  comment: string | null;
+  branchImage: (string | null)[];
+  loungeImage: string;
+  minimapImage: string;
+  ips: (string | null)[] | null;
+  directManaged: boolean | null;
+  maleMax: number;
+  femaleMax: number;
+  manAcceptable: boolean | null;
+  womanAcceptable: boolean | null;
+  boyAcceptable: boolean | null;
+  girlAcceptable: boolean | null;
 }
 
 export interface headGetBranch_HeadGetBranch {
@@ -181,6 +198,7 @@ export interface addBranchVariables {
   manMax: number;
   womanMax: number;
   directManage: boolean;
+  ips?: (string | null)[] | null;
 }
 
 /* tslint:disable */
@@ -272,6 +290,48 @@ export interface userIdSignIn {
 export interface userIdSignInVariables {
   userId: string;
   password: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: updateBranch
+// ====================================================
+
+export interface updateBranch_HeadUpdateBranch {
+  __typename: "HeadUpdateBranchResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface updateBranch {
+  HeadUpdateBranch: updateBranch_HeadUpdateBranch;
+}
+
+export interface updateBranchVariables {
+  branchId: number;
+  branchName: string;
+  branchNumber: number;
+  postCode: string;
+  address: string;
+  detailAddress: string;
+  branchComment: string;
+  branchPhotos: (string | null)[];
+  descriptionPosition: string;
+  loungeImg: string;
+  minimapImg: string;
+  manMax: number;
+  womanMax: number;
+  directManage: boolean;
+  ips?: (string | null)[] | null;
+  manAcceptable: boolean;
+  womanAcceptable: boolean;
+  boyAcceptable: boolean;
+  girlAcceptable: boolean;
+  impId?: string | null;
+  impKey?: string | null;
+  impSecret?: string | null;
 }
 
 /* tslint:disable */

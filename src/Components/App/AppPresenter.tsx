@@ -9,6 +9,7 @@ import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
+import ModifyBranch from "../../Routes/ModifyBranch";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import Settings from "../../Routes/Settings";
 import SignUp from "../../Routes/SignUp";
@@ -98,6 +99,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/add-lounge"}
           exact={true}
           component={AddLounge}
+        />,
+        <Route
+          key={3}
+          path={"/branch-modfiy"}
+          exact={true}
+          component={ModifyBranch}
         />
       ]}
 
