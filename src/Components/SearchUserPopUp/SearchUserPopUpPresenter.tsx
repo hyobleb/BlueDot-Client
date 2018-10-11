@@ -132,14 +132,6 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   setSearchText,
   onUserClick
 }) => {
-  if (
-    data &&
-    data.ManagerSearchUsers &&
-    data.ManagerSearchUsers.users &&
-    data.ManagerSearchUsers.users.length > 0
-  ) {
-    console.log(data);
-  }
   return (
     <Container>
       <HeadContainer>

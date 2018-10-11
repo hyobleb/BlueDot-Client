@@ -37,7 +37,6 @@ export default class LoginContainer extends React.Component<
             }}
             onCompleted={data => {
               const { UserIdSignIn } = data;
-              console.log(UserIdSignIn);
               if (UserIdSignIn.ok) {
                 if (UserIdSignIn.token) {
                   if (UserIdSignIn.user) {
@@ -62,7 +61,6 @@ export default class LoginContainer extends React.Component<
                 //   });
                 // }, 2000);
               } else {
-                console.log(UserIdSignIn.error);
                 toast.error(UserIdSignIn.error);
                 return;
               }

@@ -208,8 +208,6 @@ export default class SignUpDetailContainer extends React.Component<
 
     const { id, impId, impKey, name } = GuestGetBranch.branch;
 
-    console.log(GuestGetBranch);
-
     this.setState(
       {
         ...this.state,
@@ -220,7 +218,6 @@ export default class SignUpDetailContainer extends React.Component<
       },
       () => {
         this.toggleShowBranchSearch();
-        console.log(this.state);
       }
     );
   };

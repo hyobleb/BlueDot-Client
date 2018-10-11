@@ -242,6 +242,35 @@ export interface getBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: headCreateRoom
+// ====================================================
+
+export interface headCreateRoom_HeadCreateRoom {
+  __typename: "HeadCreateRoomResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface headCreateRoom {
+  HeadCreateRoom: headCreateRoom_HeadCreateRoom;
+}
+
+export interface headCreateRoomVariables {
+  branchId: number;
+  title: string;
+  roomNumber: number;
+  roomType: roomTypeOptions;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  usable: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: updateProfile
 // ====================================================
 
@@ -496,6 +525,12 @@ export enum SearchType {
 export enum UserIdSignUpGender {
   FEMALE = "FEMALE",
   MALE = "MALE",
+}
+
+export enum roomTypeOptions {
+  FOCUS = "FOCUS",
+  OPEN = "OPEN",
+  SINGLE = "SINGLE",
 }
 
 //==============================================================

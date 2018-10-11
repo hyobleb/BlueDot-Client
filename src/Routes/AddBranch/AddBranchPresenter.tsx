@@ -371,53 +371,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
               </Switch>
             </SwitchItem>
           </SwitchRow>
-          {/* <SwitchRow>
-            <SwitchTitle>남자 성인 등록 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("isMaleAvailable")}
-                on={isMaleAvailable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
-
-          <SwitchRow>
-            <SwitchTitle>여자 성인 등록 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("isFemaleAvailable")}
-                on={isFemaleAvailable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
-
-          <SwitchRow>
-            <SwitchTitle>남자 청소년 등록 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("isBoyAvailable")}
-                on={isBoyAvailable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
-
-          <SwitchRow>
-            <SwitchTitle>여자 청소년 등록 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("isGirlAvailable")}
-                on={isGirlAvailable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow> */}
         </SwitchBox>
       </Row>
       <Row>

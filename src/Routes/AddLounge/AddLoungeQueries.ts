@@ -18,3 +18,32 @@ export const GET_BRANCH_FOR_UPDATE_LOUNGE = gql`
     }
   }
 `;
+
+export const HEAD_CREATE_ROOM = gql`
+  mutation headCreateRoom(
+    $branchId: Int!
+    $title: String!
+    $roomNumber: Int!
+    $roomType: roomTypeOptions!
+    $width: Float!
+    $height: Float!
+    $xpos: Int!
+    $ypos: Int!
+    $usable: Boolean!
+  ) {
+    HeadCreateRoom(
+      branchId: $branchId
+      title: $title
+      roomNumber: $roomNumber
+      roomType: $roomType
+      width: $width
+      height: $height
+      xpos: $xpos
+      ypos: $ypos
+      usable: $usable
+    ) {
+      ok
+      error
+    }
+  }
+`;

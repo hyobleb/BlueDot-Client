@@ -120,7 +120,6 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       isBoyAvailable
     } = this.state;
 
-    console.log(this.state);
     const { history } = this.props;
     return (
       <BranchQuery
