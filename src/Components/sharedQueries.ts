@@ -76,3 +76,26 @@ export const HEAD_GET_BRANCH = gql`
     }
   }
 `;
+
+export const GET_BRANCH_FOR_UPDATE_LOUNGE = gql`
+  query getBranchForUpdateLounge($branchId: Int!) {
+    HeadGetBranch(branchId: $branchId) {
+      ok
+      error
+      branch {
+        loungeImage
+        rooms {
+          id
+          width
+          height
+          xpos
+          ypos
+          title
+          roomNumber
+          roomType
+          usable
+        }
+      }
+    }
+  }
+`;

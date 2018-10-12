@@ -2,23 +2,19 @@ import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
+import { GET_BRANCH_FOR_UPDATE_LOUNGE } from "../../Components/sharedQueries";
+import {
+  roomTypeDropDownOptions,
+  roomTypeOptions
+} from "../../Components/shareOptions";
 import {
   getBranchForUpdateLounge,
   getBranchForUpdateLoungeVariables,
   headCreateRoom,
   headCreateRoomVariables
 } from "../../types/api";
-import AddLoungePresenter from "./AddLoungePresenter";
-
-export enum roomTypeOptions {
-  FOCUS = "FOCUS",
-  OPEN = "OPEN",
-  SINGLE = "SINGLE"
-}
-import {
-  GET_BRANCH_FOR_UPDATE_LOUNGE,
-  HEAD_CREATE_ROOM
-} from "./AddLoungeQueries";
+import SettingLoungePresenter from "./SettingLoungePresenter";
+import { HEAD_CREATE_ROOM } from "./SettingLoungeQueries";
 
 interface IProps extends RouteComponentProps<any> {
   branchId: number;
@@ -38,11 +34,11 @@ interface IState {
   tempRoomId: number;
 }
 
-class RoomQuery extends Query<
+class GetBranchQuery extends Query<
   getBranchForUpdateLounge,
   getBranchForUpdateLoungeVariables
 > {}
-class CreateRoomVerification extends Mutation<
+class CreateRoomMutation extends Mutation<
   headCreateRoom,
   headCreateRoomVariables
 > {}
@@ -88,7 +84,7 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
     } = this.state;
     const { history } = this.props;
     return (
-      <CreateRoomVerification
+      <CreateRoomMutation
         mutation={HEAD_CREATE_ROOM}
         onCompleted={data => {
           const { HeadCreateRoom } = data;
@@ -117,7 +113,7 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
         {enrollRoomFn => {
           this.enrollRoom = enrollRoomFn;
           return (
-            <RoomQuery
+            <GetBranchQuery
               query={GET_BRANCH_FOR_UPDATE_LOUNGE}
               variables={{ branchId }}
               onCompleted={data => {
@@ -135,7 +131,7 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
                   history.push("/");
                 }
                 return (
-                  <AddLoungePresenter
+                  <SettingLoungePresenter
                     data={data}
                     loading={loading}
                     height={height}
@@ -153,24 +149,21 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
                     roomNumber={roomNumber}
                     usable={usable}
                     onOptionChange={this.onOptionChange}
-                    roomTypeDropDownOptions={[
-                      { value: "OPEN", label: "오픈" },
-                      { value: "FOCUS", label: "포커스" },
-                      { value: "SINGLE", label: "싱글" }
-                    ]}
+                    roomTypeDropDownOptions={roomTypeDropDownOptions}
                     roomType={roomType}
                     toggleUsable={this.toggleUsable}
                     onConfirmClick={this.onConfirmClick}
                     onRoomClick={this.onRoomClick}
                     onRoomHover={this.onRoomHover}
                     tempRoomId={tempRoomId}
+                    onRoomHoverOut={this.onRoomHoverOut}
                   />
                 );
               }}
-            </RoomQuery>
+            </GetBranchQuery>
           );
         }}
-      </CreateRoomVerification>
+      </CreateRoomMutation>
     );
   }
 
@@ -260,18 +253,33 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
     } else if (!title) {
       toast.error("열람실 이름이 입력되지 않았습니다");
     } else {
-      const data = await this.enrollRoom();
-      console.log(data);
+      await this.enrollRoom();
     }
   };
 
   public onRoomClick = (roomId: number) => {
-    console.log(roomId);
+    const { history } = this.props;
+    const { branchId } = this.state;
+
+    history.push({
+      pathname: "/lounge-modify",
+      state: {
+        branchId,
+        roomId
+      }
+    });
   };
   public onRoomHover = (roomId: number) => {
     this.setState({
       ...this.state,
       tempRoomId: roomId
+    });
+  };
+
+  public onRoomHoverOut = () => {
+    this.setState({
+      ...this.state,
+      tempRoomId: 0
     });
   };
 }

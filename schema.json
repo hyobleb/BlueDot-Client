@@ -8266,7 +8266,7 @@
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
-                  "name": "Int",
+                  "name": "Float",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -8276,7 +8276,7 @@
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
-                  "name": "Int",
+                  "name": "Float",
                   "ofType": null
                 },
                 "defaultValue": null

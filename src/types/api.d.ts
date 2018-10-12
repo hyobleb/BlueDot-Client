@@ -171,40 +171,6 @@ export interface headGetBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: addBranch
-// ====================================================
-
-export interface addBranch_HeadCreateBranch {
-  __typename: "HeadCreateBranchResponse";
-  ok: boolean;
-  error: string | null;
-}
-
-export interface addBranch {
-  HeadCreateBranch: addBranch_HeadCreateBranch;
-}
-
-export interface addBranchVariables {
-  branchName: string;
-  branchNumber: number;
-  postCode: string;
-  address: string;
-  detailAddress: string;
-  branchComment: string;
-  branchPhotos: (string | null)[];
-  descriptionPosition: string;
-  loungeImg: string;
-  minimapImg: string;
-  manMax: number;
-  womanMax: number;
-  directManage: boolean;
-  ips?: (string | null)[] | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: getBranchForUpdateLounge
 // ====================================================
 
@@ -246,29 +212,34 @@ export interface getBranchForUpdateLoungeVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: headCreateRoom
+// GraphQL mutation operation: addBranch
 // ====================================================
 
-export interface headCreateRoom_HeadCreateRoom {
-  __typename: "HeadCreateRoomResponse";
+export interface addBranch_HeadCreateBranch {
+  __typename: "HeadCreateBranchResponse";
   ok: boolean;
   error: string | null;
 }
 
-export interface headCreateRoom {
-  HeadCreateRoom: headCreateRoom_HeadCreateRoom;
+export interface addBranch {
+  HeadCreateBranch: addBranch_HeadCreateBranch;
 }
 
-export interface headCreateRoomVariables {
-  branchId: number;
-  title: string;
-  roomNumber: number;
-  roomType: roomTypeOptions;
-  width: number;
-  height: number;
-  xpos: number;
-  ypos: number;
-  usable: boolean;
+export interface addBranchVariables {
+  branchName: string;
+  branchNumber: number;
+  postCode: string;
+  address: string;
+  detailAddress: string;
+  branchComment: string;
+  branchPhotos: (string | null)[];
+  descriptionPosition: string;
+  loungeImg: string;
+  minimapImg: string;
+  manMax: number;
+  womanMax: number;
+  directManage: boolean;
+  ips?: (string | null)[] | null;
 }
 
 /* tslint:disable */
@@ -365,6 +336,35 @@ export interface updateBranchVariables {
   impId?: string | null;
   impKey?: string | null;
   impSecret?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headCreateRoom
+// ====================================================
+
+export interface headCreateRoom_HeadCreateRoom {
+  __typename: "HeadCreateRoomResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface headCreateRoom {
+  HeadCreateRoom: headCreateRoom_HeadCreateRoom;
+}
+
+export interface headCreateRoomVariables {
+  branchId: number;
+  title: string;
+  roomNumber: number;
+  roomType: roomTypeOptions;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  usable: boolean;
 }
 
 /* tslint:disable */
@@ -511,6 +511,70 @@ export interface facebookConnectVariables {
   name: string;
   email?: string | null;
   fbId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headUpdateRoom
+// ====================================================
+
+export interface headUpdateRoom_HeadUpdateRoom {
+  __typename: "HeadUpdateRoomResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface headUpdateRoom {
+  HeadUpdateRoom: headUpdateRoom_HeadUpdateRoom;
+}
+
+export interface headUpdateRoomVariables {
+  roomId: number;
+  title?: string | null;
+  roomNumber?: number | null;
+  roomType?: roomTypeOptions | null;
+  width?: number | null;
+  height?: number | null;
+  xpos?: number | null;
+  ypos?: number | null;
+  usable?: boolean | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: headGetRoom
+// ====================================================
+
+export interface headGetRoom_HeadGetRoom_room {
+  __typename: "Room";
+  id: number;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  title: string;
+  roomNumber: number;
+  roomType: string;
+  usable: boolean;
+}
+
+export interface headGetRoom_HeadGetRoom {
+  __typename: "HeadGetRoomResponse";
+  ok: boolean;
+  error: string | null;
+  room: headGetRoom_HeadGetRoom_room | null;
+}
+
+export interface headGetRoom {
+  HeadGetRoom: headGetRoom_HeadGetRoom;
+}
+
+export interface headGetRoomVariables {
+  roomId: number;
 }
 
 /* tslint:disable */

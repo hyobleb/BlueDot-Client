@@ -42,10 +42,11 @@ interface IProps {
   tempRoomWidth: number;
   tempRoomXpos: number;
   tempRoomYpos: number;
-  onRoomClick: (roomId: number) => void;
-  onRoomHover: (roomdId: number) => void;
-  rooms: any;
+  onRoomClick?: (roomId: number) => void;
+  onRoomHover?: (roomdId: number) => void;
+  rooms?: any;
   tempSelRoomId?: number;
+  onRoomHoverOut?: () => void;
 }
 
 interface ITRProps {
@@ -64,6 +65,7 @@ interface IRProps {
   onRoomClick: (roomId: number) => void;
   onRoomHover: (roomId: number) => void;
   tempSelected: boolean;
+  onRoomHoverOut: () => void;
 }
 
 const TempRoom: React.SFC<ITRProps> = ({
@@ -89,7 +91,8 @@ const Room: React.SFC<IRProps> = ({
   roomId,
   onRoomClick,
   onRoomHover,
-  tempSelected = false
+  tempSelected = false,
+  onRoomHoverOut
 }) => {
   const style = {
     backgroundColor: `${tempSelected ? theme.redColor : theme.lightBlueColor}`,
@@ -103,6 +106,7 @@ const Room: React.SFC<IRProps> = ({
       style={style}
       onClick={() => onRoomClick(roomId)}
       onMouseOver={() => onRoomHover(roomId)}
+      onMouseOut={onRoomHoverOut}
     />
   );
 };
@@ -114,10 +118,11 @@ const LoungeContainer: React.SFC<IProps> = ({
   tempRoomHegiht,
   tempRoomXpos,
   tempRoomYpos,
-  rooms,
-  onRoomClick,
-  onRoomHover,
-  tempSelRoomId
+  rooms = null,
+  onRoomClick = () => null,
+  onRoomHover = () => null,
+  tempSelRoomId = null,
+  onRoomHoverOut = () => null
 }) => (
   <ImgContainer>
     <LoungeImg src={imgUrl} />
@@ -142,6 +147,7 @@ const LoungeContainer: React.SFC<IProps> = ({
           onRoomClick={onRoomClick}
           onRoomHover={onRoomHover}
           tempSelected={room.id === tempSelRoomId}
+          onRoomHoverOut={onRoomHoverOut}
         />
       ))}
   </ImgContainer>

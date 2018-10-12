@@ -3,6 +3,7 @@ import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import Helmet from "react-helmet";
 import Switch from "react-toggle-switch";
+import BackArrow from "../../Components/BackArrow";
 import Input from "../../Components/Input";
 import Loading from "../../Components/Loading";
 import LoungeContainer from "../../Components/LoungeContainer";
@@ -156,6 +157,12 @@ const RoomDataCol = styled.div`
   padding: 5px 0;
 `;
 
+const BackArrowExtended = styled(BackArrow)`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+`;
+
 interface IProps {
   data?: getBranchForUpdateLounge;
   loading: boolean;
@@ -184,6 +191,7 @@ interface IProps {
   onRoomClick: (roomId: number) => void;
   onRoomHover: (roomId: number) => void;
   tempRoomId: number;
+  onRoomHoverOut: () => void;
 }
 
 const AddLoungePresenter: React.SFC<IProps> = ({
@@ -210,13 +218,16 @@ const AddLoungePresenter: React.SFC<IProps> = ({
   onConfirmClick,
   onRoomClick,
   onRoomHover,
-  tempRoomId
+  tempRoomId,
+  onRoomHoverOut
 }) => {
   return (
     <Container>
       <Helmet>
         <title>AddLounge | BlueDot</title>
       </Helmet>
+      <BackArrowExtended backTo="/branch-setting" />
+
       {loading ? (
         <Loading />
       ) : (
@@ -236,6 +247,7 @@ const AddLoungePresenter: React.SFC<IProps> = ({
                 rooms={data.HeadGetBranch.branch.rooms}
                 onRoomHover={onRoomHover}
                 tempSelRoomId={tempRoomId}
+                onRoomHoverOut={onRoomHoverOut}
               />
             )}
 
@@ -368,7 +380,9 @@ const AddLoungePresenter: React.SFC<IProps> = ({
                       room && (
                         <RoomDataContainer
                           key={room.id}
+                          onClick={() => onRoomClick(room.id)}
                           onMouseOver={() => onRoomHover(room.id)}
+                          onMouseOut={onRoomHoverOut}
                           style={{
                             backgroundColor: `${
                               room.id === tempRoomId

@@ -3,7 +3,6 @@ import BranchSetting from "../../Routes/BranchSetting";
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AddBranch from "../../Routes/AddBranch";
-import AddLounge from "../../Routes/AddLounge";
 import EditAccount from "../../Routes/EditAccount";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
@@ -11,10 +10,12 @@ import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import PhoneLogin from "../../Routes/PhoneLogin";
+import SettingLounge from "../../Routes/SettingLounge";
 import Settings from "../../Routes/Settings";
 import SignUp from "../../Routes/SignUp";
 import SignUpDetail from "../../Routes/SignUpDetail";
 import SocialLogin from "../../Routes/SocialLogin";
+import UpdateLounge from "../../Routes/UpdateLounge";
 
 interface IProps {
   isLoggedIn: boolean;
@@ -96,12 +97,18 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         />,
         <Route
           key={3}
-          path={"/add-lounge"}
+          path={"/lounge-setting"}
           exact={true}
-          component={AddLounge}
+          component={SettingLounge}
         />,
         <Route
-          key={3}
+          key={4}
+          path={"/lounge-modify"}
+          exact={true}
+          component={UpdateLounge}
+        />,
+        <Route
+          key={5}
           path={"/branch-modfiy"}
           exact={true}
           component={ModifyBranch}
