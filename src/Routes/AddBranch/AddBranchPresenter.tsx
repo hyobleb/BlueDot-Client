@@ -313,8 +313,8 @@ const AddBranchPresenter: React.SFC<IProps> = ({
         </InputLabel>
         <SmallButtonExtended value={"IP 추가"} onClick={addIp} />
         <IpDisplayContainer>
-          {ips.map(ip => (
-            <IpDisplay>
+          {ips.map((ip, index) => (
+            <IpDisplay key={index}>
               {ip}{" "}
               {ip && (
                 <IpDeleteButton value={"삭제"} onClick={() => subtractIp(ip)} />

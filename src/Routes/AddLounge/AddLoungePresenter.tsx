@@ -7,9 +7,9 @@ import Input from "../../Components/Input";
 import Loading from "../../Components/Loading";
 import LoungeContainer from "../../Components/LoungeContainer";
 import SmallButton from "../../Components/SmallButton";
+import theme from "../../theme";
 import styled from "../../typed-components";
-import { roomTypeOptions } from "../../types/api";
-import { getBranch } from "../../types/api";
+import { getBranchForUpdateLounge, roomTypeOptions } from "../../types/api";
 
 const Container = styled.div``;
 const ControlContainer = styled.div`
@@ -52,33 +52,6 @@ const ScaleControlInput = styled.div`
   flex-shrink: 1;
 `;
 
-interface IProps {
-  data?: getBranch;
-  loading: boolean;
-  height: number;
-  width: number;
-  xpos: number;
-  ypos: number;
-  showTempRoom: boolean;
-  toggleShowRoom: () => void;
-  topArrowClick: () => void;
-  bottomArrowClick: () => void;
-  rightArrowClick: () => void;
-  leftArrowClick: () => void;
-  onInputChange: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-
-  title: string;
-  roomNumber: number;
-  usable: boolean;
-  onOptionChange: (arg: any) => void;
-  roomTypeDropDownOptions: any;
-  roomType: roomTypeOptions;
-  toggleUsable: () => void;
-  onConfirmClick: () => void;
-}
-
 const ControllerBackContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -110,19 +83,21 @@ const ButtonContainer = styled.div`
 `;
 
 const ConfirmButton = styled(SmallButton)`
-  background-color: ${props => props.theme.blueColor};
+  background-color: ${props => props.theme.lightBlueColor};
 `;
 const CancleButton = styled(SmallButton)`
   background-color: ${props => props.theme.redColor};
 `;
 
 const AddRoomContainer = styled.div`
-  width: 80%;
+  width: 90%;
   max-width: 600px;
   display: flex;
+  flex-direction: column;
   justify-content: flex-end;
   margin-left: auto;
   margin-right: auto;
+  align-items: flex-end;
 `;
 
 const TopInputContainer = styled.div`
@@ -148,6 +123,69 @@ const SwitchTitle = styled.div`
   flex-basis: 130px;
 `;
 
+const RoomDataBackContainer = styled.div`
+  margin-top: 15px;
+  align-self: center;
+  color: white;
+  width: 70%;
+  min-width: 320px;
+  max-width: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+const RoomDataContainer = styled.div`
+  background-color: ${props => props.theme.greenColor};
+  color: white;
+  padding: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  margin: 5px 5px;
+  font-size: 13px;
+  &:hover {
+    cursor: pointer;
+  }
+  width: 150px;
+`;
+const RoomDataRow = styled.div``;
+const RoomDataTitle = styled.div`
+  font-size: 15px;
+  padding-bottom: 5px;
+`;
+const RoomDataContents = styled.div``;
+const RoomDataCol = styled.div`
+  padding: 5px 0;
+`;
+
+interface IProps {
+  data?: getBranchForUpdateLounge;
+  loading: boolean;
+  height: number;
+  width: number;
+  xpos: number;
+  ypos: number;
+  showTempRoom: boolean;
+  toggleShowRoom: () => void;
+  topArrowClick: () => void;
+  bottomArrowClick: () => void;
+  rightArrowClick: () => void;
+  leftArrowClick: () => void;
+  onInputChange: (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+
+  title: string;
+  roomNumber: number;
+  usable: boolean;
+  onOptionChange: (arg: any) => void;
+  roomTypeDropDownOptions: any;
+  roomType: roomTypeOptions;
+  toggleUsable: () => void;
+  onConfirmClick: () => void;
+  onRoomClick: (roomId: number) => void;
+  onRoomHover: (roomId: number) => void;
+  tempRoomId: number;
+}
+
 const AddLoungePresenter: React.SFC<IProps> = ({
   data,
   height,
@@ -169,7 +207,10 @@ const AddLoungePresenter: React.SFC<IProps> = ({
   roomTypeDropDownOptions,
   roomType,
   toggleUsable,
-  onConfirmClick
+  onConfirmClick,
+  onRoomClick,
+  onRoomHover,
+  tempRoomId
 }) => {
   return (
     <Container>
@@ -191,6 +232,10 @@ const AddLoungePresenter: React.SFC<IProps> = ({
                 tempRoomXpos={xpos}
                 tempRoomYpos={ypos}
                 showTempRoom={showTempRoom}
+                onRoomClick={onRoomClick}
+                rooms={data.HeadGetBranch.branch.rooms}
+                onRoomHover={onRoomHover}
+                tempSelRoomId={tempRoomId}
               />
             )}
 
@@ -312,6 +357,45 @@ const AddLoungePresenter: React.SFC<IProps> = ({
           ) : (
             <AddRoomContainer>
               <AddRoomButton value={"열람실 추가"} onClick={toggleShowRoom} />
+              <RoomDataBackContainer>
+                {data &&
+                  data.HeadGetBranch &&
+                  data.HeadGetBranch.branch &&
+                  data.HeadGetBranch.branch.rooms &&
+                  data.HeadGetBranch.branch.rooms.length > 0 &&
+                  data.HeadGetBranch.branch.rooms.map(
+                    room =>
+                      room && (
+                        <RoomDataContainer
+                          key={room.id}
+                          onMouseOver={() => onRoomHover(room.id)}
+                          style={{
+                            backgroundColor: `${
+                              room.id === tempRoomId
+                                ? theme.redColor
+                                : theme.blueColor
+                            }`
+                          }}
+                        >
+                          <RoomDataRow>
+                            <RoomDataTitle>
+                              {room.title} ({room.roomNumber}번 열람실)
+                            </RoomDataTitle>
+                            <RoomDataContents>
+                              <RoomDataRow>
+                                <RoomDataCol>
+                                  열람실 타입 : {room.roomType}
+                                </RoomDataCol>
+                                <RoomDataCol>
+                                  {room.usable ? "이용가능" : "이용불가능"}
+                                </RoomDataCol>
+                              </RoomDataRow>
+                            </RoomDataContents>
+                          </RoomDataRow>
+                        </RoomDataContainer>
+                      )
+                  )}
+              </RoomDataBackContainer>
             </AddRoomContainer>
           )}
         </>

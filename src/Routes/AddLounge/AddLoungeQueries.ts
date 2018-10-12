@@ -1,7 +1,7 @@
 import { gql } from "apollo-boost";
 
 export const GET_BRANCH_FOR_UPDATE_LOUNGE = gql`
-  query getBranch($branchId: Int!) {
+  query getBranchForUpdateLounge($branchId: Int!) {
     HeadGetBranch(branchId: $branchId) {
       ok
       error
@@ -13,6 +13,10 @@ export const GET_BRANCH_FOR_UPDATE_LOUNGE = gql`
           height
           xpos
           ypos
+          title
+          roomNumber
+          roomType
+          usable
         }
       }
     }
@@ -27,8 +31,8 @@ export const HEAD_CREATE_ROOM = gql`
     $roomType: roomTypeOptions!
     $width: Float!
     $height: Float!
-    $xpos: Int!
-    $ypos: Int!
+    $xpos: Float!
+    $ypos: Float!
     $usable: Boolean!
   ) {
     HeadCreateRoom(

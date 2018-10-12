@@ -205,36 +205,40 @@ export interface addBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: getBranch
+// GraphQL query operation: getBranchForUpdateLounge
 // ====================================================
 
-export interface getBranch_HeadGetBranch_branch_rooms {
+export interface getBranchForUpdateLounge_HeadGetBranch_branch_rooms {
   __typename: "Room";
   id: number;
   width: number;
   height: number;
   xpos: number;
   ypos: number;
+  title: string;
+  roomNumber: number;
+  roomType: string;
+  usable: boolean;
 }
 
-export interface getBranch_HeadGetBranch_branch {
+export interface getBranchForUpdateLounge_HeadGetBranch_branch {
   __typename: "Branch";
   loungeImage: string;
-  rooms: (getBranch_HeadGetBranch_branch_rooms | null)[] | null;
+  rooms: (getBranchForUpdateLounge_HeadGetBranch_branch_rooms | null)[] | null;
 }
 
-export interface getBranch_HeadGetBranch {
+export interface getBranchForUpdateLounge_HeadGetBranch {
   __typename: "HeadGetBranchResponse";
   ok: boolean;
   error: string | null;
-  branch: getBranch_HeadGetBranch_branch | null;
+  branch: getBranchForUpdateLounge_HeadGetBranch_branch | null;
 }
 
-export interface getBranch {
-  HeadGetBranch: getBranch_HeadGetBranch;
+export interface getBranchForUpdateLounge {
+  HeadGetBranch: getBranchForUpdateLounge_HeadGetBranch;
 }
 
-export interface getBranchVariables {
+export interface getBranchForUpdateLoungeVariables {
   branchId: number;
 }
 

@@ -3,8 +3,8 @@ import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
 import {
-  getBranch,
-  getBranchVariables,
+  getBranchForUpdateLounge,
+  getBranchForUpdateLoungeVariables,
   headCreateRoom,
   headCreateRoomVariables
 } from "../../types/api";
@@ -35,9 +35,13 @@ interface IState {
   roomNumber: number;
   usable: boolean;
   roomType: roomTypeOptions;
+  tempRoomId: number;
 }
 
-class RoomQuery extends Query<getBranch, getBranchVariables> {}
+class RoomQuery extends Query<
+  getBranchForUpdateLounge,
+  getBranchForUpdateLoungeVariables
+> {}
 class CreateRoomVerification extends Mutation<
   headCreateRoom,
   headCreateRoomVariables
@@ -60,6 +64,7 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
       roomNumber: 0,
       roomType: roomTypeOptions.SINGLE,
       showTempRoom: false,
+      tempRoomId: 0,
       title: "",
       usable: false,
       width: 10,
@@ -78,7 +83,8 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
       title,
       roomNumber,
       usable,
-      roomType
+      roomType,
+      tempRoomId
     } = this.state;
     const { history } = this.props;
     return (
@@ -88,6 +94,7 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
           const { HeadCreateRoom } = data;
           if (HeadCreateRoom.ok) {
             toast.success("열람실이 정상적으로 추가되었습니다");
+            this.toggleShowRoom();
           } else if (HeadCreateRoom.error) {
             toast.error(HeadCreateRoom.error);
           }
@@ -103,6 +110,9 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
           xpos,
           ypos
         }}
+        refetchQueries={[
+          { query: GET_BRANCH_FOR_UPDATE_LOUNGE, variables: { branchId } }
+        ]}
       >
         {enrollRoomFn => {
           this.enrollRoom = enrollRoomFn;
@@ -110,6 +120,14 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
             <RoomQuery
               query={GET_BRANCH_FOR_UPDATE_LOUNGE}
               variables={{ branchId }}
+              onCompleted={data => {
+                if ("HeadGetBranch" in data) {
+                  const { HeadGetBranch } = data;
+                  if (HeadGetBranch.error) {
+                    toast.error(HeadGetBranch.error);
+                  }
+                }
+              }}
             >
               {({ loading, error, data }) => {
                 if (error) {
@@ -143,6 +161,9 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
                     roomType={roomType}
                     toggleUsable={this.toggleUsable}
                     onConfirmClick={this.onConfirmClick}
+                    onRoomClick={this.onRoomClick}
+                    onRoomHover={this.onRoomHover}
+                    tempRoomId={tempRoomId}
                   />
                 );
               }}
@@ -238,11 +259,20 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
       toast.error("열라실 추가 모드가 아닙니다");
     } else if (!title) {
       toast.error("열람실 이름이 입력되지 않았습니다");
+    } else {
+      const data = await this.enrollRoom();
+      console.log(data);
     }
+  };
 
-    const data = await this.enrollRoom();
-
-    console.log(data);
+  public onRoomClick = (roomId: number) => {
+    console.log(roomId);
+  };
+  public onRoomHover = (roomId: number) => {
+    this.setState({
+      ...this.state,
+      tempRoomId: roomId
+    });
   };
 }
 
