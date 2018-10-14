@@ -12,6 +12,7 @@ import ModifyBranch from "../../Routes/ModifyBranch";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import SettingLounge from "../../Routes/SettingLounge";
 import Settings from "../../Routes/Settings";
+import SettingSeats from "../../Routes/SettingSeats";
 import SignUp from "../../Routes/SignUp";
 import SignUpDetail from "../../Routes/SignUpDetail";
 import SocialLogin from "../../Routes/SocialLogin";
@@ -112,6 +113,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/branch-modfiy"}
           exact={true}
           component={ModifyBranch}
+        />,
+        <Route
+          key={6}
+          path={"/seat-setting"}
+          exact={true}
+          component={SettingSeats}
         />
       ]}
 

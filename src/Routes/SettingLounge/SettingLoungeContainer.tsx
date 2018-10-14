@@ -157,6 +157,7 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
                     onRoomHover={this.onRoomHover}
                     tempRoomId={tempRoomId}
                     onRoomHoverOut={this.onRoomHoverOut}
+                    onEditSeatClick={this.onEditSeatClick}
                   />
                 );
               }}
@@ -280,6 +281,17 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
     this.setState({
       ...this.state,
       tempRoomId: 0
+    });
+  };
+
+  public onEditSeatClick = (roomId: number) => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/seat-setting",
+      state: {
+        branchId: this.state.branchId,
+        roomId
+      }
     });
   };
 }

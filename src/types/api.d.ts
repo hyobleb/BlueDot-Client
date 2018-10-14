@@ -212,6 +212,116 @@ export interface getBranchForUpdateLoungeVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: headGetRoom
+// ====================================================
+
+export interface headGetRoom_HeadGetRoom_room_seats {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+  usable: boolean;
+  rotate: number;
+  xpos: number;
+  ypos: number;
+  discard: boolean;
+  nowUsing: boolean;
+  endDatetime: string | null;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+}
+
+export interface headGetRoom_HeadGetRoom_room {
+  __typename: "Room";
+  id: number;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  title: string;
+  roomNumber: number;
+  roomType: string;
+  usable: boolean;
+  seats: (headGetRoom_HeadGetRoom_room_seats | null)[] | null;
+}
+
+export interface headGetRoom_HeadGetRoom {
+  __typename: "HeadGetRoomResponse";
+  ok: boolean;
+  error: string | null;
+  room: headGetRoom_HeadGetRoom_room | null;
+}
+
+export interface headGetRoom {
+  HeadGetRoom: headGetRoom_HeadGetRoom;
+}
+
+export interface headGetRoomVariables {
+  roomId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: managerGetSeat
+// ====================================================
+
+export interface managerGetSeat_ManagerGetSeat_seat_user {
+  __typename: "User";
+  name: string | null;
+}
+
+export interface managerGetSeat_ManagerGetSeat_seat_logs_user {
+  __typename: "User";
+  name: string | null;
+}
+
+export interface managerGetSeat_ManagerGetSeat_seat_logs {
+  __typename: "SeatLog";
+  user: managerGetSeat_ManagerGetSeat_seat_logs_user;
+  startDatetime: string;
+  endDatetime: string;
+  status: string;
+}
+
+export interface managerGetSeat_ManagerGetSeat_seat {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+  usable: boolean;
+  rotate: number;
+  xpos: number;
+  ypos: number;
+  userId: number | null;
+  user: managerGetSeat_ManagerGetSeat_seat_user | null;
+  nowUsing: boolean;
+  startDatetime: string | null;
+  endDatetime: string | null;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+  discard: boolean;
+  logs: (managerGetSeat_ManagerGetSeat_seat_logs | null)[] | null;
+}
+
+export interface managerGetSeat_ManagerGetSeat {
+  __typename: "ManagerGetSeatResponse";
+  ok: boolean;
+  error: string | null;
+  seat: managerGetSeat_ManagerGetSeat_seat | null;
+}
+
+export interface managerGetSeat {
+  ManagerGetSeat: managerGetSeat_ManagerGetSeat;
+}
+
+export interface managerGetSeatVariables {
+  seatId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -365,6 +475,64 @@ export interface headCreateRoomVariables {
   xpos: number;
   ypos: number;
   usable: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headCreateSeat
+// ====================================================
+
+export interface headCreateSeat_HeadCreateSeat {
+  __typename: "HeadCreateSeatResponse";
+  ok: boolean | null;
+  error: string | null;
+}
+
+export interface headCreateSeat {
+  HeadCreateSeat: headCreateSeat_HeadCreateSeat;
+}
+
+export interface headCreateSeatVariables {
+  branchId: number;
+  roomId: number;
+  seatNumber: number;
+  usable: boolean;
+  rotate: number;
+  xpos: number;
+  ypos: number;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headUpdateSeat
+// ====================================================
+
+export interface headUpdateSeat_HeadUpdateSeat {
+  __typename: "HeadUpdateSeatResponse";
+  ok: boolean | null;
+  error: string | null;
+}
+
+export interface headUpdateSeat {
+  HeadUpdateSeat: headUpdateSeat_HeadUpdateSeat;
+}
+
+export interface headUpdateSeatVariables {
+  seatId: number;
+  seatNumber?: number | null;
+  usable?: boolean | null;
+  rotate?: number | null;
+  xpos?: number | null;
+  ypos?: number | null;
+  maleUsable?: boolean | null;
+  femaleUsable?: boolean | null;
+  discard?: boolean | null;
 }
 
 /* tslint:disable */
@@ -540,41 +708,6 @@ export interface headUpdateRoomVariables {
   xpos?: number | null;
   ypos?: number | null;
   usable?: boolean | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: headGetRoom
-// ====================================================
-
-export interface headGetRoom_HeadGetRoom_room {
-  __typename: "Room";
-  id: number;
-  width: number;
-  height: number;
-  xpos: number;
-  ypos: number;
-  title: string;
-  roomNumber: number;
-  roomType: string;
-  usable: boolean;
-}
-
-export interface headGetRoom_HeadGetRoom {
-  __typename: "HeadGetRoomResponse";
-  ok: boolean;
-  error: string | null;
-  room: headGetRoom_HeadGetRoom_room | null;
-}
-
-export interface headGetRoom {
-  HeadGetRoom: headGetRoom_HeadGetRoom;
-}
-
-export interface headGetRoomVariables {
-  roomId: number;
 }
 
 /* tslint:disable */

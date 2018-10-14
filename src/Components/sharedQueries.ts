@@ -99,3 +99,71 @@ export const GET_BRANCH_FOR_UPDATE_LOUNGE = gql`
     }
   }
 `;
+
+export const HEAD_GET_ROOM = gql`
+  query headGetRoom($roomId: Int!) {
+    HeadGetRoom(roomId: $roomId) {
+      ok
+      error
+      room {
+        id
+        width
+        height
+        xpos
+        ypos
+        title
+        roomNumber
+        roomType
+        usable
+        seats {
+          id
+          seatNumber
+          usable
+          rotate
+          xpos
+          ypos
+          discard
+          nowUsing
+          endDatetime
+          maleUsable
+          femaleUsable
+        }
+      }
+    }
+  }
+`;
+
+export const MANAGER_GET_SEAT = gql`
+  query managerGetSeat($seatId: Int!) {
+    ManagerGetSeat(seatId: $seatId) {
+      ok
+      error
+      seat {
+        id
+        seatNumber
+        usable
+        rotate
+        xpos
+        ypos
+        userId
+        user {
+          name
+        }
+        nowUsing
+        startDatetime
+        endDatetime
+        maleUsable
+        femaleUsable
+        discard
+        logs {
+          user {
+            name
+          }
+          startDatetime
+          endDatetime
+          status
+        }
+      }
+    }
+  }
+`;

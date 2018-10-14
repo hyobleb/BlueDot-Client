@@ -28,23 +28,3 @@ export const HEAD_UPDATE_ROOM = gql`
     }
   }
 `;
-
-export const HEAD_GET_ROOM = gql`
-  query headGetRoom($roomId: Int!) {
-    HeadGetRoom(roomId: $roomId) {
-      ok
-      error
-      room {
-        id
-        width
-        height
-        xpos
-        ypos
-        title
-        roomNumber
-        roomType
-        usable
-      }
-    }
-  }
-`;

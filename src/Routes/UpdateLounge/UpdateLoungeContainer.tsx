@@ -2,7 +2,10 @@ import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
-import { GET_BRANCH_FOR_UPDATE_LOUNGE } from "../../Components/sharedQueries";
+import {
+  GET_BRANCH_FOR_UPDATE_LOUNGE,
+  HEAD_GET_ROOM
+} from "../../Components/sharedQueries";
 import { roomTypeOptions } from "../../Components/shareOptions";
 import {
   getBranchForUpdateLounge,
@@ -14,7 +17,7 @@ import {
 } from "../../types/api";
 
 import UpdateLoungePresenter from "./UpdateLoungePresenter";
-import { HEAD_GET_ROOM, HEAD_UPDATE_ROOM } from "./UpdateLoungeQueries";
+import { HEAD_UPDATE_ROOM } from "./UpdateLoungeQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -255,7 +258,14 @@ class UpdateLoungeContainer extends React.Component<IProps, IState> {
     this.updateRoom();
   };
   public onCancleClick = () => {
-    console.log(this.state);
+    const { history } = this.props;
+    const { branchId } = this.state;
+    history.push({
+      pathname: "lounge-setting",
+      state: {
+        branchId
+      }
+    });
   };
 
   public updateFields = (data: {} | headGetRoom) => {

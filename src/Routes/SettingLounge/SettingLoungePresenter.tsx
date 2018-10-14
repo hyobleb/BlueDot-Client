@@ -142,9 +142,6 @@ const RoomDataContainer = styled.div`
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   margin: 5px 5px;
   font-size: 13px;
-  &:hover {
-    cursor: pointer;
-  }
   width: 150px;
 `;
 const RoomDataRow = styled.div``;
@@ -161,6 +158,22 @@ const BackArrowExtended = styled(BackArrow)`
   position: fixed;
   bottom: 20px;
   left: 20px;
+`;
+
+const ModifyLoungeButton = styled(SmallButton)`
+  background-color: ${props => props.theme.orangeColor};
+  width: 130px;
+  &:hover {
+    background-color: ${props => props.theme.greyColor};
+  }
+`;
+
+const EditSeatButton = styled(SmallButton)`
+  background-color: ${props => props.theme.greenColor};
+  width: 130px;
+  &:hover {
+    background-color: ${props => props.theme.greyColor};
+  }
 `;
 
 interface IProps {
@@ -192,6 +205,7 @@ interface IProps {
   onRoomHover: (roomId: number) => void;
   tempRoomId: number;
   onRoomHoverOut: () => void;
+  onEditSeatClick: (roomId: number) => void;
 }
 
 const AddLoungePresenter: React.SFC<IProps> = ({
@@ -219,7 +233,8 @@ const AddLoungePresenter: React.SFC<IProps> = ({
   onRoomClick,
   onRoomHover,
   tempRoomId,
-  onRoomHoverOut
+  onRoomHoverOut,
+  onEditSeatClick
 }) => {
   return (
     <Container>
@@ -380,7 +395,6 @@ const AddLoungePresenter: React.SFC<IProps> = ({
                       room && (
                         <RoomDataContainer
                           key={room.id}
-                          onClick={() => onRoomClick(room.id)}
                           onMouseOver={() => onRoomHover(room.id)}
                           onMouseOut={onRoomHoverOut}
                           style={{
@@ -402,6 +416,18 @@ const AddLoungePresenter: React.SFC<IProps> = ({
                                 </RoomDataCol>
                                 <RoomDataCol>
                                   {room.usable ? "이용가능" : "이용불가능"}
+                                </RoomDataCol>
+                                <RoomDataCol>
+                                  <ModifyLoungeButton
+                                    value={"열람실 수정"}
+                                    onClick={() => onRoomClick(room.id)}
+                                  />
+                                </RoomDataCol>
+                                <RoomDataCol>
+                                  <EditSeatButton
+                                    value={"열람실 좌석"}
+                                    onClick={() => onEditSeatClick(room.id)}
+                                  />
                                 </RoomDataCol>
                               </RoomDataRow>
                             </RoomDataContents>
