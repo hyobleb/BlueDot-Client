@@ -10,6 +10,7 @@ import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import PhoneLogin from "../../Routes/PhoneLogin";
+import SettingCabinets from "../../Routes/SettingCabinets";
 import SettingLounge from "../../Routes/SettingLounge";
 import Settings from "../../Routes/Settings";
 import SettingSeats from "../../Routes/SettingSeats";
@@ -119,6 +120,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/seat-setting"}
           exact={true}
           component={SettingSeats}
+        />,
+        <Route
+          key={7}
+          path={"/cabinets-setting"}
+          exact={true}
+          component={SettingCabinets}
         />
       ]}
 

@@ -1,61 +1,55 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { ApolloConsumer } from "react-apollo";
 import { RouteComponentProps } from "react-router";
-import { toast } from "react-toastify";
+import { searchBranch } from "src/types/api";
 import { SEARCH_BRANCH } from "../../Components/sharedQueries";
-import { searchBranch, searchBranchVariables } from "../../types/api";
 import BranchSettingPresenter from "./BranchSettingPresenter";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
   branchInput: string;
   tempInput: string;
+  data: searchBranch | null;
 }
 
-class BranchSearchQuery extends Query<searchBranch, searchBranchVariables> {}
-
 class BranchSettingContainer extends React.Component<IProps, IState> {
+  public getBranch;
   constructor(props: IProps) {
     super(props);
     this.state = {
       branchInput: props.location.state
         ? props.location.state.addBranchName
         : "",
+      data: null,
       tempInput: ""
     };
   }
 
   public render() {
     return (
-      <BranchSearchQuery
-        query={SEARCH_BRANCH}
-        skip={!Boolean(this.state.branchInput)}
-        variables={{ text: this.state.branchInput }}
-        onCompleted={data => {
-          this.setState({
-            ...this.state,
-            branchInput: "",
-            tempInput: ""
-          });
-        }}
-      >
-        {({ data, error }) => {
-          if (error) {
-            toast.error(error.message);
-          }
+      <ApolloConsumer>
+        {client => {
+          this.getBranch = async () => {
+            const { data } = await client.query({
+              query: SEARCH_BRANCH,
+              variables: { text: this.state.branchInput }
+            });
+            return data;
+          };
+
           return (
             <BranchSettingPresenter
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
-              data={data}
+              data={this.state.data}
               tempInput={this.state.tempInput}
               onBranchModifyClick={this.onBranchModifyClick}
               onLoungeSettingClick={this.onLoungeSettingClick}
-              onIamportSettingClick={this.onIamportSettingClick}
+              onCainbetSettingClick={this.onCainbetSettingClick}
             />
           );
         }}
-      </BranchSearchQuery>
+      </ApolloConsumer>
     );
   }
 
@@ -71,11 +65,12 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
     } as any);
   };
 
-  public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+  public onSubmit: React.FormEventHandler<HTMLFormElement> = async event => {
+    const data = await this.getBranch();
     this.setState({
-      ...this.state,
-      branchInput: this.state.tempInput
+      data
     });
+    console.log(this.state);
     // this.signInMutation();
   };
 
@@ -99,10 +94,10 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onIamportSettingClick = branchId => {
+  public onCainbetSettingClick = branchId => {
     const { history } = this.props;
     history.push({
-      pathname: "/add-iamport",
+      pathname: "/cabinets-setting",
       state: {
         branchId
       }

@@ -452,6 +452,46 @@ export interface updateBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: headGetBranchForCabinetsSetting
+// ====================================================
+
+export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSets {
+  __typename: "CabinetSet";
+  title: string;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  setNumber: number;
+  horizontalNumber: number;
+  verticalNumber: number;
+}
+
+export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch {
+  __typename: "Branch";
+  loungeImage: string;
+  cabinetSets: (headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSets | null)[] | null;
+}
+
+export interface headGetBranchForCabinetsSetting_HeadGetBranch {
+  __typename: "HeadGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: headGetBranchForCabinetsSetting_HeadGetBranch_branch | null;
+}
+
+export interface headGetBranchForCabinetsSetting {
+  HeadGetBranch: headGetBranchForCabinetsSetting_HeadGetBranch;
+}
+
+export interface headGetBranchForCabinetsSettingVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: headCreateRoom
 // ====================================================
 

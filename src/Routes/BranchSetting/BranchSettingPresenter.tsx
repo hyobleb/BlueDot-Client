@@ -114,11 +114,11 @@ interface IProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  data?: searchBranch;
+  data?: searchBranch | null;
   tempInput: string;
-  onBranchModifyClick: (branchId: any) => void;
-  onLoungeSettingClick: (branchId: any) => void;
-  onIamportSettingClick: (branchId: any) => void;
+  onBranchModifyClick: (branchId: number) => void;
+  onLoungeSettingClick: (branchId: number) => void;
+  onCainbetSettingClick: (branchId: number) => void;
 }
 
 const BranchSettingPresenter: React.SFC<IProps> = ({
@@ -127,8 +127,8 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
   data,
   tempInput,
   onLoungeSettingClick,
-  onIamportSettingClick,
-  onBranchModifyClick
+  onBranchModifyClick,
+  onCainbetSettingClick
 }) => (
   <BackContainer>
     <Helmet>
@@ -187,7 +187,10 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
                     value="열람실 및 좌석 세팅"
                     onClick={() => onLoungeSettingClick(branch.id)}
                   />
-                  <CabinetsettingButton value="사물함 세팅" />
+                  <CabinetsettingButton
+                    value="사물함 세팅"
+                    onClick={() => onCainbetSettingClick(branch.id)}
+                  />
                 </ButtonContainer>
               </BranchContainer>
             );
