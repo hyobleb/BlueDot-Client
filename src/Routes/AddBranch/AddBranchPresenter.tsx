@@ -111,6 +111,8 @@ interface IProps {
   tempIp: string;
   addIp: () => void;
   subtractIp: (targetIp: any) => void;
+  cabinetLoungeImgLoading: boolean;
+  cabinetLoungeImg: string;
 }
 
 const AddBranchPresenter: React.SFC<IProps> = ({
@@ -144,7 +146,9 @@ const AddBranchPresenter: React.SFC<IProps> = ({
   tempIp,
   addIp,
   ips,
-  subtractIp
+  subtractIp,
+  cabinetLoungeImgLoading,
+  cabinetLoungeImg
 }) => (
   <BackContainer>
     <Helmet>
@@ -257,6 +261,23 @@ const AddBranchPresenter: React.SFC<IProps> = ({
         <SnapShotContainer>
           {loungeImg && (
             <SnapShot onCloseClick={subtractSnapshot} url={loungeImg} />
+          )}
+        </SnapShotContainer>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>사물함 라운지 이미지 : </InputTitle>
+          <PhotoInput
+            uploading={cabinetLoungeImgLoading}
+            onChange={onInputChange}
+            dispalyText={"사물함 라운지 이미지 올리기"}
+            name={"cabinetLoungeImg"}
+          />
+        </InputLabel>
+
+        <SnapShotContainer>
+          {cabinetLoungeImg && (
+            <SnapShot onCloseClick={subtractSnapshot} url={cabinetLoungeImg} />
           )}
         </SnapShotContainer>
       </Row>

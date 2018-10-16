@@ -6,8 +6,9 @@ export const HEAD_GET_BRANCH_FOR_CABINETS_SETTING = gql`
       ok
       error
       branch {
-        loungeImage
+        cabinetLoungeImage
         cabinetSets {
+          id
           title
           width
           height
@@ -18,6 +19,37 @@ export const HEAD_GET_BRANCH_FOR_CABINETS_SETTING = gql`
           verticalNumber
         }
       }
+    }
+  }
+`;
+
+export const HEAD_CREATE_CABINET_SET = gql`
+  mutation headCreateCabinetSet(
+    $branchId: Int!
+    $title: String!
+    $width: Float!
+    $height: Float!
+    $xpos: Float!
+    $ypos: Float!
+    $setNumber: Int!
+    $horizontalNumber: Int!
+    $verticalNumber: Int!
+    $startNumber: Int!
+  ) {
+    HeadCreateCabinetSet(
+      branchId: $branchId
+      title: $title
+      width: $width
+      height: $height
+      xpos: $xpos
+      ypos: $ypos
+      setNumber: $setNumber
+      horizontalNumber: $horizontalNumber
+      verticalNumber: $verticalNumber
+      startNumber: $startNumber
+    ) {
+      ok
+      error
     }
   }
 `;

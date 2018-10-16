@@ -44,7 +44,7 @@ const LogoContainer = styled.div`
   margin-top: 5vh;
 `;
 const LogoImg = styled.img`
-  width: 100px;
+  width: 140px;
   height: auto;
 `;
 

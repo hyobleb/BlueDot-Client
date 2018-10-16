@@ -346,6 +346,7 @@ export interface addBranchVariables {
   descriptionPosition: string;
   loungeImg: string;
   minimapImg: string;
+  cabinetLoungeImg: string;
   manMax: number;
   womanMax: number;
   directManage: boolean;
@@ -457,6 +458,7 @@ export interface updateBranchVariables {
 
 export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSets {
   __typename: "CabinetSet";
+  id: number;
   title: string;
   width: number;
   height: number;
@@ -469,7 +471,7 @@ export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSet
 
 export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch {
   __typename: "Branch";
-  loungeImage: string;
+  cabinetLoungeImage: string;
   cabinetSets: (headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSets | null)[] | null;
 }
 
@@ -486,6 +488,36 @@ export interface headGetBranchForCabinetsSetting {
 
 export interface headGetBranchForCabinetsSettingVariables {
   branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headCreateCabinetSet
+// ====================================================
+
+export interface headCreateCabinetSet_HeadCreateCabinetSet {
+  __typename: "HeadCreateCabinetSetResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface headCreateCabinetSet {
+  HeadCreateCabinetSet: headCreateCabinetSet_HeadCreateCabinetSet;
+}
+
+export interface headCreateCabinetSetVariables {
+  branchId: number;
+  title: string;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  setNumber: number;
+  horizontalNumber: number;
+  verticalNumber: number;
+  startNumber: number;
 }
 
 /* tslint:disable */

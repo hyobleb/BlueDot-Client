@@ -11,6 +11,7 @@ export const ADD_BRANCH = gql`
     $descriptionPosition: String!
     $loungeImg: String!
     $minimapImg: String!
+    $cabinetLoungeImg: String!
     $manMax: Int!
     $womanMax: Int!
     $directManage: Boolean!
@@ -31,6 +32,7 @@ export const ADD_BRANCH = gql`
       femaleMax: $womanMax
       directManaged: $directManage
       ips: $ips
+      cabinetLoungeImage: $cabinetLoungeImg
     ) {
       ok
       error

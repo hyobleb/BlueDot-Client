@@ -27,6 +27,8 @@ interface IState {
   branchPhotosUploading: boolean;
   loungeImgUploading: boolean;
   minimapImgUploading: boolean;
+  cabinetLoungeImg: string;
+  cabinetLoungeImgLoading: boolean;
   showDaumPostApi: boolean;
   directManage: boolean;
   impId: string;
@@ -45,6 +47,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
     branchNumber: 0,
     branchPhotos: new Array(),
     branchPhotosUploading: false,
+    cabinetLoungeImg: "",
+    cabinetLoungeImgLoading: false,
     descriptionPosition: "",
     detailAddress: "",
     directManage: false,
@@ -86,7 +90,9 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       impKey,
       impSecret,
       ips,
-      tempIp
+      tempIp,
+      cabinetLoungeImg,
+      cabinetLoungeImgLoading
     } = this.state;
     const { history } = this.props;
     return (
@@ -98,9 +104,11 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           branchName,
           branchNumber,
           branchPhotos,
+          cabinetLoungeImg,
           descriptionPosition,
           detailAddress,
           directManage,
+          ips,
           loungeImg,
           manMax,
           minimapImg,
@@ -159,6 +167,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
               tempIp={tempIp}
               addIp={this.addIp}
               subtractIp={this.subtractIp}
+              cabinetLoungeImgLoading={cabinetLoungeImgLoading}
+              cabinetLoungeImg={cabinetLoungeImg}
             />
           );
         }}
@@ -323,9 +333,9 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       toast.error("남자 최대 수용인원수를 입력해주세요");
     } else if (!womanMax) {
       toast.error("여자 최대 수용인원수를 입력해주세요");
+    } else {
+      this.addBranchMutationFn();
     }
-
-    this.addBranchMutationFn();
   };
 
   public addIp = () => {

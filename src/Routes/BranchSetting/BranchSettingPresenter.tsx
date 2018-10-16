@@ -115,7 +115,7 @@ interface IProps {
   ) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   data?: searchBranch | null;
-  tempInput: string;
+  branchInput: string;
   onBranchModifyClick: (branchId: number) => void;
   onLoungeSettingClick: (branchId: number) => void;
   onCainbetSettingClick: (branchId: number) => void;
@@ -125,7 +125,7 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
   onInputChange,
   onSubmit,
   data,
-  tempInput,
+  branchInput,
   onLoungeSettingClick,
   onBranchModifyClick,
   onCainbetSettingClick
@@ -140,8 +140,8 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
         <ExtendForm submitFn={onSubmit}>
           <ExtendInput
             placeholder={"지점명 or 주소를 입력해주세요"}
-            value={tempInput}
-            name={"tempInput"}
+            value={branchInput}
+            name={"branchInput"}
             onChange={onInputChange}
             autoComplete={"off"}
           />

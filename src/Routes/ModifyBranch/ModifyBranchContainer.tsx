@@ -41,7 +41,7 @@ interface IState {
   impKey: string;
   impSecret: string;
   tempIp: string;
-  ips: string[];
+  ips: any;
   isMaleAvailable: boolean;
   isFemaleAvailable: boolean;
   isBoyAvailable: boolean;
@@ -72,7 +72,7 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       impId: "",
       impKey: "",
       impSecret: "",
-      ips: [""],
+      ips: [],
       isBoyAvailable: true,
       isFemaleAvailable: true,
       isGirlAvailable: true,
@@ -377,9 +377,9 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       toast.error("남자 최대 수용인원수를 입력해주세요");
     } else if (!womanMax) {
       toast.error("여자 최대 수용인원수를 입력해주세요");
+    } else {
+      this.addBranchMutationFn();
     }
-
-    this.addBranchMutationFn();
   };
 
   public addIp = () => {
@@ -395,6 +395,7 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           toast.error("해당 아이피는 이미 존재합니다");
           return;
         }
+
         if (ips.length === 1 && ips[0] === "") {
           ips[0] = tempIp;
         } else {

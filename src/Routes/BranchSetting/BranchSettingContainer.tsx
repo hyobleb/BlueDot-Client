@@ -8,7 +8,6 @@ import BranchSettingPresenter from "./BranchSettingPresenter";
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
   branchInput: string;
-  tempInput: string;
   data: searchBranch | null;
 }
 
@@ -20,9 +19,17 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
       branchInput: props.location.state
         ? props.location.state.addBranchName
         : "",
-      data: null,
-      tempInput: ""
+      data: null
     };
+  }
+
+  public async componentDidMount() {
+    if (this.state.branchInput) {
+      const data = await this.getBranch();
+      this.setState({
+        data
+      });
+    }
   }
 
   public render() {
@@ -42,7 +49,7 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
               onInputChange={this.onInputChange}
               onSubmit={this.onSubmit}
               data={this.state.data}
-              tempInput={this.state.tempInput}
+              branchInput={this.state.branchInput}
               onBranchModifyClick={this.onBranchModifyClick}
               onLoungeSettingClick={this.onLoungeSettingClick}
               onCainbetSettingClick={this.onCainbetSettingClick}
