@@ -3,11 +3,11 @@ import BranchSetting from "../../Routes/BranchSetting";
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AddBranch from "../../Routes/AddBranch";
-import EditAccount from "../../Routes/EditAccount";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
+import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import SettingCabinets from "../../Routes/SettingCabinets";
@@ -81,11 +81,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
       <Route path={"/"} exact={true} component={Home} />
       {/* <Route path={"/ride"} exact={true} component={Ride} /> */}
       {/* ride also need id so wen can user '/ride:rideID' but we use method to using memory */}
-      <Route path={"/edit-account"} exact={true} component={EditAccount} />
+      <Route path={"/membership"} exact={true} component={Membership} />
       <Route path={"/settings"} exact={true} component={Settings} />
       {/* <Route path={"/places"} exact={true} component={Places} />
     <Route path={"/add-place"} exact={true} component={AddPlace} />
     <Route path={"/find-address"} exact={true} component={FindAddress} /> */}
+
       {isHead && [
         <Route
           key={1}
