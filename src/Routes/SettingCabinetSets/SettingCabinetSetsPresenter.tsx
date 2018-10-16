@@ -5,9 +5,9 @@ import Input from "src/Components/Input";
 import SmallButton from "src/Components/SmallButton";
 import theme from "src/theme";
 import { headGetBranchForCabinetsSetting } from "src/types/api";
-import styled from "../..//typed-components";
 import CabinetSetsContainer from "../../Components/CabinetSetsContainer";
 import Loading from "../../Components/Loading";
+import styled from "../../typed-components";
 const Container = styled.div``;
 
 const ControlContainer = styled.div`
@@ -140,7 +140,7 @@ interface IProps {
   title: string;
   setNumber: number;
   tempSetId: number;
-  onSetClick: (setId: number) => void;
+  onSetEditClick: (setId: number) => void;
   onSetHover: (setId: number) => void;
   onSetHoverOut: () => void;
   onInputChange: (
@@ -154,7 +154,7 @@ interface IProps {
   startNumber: number;
 }
 
-const SettingCabinetsPresenter: React.SFC<IProps> = ({
+const SettingCabinetSetsPresenter: React.SFC<IProps> = ({
   data,
   loading,
   width,
@@ -165,7 +165,7 @@ const SettingCabinetsPresenter: React.SFC<IProps> = ({
   title,
   setNumber,
   tempSetId,
-  onSetClick,
+  onSetEditClick,
   onSetHover,
   onSetHoverOut,
   onInputChange,
@@ -197,7 +197,7 @@ const SettingCabinetsPresenter: React.SFC<IProps> = ({
               tempCabinetSetXpos={xpos}
               tempCabinetSetYpos={ypos}
               showTempCabinetSet={showTempCabinetSet}
-              onCabinetSetClick={onSetClick}
+              onCabinetSetClick={onSetEditClick}
               onCabinetSetHover={onSetHover}
               tempSelCabinetSetId={tempSetId}
               onCabinetSetHoverOut={onSetHoverOut}
@@ -340,7 +340,7 @@ const SettingCabinetsPresenter: React.SFC<IProps> = ({
                               <RoomDataCol>
                                 <ModifyLoungeButton
                                   value={"세트 수정"}
-                                  onClick={() => onSetClick(cabinetSet.id)}
+                                  onClick={() => onSetEditClick(cabinetSet.id)}
                                 />
                               </RoomDataCol>
                               <RoomDataCol>
@@ -365,4 +365,4 @@ const SettingCabinetsPresenter: React.SFC<IProps> = ({
   </Container>
 );
 
-export default SettingCabinetsPresenter;
+export default SettingCabinetSetsPresenter;

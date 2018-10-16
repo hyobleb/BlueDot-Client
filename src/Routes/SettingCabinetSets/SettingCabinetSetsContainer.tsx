@@ -8,11 +8,11 @@ import {
   headGetBranchForCabinetsSetting,
   headGetBranchForCabinetsSettingVariables
 } from "src/types/api";
-import SettingCabinetsPresenter from "./SettingCabinetsPresenter";
+import SettingCabinetsPresenter from "./SettingCabinetSetsPresenter";
 import {
   HEAD_CREATE_CABINET_SET,
   HEAD_GET_BRANCH_FOR_CABINETS_SETTING
-} from "./SettingCabinetsQueries";
+} from "./SettingCabinetSetsQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -40,7 +40,7 @@ class CreateSetMutation extends Mutation<
   headCreateCabinetSetVariables
 > {}
 
-class SettingCabinetsContainer extends React.Component<IProps, IState> {
+class SettingCabinetSetsContainer extends React.Component<IProps, IState> {
   public createSetFn: MutationFn;
   constructor(props: IProps) {
     super(props);
@@ -131,7 +131,6 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
               variables={{ branchId }}
             >
               {({ loading, data }) => {
-                console.log(data);
                 return (
                   <SettingCabinetsPresenter
                     loading={loading}
@@ -144,7 +143,7 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
                     title={title}
                     setNumber={setNumber}
                     tempSetId={tempSetId}
-                    onSetClick={this.onSetClick}
+                    onSetEditClick={this.onSetEditClick}
                     onSetHover={this.onSetHover}
                     onSetHoverOut={this.onSetHoverOut}
                     onInputChange={this.onInputChange}
@@ -164,33 +163,29 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
     );
   }
 
-  public onSetClick = (setId: number) => {
-    // const { history } = this.props;
-    // const { branchId } = this.state;
-    // history.push({
-    //   pathname: "/lounge-modify",
-    //   state: {
-    //     branchId,
-    //     setId
-    //   }
-    // });
-    console.log("onSetClick", setId);
+  public onSetEditClick = (setId: number) => {
+    const { history } = this.props;
+    const { branchId } = this.state;
+    history.push({
+      pathname: "/set-modify",
+      state: {
+        branchId,
+        setId
+      }
+    });
   };
   public onSetHover = (setId: number) => {
-    // this.setState({
-    //   ...this.state,
-    //   tempSetId: setId
-    // });
-
-    console.log("onSetHover", setId);
+    this.setState({
+      ...this.state,
+      tempSetId: setId
+    });
   };
 
   public onSetHoverOut = () => {
-    // this.setState({
-    //   ...this.state,
-    //   tempSetId: 0
-    // });
-    console.log("onSetHoverOut");
+    this.setState({
+      ...this.state,
+      tempSetId: 0
+    });
   };
 
   public onInputChange: React.ChangeEventHandler<
@@ -260,4 +255,4 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
   };
 }
 
-export default SettingCabinetsContainer;
+export default SettingCabinetSetsContainer;

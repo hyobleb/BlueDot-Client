@@ -322,6 +322,38 @@ export interface managerGetSeatVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getCabinetSet
+// ====================================================
+
+export interface getCabinetSet_GetCabinetSet_cabinetSet {
+  __typename: "CabinetSet";
+  title: string;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  setNumber: number;
+}
+
+export interface getCabinetSet_GetCabinetSet {
+  __typename: "GetCabinetSetResponse";
+  ok: boolean;
+  error: string | null;
+  cabinetSet: getCabinetSet_GetCabinetSet_cabinetSet | null;
+}
+
+export interface getCabinetSet {
+  GetCabinetSet: getCabinetSet_GetCabinetSet;
+}
+
+export interface getCabinetSetVariables {
+  cabinetSetId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -751,6 +783,33 @@ export interface facebookConnectVariables {
   name: string;
   email?: string | null;
   fbId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headUpdateCabinetSet
+// ====================================================
+
+export interface headUpdateCabinetSet_HeadUpdateCabinetSet {
+  __typename: "HeadUpdateCabinetSetResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface headUpdateCabinetSet {
+  HeadUpdateCabinetSet: headUpdateCabinetSet_HeadUpdateCabinetSet;
+}
+
+export interface headUpdateCabinetSetVariables {
+  cabinetSetId: number;
+  title?: string | null;
+  width?: number | null;
+  height?: number | null;
+  xpos?: number | null;
+  ypos?: number | null;
+  setNumber?: number | null;
 }
 
 /* tslint:disable */

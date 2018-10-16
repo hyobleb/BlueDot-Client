@@ -167,3 +167,20 @@ export const MANAGER_GET_SEAT = gql`
     }
   }
 `;
+
+export const GET_CABINET_SET = gql`
+  query getCabinetSet($cabinetSetId: Int!) {
+    GetCabinetSet(cabinetSetId: $cabinetSetId) {
+      ok
+      error
+      cabinetSet {
+        title
+        width
+        height
+        xpos
+        ypos
+        setNumber
+      }
+    }
+  }
+`;

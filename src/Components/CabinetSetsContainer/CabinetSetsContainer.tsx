@@ -38,15 +38,20 @@ const ExsitingCabinetSetTransparent = styled(CainbetSetTransparent)`
 interface IProps {
   imgUrl: string;
   showTempCabinetSet: boolean;
-  tempCabinetSetHegiht: number;
-  tempCabinetSetWidth: number;
-  tempCabinetSetXpos: number;
-  tempCabinetSetYpos: number;
-  onCabinetSetClick?: (roomId: number) => void;
-  onCabinetSetHover?: (roomdId: number) => void;
+  tempCabinetSetHegiht?: number;
+  tempCabinetSetWidth?: number;
+  tempCabinetSetXpos?: number;
+  tempCabinetSetYpos?: number;
+  onCabinetSetClick?: (setId: number) => void;
+  onCabinetSetHover?: (setId: number) => void;
   cabinetSets?: any;
   tempSelCabinetSetId?: number;
   onCabinetSetHoverOut?: () => void;
+  targetCabinetSetId?: number;
+  targetCabinetSetXpos?: number;
+  targetCabinetSetYpos?: number;
+  targetCabinetSetWidth?: number;
+  targetCainbetSetHeight?: number;
 }
 
 interface ITRProps {
@@ -57,18 +62,18 @@ interface ITRProps {
 }
 
 interface IRProps {
-  roomHeight: number;
-  roomWidth: number;
-  roomXpos: number;
-  roomYpos: number;
-  roomId: number;
-  onCabinetSetClick: (roomId: number) => void;
-  onCabinetSetHover: (roomId: number) => void;
+  setHeight: number;
+  setWidth: number;
+  setXpos: number;
+  setYpos: number;
+  setId: number;
+  onCabinetSetClick: (setId: number) => void;
+  onCabinetSetHover: (setId: number) => void;
   tempSelected: boolean;
   onCabinetSetHoverOut: () => void;
 }
 
-const TempRoom: React.SFC<ITRProps> = ({
+const TempCabinetSet: React.SFC<ITRProps> = ({
   tempCabinetSetHegiht,
   tempCabinetSetWidth,
   tempCabinetSetXpos,
@@ -83,12 +88,12 @@ const TempRoom: React.SFC<ITRProps> = ({
   return <CainbetSetTransparent style={style} />;
 };
 
-const Room: React.SFC<IRProps> = ({
-  roomHeight,
-  roomWidth,
-  roomXpos,
-  roomYpos,
-  roomId,
+const CabinetSet: React.SFC<IRProps> = ({
+  setHeight,
+  setWidth,
+  setXpos,
+  setYpos,
+  setId,
   onCabinetSetClick,
   onCabinetSetHover,
   tempSelected = false,
@@ -96,16 +101,16 @@ const Room: React.SFC<IRProps> = ({
 }) => {
   const style = {
     backgroundColor: `${tempSelected ? theme.redColor : theme.lightBlueColor}`,
-    height: `${roomHeight}%`,
-    left: `${roomXpos}%`,
-    top: `${roomYpos}%`,
-    width: `${roomWidth}%`
+    height: `${setHeight}%`,
+    left: `${setXpos}%`,
+    top: `${setYpos}%`,
+    width: `${setWidth}%`
   };
   return (
     <ExsitingCabinetSetTransparent
       style={style}
-      onClick={() => onCabinetSetClick(roomId)}
-      onMouseOver={() => onCabinetSetHover(roomId)}
+      onClick={() => onCabinetSetClick(setId)}
+      onMouseOver={() => onCabinetSetHover(setId)}
       onMouseOut={onCabinetSetHoverOut}
     />
   );
@@ -113,7 +118,7 @@ const Room: React.SFC<IRProps> = ({
 
 const CabinetSetsContainer: React.SFC<IProps> = ({
   imgUrl,
-  showTempCabinetSet,
+  showTempCabinetSet = false,
   tempCabinetSetWidth,
   tempCabinetSetHegiht,
   tempCabinetSetXpos,
@@ -122,31 +127,55 @@ const CabinetSetsContainer: React.SFC<IProps> = ({
   onCabinetSetClick = () => null,
   onCabinetSetHover = () => null,
   tempSelCabinetSetId = null,
-  onCabinetSetHoverOut = () => null
+  onCabinetSetHoverOut = () => null,
+  targetCabinetSetXpos,
+  targetCabinetSetYpos,
+  targetCabinetSetWidth,
+  targetCainbetSetHeight
 }) => (
   <ImgContainer>
     <LoungeImg src={imgUrl} />
-    {showTempCabinetSet && (
-      <TempRoom
-        tempCabinetSetWidth={tempCabinetSetWidth}
-        tempCabinetSetHegiht={tempCabinetSetHegiht}
-        tempCabinetSetXpos={tempCabinetSetXpos}
-        tempCabinetSetYpos={tempCabinetSetYpos}
-      />
-    )}
+    {showTempCabinetSet &&
+      tempCabinetSetWidth &&
+      tempCabinetSetHegiht &&
+      tempCabinetSetXpos &&
+      tempCabinetSetYpos && (
+        <TempCabinetSet
+          tempCabinetSetWidth={tempCabinetSetWidth}
+          tempCabinetSetHegiht={tempCabinetSetHegiht}
+          tempCabinetSetXpos={tempCabinetSetXpos}
+          tempCabinetSetYpos={tempCabinetSetYpos}
+        />
+      )}
     {cabinetSets &&
       cabinetSets.length > 0 &&
-      cabinetSets.map(room => (
-        <Room
-          key={room.id}
-          roomHeight={room.height}
-          roomWidth={room.width}
-          roomXpos={room.xpos}
-          roomYpos={room.ypos}
-          roomId={room.id}
+      cabinetSets.map(cabinetSet => (
+        <CabinetSet
+          key={cabinetSet.id}
+          setHeight={
+            cabinetSet.id === tempSelCabinetSetId
+              ? targetCainbetSetHeight
+              : cabinetSet.height
+          }
+          setWidth={
+            cabinetSet.id === tempSelCabinetSetId
+              ? targetCabinetSetWidth
+              : cabinetSet.width
+          }
+          setXpos={
+            cabinetSet.id === tempSelCabinetSetId
+              ? targetCabinetSetXpos
+              : cabinetSet.xpos
+          }
+          setYpos={
+            cabinetSet.id === tempSelCabinetSetId
+              ? targetCabinetSetYpos
+              : cabinetSet.ypos
+          }
+          setId={cabinetSet.id}
           onCabinetSetClick={onCabinetSetClick}
           onCabinetSetHover={onCabinetSetHover}
-          tempSelected={room.id === tempSelCabinetSetId}
+          tempSelected={cabinetSet.id === tempSelCabinetSetId}
           onCabinetSetHoverOut={onCabinetSetHoverOut}
         />
       ))}

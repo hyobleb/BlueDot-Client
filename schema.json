@@ -6819,7 +6819,7 @@
                 "defaultValue": null
               },
               {
-                "name": "order",
+                "name": "setNumber",
                 "description": "",
                 "type": {
                   "kind": "SCALAR",

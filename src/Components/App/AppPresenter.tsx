@@ -10,13 +10,14 @@ import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import PhoneLogin from "../../Routes/PhoneLogin";
-import SettingCabinets from "../../Routes/SettingCabinets";
+import SettingCabinetSets from "../../Routes/SettingCabinetSets";
 import SettingLounge from "../../Routes/SettingLounge";
 import Settings from "../../Routes/Settings";
 import SettingSeats from "../../Routes/SettingSeats";
 import SignUp from "../../Routes/SignUp";
 import SignUpDetail from "../../Routes/SignUpDetail";
 import SocialLogin from "../../Routes/SocialLogin";
+import UpdateCabinetSet from "../../Routes/UpdateCabinetSet";
 import UpdateLounge from "../../Routes/UpdateLounge";
 
 interface IProps {
@@ -123,9 +124,15 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         />,
         <Route
           key={7}
-          path={"/cabinets-setting"}
+          path={"/set-setting"}
           exact={true}
-          component={SettingCabinets}
+          component={SettingCabinetSets}
+        />,
+        <Route
+          key={8}
+          path={"/set-modify"}
+          exact={true}
+          component={UpdateCabinetSet}
         />
       ]}
 

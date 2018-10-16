@@ -104,7 +104,7 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
   public onCainbetSettingClick = branchId => {
     const { history } = this.props;
     history.push({
-      pathname: "/cabinets-setting",
+      pathname: "/set-setting",
       state: {
         branchId
       }
