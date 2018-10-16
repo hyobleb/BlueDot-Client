@@ -485,6 +485,55 @@ export interface updateBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getCabinets
+// ====================================================
+
+export interface getCabinets_GetCabinetSet_cabinetSet_cabinets {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+  xpos: number;
+  ypos: number;
+  usable: boolean;
+  nowUsing: boolean;
+  status: string | null;
+  reservedDatetime: string | null;
+  startDatetime: string | null;
+  endDatetime: string | null;
+}
+
+export interface getCabinets_GetCabinetSet_cabinetSet {
+  __typename: "CabinetSet";
+  title: string;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  setNumber: number;
+  horizontalNumber: number;
+  verticalNumber: number;
+  cabinets: (getCabinets_GetCabinetSet_cabinetSet_cabinets | null)[] | null;
+}
+
+export interface getCabinets_GetCabinetSet {
+  __typename: "GetCabinetSetResponse";
+  ok: boolean;
+  error: string | null;
+  cabinetSet: getCabinets_GetCabinetSet_cabinetSet | null;
+}
+
+export interface getCabinets {
+  GetCabinetSet: getCabinets_GetCabinetSet;
+}
+
+export interface getCabinetsVariables {
+  cabinetSetId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: headGetBranchForCabinetsSetting
 // ====================================================
 

@@ -301,7 +301,8 @@ export default class SignUpDetailContainer extends React.Component<
       birthMonth: 1,
       birthYear: 1989,
       gender: "MALE",
-      name: "방문자"
+      name: "방문자",
+      unique_key: "1234"
     });
 
     toast.success("본인인증에 성공했습니다");

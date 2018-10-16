@@ -251,7 +251,14 @@ class SettingCabinetSetsContainer extends React.Component<IProps, IState> {
   };
 
   public onEditCabinetSetClick = (setId: number) => {
-    console.log(setId);
+    const { history } = this.props;
+
+    history.push({
+      pathname: "/set-cabinets",
+      state: {
+        setId
+      }
+    });
   };
 }
 

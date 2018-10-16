@@ -10,6 +10,7 @@ import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import PhoneLogin from "../../Routes/PhoneLogin";
+import SettingCabinets from "../../Routes/SettingCabinets";
 import SettingCabinetSets from "../../Routes/SettingCabinetSets";
 import SettingLounge from "../../Routes/SettingLounge";
 import Settings from "../../Routes/Settings";
@@ -133,6 +134,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/set-modify"}
           exact={true}
           component={UpdateCabinetSet}
+        />,
+        <Route
+          key={9}
+          path={"/set-cabinets"}
+          exact={true}
+          component={SettingCabinets}
         />
       ]}
 
