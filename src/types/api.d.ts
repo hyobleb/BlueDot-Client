@@ -126,6 +126,17 @@ export interface certificateUserVariables {
 // GraphQL query operation: headGetBranch
 // ====================================================
 
+export interface headGetBranch_HeadGetBranch_branch_products {
+  __typename: "Product";
+  id: number;
+  title: string;
+  amount: number;
+  target: string;
+  hours: number;
+  available: boolean;
+  discard: boolean;
+}
+
 export interface headGetBranch_HeadGetBranch_branch {
   __typename: "Branch";
   id: number;
@@ -150,6 +161,7 @@ export interface headGetBranch_HeadGetBranch_branch {
   womanAcceptable: boolean | null;
   boyAcceptable: boolean | null;
   girlAcceptable: boolean | null;
+  products: (headGetBranch_HeadGetBranch_branch_products | null)[] | null;
 }
 
 export interface headGetBranch_HeadGetBranch {

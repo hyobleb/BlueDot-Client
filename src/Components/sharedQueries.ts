@@ -72,6 +72,15 @@ export const HEAD_GET_BRANCH = gql`
         womanAcceptable
         boyAcceptable
         girlAcceptable
+        products {
+          id
+          title
+          amount
+          target
+          hours
+          available
+          discard
+        }
       }
     }
   }

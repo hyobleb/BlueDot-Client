@@ -1515,6 +1515,22 @@
             "deprecationReason": null
           },
           {
+            "name": "discard",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "requestMemberships",
             "description": "",
             "args": [],
@@ -7632,6 +7648,16 @@
               },
               {
                 "name": "available",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "discard",
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
