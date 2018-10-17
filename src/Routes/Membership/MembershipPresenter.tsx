@@ -2,6 +2,7 @@ import React from "react";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
+import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 
 const Container = styled.div``;
 const HeadSection = styled.div`
@@ -56,12 +57,22 @@ interface IProps {
   name: string;
   profilePhoto: string;
   profileLoading: boolean;
+  popUpShow: boolean;
+  membershipPopUpShow: () => void;
+  cabinetPopUpShow: () => void;
+  popUpCloseFunc: () => void;
+  onBranchClick: (branchId: number) => void;
 }
 
 const MembershipPresenter: React.SFC<IProps> = ({
   name,
   profilePhoto,
-  profileLoading
+  profileLoading,
+  popUpShow,
+  membershipPopUpShow,
+  cabinetPopUpShow,
+  popUpCloseFunc,
+  onBranchClick
 }) => (
   <Container>
     {profileLoading ? (
@@ -90,7 +101,10 @@ const MembershipPresenter: React.SFC<IProps> = ({
             </NoMembershipContainer>
           </ContentContainer>
           <ButtonContainer>
-            <EnrollButton value={"등록하러 가기"} />
+            <EnrollButton
+              value={"등록하러 가기"}
+              onClick={membershipPopUpShow}
+            />
           </ButtonContainer>
         </Section>
         <Section>
@@ -100,10 +114,19 @@ const MembershipPresenter: React.SFC<IProps> = ({
             </NoMembershipContainer>
           </ContentContainer>
           <ButtonContainer>
-            <EnrollButton value={"등록하러 가기"} />
+            <EnrollButton value={"등록하러 가기"} onClick={cabinetPopUpShow} />
           </ButtonContainer>
-        </Section>{" "}
+        </Section>
       </>
+    )}
+
+    {popUpShow ? (
+      <BranchSearchPopUp
+        closeFunc={popUpCloseFunc}
+        onBranchClick={onBranchClick}
+      />
+    ) : (
+      ""
     )}
   </Container>
 );

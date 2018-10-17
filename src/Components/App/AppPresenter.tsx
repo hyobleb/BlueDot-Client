@@ -3,6 +3,7 @@ import BranchSetting from "../../Routes/BranchSetting";
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AddBranch from "../../Routes/AddBranch";
+import AddProduct from "../../Routes/AddProduct";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
@@ -10,9 +11,11 @@ import Login from "../../Routes/Login";
 import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import PhoneLogin from "../../Routes/PhoneLogin";
+import ReqMembership from "../../Routes/ReqMembership";
 import SettingCabinets from "../../Routes/SettingCabinets";
 import SettingCabinetSets from "../../Routes/SettingCabinetSets";
 import SettingLounge from "../../Routes/SettingLounge";
+import SettingProduct from "../../Routes/SettingProduct";
 import Settings from "../../Routes/Settings";
 import SettingSeats from "../../Routes/SettingSeats";
 import SignUp from "../../Routes/SignUp";
@@ -79,13 +82,14 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
   return (
     <Switch>
       <Route path={"/"} exact={true} component={Home} />
-      {/* <Route path={"/ride"} exact={true} component={Ride} /> */}
-      {/* ride also need id so wen can user '/ride:rideID' but we use method to using memory */}
       <Route path={"/membership"} exact={true} component={Membership} />
+      <Route
+        path={"/request-membership"}
+        exact={true}
+        component={ReqMembership}
+      />
+
       <Route path={"/settings"} exact={true} component={Settings} />
-      {/* <Route path={"/places"} exact={true} component={Places} />
-    <Route path={"/add-place"} exact={true} component={AddPlace} />
-    <Route path={"/find-address"} exact={true} component={FindAddress} /> */}
 
       {isHead && [
         <Route
@@ -141,6 +145,18 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/set-cabinets"}
           exact={true}
           component={SettingCabinets}
+        />,
+        <Route
+          key={10}
+          path={"/setting-product"}
+          exact={true}
+          component={SettingProduct}
+        />,
+        <Route
+          key={11}
+          path={"/add-product"}
+          exact={true}
+          component={AddProduct}
         />
       ]}
 

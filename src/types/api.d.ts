@@ -389,6 +389,32 @@ export interface addBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: addProduct
+// ====================================================
+
+export interface addProduct_HeadCreateProduct {
+  __typename: "HeadCreateProductResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface addProduct {
+  HeadCreateProduct: addProduct_HeadCreateProduct;
+}
+
+export interface addProductVariables {
+  title: string;
+  amount: number;
+  target: membershipOptions;
+  hours: number;
+  branchId: number;
+  available: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: updateProfile
 // ====================================================
 
@@ -906,6 +932,11 @@ export enum SearchType {
 export enum UserIdSignUpGender {
   FEMALE = "FEMALE",
   MALE = "MALE",
+}
+
+export enum membershipOptions {
+  CABINET = "CABINET",
+  MEMBERSHIP = "MEMBERSHIP",
 }
 
 export enum roomTypeOptions {

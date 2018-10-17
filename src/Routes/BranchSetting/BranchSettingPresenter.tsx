@@ -78,8 +78,15 @@ const RoomSettingButton = styled(SmallButton)`
   margin: 5px 5px;
 `;
 
-const CabinetsettingButton = styled(SmallButton)`
+const CabinetSettingButton = styled(SmallButton)`
   background-color: ${props => props.theme.greenColor};
+  font-size: 12px;
+
+  margin: 5px 5px;
+`;
+
+const ProductSettingButton = styled(SmallButton)`
+  background-color: ${props => props.theme.greyColor};
   font-size: 12px;
 
   margin: 5px 5px;
@@ -119,6 +126,7 @@ interface IProps {
   onBranchModifyClick: (branchId: number) => void;
   onLoungeSettingClick: (branchId: number) => void;
   onCainbetSettingClick: (branchId: number) => void;
+  onProductSettingClick: (branchId: number) => void;
 }
 
 const BranchSettingPresenter: React.SFC<IProps> = ({
@@ -128,7 +136,8 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
   branchInput,
   onLoungeSettingClick,
   onBranchModifyClick,
-  onCainbetSettingClick
+  onCainbetSettingClick,
+  onProductSettingClick
 }) => (
   <BackContainer>
     <Helmet>
@@ -187,9 +196,13 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
                     value="열람실 및 좌석 세팅"
                     onClick={() => onLoungeSettingClick(branch.id)}
                   />
-                  <CabinetsettingButton
+                  <CabinetSettingButton
                     value="사물함 세팅"
                     onClick={() => onCainbetSettingClick(branch.id)}
+                  />
+                  <ProductSettingButton
+                    value="상품 세팅"
+                    onClick={() => onProductSettingClick(branch.id)}
                   />
                 </ButtonContainer>
               </BranchContainer>

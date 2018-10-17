@@ -53,6 +53,7 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
               onBranchModifyClick={this.onBranchModifyClick}
               onLoungeSettingClick={this.onLoungeSettingClick}
               onCainbetSettingClick={this.onCainbetSettingClick}
+              onProductSettingClick={this.onProductSettingClick}
             />
           );
         }}
@@ -105,6 +106,16 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
     const { history } = this.props;
     history.push({
       pathname: "/set-setting",
+      state: {
+        branchId
+      }
+    });
+  };
+
+  public onProductSettingClick = (branchId: number) => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/setting-product",
       state: {
         branchId
       }

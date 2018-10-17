@@ -9,6 +9,9 @@ interface IProps extends RouteComponentProps<any> {}
 interface IState {
   name: string;
   profilePhoto: string;
+  popUpShow: boolean;
+  popUpCloseFunc: () => void;
+  onBranchClick: (branchId: number) => void;
 }
 
 class GetProfileQuery extends Query<userProfile> {}
@@ -18,12 +21,25 @@ class MembershipContainer extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       name: "",
+      onBranchClick: branchId => {
+        return;
+      },
+      popUpCloseFunc: () => {
+        return;
+      },
+      popUpShow: false,
       profilePhoto: ""
     };
   }
 
   public render() {
-    const { name, profilePhoto } = this.state;
+    const {
+      name,
+      profilePhoto,
+      popUpShow,
+      popUpCloseFunc,
+      onBranchClick
+    } = this.state;
     return (
       <GetProfileQuery
         query={USER_PROFILE}
@@ -35,6 +51,11 @@ class MembershipContainer extends React.Component<IProps, IState> {
             name={name}
             profilePhoto={profilePhoto}
             profileLoading={profileLoading}
+            popUpShow={popUpShow}
+            membershipPopUpShow={this.membershipPopUpShow}
+            cabinetPopUpShow={this.cabinetPopUpShow}
+            popUpCloseFunc={popUpCloseFunc}
+            onBranchClick={onBranchClick}
           />
         )}
       </GetProfileQuery>
@@ -54,6 +75,52 @@ class MembershipContainer extends React.Component<IProps, IState> {
         } as any);
       }
     }
+  };
+
+  public membershipPopUpShow = () => {
+    console.log("membership popup");
+
+    this.setState({
+      onBranchClick: this.onMembershipBranchClick,
+      popUpCloseFunc: this.membershipPopUpNoShow,
+      popUpShow: true
+    });
+  };
+
+  public membershipPopUpNoShow = () => {
+    this.setState({
+      popUpShow: false
+    });
+  };
+
+  public cabinetPopUpShow = () => {
+    console.log("cabinet membership popup");
+
+    this.setState({
+      onBranchClick: this.onCabinetBranchClick,
+      popUpCloseFunc: this.cabinetPopUpNoShow,
+      popUpShow: true
+    });
+  };
+
+  public cabinetPopUpNoShow = () => {
+    this.setState({
+      popUpShow: false
+    });
+  };
+
+  public onMembershipBranchClick = branchId => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/request-membership",
+      state: {
+        branchId
+      }
+    });
+  };
+
+  public onCabinetBranchClick = branchId => {
+    console.log(branchId);
   };
 }
 
