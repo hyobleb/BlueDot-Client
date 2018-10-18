@@ -523,6 +523,65 @@ export interface updateBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: headModfiyProduct
+// ====================================================
+
+export interface headModfiyProduct_HeadModifyProduct {
+  __typename: "HeadModifyProductResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface headModfiyProduct {
+  HeadModifyProduct: headModfiyProduct_HeadModifyProduct;
+}
+
+export interface headModfiyProductVariables {
+  productId: number;
+  title?: string | null;
+  amount?: number | null;
+  target?: membershipOptions | null;
+  hours?: number | null;
+  available?: boolean | null;
+  discard?: boolean | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: headGetProduct
+// ====================================================
+
+export interface headGetProduct_HeadGetProduct_product {
+  __typename: "Product";
+  id: number;
+  title: string;
+  amount: number;
+  target: string;
+  hours: number;
+  available: boolean;
+}
+
+export interface headGetProduct_HeadGetProduct {
+  __typename: "HeadGetProductResponse";
+  ok: boolean;
+  error: string | null;
+  product: headGetProduct_HeadGetProduct_product | null;
+}
+
+export interface headGetProduct {
+  HeadGetProduct: headGetProduct_HeadGetProduct;
+}
+
+export interface headGetProductVariables {
+  productId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: getCabinets
 // ====================================================
 
@@ -666,6 +725,27 @@ export interface headCreateRoomVariables {
   xpos: number;
   ypos: number;
   usable: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headRemoveProduct
+// ====================================================
+
+export interface headRemoveProduct_HeadModifyProduct {
+  __typename: "HeadModifyProductResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface headRemoveProduct {
+  HeadModifyProduct: headRemoveProduct_HeadModifyProduct;
+}
+
+export interface headRemoveProductVariables {
+  productId: number;
 }
 
 /* tslint:disable */

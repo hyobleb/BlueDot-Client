@@ -1,10 +1,30 @@
 import React from "react";
-import styled from "../../typed-components";
+import styled from "src/typed-components";
+import SmallButton from "../SmallButton";
 
-interface IProps {
-  closeFunc: any;
-  children?: React.SFC;
-}
+const MessageContainer = styled.div`
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const ButtonContainer = styled.div`
+  height: 20%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Button = styled(SmallButton)`
+  margin: 3px;
+`;
+const ConfirmButton = styled(Button)`
+  background-color: ${props => props.theme.lightBlueColor};
+`;
+const CancelButton = styled(Button)`
+  background-color: ${props => props.theme.redColor};
+`;
+
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -19,7 +39,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   width: 90%;
-  height: 60%;
+  height: 40%;
   z-index: 9;
   padding: 20px;
 `;
@@ -44,14 +64,29 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
+interface IProps {
+  closeFunc: any;
+  message: string;
+  onCancelClick: () => void;
+  onOkClick: () => void;
+}
+
 const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   closeFunc,
-  children
+  message,
+  onCancelClick,
+  onOkClick
 }) => {
   return (
     <Container>
       <HeadContainer />
-      <BodyContainer>{children}</BodyContainer>
+      <BodyContainer>
+        <MessageContainer>{message}</MessageContainer>
+        <ButtonContainer>
+          <ConfirmButton value={"확인"} onClick={onOkClick} />
+          <CancelButton value={"취소"} onClick={onCancelClick} />
+        </ButtonContainer>
+      </BodyContainer>
       <CloseButton onClick={closeFunc}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

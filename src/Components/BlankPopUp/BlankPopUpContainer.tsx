@@ -3,6 +3,7 @@ import BlankPopUpPresenter from "./BlankPopUpPresenter";
 
 interface IProps {
   closeFunc: any;
+  childeComponent?: React.StatelessComponent<{}>;
 }
 
 class BranchSearchPopUpContainer extends React.Component<IProps> {
@@ -11,8 +12,10 @@ class BranchSearchPopUpContainer extends React.Component<IProps> {
   }
 
   public render() {
-    const { closeFunc } = this.props;
-    return <BlankPopUpPresenter closeFunc={closeFunc} />;
+    const { closeFunc, childeComponent } = this.props;
+    return (
+      <BlankPopUpPresenter closeFunc={closeFunc} children={childeComponent} />
+    );
   }
 }
 

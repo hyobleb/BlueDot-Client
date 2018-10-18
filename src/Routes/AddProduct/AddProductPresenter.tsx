@@ -7,7 +7,12 @@ import { productTypeDropDownOptions } from "src/Components/shareOptions";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 
-const BackContainer = styled.div``;
+const BackContainer = styled.div`
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const Container = styled.div`
   width: 90%;
   max-width: 600px;

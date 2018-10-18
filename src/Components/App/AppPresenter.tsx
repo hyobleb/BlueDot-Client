@@ -10,6 +10,7 @@ import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
 import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
+import ModifyProduct from "../../Routes/ModifyProduct";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import ReqMembership from "../../Routes/ReqMembership";
 import SettingCabinets from "../../Routes/SettingCabinets";
@@ -157,6 +158,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/add-product"}
           exact={true}
           component={AddProduct}
+        />,
+        <Route
+          key={12}
+          path={"/modify-product"}
+          exact={true}
+          component={ModifyProduct}
         />
       ]}
 

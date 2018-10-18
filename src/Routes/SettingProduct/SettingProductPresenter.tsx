@@ -1,8 +1,11 @@
 import React from "react";
+import Helmet from "react-helmet";
+import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import { headGetBranch } from "src/types/api";
+import AlertPopUp from "../../Components/AlertPopUp";
 
 const BackContainer = styled.div``;
 const Container = styled.div`
@@ -69,22 +72,42 @@ const DiscardButton = styled(Button)`
   background-color: ${props => props.theme.redColor};
 `;
 
+const BackArrowExtended = styled(BackArrow)`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+`;
+
 interface IProps {
   onAddButtonClick: () => void;
   branchData?: headGetBranch;
   branchLoading: boolean;
+  onModifyClick: (branchId: number) => void;
+  showDeletePopUp: boolean;
+  setTrueShowDeletePopUp: (productId: number) => void;
+  removeProductClick: () => void;
+  setFalseShowDeletePopUp: () => void;
 }
 
 const SettingProductPresenter: React.SFC<IProps> = ({
   onAddButtonClick,
   branchData,
-  branchLoading
+  branchLoading,
+  onModifyClick,
+  showDeletePopUp,
+  setTrueShowDeletePopUp,
+  setFalseShowDeletePopUp,
+  removeProductClick
 }) => (
   <BackContainer>
     {branchLoading ? (
       <Loading />
     ) : (
       <Container>
+        <Helmet>
+          <title>ModifyProduct | BlueDot</title>
+        </Helmet>
+        <BackArrowExtended backTo="/branch-setting" />
         <HeadSection>
           <HeadTitleCol>
             <Title>상품리스트</Title>
@@ -134,8 +157,14 @@ const SettingProductPresenter: React.SFC<IProps> = ({
                         </ProductContent>
                       </ProductRow>
                       <ButtonContainer>
-                        <ModifyButton value={"수정"} />
-                        <DiscardButton value={"삭제"} />
+                        <ModifyButton
+                          value={"수정"}
+                          onClick={() => onModifyClick(product.id)}
+                        />
+                        <DiscardButton
+                          value={"삭제"}
+                          onClick={() => setTrueShowDeletePopUp(product.id)}
+                        />
                       </ButtonContainer>
                     </ProductItem>
                   )
@@ -143,6 +172,16 @@ const SettingProductPresenter: React.SFC<IProps> = ({
           </ProductContainer>
         </BodySection>
       </Container>
+    )}
+
+    {showDeletePopUp ? (
+      <AlertPopUp
+        closeFunc={setFalseShowDeletePopUp}
+        message={"해당 상품을 삭제하시겠습니까?"}
+        onOkClick={removeProductClick}
+      />
+    ) : (
+      ""
     )}
   </BackContainer>
 );
