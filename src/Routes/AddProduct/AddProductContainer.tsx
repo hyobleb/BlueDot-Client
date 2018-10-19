@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation } from "react-apollo";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import { HEAD_GET_BRANCH } from "src/Components/sharedQueries";
 import { membershipOptions } from "src/Components/shareOptions";

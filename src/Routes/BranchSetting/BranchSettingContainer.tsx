@@ -1,6 +1,6 @@
 import React from "react";
 import { ApolloConsumer } from "react-apollo";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import { searchBranch } from "src/types/api";
 import { SEARCH_BRANCH } from "../../Components/sharedQueries";
 import BranchSettingPresenter from "./BranchSettingPresenter";

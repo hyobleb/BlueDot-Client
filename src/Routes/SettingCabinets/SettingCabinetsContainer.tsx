@@ -1,6 +1,6 @@
 import React from "react";
 import { Query } from "react-apollo";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import { getCabinets, getCabinetsVariables } from "src/types/api";
 import SettingCabinetsPresenter from "./SettingCabinetsPresenter";
 import { GET_CABINETS } from "./SettingCabinetsQueries";

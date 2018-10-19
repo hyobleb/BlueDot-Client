@@ -582,6 +582,69 @@ export interface headGetProductVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: userGetProducts
+// ====================================================
+
+export interface userGetProducts_UserGetBranch_branch_products {
+  __typename: "Product";
+  id: number;
+  title: string;
+  amount: number;
+  target: string;
+  hours: number;
+  available: boolean;
+  discard: boolean;
+}
+
+export interface userGetProducts_UserGetBranch_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  products: (userGetProducts_UserGetBranch_branch_products | null)[] | null;
+}
+
+export interface userGetProducts_UserGetBranch {
+  __typename: "UserGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: userGetProducts_UserGetBranch_branch | null;
+}
+
+export interface userGetProducts {
+  UserGetBranch: userGetProducts_UserGetBranch;
+}
+
+export interface userGetProductsVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: userRequestMembership
+// ====================================================
+
+export interface userRequestMembership_RequestRegistMembership {
+  __typename: "RequestRegistMembershipResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface userRequestMembership {
+  RequestRegistMembership: userRequestMembership_RequestRegistMembership;
+}
+
+export interface userRequestMembershipVariables {
+  branchId: number;
+  startDatetime: string;
+  productId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: getCabinets
 // ====================================================
 

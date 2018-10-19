@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation, Query } from "react-apollo";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GET_BRANCH_FOR_UPDATE_LOUNGE } from "../../Components/sharedQueries";
 import {

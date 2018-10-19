@@ -1,6 +1,6 @@
 import React from "react";
 import { Query } from "react-apollo";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import { USER_PROFILE } from "src/Components/sharedQueries";
 import { userProfile } from "src/types/api";
 import MembershipPresenter from "./MembershipPresenter";

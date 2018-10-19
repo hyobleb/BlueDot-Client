@@ -1,6 +1,6 @@
 import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   headCreateCabinetSet,

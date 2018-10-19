@@ -1,6 +1,8 @@
 import React from "react";
 import Dropdown from "react-dropdown";
+import Helmet from "react-helmet";
 import Switch from "react-toggle-switch";
+import BackArrow from "src/Components/BackArrow";
 import Form from "src/Components/Form";
 import Input from "src/Components/Input";
 import { productTypeDropDownOptions } from "src/Components/shareOptions";
@@ -79,6 +81,12 @@ const DropdonwContainer = styled.div`
   width: 80%;
 `;
 
+const BackArrowExtended = styled(BackArrow)`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+`;
+
 interface IProps {
   productTitle: string;
   price: number;
@@ -105,6 +113,10 @@ const AddProductPresenter: React.SFC<IProps> = ({
   onCancelClick
 }) => (
   <BackContainer>
+    <Helmet>
+      <title>Add-Product | BlueDot</title>
+    </Helmet>
+    <BackArrowExtended backTo="/" />
     <Container>
       <Form submitFn={onSubmit}>
         <Row>

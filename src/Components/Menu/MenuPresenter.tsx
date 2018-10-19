@@ -102,7 +102,7 @@ const MenuPresenter: React.SFC<IProps> = ({
             </Grid>
           </Header>
           <SLink to="/membership">멤버쉽 정보</SLink>
-          <SLink to="/settings">Settings</SLink>
+          <SLink to="/basket">장바구니</SLink>
           {user.isFranchiser || user.isHead ? (
             <>
               <ToggleAuthor

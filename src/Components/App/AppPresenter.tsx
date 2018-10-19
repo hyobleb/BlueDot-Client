@@ -4,6 +4,7 @@ import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
+import Basket from "../../Routes/Basket";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
@@ -89,6 +90,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         exact={true}
         component={ReqMembership}
       />
+      <Route path={"/basket"} exact={true} component={Basket} />
 
       <Route path={"/settings"} exact={true} component={Settings} />
 

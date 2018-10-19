@@ -1,4 +1,6 @@
 import React from "react";
+import Helmet from "react-helmet";
+import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
@@ -53,6 +55,12 @@ const EnrollButton = styled(SmallButton)`
   margin-right: auto;
 `;
 
+const BackArrowExtended = styled(BackArrow)`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+`;
+
 interface IProps {
   name: string;
   profilePhoto: string;
@@ -75,6 +83,11 @@ const MembershipPresenter: React.SFC<IProps> = ({
   onBranchClick
 }) => (
   <Container>
+    <Helmet>
+      <title>membership | BlueDot</title>
+    </Helmet>
+    <BackArrowExtended backTo="/home" />
+
     {profileLoading ? (
       <Loading />
     ) : (
