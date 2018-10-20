@@ -92,13 +92,15 @@ interface IProps {
   reqMembershipsLoading: boolean;
   deleteReqMembership: (id: number) => void;
   onEnrollReqMembershipClick: () => void;
+  onExtendReqMembershipClick: () => Promise<void>;
 }
 
 const BasketPresenter: React.SFC<IProps> = ({
   reqMembershipDatas,
   reqMembershipsLoading,
   deleteReqMembership,
-  onEnrollReqMembershipClick
+  onEnrollReqMembershipClick,
+  onExtendReqMembershipClick
 }) =>
   reqMembershipsLoading ? (
     <Loading />
@@ -116,7 +118,10 @@ const BasketPresenter: React.SFC<IProps> = ({
               value={"멤버쉽 등록"}
               onClick={onEnrollReqMembershipClick}
             />
-            <ExtendMembershipButton value={"멤버쉽 연장"} />
+            <ExtendMembershipButton
+              value={"멤버쉽 연장"}
+              onClick={onExtendReqMembershipClick}
+            />
             <ExtendCabinetButton value={"사물함 연장"} />
             <EnrollCabinetButton value={"사물함 등록"} />
           </ButtonContainer>

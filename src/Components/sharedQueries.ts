@@ -232,3 +232,23 @@ export const USER_REQUEST_MEMBERSHIP = gql`
     }
   }
 `;
+
+export const GET_USABLE_MY_MEMBERSHIPS = gql`
+  query getUsableMyMemberships {
+    GetMyUsableMemberships {
+      ok
+      error
+      memberships {
+        id
+        startDatetime
+        endDatetime
+        branch {
+          name
+        }
+        cabinet {
+          cabinetNumber
+        }
+      }
+    }
+  }
+`;
