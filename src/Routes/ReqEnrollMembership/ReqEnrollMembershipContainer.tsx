@@ -7,15 +7,24 @@ import {
   USER_GET_PRODUCTS,
   USER_REQUEST_MEMBERSHIP
 } from "src/Components/sharedQueries";
+
 import {
   userGetProducts,
   userGetProductsVariables,
   userRequestMembership,
   userRequestMembershipVariables
 } from "src/types/api";
-import ReqMembershipPresenter from "./ReqMembershipPresenter";
+import ReqEnrollMembershipPresenter from "./ReqEnrollMembershipPresenter";
+
+class RequestMutation extends Mutation<
+  userRequestMembership,
+  userRequestMembershipVariables
+> {}
+
+class GetBranchQuery extends Query<userGetProducts, userGetProductsVariables> {}
 
 interface IProps extends RouteComponentProps<any> {}
+
 interface IState {
   branchId: number;
   datetimeValue: string;
@@ -24,21 +33,12 @@ interface IState {
   branchPopUpShow: boolean;
 }
 
-class GetBranchQuery extends Query<userGetProducts, userGetProductsVariables> {}
-class RequestMutation extends Mutation<
-  userRequestMembership,
-  userRequestMembershipVariables
-> {}
-
-class ReqMembershipContainer extends React.Component<IProps, IState> {
+class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
   public reqMembershipFn;
   constructor(props) {
     super(props);
-    if (!props.location.state) {
-      props.history.push("/");
-    }
     this.state = {
-      branchId: props.location.state.branchId,
+      branchId: 0,
       branchPopUpShow: false,
       datetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
       productId: 0,
@@ -48,11 +48,11 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
 
   public render() {
     const {
-      datetimeValue,
       branchId,
+      branchPopUpShow,
+      datetimeValue,
       productId,
-      productTitle,
-      branchPopUpShow
+      productTitle
     } = this.state;
     return (
       <RequestMutation
@@ -72,9 +72,10 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
                   productTitle: ""
                 });
               }}
+              skip={branchId === 0}
             >
               {({ data: productDatas, loading: productsLoading }) => (
-                <ReqMembershipPresenter
+                <ReqEnrollMembershipPresenter
                   productId={productId}
                   datetimeValue={datetimeValue}
                   onSubmit={this.onSubmit}
@@ -172,9 +173,9 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
   public onCancelClick = () => {
     const { history } = this.props;
     history.push({
-      pathname: "/membership"
+      pathname: "/basket"
     });
   };
 }
 
-export default ReqMembershipContainer;
+export default ReqEnrollMembershipContainer;

@@ -90,13 +90,15 @@ const BackArrowExtended = styled(BackArrow)`
 interface IProps {
   reqMembershipDatas?: getRequestMemberships;
   reqMembershipsLoading: boolean;
-  DeleteReqMembership: (id: number) => void;
+  deleteReqMembership: (id: number) => void;
+  onEnrollReqMembershipClick: () => void;
 }
 
 const BasketPresenter: React.SFC<IProps> = ({
   reqMembershipDatas,
   reqMembershipsLoading,
-  DeleteReqMembership
+  deleteReqMembership,
+  onEnrollReqMembershipClick
 }) =>
   reqMembershipsLoading ? (
     <Loading />
@@ -110,7 +112,10 @@ const BasketPresenter: React.SFC<IProps> = ({
         <HeadSection>
           <TitleContainer>장바구니</TitleContainer>
           <ButtonContainer>
-            <EnrollMembershipButton value={"멤버쉽 등록"} />
+            <EnrollMembershipButton
+              value={"멤버쉽 등록"}
+              onClick={onEnrollReqMembershipClick}
+            />
             <ExtendMembershipButton value={"멤버쉽 연장"} />
             <ExtendCabinetButton value={"사물함 연장"} />
             <EnrollCabinetButton value={"사물함 등록"} />
@@ -156,7 +161,7 @@ const BasketPresenter: React.SFC<IProps> = ({
                     <ReqDelRow>
                       <DeleteButton
                         value={"삭제"}
-                        onClick={() => DeleteReqMembership(reqMembership.id)}
+                        onClick={() => deleteReqMembership(reqMembership.id)}
                       />
                     </ReqDelRow>
                   </ReqItem>
@@ -164,7 +169,14 @@ const BasketPresenter: React.SFC<IProps> = ({
             )}
         </BodySection>
         <BottomSection>
-          <PayButton value={"결제하기"} />
+          {reqMembershipDatas &&
+          reqMembershipDatas.UserGetRequest &&
+          reqMembershipDatas.UserGetRequest.requestMemberships &&
+          reqMembershipDatas.UserGetRequest.requestMemberships.length === 0 ? (
+            "현재 장바구니에 아무것도 담겨 있지 않습니다"
+          ) : (
+            <PayButton value={"결제하기"} />
+          )}
         </BottomSection>
       </Container>
     </BackContainer>

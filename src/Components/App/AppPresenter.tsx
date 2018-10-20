@@ -13,12 +13,12 @@ import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import ModifyProduct from "../../Routes/ModifyProduct";
 import PhoneLogin from "../../Routes/PhoneLogin";
+import ReqEnrollMembership from "../../Routes/ReqEnrollMembership";
 import ReqMembership from "../../Routes/ReqMembership";
 import SettingCabinets from "../../Routes/SettingCabinets";
 import SettingCabinetSets from "../../Routes/SettingCabinetSets";
 import SettingLounge from "../../Routes/SettingLounge";
 import SettingProduct from "../../Routes/SettingProduct";
-import Settings from "../../Routes/Settings";
 import SettingSeats from "../../Routes/SettingSeats";
 import SignUp from "../../Routes/SignUp";
 import SignUpDetail from "../../Routes/SignUpDetail";
@@ -72,6 +72,7 @@ const LoggedOutRoute: React.SFC = () => (
     {/* <Route path={"/verify-phone/:number"} component={VerifyPhone} /> */}
     {/* ex) /verify-phone/01021231222 */}
     <Route path={"/social-phone"} component={SocialLogin} />
+
     <Redirect from={"*"} to={"/"} />
   </Switch>
 );
@@ -91,8 +92,11 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         component={ReqMembership}
       />
       <Route path={"/basket"} exact={true} component={Basket} />
-
-      <Route path={"/settings"} exact={true} component={Settings} />
+      <Route
+        path={"/enroll-req-membership"}
+        exact={true}
+        component={ReqEnrollMembership}
+      />
 
       {isHead && [
         <Route

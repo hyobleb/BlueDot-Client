@@ -31,7 +31,10 @@ class BasketContainer extends React.Component<IProps> {
         {deleteRequestMembershipFn => {
           this.deleteReqMembershipFn = deleteRequestMembershipFn;
           return (
-            <GetRequestMembershipsQuery query={GET_REQUEST_MEMBERSHIPS}>
+            <GetRequestMembershipsQuery
+              query={GET_REQUEST_MEMBERSHIPS}
+              fetchPolicy={"cache-and-network"}
+            >
               {({
                 loading: reqMembershipsLoading,
                 data: reqMembershipDatas
@@ -39,7 +42,8 @@ class BasketContainer extends React.Component<IProps> {
                 <BasketPresenter
                   reqMembershipsLoading={reqMembershipsLoading}
                   reqMembershipDatas={reqMembershipDatas}
-                  DeleteReqMembership={this.DeleteReqMembership}
+                  deleteReqMembership={this.deleteReqMembership}
+                  onEnrollReqMembershipClick={this.onEnrollReqMembershipClick}
                 />
               )}
             </GetRequestMembershipsQuery>
@@ -49,12 +53,17 @@ class BasketContainer extends React.Component<IProps> {
     );
   }
 
-  public DeleteReqMembership = (id: number) => {
+  public deleteReqMembership = (id: number) => {
     this.deleteReqMembershipFn({
       variables: {
         RequestMembershipId: id
       }
     });
+  };
+
+  public onEnrollReqMembershipClick = () => {
+    const { history } = this.props;
+    history.push("/enroll-req-membership");
   };
 }
 
