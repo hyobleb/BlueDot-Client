@@ -427,6 +427,79 @@ export interface addProductVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getRequestMemberships
+// ====================================================
+
+export interface getRequestMemberships_UserGetRequest_requestMemberships_branch {
+  __typename: "Branch";
+  name: string;
+}
+
+export interface getRequestMemberships_UserGetRequest_requestMemberships_product {
+  __typename: "Product";
+  title: string;
+  amount: number;
+  target: string;
+  hours: number;
+}
+
+export interface getRequestMemberships_UserGetRequest_requestMemberships_exstingMembership {
+  __typename: "Membership";
+  startDatetime: string;
+  endDatetime: string;
+}
+
+export interface getRequestMemberships_UserGetRequest_requestMemberships_cabinet {
+  __typename: "Cabinet";
+  cabinetNumber: number;
+}
+
+export interface getRequestMemberships_UserGetRequest_requestMemberships {
+  __typename: "RequestMembership";
+  id: number;
+  branch: getRequestMemberships_UserGetRequest_requestMemberships_branch;
+  product: getRequestMemberships_UserGetRequest_requestMemberships_product;
+  startDatetime: string | null;
+  exstingMembership: getRequestMemberships_UserGetRequest_requestMemberships_exstingMembership | null;
+  cabinet: getRequestMemberships_UserGetRequest_requestMemberships_cabinet | null;
+}
+
+export interface getRequestMemberships_UserGetRequest {
+  __typename: "UserGetRequestResponse";
+  ok: boolean;
+  error: string | null;
+  requestMemberships: (getRequestMemberships_UserGetRequest_requestMemberships | null)[] | null;
+}
+
+export interface getRequestMemberships {
+  UserGetRequest: getRequestMemberships_UserGetRequest;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: deleteRequestMembership
+// ====================================================
+
+export interface deleteRequestMembership_UserDeleteRequest {
+  __typename: "UserDeleteRequestResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface deleteRequestMembership {
+  UserDeleteRequest: deleteRequestMembership_UserDeleteRequest;
+}
+
+export interface deleteRequestMembershipVariables {
+  RequestMembershipId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: updateProfile
 // ====================================================
 
