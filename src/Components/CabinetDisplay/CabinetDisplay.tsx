@@ -1,11 +1,20 @@
+import moment from "moment";
 import React from "react";
+import {
+  DANGER_COLOR,
+  PRIMARY_COLOR,
+  SECONDARY_COLOR,
+  SUCCESS_COLOR,
+  WARNING_COLOR
+} from "src/keys/colors";
 import styled from "src/typed-components";
 import { getCabinets_GetCabinetSet_cabinetSet_cabinets } from "src/types/api";
 
 interface IProps {
   cabinets: [getCabinets_GetCabinetSet_cabinetSet_cabinets];
   horizontalNumber: number;
-  verticalNumber: number;
+  onCabinetClick?: (cabinetId: number) => void;
+  selCabinetId?: number;
 }
 
 const Container = styled.div`
@@ -28,7 +37,10 @@ const CabinetItem = styled.div`
   margin: 2px;
   &:hover {
     cursor: pointer;
-    background-color: ${props => props.theme.lightBlueColor};
+    background-color: ${props => props.theme.greyColor};
+    color: ${props => props.theme.yellowColor};
+    transform: scale(2);
+    transition: all 0.2s ease-in-out;
   }
 `;
 
@@ -43,22 +55,41 @@ const CabinetRow = styled.div`
 const CabinetDisplay: React.SFC<IProps> = ({
   cabinets,
   horizontalNumber,
-  verticalNumber
+  onCabinetClick = () => {
+    return;
+  },
+  selCabinetId
 }) => {
   const verticalCabients = new Array();
   for (let hIndex = 1; hIndex <= horizontalNumber; hIndex++) {
     const rowCabinets = cabinets.filter(cabinet => cabinet.ypos === hIndex);
     verticalCabients.push(rowCabinets);
   }
+
   return (
     <Container>
       {verticalCabients.map((rowCabinets, index) => (
         <CabinetRow key={index}>
-          {rowCabinets.map(cabinet => (
-            <CabinetItem key={cabinet.id}>
-              <CabinetNumber>{cabinet.cabinetNumber}</CabinetNumber>
-            </CabinetItem>
-          ))}
+          {rowCabinets.map(cabinet => {
+            const backgroundColor = !cabinet.usable
+              ? DANGER_COLOR
+              : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
+                ? WARNING_COLOR
+                : moment(cabinet.reservedDatetime) > moment()
+                  ? SECONDARY_COLOR
+                  : cabinet.id === selCabinetId
+                    ? SUCCESS_COLOR
+                    : PRIMARY_COLOR;
+            return (
+              <CabinetItem
+                key={cabinet.id}
+                onClick={() => onCabinetClick(cabinet.id)}
+                style={{ backgroundColor }}
+              >
+                <CabinetNumber>{cabinet.cabinetNumber}</CabinetNumber>
+              </CabinetItem>
+            );
+          })}
         </CabinetRow>
       ))}
     </Container>

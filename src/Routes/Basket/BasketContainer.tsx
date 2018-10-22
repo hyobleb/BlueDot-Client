@@ -63,6 +63,7 @@ class BasketContainer extends React.Component<IProps> {
                         onExtendReqMembershipClick={
                           this.onExtendReqMembershipClick
                         }
+                        onEnrollCabinetClick={this.onEnrollCabinetClick}
                       />
                     )}
                   </GetRequestMembershipsQuery>
@@ -101,6 +102,11 @@ class BasketContainer extends React.Component<IProps> {
     } else {
       toast.error(result.GetMyUsableMemberships.error);
     }
+  };
+
+  public onEnrollCabinetClick = () => {
+    const { history } = this.props;
+    history.push("/enroll-req-cabinet");
   };
 }
 

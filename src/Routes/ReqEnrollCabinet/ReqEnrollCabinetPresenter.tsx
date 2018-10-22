@@ -1,15 +1,21 @@
-import moment = require("moment");
+import moment from "moment";
 import "moment/locale/ko";
 import React from "react";
 import Datetime from "react-datetime";
 import Dropdown from "react-dropdown";
 import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
-import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
+import CabinetSetsContainer from "src/Components/CabinetSetsContainer";
 import Form from "src/Components/Form";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { userGetProducts } from "src/types/api";
+import {
+  getBranchForEnrollCabinet,
+  getCabinets_GetCabinetSet_cabinetSet_cabinets,
+  userGetProducts
+} from "src/types/api";
+import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
+import CabinetDisplay from "../../Components/CabinetDisplay";
 
 const FormExtended = styled(Form)`
   width: 90%;
@@ -39,6 +45,13 @@ const Title = styled.h1`
   font-size: 20px;
 `;
 const BranchSection = styled(Section)``;
+
+const CabinetSection = styled(Section)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const BranchNameCol = styled.div`
   margin-right: 10px;
@@ -123,30 +136,62 @@ const DatetimeExtended = styled(Datetime)`
 `;
 const BackContainer = styled.div``;
 
+const SetTitleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+`;
+
+const SetTitleItem = styled.div`
+  border: 1px solid #dedede;
+  padding: 10px;
+  width: 100px;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+    background-color: ${props => props.theme.blueColor};
+    color: white;
+  }
+`;
+
+const CabinetDisplayTitle = styled.div`
+  margin-top: 30px;
+  margin-bottom: 10px;
+`;
+
 interface IProps {
-  datetimeValue: string;
-  productId: number;
+  branchId: number;
+  branchPopUpShow: boolean;
+  cabinetId: number;
+  productTitle: string;
+  startDatetime: string;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   productDatas?: userGetProducts;
-  productsLoading: boolean;
   onOptionChange: (arg: any) => void;
-  productTitle: string;
-  branchPopUpShow: boolean;
   setTrueBranchPopUpShow: () => void;
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
-  onDatetimeChange: (datetimeValue: moment.Moment) => void;
+  onDatetimeChange: (startDatetime: moment.Moment) => void;
   onThrowBasketButtonClick: () => Promise<void>;
   onCancelClick: () => void;
+  cabinetSetDatas?: getBranchForEnrollCabinet;
+  tempSetId: number;
+  onSetHover: (setId: number) => void;
+  onSetHoverOut: () => void;
+  onSetClick: (setId: number) => void;
+  setId: number;
+  cabinets: [getCabinets_GetCabinetSet_cabinetSet_cabinets] | null;
+  horizontalNumber: number;
+  onCabinetClick: (cabinetId: number) => void;
+  cabinetNumber: number;
 }
 
-const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
-  datetimeValue,
+const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
+  startDatetime,
   onSubmit,
   productDatas,
-  productsLoading,
   onOptionChange,
-  productId,
   productTitle,
   branchPopUpShow,
   setTrueBranchPopUpShow,
@@ -154,7 +199,18 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
   onBranchClick,
   onDatetimeChange,
   onThrowBasketButtonClick,
-  onCancelClick
+  onCancelClick,
+  cabinetSetDatas,
+  tempSetId,
+  onSetHover,
+  onSetHoverOut,
+  onSetClick,
+  setId,
+  cabinets,
+  horizontalNumber,
+  onCabinetClick,
+  cabinetId,
+  cabinetNumber
 }) => {
   const productOptions = new Array();
   if (
@@ -164,7 +220,7 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
     productDatas.UserGetBranch.branch.products
   ) {
     productDatas.UserGetBranch.branch.products.forEach(product => {
-      if (product && product.target === "MEMBERSHIP" && !product.discard) {
+      if (product && product.target === "CABINET" && !product.discard) {
         const productItem = { value: product.id, label: product.title };
         productOptions.push(productItem);
       }
@@ -173,12 +229,12 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
   return (
     <BackContainer>
       <Helmet>
-        <title>Enroll Requset Membership | BlueDot</title>
+        <title>Enroll Requset Cabinet | BlueDot</title>
       </Helmet>
       <BackArrowExtended backTo="/membership" />
       <FormExtended submitFn={onSubmit}>
         <TitleSection>
-          <Title>멤버쉽 등록</Title>
+          <Title>사물함 등록</Title>
         </TitleSection>
         <BranchSection>
           <BranchNameCol>
@@ -200,11 +256,83 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
             />
           </BranchButtonCol>
         </BranchSection>
+        <CabinetSection>
+          {cabinetSetDatas &&
+            cabinetSetDatas.UserGetBranch &&
+            cabinetSetDatas.UserGetBranch.branch &&
+            cabinetSetDatas.UserGetBranch.branch.cabinetLoungeImage && (
+              <>
+                <CabinetSetsContainer
+                  imgUrl={
+                    cabinetSetDatas.UserGetBranch.branch.cabinetLoungeImage
+                  }
+                  showTempCabinetSet={false}
+                  cabinetSets={cabinetSetDatas.UserGetBranch.branch.cabinetSets}
+                  tempSelCabinetSetId={tempSetId}
+                  onCabinetSetHover={onSetHover}
+                  onCabinetSetHoverOut={onSetHoverOut}
+                  onCabinetSetClick={onSetClick}
+                  selectedCabinetId={setId}
+                />
+                <SetTitleContainer>
+                  {cabinetSetDatas.UserGetBranch.branch.cabinetSets &&
+                    cabinetSetDatas.UserGetBranch.branch.cabinetSets.map(
+                      set =>
+                        set && (
+                          <SetTitleItem
+                            key={set.id}
+                            style={{
+                              backgroundColor:
+                                tempSetId === set.id
+                                  ? "#1abc9c"
+                                  : setId === set.id
+                                    ? "#1abc9c"
+                                    : "",
+                              color:
+                                tempSetId === set.id
+                                  ? "white"
+                                  : setId === set.id
+                                    ? "white"
+                                    : ""
+                            }}
+                            onClick={() => onSetClick(set.id)}
+                            onMouseOver={() => onSetHover(set.id)}
+                            onMouseLeave={onSetHoverOut}
+                          >
+                            {set.title}
+                          </SetTitleItem>
+                        )
+                    )}
+                </SetTitleContainer>
+                {cabinets ? (
+                  <>
+                    <CabinetDisplayTitle>
+                      사물함을 선택해주세요!
+                    </CabinetDisplayTitle>
+                    <CabinetDisplay
+                      cabinets={cabinets}
+                      horizontalNumber={horizontalNumber}
+                      onCabinetClick={onCabinetClick}
+                      selCabinetId={cabinetId}
+                    />
+                  </>
+                ) : (
+                  ""
+                )}
+
+                {!!cabinetId && (
+                  <CabinetDisplayTitle>
+                    {cabinetNumber}번 사물함을 선택했습니다
+                  </CabinetDisplayTitle>
+                )}
+              </>
+            )}
+        </CabinetSection>
         <DatetimeSection>
           <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
           <DatetimePicker>
             <DatetimeExtended
-              value={moment(datetimeValue)}
+              value={moment(startDatetime)}
               dateFormat="YYYY MMMM Do"
               timeFormat="A hh:mm"
               locale="de"
@@ -243,7 +371,7 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
           </ButtonContainer>
         </ButtonSection>
       </FormExtended>
-      }
+
       {branchPopUpShow ? (
         <BranchSearchPopUp
           closeFunc={setFalseBranchPopUpShow}
@@ -255,5 +383,4 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
     </BackContainer>
   );
 };
-
-export default ReqEnrollMembershipPresenter;
+export default ReqEnrollCabinetPresenter;

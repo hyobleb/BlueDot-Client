@@ -429,6 +429,30 @@ export interface userRequestMembershipVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: userRequestCabinet
+// ====================================================
+
+export interface userRequestCabinet_RequestRegistCabinet {
+  __typename: "RequestRegistCabinetResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface userRequestCabinet {
+  RequestRegistCabinet: userRequestCabinet_RequestRegistCabinet;
+}
+
+export interface userRequestCabinetVariables {
+  branchId: number;
+  startDatetime: string;
+  cabinetId: number;
+  productId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: getUsableMyMemberships
 // ====================================================
 
@@ -460,6 +484,88 @@ export interface getUsableMyMemberships_GetMyUsableMemberships {
 
 export interface getUsableMyMemberships {
   GetMyUsableMemberships: getUsableMyMemberships_GetMyUsableMemberships;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getCabinets
+// ====================================================
+
+export interface getCabinets_GetCabinetSet_cabinetSet_cabinets {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+  xpos: number;
+  ypos: number;
+  usable: boolean;
+  nowUsing: boolean;
+  status: string | null;
+  reservedDatetime: string | null;
+  startDatetime: string | null;
+  endDatetime: string | null;
+}
+
+export interface getCabinets_GetCabinetSet_cabinetSet {
+  __typename: "CabinetSet";
+  title: string;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  setNumber: number;
+  horizontalNumber: number;
+  verticalNumber: number;
+  cabinets: (getCabinets_GetCabinetSet_cabinetSet_cabinets | null)[] | null;
+}
+
+export interface getCabinets_GetCabinetSet {
+  __typename: "GetCabinetSetResponse";
+  ok: boolean;
+  error: string | null;
+  cabinetSet: getCabinets_GetCabinetSet_cabinetSet | null;
+}
+
+export interface getCabinets {
+  GetCabinetSet: getCabinets_GetCabinetSet;
+}
+
+export interface getCabinetsVariables {
+  cabinetSetId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getCabinet
+// ====================================================
+
+export interface getCabinet_UserGetCabinet_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+  usable: boolean;
+  nowUsing: boolean;
+  status: string | null;
+  reservedDatetime: string | null;
+  endDatetime: string | null;
+}
+
+export interface getCabinet_UserGetCabinet {
+  __typename: "UserGetCabinetResponse";
+  ok: boolean;
+  error: string | null;
+  cabinet: getCabinet_UserGetCabinet_cabinet | null;
+}
+
+export interface getCabinet {
+  UserGetCabinet: getCabinet_UserGetCabinet;
+}
+
+export interface getCabinetVariables {
+  cabinetId: number;
 }
 
 /* tslint:disable */
@@ -755,25 +861,18 @@ export interface headGetProductVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: getCabinets
+// GraphQL query operation: getBranchForEnrollCabinet
 // ====================================================
 
-export interface getCabinets_GetCabinetSet_cabinetSet_cabinets {
+export interface getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets_cabinets {
   __typename: "Cabinet";
   id: number;
-  cabinetNumber: number;
-  xpos: number;
-  ypos: number;
-  usable: boolean;
-  nowUsing: boolean;
-  status: string | null;
-  reservedDatetime: string | null;
-  startDatetime: string | null;
-  endDatetime: string | null;
 }
 
-export interface getCabinets_GetCabinetSet_cabinetSet {
+export interface getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets {
   __typename: "CabinetSet";
+  id: number;
+  cabinets: (getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets_cabinets | null)[] | null;
   title: string;
   width: number;
   height: number;
@@ -782,22 +881,27 @@ export interface getCabinets_GetCabinetSet_cabinetSet {
   setNumber: number;
   horizontalNumber: number;
   verticalNumber: number;
-  cabinets: (getCabinets_GetCabinetSet_cabinetSet_cabinets | null)[] | null;
 }
 
-export interface getCabinets_GetCabinetSet {
-  __typename: "GetCabinetSetResponse";
+export interface getBranchForEnrollCabinet_UserGetBranch_branch {
+  __typename: "Branch";
+  cabinetLoungeImage: string;
+  cabinetSets: (getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets | null)[] | null;
+}
+
+export interface getBranchForEnrollCabinet_UserGetBranch {
+  __typename: "UserGetBranchResponse";
   ok: boolean;
   error: string | null;
-  cabinetSet: getCabinets_GetCabinetSet_cabinetSet | null;
+  branch: getBranchForEnrollCabinet_UserGetBranch_branch | null;
 }
 
-export interface getCabinets {
-  GetCabinetSet: getCabinets_GetCabinetSet;
+export interface getBranchForEnrollCabinet {
+  UserGetBranch: getBranchForEnrollCabinet_UserGetBranch;
 }
 
-export interface getCabinetsVariables {
-  cabinetSetId: number;
+export interface getBranchForEnrollCabinetVariables {
+  branchId: number;
 }
 
 /* tslint:disable */

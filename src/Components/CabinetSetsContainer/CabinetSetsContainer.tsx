@@ -3,8 +3,8 @@ import theme from "../../theme";
 import styled from "../../typed-components";
 
 const ImgContainer = styled.div`
-  width: 30%;
-  min-width: 310px;
+  width: 60%;
+  min-width: 190px;
   margin-left: auto;
   margin-right: auto;
   max-width: 400px;
@@ -52,6 +52,7 @@ interface IProps {
   targetCabinetSetYpos?: number;
   targetCabinetSetWidth?: number;
   targetCainbetSetHeight?: number;
+  selectedCabinetId?: number;
 }
 
 interface ITRProps {
@@ -71,6 +72,7 @@ interface IRProps {
   onCabinetSetHover: (setId: number) => void;
   tempSelected: boolean;
   onCabinetSetHoverOut: () => void;
+  selectedCabinetId?: number;
 }
 
 const TempCabinetSet: React.SFC<ITRProps> = ({
@@ -97,10 +99,17 @@ const CabinetSet: React.SFC<IRProps> = ({
   onCabinetSetClick,
   onCabinetSetHover,
   tempSelected = false,
-  onCabinetSetHoverOut
+  onCabinetSetHoverOut,
+  selectedCabinetId
 }) => {
   const style = {
-    backgroundColor: `${tempSelected ? theme.redColor : theme.lightBlueColor}`,
+    backgroundColor: `${
+      tempSelected
+        ? theme.greenColor
+        : selectedCabinetId && selectedCabinetId === setId
+          ? theme.greenColor
+          : theme.lightBlueColor
+    }`,
     height: `${setHeight}%`,
     left: `${setXpos}%`,
     top: `${setYpos}%`,
@@ -131,7 +140,8 @@ const CabinetSetsContainer: React.SFC<IProps> = ({
   targetCabinetSetXpos,
   targetCabinetSetYpos,
   targetCabinetSetWidth,
-  targetCainbetSetHeight
+  targetCainbetSetHeight,
+  selectedCabinetId
 }) => (
   <ImgContainer>
     <LoungeImg src={imgUrl} />
@@ -177,6 +187,7 @@ const CabinetSetsContainer: React.SFC<IProps> = ({
           onCabinetSetHover={onCabinetSetHover}
           tempSelected={cabinetSet.id === tempSelCabinetSetId}
           onCabinetSetHoverOut={onCabinetSetHoverOut}
+          selectedCabinetId={selectedCabinetId}
         />
       ))}
   </ImgContainer>

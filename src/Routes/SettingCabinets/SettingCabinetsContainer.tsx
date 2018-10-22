@@ -1,16 +1,15 @@
 import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
+import { GET_CABINETS } from "src/Components/sharedQueries";
 import { getCabinets, getCabinetsVariables } from "src/types/api";
 import SettingCabinetsPresenter from "./SettingCabinetsPresenter";
-import { GET_CABINETS } from "./SettingCabinetsQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
   setId: number;
   cabinets: any;
   horizontalNumber: number;
-  verticalNumber: number;
 }
 
 class GetCabinetSetQuery extends Query<getCabinets, getCabinetsVariables> {}
@@ -26,13 +25,12 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
     this.state = {
       cabinets: null,
       horizontalNumber: 0,
-      setId: props.location.state.setId,
-      verticalNumber: 0
+      setId: props.location.state.setId
     };
   }
 
   public render() {
-    const { setId, cabinets, horizontalNumber, verticalNumber } = this.state;
+    const { setId, cabinets, horizontalNumber } = this.state;
     return (
       <GetCabinetSetQuery
         query={GET_CABINETS}
@@ -44,7 +42,6 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
           <SettingCabinetsPresenter
             cabinets={cabinets}
             horizontalNumber={horizontalNumber}
-            verticalNumber={verticalNumber}
           />
         )}
       </GetCabinetSetQuery>
@@ -60,8 +57,7 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
         const { cabinets } = cabinetSet;
         this.setState({
           cabinets,
-          horizontalNumber: cabinetSet.horizontalNumber,
-          verticalNumber: cabinetSet.verticalNumber
+          horizontalNumber: cabinetSet.horizontalNumber
         });
       }
     }
