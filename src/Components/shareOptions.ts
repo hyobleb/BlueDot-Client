@@ -19,3 +19,7 @@ export const productTypeDropDownOptions = [
   { value: "MEMBERSHIP", label: "멤버쉽" },
   { value: "CABINET", label: "사물함" }
 ];
+export enum cabinetLockMode {
+  CREATE = "CREATE",
+  MODIFY = "MODIFY"
+}

@@ -144,7 +144,8 @@ const BasketPresenter: React.SFC<IProps> = ({
                       {reqMembership.product.target === "MEMBERSHIP"
                         ? " 멤버쉽"
                         : reqMembership.product.target === "CABINET"
-                          ? " 사물함"
+                          ? ` ${reqMembership.cabinet &&
+                              reqMembership.cabinet.cabinetNumber}번 사물함`
                           : ""}
                     </ReqRow>
                     <ReqRow>

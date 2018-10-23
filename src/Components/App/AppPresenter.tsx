@@ -18,6 +18,7 @@ import ReqEnrollMembership from "../../Routes/ReqEnrollMembership";
 import ReqMembership from "../../Routes/ReqMembership";
 import SettingCabinets from "../../Routes/SettingCabinets";
 import SettingCabinetSets from "../../Routes/SettingCabinetSets";
+import SettingCabLock from "../../Routes/SettingCabLock";
 import SettingLounge from "../../Routes/SettingLounge";
 import SettingProduct from "../../Routes/SettingProduct";
 import SettingSeats from "../../Routes/SettingSeats";
@@ -176,6 +177,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/modify-product"}
           exact={true}
           component={ModifyProduct}
+        />,
+        <Route
+          key={13}
+          path={"/setting-cablock"}
+          exact={true}
+          component={SettingCabLock}
         />
       ]}
 

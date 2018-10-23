@@ -2,6 +2,54 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: createCabinetLock
+// ====================================================
+
+export interface createCabinetLock_ManagerCreateCabinetLock {
+  __typename: "ManagerCreateCabinetLockResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface createCabinetLock {
+  ManagerCreateCabinetLock: createCabinetLock_ManagerCreateCabinetLock;
+}
+
+export interface createCabinetLockVariables {
+  branchId: number;
+  cabinetNumber: number;
+  lockNumber: number;
+  password: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: modifyCabinetLock
+// ====================================================
+
+export interface modifyCabinetLock_ManagerUpdateCabinetLock {
+  __typename: "ManagerUpdateCabinetLockResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface modifyCabinetLock {
+  ManagerUpdateCabinetLock: modifyCabinetLock_ManagerUpdateCabinetLock;
+}
+
+export interface modifyCabinetLockVariables {
+  cabinetLockId: number;
+  cabinetNumber?: number | null;
+  lockNumber?: number | null;
+  password?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: searchUsers
 // ====================================================
 
@@ -973,6 +1021,97 @@ export interface headCreateCabinetSetVariables {
   horizontalNumber: number;
   verticalNumber: number;
   startNumber: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: managerGetCablocks
+// ====================================================
+
+export interface managerGetCablocks_ManagerGetCabinetLocks_cabinetLocks_cabinet {
+  __typename: "Cabinet";
+  cabinetNumber: number;
+}
+
+export interface managerGetCablocks_ManagerGetCabinetLocks_cabinetLocks {
+  __typename: "CabinetLock";
+  id: number;
+  lockNumber: number;
+  password: string;
+  cabinet: managerGetCablocks_ManagerGetCabinetLocks_cabinetLocks_cabinet | null;
+}
+
+export interface managerGetCablocks_ManagerGetCabinetLocks {
+  __typename: "ManagerGetCabinetLocksResponse";
+  ok: boolean;
+  error: string | null;
+  cabinetLocks: (managerGetCablocks_ManagerGetCabinetLocks_cabinetLocks | null)[] | null;
+}
+
+export interface managerGetCablocks {
+  ManagerGetCabinetLocks: managerGetCablocks_ManagerGetCabinetLocks;
+}
+
+export interface managerGetCablocksVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: removeCabinetLock
+// ====================================================
+
+export interface removeCabinetLock_ManagerRemoveCabinetLock {
+  __typename: "ManagerRemoveCabinetLockResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface removeCabinetLock {
+  ManagerRemoveCabinetLock: removeCabinetLock_ManagerRemoveCabinetLock;
+}
+
+export interface removeCabinetLockVariables {
+  cabinetLockId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getCabinetLock
+// ====================================================
+
+export interface getCabinetLock_ManagerGetCabinetLock_cabinetLock_cabinet {
+  __typename: "Cabinet";
+  cabinetNumber: number;
+}
+
+export interface getCabinetLock_ManagerGetCabinetLock_cabinetLock {
+  __typename: "CabinetLock";
+  id: number;
+  lockNumber: number;
+  password: string;
+  cabinet: getCabinetLock_ManagerGetCabinetLock_cabinetLock_cabinet | null;
+}
+
+export interface getCabinetLock_ManagerGetCabinetLock {
+  __typename: "ManagerGetCabinetLockResponse";
+  ok: boolean;
+  error: string | null;
+  cabinetLock: getCabinetLock_ManagerGetCabinetLock_cabinetLock | null;
+}
+
+export interface getCabinetLock {
+  ManagerGetCabinetLock: getCabinetLock_ManagerGetCabinetLock;
+}
+
+export interface getCabinetLockVariables {
+  lockId: number;
 }
 
 /* tslint:disable */
