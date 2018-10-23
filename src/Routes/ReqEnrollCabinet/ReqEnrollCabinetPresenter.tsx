@@ -7,6 +7,7 @@ import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
 import CabinetSetsContainer from "src/Components/CabinetSetsContainer";
 import Form from "src/Components/Form";
+import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import {
@@ -185,6 +186,8 @@ interface IProps {
   horizontalNumber: number;
   onCabinetClick: (cabinetId: number) => void;
   cabinetNumber: number;
+  cabinetSetLoading: boolean;
+  isFirstLoaidng: boolean;
 }
 
 const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -210,7 +213,9 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
   horizontalNumber,
   onCabinetClick,
   cabinetId,
-  cabinetNumber
+  cabinetNumber,
+  cabinetSetLoading,
+  isFirstLoaidng
 }) => {
   const productOptions = new Array();
   if (
@@ -257,6 +262,7 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
           </BranchButtonCol>
         </BranchSection>
         <CabinetSection>
+          {cabinetSetLoading && !isFirstLoaidng ? <Loading /> : ""}
           {cabinetSetDatas &&
             cabinetSetDatas.UserGetBranch &&
             cabinetSetDatas.UserGetBranch.branch &&

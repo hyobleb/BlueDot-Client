@@ -36,6 +36,7 @@ interface IState {
   setId: number;
   cabinets: any;
   horizontalNumber: number;
+  isFirstLoaidng: boolean;
 }
 
 interface IProps extends RouteComponentProps<any> {}
@@ -65,6 +66,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       cabinetNumber: 0,
       cabinets: null,
       horizontalNumber: 0,
+      isFirstLoaidng: true,
       productId: 0,
       productTitle: "",
       setId: 0,
@@ -85,7 +87,8 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       setId,
       cabinets,
       horizontalNumber,
-      cabinetNumber
+      cabinetNumber,
+      isFirstLoaidng
     } = this.state;
     return (
       <GetCabinetQuery
@@ -153,10 +156,15 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                     cabinets: findCabinets,
                     horizontalNumber: findHorizontalNumber
                   } = cabinetSet;
-                  this.setState({
-                    cabinets: findCabinets,
-                    horizontalNumber: findHorizontalNumber
-                  });
+
+                  if (findCabinets && findHorizontalNumber) {
+                    this.setState({
+                      cabinets: findCabinets.sort((a, b) => {
+                        return a!.id - b!.id;
+                      }),
+                      horizontalNumber: findHorizontalNumber
+                    });
+                  }
                 }
               }
             }}
@@ -171,7 +179,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                   fetchPolicy={"cache-and-network"}
                   skip={branchId === 0}
                 >
-                  {({ data: cabinetSetDatas }) => (
+                  {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => (
                     <UserReqCabinetMutation
                       mutation={USER_REQUEST_CABINET}
                       variables={{
@@ -228,6 +236,8 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                                 horizontalNumber={horizontalNumber}
                                 onCabinetClick={this.onCabinetClick}
                                 cabinetNumber={cabinetNumber}
+                                cabinetSetLoading={cabinetSetLoading}
+                                isFirstLoaidng={isFirstLoaidng}
                               />
                             )}
                           </GetBranchQuery>
@@ -342,6 +352,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
 
   public onSetClick = (setId: number) => {
     this.setState({
+      isFirstLoaidng: false,
       setId
     });
   };
