@@ -23,3 +23,11 @@ export enum cabinetLockMode {
   CREATE = "CREATE",
   MODIFY = "MODIFY"
 }
+
+export enum CreatePaymentMethodOption {
+  CARD = "CARD",
+  TRANS = "TRANS",
+  VBANK = "VBANK",
+  PHONE = "PHONE",
+  CASH = "CASH"
+}

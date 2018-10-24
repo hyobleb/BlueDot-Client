@@ -79,7 +79,6 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
     this.setState({
       data
     });
-    console.log(this.state);
     // this.signInMutation();
   };
 

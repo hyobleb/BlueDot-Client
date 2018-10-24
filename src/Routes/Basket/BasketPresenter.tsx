@@ -1,8 +1,10 @@
 import moment = require("moment");
 import React from "react";
 import Helmet from "react-helmet";
+import { toast } from "react-toastify";
 import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
+import { CreatePaymentMethodOption } from "src/Components/shareOptions";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import { getRequestMemberships } from "src/types/api";
@@ -94,6 +96,9 @@ interface IProps {
   onEnrollReqMembershipClick: () => void;
   onExtendReqMembershipClick: () => Promise<void>;
   onEnrollCabinetClick: () => void;
+  onPaymentClick: (baseBranchId: number, payMethod: string) => Promise<void>;
+  importLoad: boolean;
+  jqueryLoad: boolean;
 }
 
 const BasketPresenter: React.SFC<IProps> = ({
@@ -102,9 +107,12 @@ const BasketPresenter: React.SFC<IProps> = ({
   deleteReqMembership,
   onEnrollReqMembershipClick,
   onExtendReqMembershipClick,
-  onEnrollCabinetClick
+  onEnrollCabinetClick,
+  onPaymentClick,
+  importLoad,
+  jqueryLoad
 }) =>
-  reqMembershipsLoading ? (
+  reqMembershipsLoading && !importLoad && !jqueryLoad ? (
     <Loading />
   ) : (
     <BackContainer>
@@ -183,11 +191,55 @@ const BasketPresenter: React.SFC<IProps> = ({
           {reqMembershipDatas &&
           reqMembershipDatas.UserGetRequest &&
           reqMembershipDatas.UserGetRequest.requestMemberships &&
-          reqMembershipDatas.UserGetRequest.requestMemberships.length === 0 ? (
-            "현재 장바구니에 아무것도 담겨 있지 않습니다"
-          ) : (
-            <PayButton value={"결제하기"} />
-          )}
+          reqMembershipDatas.UserGetRequest.requestMemberships.length === 0
+            ? "현재 장바구니에 아무것도 담겨 있지 않습니다"
+            : reqMembershipDatas &&
+              reqMembershipDatas.UserGetRequest &&
+              reqMembershipDatas.UserGetRequest.requestMemberships &&
+              reqMembershipDatas.UserGetRequest.requestMemberships.length >
+                0 && (
+                <>
+                  <PayButton
+                    value={"카드 결제"}
+                    onClick={() => {
+                      const baseRequestMembership =
+                        reqMembershipDatas.UserGetRequest.requestMemberships &&
+                        reqMembershipDatas.UserGetRequest.requestMemberships
+                          .length &&
+                        reqMembershipDatas.UserGetRequest.requestMemberships[0];
+
+                      if (baseRequestMembership) {
+                        onPaymentClick(
+                          baseRequestMembership.branch.id,
+                          CreatePaymentMethodOption.CARD
+                        );
+                      } else {
+                        toast.error("결제 모듈을 불러올 수 없습니다");
+                      }
+                    }}
+                  />
+
+                  <PayButton
+                    value={"휴대폰 소액결제"}
+                    onClick={() => {
+                      const baseRequestMembership =
+                        reqMembershipDatas.UserGetRequest.requestMemberships &&
+                        reqMembershipDatas.UserGetRequest.requestMemberships
+                          .length &&
+                        reqMembershipDatas.UserGetRequest.requestMemberships[0];
+
+                      if (baseRequestMembership) {
+                        onPaymentClick(
+                          baseRequestMembership.branch.id,
+                          CreatePaymentMethodOption.PHONE
+                        );
+                      } else {
+                        toast.error("결제 모듈을 불러올 수 없습니다");
+                      }
+                    }}
+                  />
+                </>
+              )}
         </BottomSection>
       </Container>
     </BackContainer>

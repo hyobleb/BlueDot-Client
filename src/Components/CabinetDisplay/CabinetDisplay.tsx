@@ -107,7 +107,7 @@ const CabinetDisplay: React.SFC<IProps> = ({
               ? DANGER_COLOR
               : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
                 ? WARNING_COLOR
-                : cabinet.status === "RESERVED" ||
+                : cabinet.status === "RESERVED" &&
                   moment(cabinet.reservedDatetime) > moment()
                   ? SECONDARY_COLOR
                   : cabinet.id === selCabinetId

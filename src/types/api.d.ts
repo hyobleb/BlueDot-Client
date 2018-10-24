@@ -686,6 +686,7 @@ export interface addProductVariables {
 
 export interface getRequestMemberships_UserGetRequest_requestMemberships_branch {
   __typename: "Branch";
+  id: number;
   name: string;
 }
 
@@ -748,6 +749,98 @@ export interface deleteRequestMembership {
 
 export interface deleteRequestMembershipVariables {
   RequestMembershipId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: createPayment
+// ====================================================
+
+export interface createPayment_CreatePayment_payment {
+  __typename: "Payment";
+  id: number;
+}
+
+export interface createPayment_CreatePayment {
+  __typename: "CreatePaymentResponse";
+  ok: boolean;
+  error: string | null;
+  payment: createPayment_CreatePayment_payment | null;
+}
+
+export interface createPayment {
+  CreatePayment: createPayment_CreatePayment;
+}
+
+export interface createPaymentVariables {
+  userId?: number | null;
+  payMethod: CreatePaymentMethodOption;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getBranchForImp
+// ====================================================
+
+export interface getBranchForImp_GuestGetBranch_branch {
+  __typename: "SimpleBranch";
+  impId: string | null;
+}
+
+export interface getBranchForImp_GuestGetBranch {
+  __typename: "GuestGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: getBranchForImp_GuestGetBranch_branch | null;
+}
+
+export interface getBranchForImp {
+  GuestGetBranch: getBranchForImp_GuestGetBranch;
+}
+
+export interface getBranchForImpVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getPayment
+// ====================================================
+
+export interface getPayment_UserGetPayment_payment_user {
+  __typename: "User";
+  name: string | null;
+  phoneNumber: string | null;
+}
+
+export interface getPayment_UserGetPayment_payment {
+  __typename: "Payment";
+  id: number;
+  user: getPayment_UserGetPayment_payment_user;
+  payMethod: string | null;
+  merchant_uid: string;
+  amount: number;
+}
+
+export interface getPayment_UserGetPayment {
+  __typename: "UserGetPaymentResponse";
+  ok: boolean;
+  error: string | null;
+  payment: getPayment_UserGetPayment_payment | null;
+}
+
+export interface getPayment {
+  UserGetPayment: getPayment_UserGetPayment;
+}
+
+export interface getPaymentVariables {
+  paymentId: number;
 }
 
 /* tslint:disable */
@@ -1430,6 +1523,14 @@ export interface headUpdateRoomVariables {
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
+
+export enum CreatePaymentMethodOption {
+  CARD = "CARD",
+  CASH = "CASH",
+  PHONE = "PHONE",
+  TRANS = "TRANS",
+  VBANK = "VBANK",
+}
 
 export enum SearchType {
   NAME = "NAME",
