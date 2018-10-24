@@ -178,13 +178,12 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
           >
             {() => {
               return (
+                // sometimes this part is not excuted, I expected that it was excuted when render
                 <GetCabinetSetsQuery
                   query={GET_BRANCH_FOR_ERNOLL_CABINET}
                   variables={{ branchId: this.state.branchId }}
-                  onCompleted={data => {
-                    console.log({ data });
-                  }}
                 >
+                
                   {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => (
                     <UserReqCabinetMutation
                       mutation={USER_REQUEST_CABINET}
