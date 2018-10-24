@@ -78,8 +78,6 @@ class MembershipContainer extends React.Component<IProps, IState> {
   };
 
   public membershipPopUpShow = () => {
-    console.log("membership popup");
-
     this.setState({
       onBranchClick: this.onMembershipBranchClick,
       popUpCloseFunc: this.membershipPopUpNoShow,
@@ -94,8 +92,6 @@ class MembershipContainer extends React.Component<IProps, IState> {
   };
 
   public cabinetPopUpShow = () => {
-    console.log("cabinet membership popup");
-
     this.setState({
       onBranchClick: this.onCabinetBranchClick,
       popUpCloseFunc: this.cabinetPopUpNoShow,
@@ -120,7 +116,13 @@ class MembershipContainer extends React.Component<IProps, IState> {
   };
 
   public onCabinetBranchClick = branchId => {
-    console.log(branchId);
+    const { history } = this.props;
+    history.push({
+      pathname: "/enroll-req-cabinet",
+      state: {
+        branchId
+      }
+    });
   };
 }
 

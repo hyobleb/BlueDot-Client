@@ -52,6 +52,21 @@ const CabinetRow = styled.div`
   display: flex;
 `;
 
+const ColorIndexContainer = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+`;
+const ColorIndex = styled.div`
+  padding: 5px;
+  color: white;
+  width: 60px;
+  font-size: 10px;
+  text-align: center;
+`;
+
 const CabinetDisplay: React.SFC<IProps> = ({
   cabinets,
   horizontalNumber,
@@ -68,6 +83,23 @@ const CabinetDisplay: React.SFC<IProps> = ({
 
   return (
     <Container>
+      <ColorIndexContainer>
+        <ColorIndex style={{ backgroundColor: PRIMARY_COLOR }}>
+          이용가능
+        </ColorIndex>
+        <ColorIndex style={{ backgroundColor: WARNING_COLOR }}>
+          이용중
+        </ColorIndex>
+        <ColorIndex style={{ backgroundColor: SUCCESS_COLOR }}>
+          선택한 사물함
+        </ColorIndex>
+        <ColorIndex style={{ backgroundColor: SECONDARY_COLOR }}>
+          예약중
+        </ColorIndex>
+        <ColorIndex style={{ backgroundColor: DANGER_COLOR }}>
+          이용불가
+        </ColorIndex>
+      </ColorIndexContainer>
       {verticalCabients.map((rowCabinets, index) => (
         <CabinetRow key={index}>
           {rowCabinets.map(cabinet => {
@@ -75,7 +107,8 @@ const CabinetDisplay: React.SFC<IProps> = ({
               ? DANGER_COLOR
               : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
                 ? WARNING_COLOR
-                : moment(cabinet.reservedDatetime) > moment()
+                : cabinet.status === "RESERVED" ||
+                  moment(cabinet.reservedDatetime) > moment()
                   ? SECONDARY_COLOR
                   : cabinet.id === selCabinetId
                     ? SUCCESS_COLOR

@@ -60,7 +60,11 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      branchId: 0,
+      branchId: props.location.state
+        ? props.location.state.branchId
+          ? props.location.state.branchId
+          : 0
+        : 0,
       branchPopUpShow: false,
       cabinetId: 0,
       cabinetNumber: 0,
@@ -94,6 +98,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       <GetCabinetQuery
         query={GET_CABINET}
         variables={{ cabinetId }}
+        fetchPolicy={"cache-and-network"}
         onCompleted={data => {
           if ("UserGetCabinet" in data) {
             const {
