@@ -180,9 +180,10 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
               return (
                 <GetCabinetSetsQuery
                   query={GET_BRANCH_FOR_ERNOLL_CABINET}
-                  variables={{ branchId }}
-                  fetchPolicy={"cache-and-network"}
-                  skip={branchId === 0}
+                  variables={{ branchId: this.state.branchId }}
+                  onCompleted={data => {
+                    console.log({ data });
+                  }}
                 >
                   {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => (
                     <UserReqCabinetMutation
@@ -195,6 +196,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                       }}
                     >
                       {userRequestCabinetFn => {
+                        console.log(this.state);
                         this.reqCabinetFn = userRequestCabinetFn;
                         return (
                           <GetBranchQuery

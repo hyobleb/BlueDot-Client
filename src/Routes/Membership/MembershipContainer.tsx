@@ -2,8 +2,9 @@ import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { USER_PROFILE } from "src/Components/sharedQueries";
-import { userProfile } from "src/types/api";
+import { getMyMemberships, userProfile } from "src/types/api";
 import MembershipPresenter from "./MembershipPresenter";
+import { GET_MY_MEMBERSHIPS } from "./MembershipQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -15,6 +16,7 @@ interface IState {
 }
 
 class GetProfileQuery extends Query<userProfile> {}
+class GetMyMembershipsQuery extends Query<getMyMemberships> {}
 
 class MembershipContainer extends React.Component<IProps, IState> {
   constructor(props) {
@@ -41,24 +43,30 @@ class MembershipContainer extends React.Component<IProps, IState> {
       onBranchClick
     } = this.state;
     return (
-      <GetProfileQuery
-        query={USER_PROFILE}
-        fetchPolicy={"cache-and-network"}
-        onCompleted={this.updateFields}
-      >
-        {({ loading: profileLoading }) => (
-          <MembershipPresenter
-            name={name}
-            profilePhoto={profilePhoto}
-            profileLoading={profileLoading}
-            popUpShow={popUpShow}
-            membershipPopUpShow={this.membershipPopUpShow}
-            cabinetPopUpShow={this.cabinetPopUpShow}
-            popUpCloseFunc={popUpCloseFunc}
-            onBranchClick={onBranchClick}
-          />
+      <GetMyMembershipsQuery query={GET_MY_MEMBERSHIPS}>
+        {({ data: myMembershipDatas, loading: myMembershipDatasLoading }) => (
+          <GetProfileQuery
+            query={USER_PROFILE}
+            fetchPolicy={"cache-and-network"}
+            onCompleted={this.updateFields}
+          >
+            {({ loading: profileLoading }) => (
+              <MembershipPresenter
+                name={name}
+                profilePhoto={profilePhoto}
+                profileLoading={profileLoading}
+                popUpShow={popUpShow}
+                membershipPopUpShow={this.membershipPopUpShow}
+                cabinetPopUpShow={this.cabinetPopUpShow}
+                popUpCloseFunc={popUpCloseFunc}
+                onBranchClick={onBranchClick}
+                myMembershipDatas={myMembershipDatas}
+                myMembershipDatasLoading={myMembershipDatasLoading}
+              />
+            )}
+          </GetProfileQuery>
         )}
-      </GetProfileQuery>
+      </GetMyMembershipsQuery>
     );
   }
 

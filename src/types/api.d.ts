@@ -924,6 +924,43 @@ export interface userIdSignInVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getMyMemberships
+// ====================================================
+
+export interface getMyMemberships_GetMyMemberships_memberships_branch {
+  __typename: "Branch";
+  name: string;
+}
+
+export interface getMyMemberships_GetMyMemberships_memberships_cabinet {
+  __typename: "Cabinet";
+  cabinetNumber: number;
+}
+
+export interface getMyMemberships_GetMyMemberships_memberships {
+  __typename: "Membership";
+  id: number;
+  branch: getMyMemberships_GetMyMemberships_memberships_branch;
+  startDatetime: string;
+  endDatetime: string;
+  cabinet: getMyMemberships_GetMyMemberships_memberships_cabinet | null;
+}
+
+export interface getMyMemberships_GetMyMemberships {
+  __typename: "GetMyMembershipsResponse";
+  ok: boolean | null;
+  error: string | null;
+  memberships: (getMyMemberships_GetMyMemberships_memberships | null)[] | null;
+}
+
+export interface getMyMemberships {
+  GetMyMemberships: getMyMemberships_GetMyMemberships;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: updateBranch
 // ====================================================
 

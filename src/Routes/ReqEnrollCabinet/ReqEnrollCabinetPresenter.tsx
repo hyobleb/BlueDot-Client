@@ -231,6 +231,8 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
       }
     });
   }
+
+
   return (
     <BackContainer>
       <Helmet>

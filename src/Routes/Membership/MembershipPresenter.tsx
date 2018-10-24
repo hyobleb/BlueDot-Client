@@ -4,9 +4,12 @@ import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
+import { getMyMemberships } from "src/types/api";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: 30px;
+`;
 const HeadSection = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,7 +32,6 @@ const GreetContainer = styled.div`
   margin-bottom: 10px;
 `;
 const Section = styled.div`
-  border: 1px solid #dedede;
   width: 90%;
   max-width: 600px;
   margin-left: auto;
@@ -38,8 +40,23 @@ const Section = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
 `;
+
+const SectionHead = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+`;
+
+const SectionTitle = styled.div`
+  font-size: 22px;
+`;
+
 const ContentContainer = styled.div`
+  border: 1px solid #dedede;
   text-align: center;
+  padding: 15px;
+  border-radius: 5px;
 `;
 const NoMembershipContainer = styled.div`
   height: 140px;
@@ -49,10 +66,16 @@ const NoMembershipContainer = styled.div`
 `;
 const ButtonContainer = styled.div`
   text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 const EnrollButton = styled(SmallButton)`
   margin-left: auto;
   margin-right: auto;
+`;
+
+const ExtendButton = styled(SmallButton)`
+  justify-self: center;
 `;
 
 const BackArrowExtended = styled(BackArrow)`
@@ -60,6 +83,22 @@ const BackArrowExtended = styled(BackArrow)`
   bottom: 20px;
   left: 20px;
 `;
+
+const MembershipContainer = styled.div`
+  text-align: left;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 1px solid #dedede;
+`;
+const MembershipContentRow = styled.div`
+  padding: 5px 0;
+`;
+
+const MembershipTitle = styled(MembershipContentRow)``;
+const StartDatetime = styled(MembershipContentRow)``;
+const EndDatetime = styled(MembershipContentRow)``;
 
 interface IProps {
   name: string;
@@ -70,6 +109,8 @@ interface IProps {
   cabinetPopUpShow: () => void;
   popUpCloseFunc: () => void;
   onBranchClick: (branchId: number) => void;
+  myMembershipDatas?: getMyMemberships;
+  myMembershipDatasLoading: boolean;
 }
 
 const MembershipPresenter: React.SFC<IProps> = ({
@@ -80,7 +121,9 @@ const MembershipPresenter: React.SFC<IProps> = ({
   membershipPopUpShow,
   cabinetPopUpShow,
   popUpCloseFunc,
-  onBranchClick
+  onBranchClick,
+  myMembershipDatas,
+  myMembershipDatasLoading
 }) => (
   <Container>
     <Helmet>
@@ -88,7 +131,7 @@ const MembershipPresenter: React.SFC<IProps> = ({
     </Helmet>
     <BackArrowExtended backTo="/home" />
 
-    {profileLoading ? (
+    {profileLoading || myMembershipDatasLoading ? (
       <Loading />
     ) : (
       <>
@@ -108,27 +151,88 @@ const MembershipPresenter: React.SFC<IProps> = ({
           </ProfileContainer>
         </HeadSection>
         <Section>
+          <SectionHead>
+            <SectionTitle>멤버쉽</SectionTitle>
+            <ButtonContainer>
+              <EnrollButton
+                value={"등록하러 가기"}
+                onClick={membershipPopUpShow}
+              />
+            </ButtonContainer>
+          </SectionHead>
+
           <ContentContainer>
-            <NoMembershipContainer>
-              현재 멤버쉽이 없습니다
-            </NoMembershipContainer>
+            {(myMembershipDatas &&
+              myMembershipDatas.GetMyMemberships &&
+              myMembershipDatas.GetMyMemberships.memberships &&
+              myMembershipDatas.GetMyMemberships.memberships.length > 0 &&
+              myMembershipDatas.GetMyMemberships.memberships.map(
+                membership =>
+                  membership &&
+                  !membership.cabinet && (
+                    <MembershipContainer key={membership.id}>
+                      <MembershipTitle>
+                        {membership.branch.name} 멤버쉽
+                      </MembershipTitle>
+                      <StartDatetime>
+                        이용 시작 : {membership.startDatetime}
+                      </StartDatetime>
+                      <EndDatetime>
+                        이용 종료 : {membership.endDatetime}
+                      </EndDatetime>
+                      <ButtonContainer>
+                        <ExtendButton value={"연장하기"} />
+                      </ButtonContainer>
+                    </MembershipContainer>
+                  )
+              )) || (
+              <NoMembershipContainer>
+                현재 멤버쉽이 없습니다
+              </NoMembershipContainer>
+            )}
           </ContentContainer>
-          <ButtonContainer>
-            <EnrollButton
-              value={"등록하러 가기"}
-              onClick={membershipPopUpShow}
-            />
-          </ButtonContainer>
         </Section>
         <Section>
+          <SectionHead>
+            <SectionTitle>사물함</SectionTitle>
+            <ButtonContainer>
+              <EnrollButton
+                value={"등록하러 가기"}
+                onClick={cabinetPopUpShow}
+              />
+            </ButtonContainer>
+          </SectionHead>
           <ContentContainer>
-            <NoMembershipContainer>
-              현재 사물함이 없습니다
-            </NoMembershipContainer>
+            {(myMembershipDatas &&
+              myMembershipDatas.GetMyMemberships &&
+              myMembershipDatas.GetMyMemberships.memberships &&
+              myMembershipDatas.GetMyMemberships.memberships.length > 0 &&
+              myMembershipDatas.GetMyMemberships.memberships.map(
+                membership =>
+                  membership &&
+                  membership.cabinet && (
+                    <MembershipContainer key={membership.id}>
+                      <MembershipTitle>
+                        {membership.branch.name}{" "}
+                        {membership.cabinet.cabinetNumber}번 사물함
+                      </MembershipTitle>
+                      <StartDatetime>
+                        이용 시작 : {membership.startDatetime}
+                      </StartDatetime>
+                      <EndDatetime>
+                        이용 종료 : {membership.endDatetime}
+                      </EndDatetime>
+                      <ButtonContainer>
+                        <ExtendButton value={"연장하기"} />
+                      </ButtonContainer>
+                    </MembershipContainer>
+                  )
+              )) || (
+              <NoMembershipContainer>
+                현재 사물함이 없습니다
+              </NoMembershipContainer>
+            )}
           </ContentContainer>
-          <ButtonContainer>
-            <EnrollButton value={"등록하러 가기"} onClick={cabinetPopUpShow} />
-          </ButtonContainer>
         </Section>
       </>
     )}
