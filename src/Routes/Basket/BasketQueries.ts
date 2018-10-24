@@ -81,3 +81,20 @@ export const GET_PAYMENT = gql`
     }
   }
 `;
+
+export const COMPLETE_PAYMENT = gql`
+  mutation completePayment(
+    $paymentId: Int!
+    $imp_uid: String!
+    $merchant_uid: String!
+  ) {
+    CompletePayment(
+      paymentId: $paymentId
+      imp_uid: $imp_uid
+      merchant_uid: $merchant_uid
+    ) {
+      ok
+      error
+    }
+  }
+`;

@@ -847,6 +847,29 @@ export interface getPaymentVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: completePayment
+// ====================================================
+
+export interface completePayment_CompletePayment {
+  __typename: "CompletePaymentResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface completePayment {
+  CompletePayment: completePayment_CompletePayment;
+}
+
+export interface completePaymentVariables {
+  paymentId: number;
+  imp_uid: string;
+  merchant_uid: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: updateProfile
 // ====================================================
 

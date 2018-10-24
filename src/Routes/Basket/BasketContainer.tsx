@@ -5,6 +5,8 @@ import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GET_USABLE_MY_MEMBERSHIPS } from "src/Components/sharedQueries";
 import {
+  completePayment,
+  completePaymentVariables,
   createPayment,
   createPaymentVariables,
   deleteRequestMembership,
@@ -16,6 +18,7 @@ import {
 } from "src/types/api";
 import BasketPresenter from "./BasketPresenter";
 import {
+  COMPLETE_PAYMENT,
   CREATE_PAYMENT,
   DELETE_REQUEST_MEMBERSHIP,
   GET_BRANCH_FOR_IMP,
@@ -41,12 +44,18 @@ class DeleteRequestMembershipMutation extends Mutation<
   deleteRequestMembershipVariables
 > {}
 
+class CompletePaymentMutation extends Mutation<
+  completePayment,
+  completePaymentVariables
+> {}
+
 class BasketContainer extends React.Component<IProps, IState> {
   public deleteReqMembershipFn: MutationFn;
   public getUsableMembershipFn;
   public createPaymentFn: MutationFn;
   public getBranchForImpFn;
   public getPaymentFn;
+  public completePaymentFn: MutationFn;
 
   constructor(props: IProps) {
     super(props);
@@ -59,16 +68,23 @@ class BasketContainer extends React.Component<IProps, IState> {
   }
 
   public render() {
+    console.log("render");
     const { importLoad, jqueryLoad, baseBranchId } = this.state;
     return (
       <>
         <Script
           url="https://code.jquery.com/jquery-1.12.4.min.js"
-          onLoad={this.setJqueryLoad}
+          onLoad={() => {
+            this.setJqueryLoad();
+          }}
+          onCreate={this.setJqueryLoad}
         />
         <Script
           url="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"
-          onLoad={this.setImportLoad}
+          onLoad={() => {
+            this.setImportLoad();
+          }}
+          onCreate={this.setImportLoad}
         />
         <ApolloConsumer>
           {client => {
@@ -94,48 +110,66 @@ class BasketContainer extends React.Component<IProps, IState> {
             };
 
             return (
-              <CreatePaymentMutation mutation={CREATE_PAYMENT}>
-                {createPaymentMutationFn => {
-                  this.createPaymentFn = createPaymentMutationFn;
+              <CompletePaymentMutation
+                mutation={COMPLETE_PAYMENT}
+                refetchQueries={[{ query: GET_REQUEST_MEMBERSHIPS }]}
+              >
+                {completePaymentMutationFn => {
+                  this.completePaymentFn = completePaymentMutationFn;
                   return (
-                    <DeleteRequestMembershipMutation
-                      mutation={DELETE_REQUEST_MEMBERSHIP}
-                      refetchQueries={[{ query: GET_REQUEST_MEMBERSHIPS }]}
-                    >
-                      {deleteRequestMembershipFn => {
-                        this.deleteReqMembershipFn = deleteRequestMembershipFn;
+                    <CreatePaymentMutation mutation={CREATE_PAYMENT}>
+                      {createPaymentMutationFn => {
+                        this.createPaymentFn = createPaymentMutationFn;
                         return (
-                          <GetRequestMembershipsQuery
-                            query={GET_REQUEST_MEMBERSHIPS}
-                            fetchPolicy={"cache-and-network"}
+                          <DeleteRequestMembershipMutation
+                            mutation={DELETE_REQUEST_MEMBERSHIP}
+                            refetchQueries={[
+                              { query: GET_REQUEST_MEMBERSHIPS }
+                            ]}
                           >
-                            {({
-                              loading: reqMembershipsLoading,
-                              data: reqMembershipDatas
-                            }) => (
-                              <BasketPresenter
-                                reqMembershipsLoading={reqMembershipsLoading}
-                                reqMembershipDatas={reqMembershipDatas}
-                                deleteReqMembership={this.deleteReqMembership}
-                                onEnrollReqMembershipClick={
-                                  this.onEnrollReqMembershipClick
-                                }
-                                onExtendReqMembershipClick={
-                                  this.onExtendReqMembershipClick
-                                }
-                                onEnrollCabinetClick={this.onEnrollCabinetClick}
-                                onPaymentClick={this.onPaymentClick}
-                                importLoad={importLoad}
-                                jqueryLoad={jqueryLoad}
-                              />
-                            )}
-                          </GetRequestMembershipsQuery>
+                            {deleteRequestMembershipFn => {
+                              this.deleteReqMembershipFn = deleteRequestMembershipFn;
+                              return (
+                                <GetRequestMembershipsQuery
+                                  query={GET_REQUEST_MEMBERSHIPS}
+                                  fetchPolicy={"cache-and-network"}
+                                >
+                                  {({
+                                    loading: reqMembershipsLoading,
+                                    data: reqMembershipDatas
+                                  }) => (
+                                    <BasketPresenter
+                                      reqMembershipsLoading={
+                                        reqMembershipsLoading
+                                      }
+                                      reqMembershipDatas={reqMembershipDatas}
+                                      deleteReqMembership={
+                                        this.deleteReqMembership
+                                      }
+                                      onEnrollReqMembershipClick={
+                                        this.onEnrollReqMembershipClick
+                                      }
+                                      onExtendReqMembershipClick={
+                                        this.onExtendReqMembershipClick
+                                      }
+                                      onEnrollCabinetClick={
+                                        this.onEnrollCabinetClick
+                                      }
+                                      onPaymentClick={this.onPaymentClick}
+                                      importLoad={importLoad}
+                                      jqueryLoad={jqueryLoad}
+                                    />
+                                  )}
+                                </GetRequestMembershipsQuery>
+                              );
+                            }}
+                          </DeleteRequestMembershipMutation>
                         );
                       }}
-                    </DeleteRequestMembershipMutation>
+                    </CreatePaymentMutation>
                   );
                 }}
-              </CreatePaymentMutation>
+              </CompletePaymentMutation>
             );
           }}
         </ApolloConsumer>
@@ -209,19 +243,18 @@ class BasketContainer extends React.Component<IProps, IState> {
   };
   public setJqueryLoad = () => {
     this.setState({
-      ...this.state,
       jqueryLoad: true
     });
   };
 
   public setImportLoad = () => {
     this.setState({
-      ...this.state,
       importLoad: true
     });
   };
 
   public processingPayment = async (impId: string, paymentId: number) => {
+    const { history } = this.props;
     if (!this.state.baseBranchId) {
       toast.error("지점을 먼저 설정하셔야 됩니다");
       return;
@@ -261,10 +294,26 @@ class BasketContainer extends React.Component<IProps, IState> {
               pay_method: payMethod,
               pg: "html5_inicis"
             },
-            rsp => {
+            async rsp => {
               // callback
               if (rsp.success) {
-                console.log("성공");
+                const paymentCompleteResult = await this.completePaymentFn({
+                  variables: {
+                    imp_uid: rsp.imp_uid,
+                    merchant_uid: merchantUid,
+                    paymentId
+                  }
+                });
+
+                if (paymentCompleteResult) {
+                  if (paymentCompleteResult.data.CompletePayment.ok) {
+                    if (payMethod === "card" || payMethod === "phone") {
+                      toast.success("결제 및 등록이 완료되었습니다 :)");
+                      history.push("/membership");
+                    }
+                    // TODO: 무통장 결제 로직 추가
+                  }
+                }
               } else {
                 console.log("실패");
               }
@@ -275,6 +324,7 @@ class BasketContainer extends React.Component<IProps, IState> {
         toast.error("결제에 실패했습니다");
       }
     } else {
+      console.log(this.state);
       toast.error("결제 모듈이 제대로 불러오지 않았습니다");
     }
   };

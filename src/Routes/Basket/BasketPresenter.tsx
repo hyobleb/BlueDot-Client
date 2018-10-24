@@ -74,13 +74,14 @@ const DeleteButton = styled(Button)`
 
 const BottomSection = styled(Section)`
   text-align: center;
+  margin-bottom: 20px;
 `;
 const PayButton = styled(Button)`
   width: 50%;
   max-width: 400px;
   min-width: 300px;
   font-size: 16px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 `;
 
 const BackArrowExtended = styled(BackArrow)`
