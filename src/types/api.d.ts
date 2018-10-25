@@ -1086,6 +1086,7 @@ export interface getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets {
 
 export interface getBranchForEnrollCabinet_UserGetBranch_branch {
   __typename: "Branch";
+  id: number;
   cabinetLoungeImage: string;
   cabinetSets: (getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets | null)[] | null;
 }

@@ -6,6 +6,7 @@ export const GET_BRANCH_FOR_ERNOLL_CABINET = gql`
       ok
       error
       branch {
+        id
         cabinetLoungeImage
         cabinetSets {
           id

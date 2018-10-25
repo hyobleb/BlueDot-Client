@@ -182,75 +182,77 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                 <GetCabinetSetsQuery
                   query={GET_BRANCH_FOR_ERNOLL_CABINET}
                   variables={{ branchId: this.state.branchId }}
+                  fetchPolicy={"cache-and-network"}
                 >
-                
-                  {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => (
-                    <UserReqCabinetMutation
-                      mutation={USER_REQUEST_CABINET}
-                      variables={{
-                        branchId,
-                        cabinetId,
-                        productId,
-                        startDatetime
-                      }}
-                    >
-                      {userRequestCabinetFn => {
-                        console.log(this.state);
-                        this.reqCabinetFn = userRequestCabinetFn;
-                        return (
-                          <GetBranchQuery
-                            query={USER_GET_PRODUCTS}
-                            variables={{ branchId }}
-                            fetchPolicy={"cache-and-network"}
-                            onCompleted={data => {
-                              this.setState({
-                                productId: 0,
-                                productTitle: ""
-                              });
-                            }}
-                            skip={branchId === 0}
-                          >
-                            {({ data: productDatas }) => (
-                              <ReqEnrollCabinetPresenter
-                                branchId={branchId}
-                                branchPopUpShow={branchPopUpShow}
-                                cabinetId={cabinetId}
-                                productTitle={productTitle}
-                                startDatetime={startDatetime}
-                                onSubmit={this.onSubmit}
-                                productDatas={productDatas}
-                                onOptionChange={this.onOptionChange}
-                                setTrueBranchPopUpShow={
-                                  this.setTrueBranchPopUpShow
-                                }
-                                setFalseBranchPopUpShow={
-                                  this.setFalseBranchPopUpShow
-                                }
-                                onBranchClick={this.onBranchClick}
-                                onDatetimeChange={this.onDatetimeChange}
-                                onThrowBasketButtonClick={
-                                  this.onThrowBasketButtonClick
-                                }
-                                onCancelClick={this.onCancelClick}
-                                cabinetSetDatas={cabinetSetDatas}
-                                tempSetId={tempSetId}
-                                onSetHover={this.onSetHover}
-                                onSetHoverOut={this.onSetHoverOut}
-                                onSetClick={this.onSetClick}
-                                setId={setId}
-                                cabinets={cabinets}
-                                horizontalNumber={horizontalNumber}
-                                onCabinetClick={this.onCabinetClick}
-                                cabinetNumber={cabinetNumber}
-                                cabinetSetLoading={cabinetSetLoading}
-                                isFirstLoaidng={isFirstLoaidng}
-                              />
-                            )}
-                          </GetBranchQuery>
-                        );
-                      }}
-                    </UserReqCabinetMutation>
-                  )}
+                  {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => {
+                    console.log(this.state);
+                    return (
+                      <UserReqCabinetMutation
+                        mutation={USER_REQUEST_CABINET}
+                        variables={{
+                          branchId,
+                          cabinetId,
+                          productId,
+                          startDatetime
+                        }}
+                      >
+                        {userRequestCabinetFn => {
+                          this.reqCabinetFn = userRequestCabinetFn;
+                          return (
+                            <GetBranchQuery
+                              query={USER_GET_PRODUCTS}
+                              variables={{ branchId }}
+                              fetchPolicy={"cache-and-network"}
+                              onCompleted={data => {
+                                this.setState({
+                                  productId: 0,
+                                  productTitle: ""
+                                });
+                              }}
+                              skip={branchId === 0}
+                            >
+                              {({ data: productDatas }) => (
+                                <ReqEnrollCabinetPresenter
+                                  branchId={branchId}
+                                  branchPopUpShow={branchPopUpShow}
+                                  cabinetId={cabinetId}
+                                  productTitle={productTitle}
+                                  startDatetime={startDatetime}
+                                  onSubmit={this.onSubmit}
+                                  productDatas={productDatas}
+                                  onOptionChange={this.onOptionChange}
+                                  setTrueBranchPopUpShow={
+                                    this.setTrueBranchPopUpShow
+                                  }
+                                  setFalseBranchPopUpShow={
+                                    this.setFalseBranchPopUpShow
+                                  }
+                                  onBranchClick={this.onBranchClick}
+                                  onDatetimeChange={this.onDatetimeChange}
+                                  onThrowBasketButtonClick={
+                                    this.onThrowBasketButtonClick
+                                  }
+                                  onCancelClick={this.onCancelClick}
+                                  cabinetSetDatas={cabinetSetDatas}
+                                  tempSetId={tempSetId}
+                                  onSetHover={this.onSetHover}
+                                  onSetHoverOut={this.onSetHoverOut}
+                                  onSetClick={this.onSetClick}
+                                  setId={setId}
+                                  cabinets={cabinets}
+                                  horizontalNumber={horizontalNumber}
+                                  onCabinetClick={this.onCabinetClick}
+                                  cabinetNumber={cabinetNumber}
+                                  cabinetSetLoading={cabinetSetLoading}
+                                  isFirstLoaidng={isFirstLoaidng}
+                                />
+                              )}
+                            </GetBranchQuery>
+                          );
+                        }}
+                      </UserReqCabinetMutation>
+                    );
+                  }}
                 </GetCabinetSetsQuery>
               );
             }}
