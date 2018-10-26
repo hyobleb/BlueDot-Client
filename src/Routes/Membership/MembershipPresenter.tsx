@@ -206,6 +206,9 @@ const MembershipPresenter: React.SFC<IProps> = ({
             {(myMembershipDatas &&
               myMembershipDatas.GetMyMemberships &&
               myMembershipDatas.GetMyMemberships.memberships &&
+              myMembershipDatas.GetMyMemberships.memberships.filter(
+                membership => membership && membership.cabinet
+              ).length > 0 &&
               myMembershipDatas.GetMyMemberships.memberships.length > 0 &&
               myMembershipDatas.GetMyMemberships.memberships.map(
                 membership =>

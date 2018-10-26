@@ -25,6 +25,7 @@ export const GET_REQUEST_MEMBERSHIPS = gql`
         cabinet {
           cabinetNumber
         }
+        status
       }
     }
   }

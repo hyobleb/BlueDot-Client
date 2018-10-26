@@ -146,7 +146,7 @@ const BasketPresenter: React.SFC<IProps> = ({
             reqMembershipDatas.UserGetRequest.requestMemberships &&
             reqMembershipDatas.UserGetRequest.requestMemberships.map(
               reqMembership =>
-                reqMembership && (
+                reqMembership && reqMembership.status === "REGIST" ? (
                   <ReqItem key={reqMembership.id}>
                     <ReqRow>
                       {reqMembership.branch.name}
@@ -161,21 +161,12 @@ const BasketPresenter: React.SFC<IProps> = ({
                       {reqMembership.product.hours}
                       시간 이용
                     </ReqRow>
-                    <ReqRow>
-                      이용 시작 :{" "}
-                      {reqMembership.exstingMembership
-                        ? reqMembership.exstingMembership.startDatetime
-                        : reqMembership.startDatetime}
-                    </ReqRow>
+                    <ReqRow>이용 시작 : {reqMembership.startDatetime}</ReqRow>
                     <ReqRow>
                       이용 만료 :{" "}
-                      {reqMembership.exstingMembership
-                        ? moment(reqMembership.exstingMembership.endDatetime)
-                            .add(reqMembership.product.hours, "h")
-                            .format("YYYY-MM-DD HH:mm:ss")
-                        : moment(reqMembership.startDatetime!)
-                            .add(reqMembership.product.hours, "h")
-                            .format("YYYY-MM-DD HH:mm:ss")}
+                      {moment(reqMembership.startDatetime!)
+                        .add(reqMembership.product.hours, "h")
+                        .format("YYYY-MM-DD HH:mm:ss")}
                     </ReqRow>
                     <ReqRow>가격 : {reqMembership.product.amount}원</ReqRow>
                     <ReqDelRow>
@@ -185,6 +176,50 @@ const BasketPresenter: React.SFC<IProps> = ({
                       />
                     </ReqDelRow>
                   </ReqItem>
+                ) : reqMembership && reqMembership.status === "EXTEND" ? (
+                  <ReqItem key={reqMembership.id}>
+                    <ReqRow>
+                      {reqMembership.branch.name}
+                      {reqMembership.product.target === "MEMBERSHIP"
+                        ? " 멤버쉽 연장"
+                        : reqMembership.product.target === "CABINET"
+                          ? ` ${reqMembership.cabinet &&
+                              reqMembership.cabinet
+                                .cabinetNumber}번 사물함 연장`
+                          : ""}
+                    </ReqRow>
+                    <ReqRow>
+                      {reqMembership.product.hours}
+                      시간 연장
+                    </ReqRow>
+                    <ReqRow>
+                      기존 멤버쉽 이용 시작 :{" "}
+                      {reqMembership.exstingMembership &&
+                        reqMembership.exstingMembership.startDatetime}
+                    </ReqRow>
+                    <ReqRow>
+                      기종 멤버쉽 이용 만료 :{" "}
+                      {reqMembership.exstingMembership &&
+                        reqMembership.exstingMembership.endDatetime}
+                    </ReqRow>
+                    <ReqRow>
+                      연장후 멤버쉽 이용 만료 :{" "}
+                      {reqMembership.exstingMembership &&
+                        moment(reqMembership.exstingMembership.endDatetime)
+                          .add(reqMembership.product.hours, "h")
+                          .format("YYYY-MM-DD HH:mm:ss")}
+                    </ReqRow>
+
+                    <ReqRow>가격 : {reqMembership.product.amount}원</ReqRow>
+                    <ReqDelRow>
+                      <DeleteButton
+                        value={"삭제"}
+                        onClick={() => deleteReqMembership(reqMembership.id)}
+                      />
+                    </ReqDelRow>
+                  </ReqItem>
+                ) : (
+                  ""
                 )
             )}
         </BodySection>

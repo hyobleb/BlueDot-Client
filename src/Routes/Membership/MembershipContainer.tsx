@@ -1,10 +1,9 @@
 import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
-import { USER_PROFILE } from "src/Components/sharedQueries";
+import { GET_MY_MEMBERSHIPS, USER_PROFILE } from "src/Components/sharedQueries";
 import { getMyMemberships, userProfile } from "src/types/api";
 import MembershipPresenter from "./MembershipPresenter";
-import { GET_MY_MEMBERSHIPS } from "./MembershipQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -43,29 +42,34 @@ class MembershipContainer extends React.Component<IProps, IState> {
       onBranchClick
     } = this.state;
     return (
-      <GetMyMembershipsQuery query={GET_MY_MEMBERSHIPS}>
-        {({ data: myMembershipDatas, loading: myMembershipDatasLoading }) => (
-          <GetProfileQuery
-            query={USER_PROFILE}
-            fetchPolicy={"cache-and-network"}
-            onCompleted={this.updateFields}
-          >
-            {({ loading: profileLoading }) => (
-              <MembershipPresenter
-                name={name}
-                profilePhoto={profilePhoto}
-                profileLoading={profileLoading}
-                popUpShow={popUpShow}
-                membershipPopUpShow={this.membershipPopUpShow}
-                cabinetPopUpShow={this.cabinetPopUpShow}
-                popUpCloseFunc={popUpCloseFunc}
-                onBranchClick={onBranchClick}
-                myMembershipDatas={myMembershipDatas}
-                myMembershipDatasLoading={myMembershipDatasLoading}
-              />
-            )}
-          </GetProfileQuery>
-        )}
+      <GetMyMembershipsQuery
+        query={GET_MY_MEMBERSHIPS}
+        fetchPolicy={"cache-and-network"}
+      >
+        {({ data: myMembershipDatas, loading: myMembershipDatasLoading }) => {
+          return (
+            <GetProfileQuery
+              query={USER_PROFILE}
+              fetchPolicy={"cache-and-network"}
+              onCompleted={this.updateFields}
+            >
+              {({ loading: profileLoading }) => (
+                <MembershipPresenter
+                  name={name}
+                  profilePhoto={profilePhoto}
+                  profileLoading={profileLoading}
+                  popUpShow={popUpShow}
+                  membershipPopUpShow={this.membershipPopUpShow}
+                  cabinetPopUpShow={this.cabinetPopUpShow}
+                  popUpCloseFunc={popUpCloseFunc}
+                  onBranchClick={onBranchClick}
+                  myMembershipDatas={myMembershipDatas}
+                  myMembershipDatasLoading={myMembershipDatasLoading}
+                />
+              )}
+            </GetProfileQuery>
+          );
+        }}
       </GetMyMembershipsQuery>
     );
   }

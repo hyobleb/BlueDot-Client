@@ -1,5 +1,6 @@
 import moment from "moment";
 import React from "react";
+import { toast } from "react-toastify";
 import {
   DANGER_COLOR,
   PRIMARY_COLOR,
@@ -103,20 +104,37 @@ const CabinetDisplay: React.SFC<IProps> = ({
       {verticalCabients.map((rowCabinets, index) => (
         <CabinetRow key={index}>
           {rowCabinets.map(cabinet => {
-            const backgroundColor = !cabinet.usable
-              ? DANGER_COLOR
-              : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
-                ? WARNING_COLOR
-                : cabinet.status === "RESERVED" &&
-                  moment(cabinet.reservedDatetime) > moment()
-                  ? SECONDARY_COLOR
-                  : cabinet.id === selCabinetId
-                    ? SUCCESS_COLOR
-                    : PRIMARY_COLOR;
+            const backgroundColor =
+              !cabinet.usable || !cabinet.lockId
+                ? DANGER_COLOR
+                : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
+                  ? WARNING_COLOR
+                  : cabinet.status === "RESERVED" &&
+                    moment(cabinet.reservedDatetime) > moment()
+                    ? SECONDARY_COLOR
+                    : cabinet.id === selCabinetId
+                      ? SUCCESS_COLOR
+                      : PRIMARY_COLOR;
             return (
               <CabinetItem
                 key={cabinet.id}
-                onClick={() => onCabinetClick(cabinet.id)}
+                onClick={() => {
+                  if (!cabinet.usable || !cabinet.lockId) {
+                    toast.error("해당 사물함은 이용할수 없습니다");
+                  } else if (
+                    cabinet.nowUsing &&
+                    moment(cabinet.endDatetime) > moment()
+                  ) {
+                    toast.error("해당 사물함은 현재 이용중입니다");
+                  } else if (
+                    cabinet.status === "RESERVED" &&
+                    moment(cabinet.reservedDatetime) > moment()
+                  ) {
+                    toast.error("해당 사물함은 예약 중입니다");
+                  } else {
+                    onCabinetClick(cabinet.id);
+                  }
+                }}
                 style={{ backgroundColor }}
               >
                 <CabinetNumber>{cabinet.cabinetNumber}</CabinetNumber>

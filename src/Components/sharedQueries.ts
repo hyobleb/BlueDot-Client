@@ -233,6 +233,21 @@ export const USER_REQUEST_MEMBERSHIP = gql`
   }
 `;
 
+export const USER_REQUEST_EXTEND_MEMBERSHIP = gql`
+  mutation userRequestExtendMembership(
+    $exstingMembershipId: Int!
+    $productId: Int!
+  ) {
+    RequestExtendMembership(
+      exstingMembershipId: $exstingMembershipId
+      productId: $productId
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
 export const USER_REQUEST_CABINET = gql`
   mutation userRequestCabinet(
     $branchId: Int!
@@ -262,9 +277,11 @@ export const GET_USABLE_MY_MEMBERSHIPS = gql`
         startDatetime
         endDatetime
         branch {
+          id
           name
         }
         cabinet {
+          id
           cabinetNumber
         }
       }
@@ -297,6 +314,7 @@ export const GET_CABINETS = gql`
           reservedDatetime
           startDatetime
           endDatetime
+          lockId
         }
       }
     }
@@ -316,6 +334,27 @@ export const GET_CABINET = gql`
         status
         reservedDatetime
         endDatetime
+      }
+    }
+  }
+`;
+
+export const GET_MY_MEMBERSHIPS = gql`
+  query getMyMemberships {
+    GetMyMemberships {
+      ok
+      error
+      memberships {
+        id
+        branch {
+          id
+          name
+        }
+        startDatetime
+        endDatetime
+        cabinet {
+          cabinetNumber
+        }
       }
     }
   }

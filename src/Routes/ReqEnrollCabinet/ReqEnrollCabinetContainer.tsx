@@ -185,7 +185,6 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                   fetchPolicy={"cache-and-network"}
                 >
                   {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => {
-                    console.log(this.state);
                     return (
                       <UserReqCabinetMutation
                         mutation={USER_REQUEST_CABINET}

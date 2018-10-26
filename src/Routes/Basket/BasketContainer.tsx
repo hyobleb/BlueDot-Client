@@ -68,7 +68,6 @@ class BasketContainer extends React.Component<IProps, IState> {
   }
 
   public render() {
-    console.log("render");
     const { importLoad, jqueryLoad, baseBranchId } = this.state;
     return (
       <>
@@ -90,6 +89,7 @@ class BasketContainer extends React.Component<IProps, IState> {
           {client => {
             this.getUsableMembershipFn = async () => {
               const { data } = await client.query({
+                fetchPolicy: "cache-first",
                 query: GET_USABLE_MY_MEMBERSHIPS
               });
               return data;
@@ -110,10 +110,7 @@ class BasketContainer extends React.Component<IProps, IState> {
             };
 
             return (
-              <CompletePaymentMutation
-                mutation={COMPLETE_PAYMENT}
-                refetchQueries={[{ query: GET_REQUEST_MEMBERSHIPS }]}
-              >
+              <CompletePaymentMutation mutation={COMPLETE_PAYMENT}>
                 {completePaymentMutationFn => {
                   this.completePaymentFn = completePaymentMutationFn;
                   return (
@@ -191,6 +188,7 @@ class BasketContainer extends React.Component<IProps, IState> {
   };
 
   public onExtendReqMembershipClick = async () => {
+    const { history } = this.props;
     const result: getUsableMyMemberships = await this.getUsableMembershipFn();
     if (result.GetMyUsableMemberships.ok) {
       if (
@@ -198,8 +196,10 @@ class BasketContainer extends React.Component<IProps, IState> {
         result.GetMyUsableMemberships.memberships.length === 0
       ) {
         toast.error("연장할 멤버쉽이 없습니다");
+        return;
       }
-      console.log("연장 화면으로 넘어가기");
+
+      history.push("/extend-req-membership");
     } else {
       toast.error(result.GetMyUsableMemberships.error);
     }
@@ -324,7 +324,6 @@ class BasketContainer extends React.Component<IProps, IState> {
         toast.error("결제에 실패했습니다");
       }
     } else {
-      console.log(this.state);
       toast.error("결제 모듈이 제대로 불러오지 않았습니다");
     }
   };
