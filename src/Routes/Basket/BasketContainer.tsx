@@ -3,7 +3,10 @@ import { ApolloConsumer, Mutation, MutationFn, Query } from "react-apollo";
 import Script from "react-load-script";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GET_USABLE_MY_MEMBERSHIPS } from "src/Components/sharedQueries";
+import {
+  GET_MY_MEMBERSHIPS,
+  GET_USABLE_MY_MEMBERSHIPS
+} from "src/Components/sharedQueries";
 import {
   completePayment,
   completePaymentVariables,
@@ -110,7 +113,10 @@ class BasketContainer extends React.Component<IProps, IState> {
             };
 
             return (
-              <CompletePaymentMutation mutation={COMPLETE_PAYMENT}>
+              <CompletePaymentMutation
+                mutation={COMPLETE_PAYMENT}
+                refetchQueries={[{ query: GET_MY_MEMBERSHIPS }]}
+              >
                 {completePaymentMutationFn => {
                   this.completePaymentFn = completePaymentMutationFn;
                   return (
@@ -151,6 +157,9 @@ class BasketContainer extends React.Component<IProps, IState> {
                                       }
                                       onEnrollCabinetClick={
                                         this.onEnrollCabinetClick
+                                      }
+                                      onExtendReqCabinetClick={
+                                        this.onExtendReqCabinetClick
                                       }
                                       onPaymentClick={this.onPaymentClick}
                                       importLoad={importLoad}
@@ -193,10 +202,17 @@ class BasketContainer extends React.Component<IProps, IState> {
     if (result.GetMyUsableMemberships.ok) {
       if (
         result.GetMyUsableMemberships.memberships &&
-        result.GetMyUsableMemberships.memberships.length === 0
+        result.GetMyUsableMemberships.memberships.length !== 0
       ) {
+        const filteredMemberships = result.GetMyUsableMemberships.memberships.filter(
+          membership => membership && !membership.cabinetId
+        );
+        if (filteredMemberships.length === 0) {
+          toast.error("연장할 멤버쉽이 없습니다");
+          return;
+        }
+      } else {
         toast.error("연장할 멤버쉽이 없습니다");
-        return;
       }
 
       history.push("/extend-req-membership");
@@ -208,6 +224,11 @@ class BasketContainer extends React.Component<IProps, IState> {
   public onEnrollCabinetClick = () => {
     const { history } = this.props;
     history.push("/enroll-req-cabinet");
+  };
+
+  public onExtendReqCabinetClick = () => {
+    const { history } = this.props;
+    history.push("/extend-req-cabinet");
   };
 
   public onPaymentClick = async (baseBranchId: number, payMethod: string) => {
@@ -283,7 +304,7 @@ class BasketContainer extends React.Component<IProps, IState> {
             paymentResult.UserGetPayment.payment.user.phoneNumber;
           const merchantUid = paymentResult.UserGetPayment.payment.merchant_uid;
 
-          IMP.request_pay(
+          await IMP.request_pay(
             {
               // param
               amount,
@@ -309,7 +330,7 @@ class BasketContainer extends React.Component<IProps, IState> {
                   if (paymentCompleteResult.data.CompletePayment.ok) {
                     if (payMethod === "card" || payMethod === "phone") {
                       toast.success("결제 및 등록이 완료되었습니다 :)");
-                      history.push("/membership");
+                      history.push("/home");
                     }
                     // TODO: 무통장 결제 로직 추가
                   }

@@ -45,6 +45,8 @@ class MembershipContainer extends React.Component<IProps, IState> {
       <GetMyMembershipsQuery
         query={GET_MY_MEMBERSHIPS}
         fetchPolicy={"cache-and-network"}
+        onError={error => console.log({ error })}
+        onCompleted={data => console.log({ data })}
       >
         {({ data: myMembershipDatas, loading: myMembershipDatasLoading }) => {
           return (
@@ -65,6 +67,8 @@ class MembershipContainer extends React.Component<IProps, IState> {
                   onBranchClick={onBranchClick}
                   myMembershipDatas={myMembershipDatas}
                   myMembershipDatasLoading={myMembershipDatasLoading}
+                  onMembershipExtendClick={this.onMembershipExtendClick}
+                  onCabinetExtendClick={this.onCabinetExtendClick}
                 />
               )}
             </GetProfileQuery>
@@ -133,6 +137,26 @@ class MembershipContainer extends React.Component<IProps, IState> {
       pathname: "/enroll-req-cabinet",
       state: {
         branchId
+      }
+    });
+  };
+
+  public onMembershipExtendClick = (selMembershipId: number) => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/extend-req-membership",
+      state: {
+        selMembershipId
+      }
+    });
+  };
+
+  public onCabinetExtendClick = (selMembershipId: number) => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/extend-req-cabinet",
+      state: {
+        selMembershipId
       }
     });
   };

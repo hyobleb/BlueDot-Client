@@ -15,6 +15,7 @@ import ModifyProduct from "../../Routes/ModifyProduct";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import ReqEnrollCabinet from "../../Routes/ReqEnrollCabinet";
 import ReqEnrollMembership from "../../Routes/ReqEnrollMembership";
+import ReqExtendCabinet from "../../Routes/ReqExtendCabinet";
 import ReqExtendMembership from "../../Routes/ReqExtendMembership";
 import ReqMembership from "../../Routes/ReqMembership";
 import SettingCabinets from "../../Routes/SettingCabinets";
@@ -109,6 +110,11 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         path={"/enroll-req-cabinet"}
         exact={true}
         component={ReqEnrollCabinet}
+      />
+      <Route
+        path={"/extend-req-cabinet"}
+        exact={true}
+        component={ReqExtendCabinet}
       />
 
       {isHead && [

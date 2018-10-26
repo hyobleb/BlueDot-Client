@@ -523,6 +523,28 @@ export interface userRequestCabinetVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: userRequestExtendCabinet
+// ====================================================
+
+export interface userRequestExtendCabinet_RequestExtendCabinet {
+  __typename: "RequestExtendCabinetResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface userRequestExtendCabinet {
+  RequestExtendCabinet: userRequestExtendCabinet_RequestExtendCabinet;
+}
+
+export interface userRequestExtendCabinetVariables {
+  exstingMembershipId: number;
+  productId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: getUsableMyMemberships
 // ====================================================
 
@@ -545,6 +567,7 @@ export interface getUsableMyMemberships_GetMyUsableMemberships_memberships {
   endDatetime: string;
   branch: getUsableMyMemberships_GetMyUsableMemberships_memberships_branch;
   cabinet: getUsableMyMemberships_GetMyUsableMemberships_memberships_cabinet | null;
+  cabinetId: number | null;
 }
 
 export interface getUsableMyMemberships_GetMyUsableMemberships {
@@ -639,6 +662,92 @@ export interface getCabinet {
 
 export interface getCabinetVariables {
   cabinetId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getMyMemberships
+// ====================================================
+
+export interface getMyMemberships_GetMyMemberships_memberships_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getMyMemberships_GetMyMemberships_memberships_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface getMyMemberships_GetMyMemberships_memberships {
+  __typename: "Membership";
+  id: number;
+  branch: getMyMemberships_GetMyMemberships_memberships_branch;
+  startDatetime: string;
+  endDatetime: string;
+  cabinet: getMyMemberships_GetMyMemberships_memberships_cabinet | null;
+  cabinetId: number | null;
+}
+
+export interface getMyMemberships_GetMyMemberships {
+  __typename: "GetMyMembershipsResponse";
+  ok: boolean | null;
+  error: string | null;
+  memberships: (getMyMemberships_GetMyMemberships_memberships | null)[] | null;
+}
+
+export interface getMyMemberships {
+  GetMyMemberships: getMyMemberships_GetMyMemberships;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getMembershipForExtend
+// ====================================================
+
+export interface getMembershipForExtend_GetMembership_membership_branch {
+  __typename: "Branch";
+  id: number;
+}
+
+export interface getMembershipForExtend_GetMembership_membership_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface getMembershipForExtend_GetMembership_membership {
+  __typename: "Membership";
+  id: number;
+  branch: getMembershipForExtend_GetMembership_membership_branch;
+  startDatetime: string;
+  endDatetime: string;
+  status: string;
+  usable: boolean;
+  target: string;
+  cabinet: getMembershipForExtend_GetMembership_membership_cabinet | null;
+  cabinetId: number | null;
+}
+
+export interface getMembershipForExtend_GetMembership {
+  __typename: "GetMembershipResponse";
+  ok: boolean | null;
+  error: string | null;
+  membership: getMembershipForExtend_GetMembership_membership | null;
+}
+
+export interface getMembershipForExtend {
+  GetMembership: getMembershipForExtend_GetMembership;
+}
+
+export interface getMembershipForExtendVariables {
+  membershipId: number;
 }
 
 /* tslint:disable */
@@ -950,43 +1059,6 @@ export interface userIdSignInVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: getMyMemberships
-// ====================================================
-
-export interface getMyMemberships_GetMyMemberships_memberships_branch {
-  __typename: "Branch";
-  name: string;
-}
-
-export interface getMyMemberships_GetMyMemberships_memberships_cabinet {
-  __typename: "Cabinet";
-  cabinetNumber: number;
-}
-
-export interface getMyMemberships_GetMyMemberships_memberships {
-  __typename: "Membership";
-  id: number;
-  branch: getMyMemberships_GetMyMemberships_memberships_branch;
-  startDatetime: string;
-  endDatetime: string;
-  cabinet: getMyMemberships_GetMyMemberships_memberships_cabinet | null;
-}
-
-export interface getMyMemberships_GetMyMemberships {
-  __typename: "GetMyMembershipsResponse";
-  ok: boolean | null;
-  error: string | null;
-  memberships: (getMyMemberships_GetMyMemberships_memberships | null)[] | null;
-}
-
-export interface getMyMemberships {
-  GetMyMemberships: getMyMemberships_GetMyMemberships;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: updateBranch
 // ====================================================
 
@@ -1130,91 +1202,6 @@ export interface getBranchForEnrollCabinet {
 
 export interface getBranchForEnrollCabinetVariables {
   branchId: number;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: getMembershipsForExtend
-// ====================================================
-
-export interface getMembershipsForExtend_GetMyMemberships_memberships_branch {
-  __typename: "Branch";
-  name: string;
-}
-
-export interface getMembershipsForExtend_GetMyMemberships_memberships_cabinet {
-  __typename: "Cabinet";
-  cabinetNumber: number;
-}
-
-export interface getMembershipsForExtend_GetMyMemberships_memberships {
-  __typename: "Membership";
-  id: number;
-  branch: getMembershipsForExtend_GetMyMemberships_memberships_branch;
-  startDatetime: string;
-  endDatetime: string;
-  status: string;
-  usable: boolean;
-  target: string;
-  cabinet: getMembershipsForExtend_GetMyMemberships_memberships_cabinet | null;
-}
-
-export interface getMembershipsForExtend_GetMyMemberships {
-  __typename: "GetMyMembershipsResponse";
-  ok: boolean | null;
-  error: string | null;
-  memberships: (getMembershipsForExtend_GetMyMemberships_memberships | null)[] | null;
-}
-
-export interface getMembershipsForExtend {
-  GetMyMemberships: getMembershipsForExtend_GetMyMemberships;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: getMembershipForExtend
-// ====================================================
-
-export interface getMembershipForExtend_GetMembership_membership_branch {
-  __typename: "Branch";
-  name: string;
-}
-
-export interface getMembershipForExtend_GetMembership_membership_cabinet {
-  __typename: "Cabinet";
-  id: number;
-  cabinetNumber: number;
-}
-
-export interface getMembershipForExtend_GetMembership_membership {
-  __typename: "Membership";
-  id: number;
-  branch: getMembershipForExtend_GetMembership_membership_branch;
-  startDatetime: string;
-  endDatetime: string;
-  status: string;
-  usable: boolean;
-  target: string;
-  cabinet: getMembershipForExtend_GetMembership_membership_cabinet | null;
-}
-
-export interface getMembershipForExtend_GetMembership {
-  __typename: "GetMembershipResponse";
-  ok: boolean | null;
-  error: string | null;
-  membership: getMembershipForExtend_GetMembership_membership | null;
-}
-
-export interface getMembershipForExtend {
-  GetMembership: getMembershipForExtend_GetMembership;
-}
-
-export interface getMembershipForExtendVariables {
-  membershipId: number;
 }
 
 /* tslint:disable */

@@ -7,17 +7,17 @@ import {
   GET_MEMBERSHIP_FOR_EXTEND,
   GET_MY_MEMBERSHIPS,
   USER_GET_PRODUCTS,
-  USER_REQUEST_EXTEND_MEMBERSHIP
+  USER_REQUEST_EXTEND_CABINET
 } from "src/Components/sharedQueries";
 import {
   getMembershipForExtend,
   getMyMemberships,
   userGetProducts,
   userGetProductsVariables,
-  userRequestExtendMembership,
-  userRequestExtendMembershipVariables
+  userRequestCabinetVariables,
+  userRequestExtendCabinet
 } from "src/types/api";
-import ReqExtendMembershipPresenter from "./ReqExtendMembershipPresenter";
+import ReqExtendCabinetPresenter from "./ReqExtendCabinetPresenter";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -35,14 +35,14 @@ class GetProductsQuery extends Query<
   userGetProductsVariables
 > {}
 
-class RequesetExtendMembership extends Mutation<
-  userRequestExtendMembership,
-  userRequestExtendMembershipVariables
+class RequestExtendCabinet extends Mutation<
+  userRequestExtendCabinet,
+  userRequestCabinetVariables
 > {}
 
 class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
   public getMembershipFn;
-  public reqExtMembershipFn: MutationFn;
+  public reqExtCabinetFn: MutationFn;
 
   constructor(props) {
     super(props);
@@ -97,19 +97,19 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
             return data;
           };
           return (
-            <RequesetExtendMembership
-              mutation={USER_REQUEST_EXTEND_MEMBERSHIP}
+            <RequestExtendCabinet
+              mutation={USER_REQUEST_EXTEND_CABINET}
               onCompleted={data => {
-                if (data.RequestExtendMembership.ok) {
+                if (data.RequestExtendCabinet.ok) {
                   toast.success("장바구니에 담았습니다");
                   history.push("/basket");
                 } else {
-                  toast.error(data.RequestExtendMembership.error);
+                  toast.error(data.RequestExtendCabinet.error);
                 }
               }}
             >
-              {reqExtendMembershipMutaiton => {
-                this.reqExtMembershipFn = reqExtendMembershipMutaiton;
+              {reqExtendCabinetMutaiton => {
+                this.reqExtCabinetFn = reqExtendCabinetMutaiton;
                 return (
                   <GetProductsQuery
                     query={USER_GET_PRODUCTS}
@@ -129,7 +129,7 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
                         >
                           {() => {
                             return (
-                              <ReqExtendMembershipPresenter
+                              <ReqExtendCabinetPresenter
                                 showMembershipPopUp={showMembershipPopUp}
                                 toggleShowMembershipPopUp={
                                   this.toggleShowMembershipPopUp
@@ -150,7 +150,7 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
                   </GetProductsQuery>
                 );
               }}
-            </RequesetExtendMembership>
+            </RequestExtendCabinet>
           );
         }}
       </ApolloConsumer>
@@ -172,7 +172,7 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
 
       if (memberships !== null) {
         const filteredMemberships = memberships.filter(
-          membership => membership && !membership.cabinetId
+          membership => membership && membership.cabinetId
         );
         if (filteredMemberships.length === 0) {
           toast.error("연장할 멤버쉽이 없습니다");
@@ -234,7 +234,7 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
       toast.error("연장 기간을 선택해주세요!");
       return;
     } else {
-      await this.reqExtMembershipFn({
+      await this.reqExtCabinetFn({
         variables: {
           exstingMembershipId: selMembership.id,
           productId: selProductId

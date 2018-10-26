@@ -267,6 +267,21 @@ export const USER_REQUEST_CABINET = gql`
   }
 `;
 
+export const USER_REQUEST_EXTEND_CABINET = gql`
+  mutation userRequestExtendCabinet(
+    $exstingMembershipId: Int!
+    $productId: Int!
+  ) {
+    RequestExtendCabinet(
+      exstingMembershipId: $exstingMembershipId
+      productId: $productId
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
 export const GET_USABLE_MY_MEMBERSHIPS = gql`
   query getUsableMyMemberships {
     GetMyUsableMemberships {
@@ -284,6 +299,7 @@ export const GET_USABLE_MY_MEMBERSHIPS = gql`
           id
           cabinetNumber
         }
+        cabinetId
       }
     }
   }
@@ -353,8 +369,35 @@ export const GET_MY_MEMBERSHIPS = gql`
         startDatetime
         endDatetime
         cabinet {
+          id
           cabinetNumber
         }
+        cabinetId
+      }
+    }
+  }
+`;
+
+export const GET_MEMBERSHIP_FOR_EXTEND = gql`
+  query getMembershipForExtend($membershipId: Int!) {
+    GetMembership(membershipId: $membershipId) {
+      ok
+      error
+      membership {
+        id
+        branch {
+          id
+        }
+        startDatetime
+        endDatetime
+        status
+        usable
+        target
+        cabinet {
+          id
+          cabinetNumber
+        }
+        cabinetId
       }
     }
   }

@@ -6,6 +6,7 @@ interface IProps {
   closeFunc: any;
   memberships: any;
   onMembershipClick: (membershipId: number) => void;
+  title: string;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -29,6 +30,7 @@ const Container = styled.div`
 const HeadContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  font-size: 18px;
 `;
 
 const BodyContainer = styled.div`
@@ -75,11 +77,12 @@ const CancleButton = styled(SmallButton)`
 const SelMembershipPopUpPresenter: React.SFC<IProps> = ({
   closeFunc,
   memberships,
-  onMembershipClick
+  onMembershipClick,
+  title
 }) => {
   return (
     <Container>
-      <HeadContainer />
+      <HeadContainer>{title}</HeadContainer>
       <BodyContainer>
         {memberships &&
           memberships.map(membership => (
@@ -88,7 +91,10 @@ const SelMembershipPopUpPresenter: React.SFC<IProps> = ({
               onClick={() => onMembershipClick(membership.id)}
             >
               <MembershipDataRow>
-                {membership.branch.name} 멤버쉽
+                {membership.branch.name}{" "}
+                {membership.cabinet
+                  ? `${membership.cabinet.cabinetNumber}번 사물함`
+                  : "멤버쉽"}
               </MembershipDataRow>
               <MembershipDataRow>
                 이용 시작 : {membership.startDatetime}

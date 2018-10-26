@@ -97,6 +97,7 @@ interface IProps {
   onEnrollReqMembershipClick: () => void;
   onExtendReqMembershipClick: () => Promise<void>;
   onEnrollCabinetClick: () => void;
+  onExtendReqCabinetClick: () => void;
   onPaymentClick: (baseBranchId: number, payMethod: string) => Promise<void>;
   importLoad: boolean;
   jqueryLoad: boolean;
@@ -109,11 +110,12 @@ const BasketPresenter: React.SFC<IProps> = ({
   onEnrollReqMembershipClick,
   onExtendReqMembershipClick,
   onEnrollCabinetClick,
+  onExtendReqCabinetClick,
   onPaymentClick,
   importLoad,
   jqueryLoad
 }) =>
-  reqMembershipsLoading && !importLoad && !jqueryLoad ? (
+  reqMembershipsLoading || !importLoad || !jqueryLoad ? (
     <Loading />
   ) : (
     <BackContainer>
@@ -133,7 +135,10 @@ const BasketPresenter: React.SFC<IProps> = ({
               value={"멤버쉽 연장"}
               onClick={onExtendReqMembershipClick}
             />
-            <ExtendCabinetButton value={"사물함 연장"} />
+            <ExtendCabinetButton
+              value={"사물함 연장"}
+              onClick={onExtendReqCabinetClick}
+            />
             <EnrollCabinetButton
               value={"사물함 등록"}
               onClick={onEnrollCabinetClick}

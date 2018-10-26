@@ -111,6 +111,8 @@ interface IProps {
   onBranchClick: (branchId: number) => void;
   myMembershipDatas?: getMyMemberships;
   myMembershipDatasLoading: boolean;
+  onMembershipExtendClick: (selMembershipId: number) => void;
+  onCabinetExtendClick: (selMembershipId: number) => void;
 }
 
 const MembershipPresenter: React.SFC<IProps> = ({
@@ -123,7 +125,9 @@ const MembershipPresenter: React.SFC<IProps> = ({
   popUpCloseFunc,
   onBranchClick,
   myMembershipDatas,
-  myMembershipDatasLoading
+  myMembershipDatasLoading,
+  onMembershipExtendClick,
+  onCabinetExtendClick
 }) => (
   <Container>
     <Helmet>
@@ -165,7 +169,9 @@ const MembershipPresenter: React.SFC<IProps> = ({
             {(myMembershipDatas &&
               myMembershipDatas.GetMyMemberships &&
               myMembershipDatas.GetMyMemberships.memberships &&
-              myMembershipDatas.GetMyMemberships.memberships.length > 0 &&
+              myMembershipDatas.GetMyMemberships.memberships.filter(
+                membership => membership && !membership.cabinetId
+              ).length > 0 &&
               myMembershipDatas.GetMyMemberships.memberships.map(
                 membership =>
                   membership &&
@@ -181,7 +187,10 @@ const MembershipPresenter: React.SFC<IProps> = ({
                         이용 종료 : {membership.endDatetime}
                       </EndDatetime>
                       <ButtonContainer>
-                        <ExtendButton value={"연장하기"} />
+                        <ExtendButton
+                          value={"연장하기"}
+                          onClick={() => onMembershipExtendClick(membership.id)}
+                        />
                       </ButtonContainer>
                     </MembershipContainer>
                   )
@@ -226,7 +235,10 @@ const MembershipPresenter: React.SFC<IProps> = ({
                         이용 종료 : {membership.endDatetime}
                       </EndDatetime>
                       <ButtonContainer>
-                        <ExtendButton value={"연장하기"} />
+                        <ExtendButton
+                          value={"연장하기"}
+                          onClick={() => onCabinetExtendClick(membership.id)}
+                        />
                       </ButtonContainer>
                     </MembershipContainer>
                   )

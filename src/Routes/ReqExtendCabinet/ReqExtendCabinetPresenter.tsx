@@ -61,7 +61,7 @@ interface IProps {
   onThrowBasketClick: () => void;
 }
 
-const ReqExtendMembershipPresenter: React.SFC<IProps> = ({
+const ReqExtendCabinetPresenter: React.SFC<IProps> = ({
   showMembershipPopUp,
   toggleShowMembershipPopUp,
   exstingMemberships,
@@ -75,7 +75,7 @@ const ReqExtendMembershipPresenter: React.SFC<IProps> = ({
   const productOptions = new Array();
   if (products) {
     products.forEach(product => {
-      if (product && product.target === "MEMBERSHIP" && !product.discard) {
+      if (product && product.target === "CABINET" && !product.discard) {
         const productItem = { value: product.id, label: product.title };
         productOptions.push(productItem);
       }
@@ -87,28 +87,30 @@ const ReqExtendMembershipPresenter: React.SFC<IProps> = ({
         <title>Extend Requset Membership | BlueDot</title>
       </Helmet>
       <Container>
-        <HeadSection>멤버쉽 연장</HeadSection>
+        <HeadSection>사물함 연장</HeadSection>
         <MembershipSection>
           <MembershipContainer>
             <MembershipSelButton
               value={"멤버쉽 선택"}
               onClick={toggleShowMembershipPopUp}
             />
-            {(selMembership && (
-              <>
-                <MembershipDataRow>
-                  {selMembership.branch.name} 멤버쉽
-                </MembershipDataRow>
-                <MembershipDataRow>
-                  이용 시작 : {selMembership.startDatetime}
-                </MembershipDataRow>
-                <MembershipDataRow>
-                  이용 만료 : {selMembership.endDatetime}
-                </MembershipDataRow>
-              </>
-            )) || (
+            {(selMembership &&
+              selMembership.cabinetId && (
+                <>
+                  <MembershipDataRow>
+                    {selMembership.branch.name}{" "}
+                    {selMembership.cabinet.cabinetNumber}번 사물함
+                  </MembershipDataRow>
+                  <MembershipDataRow>
+                    이용 시작 : {selMembership.startDatetime}
+                  </MembershipDataRow>
+                  <MembershipDataRow>
+                    이용 만료 : {selMembership.endDatetime}
+                  </MembershipDataRow>
+                </>
+              )) || (
               <MembershipDataRow>
-                연장할 멤버쉽을 선택해주세요!
+                연장할 사물함을 선택해주세요!
               </MembershipDataRow>
             )}
           </MembershipContainer>
@@ -136,11 +138,11 @@ const ReqExtendMembershipPresenter: React.SFC<IProps> = ({
           closeFunc={toggleShowMembershipPopUp}
           memberships={exstingMemberships}
           onMembershipClick={onMembershipClick}
-          title={"연장할 멤버쉽을 선택해주세요"}
+          title={"연장할 사물함을 선택해주세요"}
         />
       )}
     </BackContainer>
   );
 };
 
-export default ReqExtendMembershipPresenter;
+export default ReqExtendCabinetPresenter;
