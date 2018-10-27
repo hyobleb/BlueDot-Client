@@ -1028,6 +1028,58 @@ export interface updateProfileVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getBranchByIp
+// ====================================================
+
+export interface getBranchByIp_UserGetBranchByIP_branch_rooms_seats {
+  __typename: "Seat";
+  id: number;
+  xpos: number;
+  ypos: number;
+  discard: boolean;
+  nowUsing: boolean;
+  endDatetime: string | null;
+}
+
+export interface getBranchByIp_UserGetBranchByIP_branch_rooms {
+  __typename: "Room";
+  id: number;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  usable: boolean;
+  seats: (getBranchByIp_UserGetBranchByIP_branch_rooms_seats | null)[] | null;
+}
+
+export interface getBranchByIp_UserGetBranchByIP_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  loungeImage: string;
+  minimapImage: string;
+  rooms: (getBranchByIp_UserGetBranchByIP_branch_rooms | null)[] | null;
+}
+
+export interface getBranchByIp_UserGetBranchByIP {
+  __typename: "UserGetBranchByIPResponse";
+  ok: boolean;
+  error: string | null;
+  branch: getBranchByIp_UserGetBranchByIP_branch | null;
+}
+
+export interface getBranchByIp {
+  UserGetBranchByIP: getBranchByIp_UserGetBranchByIP;
+}
+
+export interface getBranchByIpVariables {
+  ip: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: userIdSignIn
 // ====================================================
 

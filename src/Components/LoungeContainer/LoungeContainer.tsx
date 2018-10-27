@@ -1,13 +1,13 @@
 import React from "react";
-import theme from "../../theme";
 import styled from "../../typed-components";
+import Minimap from "../Minimap";
 
 const ImgContainer = styled.div`
-  width: 30%;
-  min-width: 310px;
+  width: 60%;
+  min-width: 200px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 400px;
+  max-width: 300px;
   position: relative;
 `;
 const LoungeImg = styled.img`
@@ -18,35 +18,56 @@ const LoungeImg = styled.img`
   margin-right: auto;
 `;
 
-const RoomTransparent = styled.div`
+const RoomTransparent = styled<
+  {
+    height: number;
+    width: number;
+    top: number;
+    left: number;
+    tempSelected: boolean;
+  },
+  "div"
+>("div")`
+  cursor: pointer;
   position: absolute;
-  background-color: #ffffff;
   border: 1px solid black;
-  opacity: 0.6;
-  filter: alpha(opacity=60); /* For IE8 and earlier */
+  height: ${props => props.height}%;
+  width: ${props => props.width}%;
+  top: ${props => props.top}%;
+  left: ${props => props.left}%;
+  backgroundcolor: ${props =>
+    props.tempSelected ? props.theme.redColor : props.theme.lightBlueColor};
+  &:hover {
+    background-color: white;
+    opacity: 0.6;
+  }
 `;
 
 const ExsitingRoomTransparent = styled(RoomTransparent)`
-  position: absolute;
-  background-color: ${props => props.theme.blueColor};
   border: none;
-  opacity: 0.6;
-  filter: alpha(opacity=60); /* For IE8 and earlier */
-  cursor: pointer;
+`;
+
+const MiniMapExtended = styled(Minimap)`
+  position: absolute;
+  width: 30%;
+  left: 80%;
+  top: -5%;
+  z-index: 10;
 `;
 
 interface IProps {
   imgUrl: string;
   showTempRoom: boolean;
-  tempRoomHegiht: number;
-  tempRoomWidth: number;
-  tempRoomXpos: number;
-  tempRoomYpos: number;
+  tempRoomHegiht?: number;
+  tempRoomWidth?: number;
+  tempRoomXpos?: number;
+  tempRoomYpos?: number;
   onRoomClick?: (roomId: number) => void;
   onRoomHover?: (roomdId: number) => void;
   rooms?: any;
   tempSelRoomId?: number;
   onRoomHoverOut?: () => void;
+  minimapImg?: string;
 }
 
 interface ITRProps {
@@ -80,7 +101,16 @@ const TempRoom: React.SFC<ITRProps> = ({
     top: `${tempRoomYpos}%`,
     width: `${tempRoomWidth}%`
   };
-  return <RoomTransparent style={style} />;
+  return (
+    <RoomTransparent
+      style={style}
+      height={tempRoomHegiht}
+      left={tempRoomXpos}
+      top={tempRoomYpos}
+      width={tempRoomWidth}
+      tempSelected={false}
+    />
+  );
 };
 
 const Room: React.SFC<IRProps> = ({
@@ -94,19 +124,16 @@ const Room: React.SFC<IRProps> = ({
   tempSelected = false,
   onRoomHoverOut
 }) => {
-  const style = {
-    backgroundColor: `${tempSelected ? theme.redColor : theme.lightBlueColor}`,
-    height: `${roomHeight}%`,
-    left: `${roomXpos}%`,
-    top: `${roomYpos}%`,
-    width: `${roomWidth}%`
-  };
   return (
     <ExsitingRoomTransparent
-      style={style}
       onClick={() => onRoomClick(roomId)}
       onMouseOver={() => onRoomHover(roomId)}
       onMouseOut={onRoomHoverOut}
+      height={roomHeight}
+      left={roomXpos}
+      top={roomYpos}
+      width={roomWidth}
+      tempSelected={tempSelected}
     />
   );
 };
@@ -114,15 +141,16 @@ const Room: React.SFC<IRProps> = ({
 const LoungeContainer: React.SFC<IProps> = ({
   imgUrl,
   showTempRoom,
-  tempRoomWidth,
-  tempRoomHegiht,
-  tempRoomXpos,
-  tempRoomYpos,
+  tempRoomWidth = 0,
+  tempRoomHegiht = 0,
+  tempRoomXpos = 0,
+  tempRoomYpos = 0,
   rooms = null,
   onRoomClick = () => null,
   onRoomHover = () => null,
   tempSelRoomId = null,
-  onRoomHoverOut = () => null
+  onRoomHoverOut = () => null,
+  minimapImg
 }) => (
   <ImgContainer>
     <LoungeImg src={imgUrl} />
@@ -134,6 +162,7 @@ const LoungeContainer: React.SFC<IProps> = ({
         tempRoomYpos={tempRoomYpos}
       />
     )}
+    {minimapImg ? <MiniMapExtended minimapImage={minimapImg} /> : ""}
     {rooms &&
       rooms.length > 0 &&
       rooms.map(room => (
