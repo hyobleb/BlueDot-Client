@@ -1,5 +1,5 @@
 import React from "react";
-import { ApolloConsumer, Mutation } from "react-apollo";
+import { ApolloConsumer, Mutation, MutationFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -7,14 +7,23 @@ import {
   MANAGER_GET_SEAT
 } from "../../Components/sharedQueries";
 import {
+  headCreateDoor,
+  headCreateDoorVariables,
   headCreateSeat,
   headCreateSeatVariables,
+  headUpdateDoor,
+  headUpdateDoorVariables,
   headUpdateSeat,
   headUpdateSeatVariables,
   managerGetSeat_ManagerGetSeat_seat
 } from "../../types/api";
 import SettingSeatsPresenter from "./SettingSeatsPresenter";
-import { HEAD_CREATE_SEAT, HEAD_UPDATE_SEAT } from "./SettingSeatsQueries";
+import {
+  HEAD_CREATE_DOOR,
+  HEAD_CREATE_SEAT,
+  HEAD_UPDATE_DOOR,
+  HEAD_UPDATE_SEAT
+} from "./SettingSeatsQueries";
 
 interface IProps extends RouteComponentProps<any> {
   roomId: number;
@@ -41,7 +50,21 @@ interface IState {
   selSeatMaleUsable: boolean;
   selSeatFemaleUsable: boolean;
   selSeatUsable: boolean;
+
+  isAddDoorMode: boolean;
+  isFlip: boolean;
+  doorEditMode: boolean;
 }
+
+class UpdateDoorMutation extends Mutation<
+  headUpdateDoor,
+  headUpdateDoorVariables
+> {}
+
+class CreateDoorMutation extends Mutation<
+  headCreateDoor,
+  headCreateDoorVariables
+> {}
 
 class CreateSeatMutation extends Mutation<
   headCreateSeat,
@@ -57,6 +80,9 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
   public getSeat;
   public updateSeat;
   public deleteSeat;
+  public createSeat;
+  public createDoor: MutationFn;
+  public updateDoor: MutationFn;
 
   constructor(props) {
     super(props);
@@ -67,7 +93,10 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
     this.state = {
       addSeatMode: false,
       branchId: props.location.state.branchId,
+      doorEditMode: false,
       femaleUsable: true,
+      isAddDoorMode: false,
+      isFlip: false,
       maleUsable: true,
       roomId: props.location.state.roomId,
       rotate: 0,
@@ -107,7 +136,10 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
       selSeatUsable,
       selSeatXpos,
       selSeatYpos,
-      selSeatRotate
+      selSeatRotate,
+      isAddDoorMode,
+      isFlip,
+      doorEditMode
     } = this.state;
 
     const { history } = this.props;
@@ -123,99 +155,189 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
             return data;
           };
           return (
-            <UpdateSeatMutation
-              mutation={HEAD_UPDATE_SEAT}
+            <UpdateDoorMutation
+              mutation={HEAD_UPDATE_DOOR}
               variables={{
                 discard: selSeatDiscard,
-                femaleUsable: selSeatFemaleUsable,
-                maleUsable: selSeatMaleUsable,
+                isFlip,
                 rotate: selSeatRotate,
                 seatId: selSeatId,
-                seatNumber: selSeatNumber,
-                usable: selSeatUsable,
                 xpos: selSeatXpos,
                 ypos: selSeatYpos
               }}
-              refetchQueries={[{ query: HEAD_GET_ROOM, variables: { roomId } }]}
               onCompleted={data => {
-                const { HeadUpdateSeat } = data;
-                if (HeadUpdateSeat.ok) {
-                  toast.success("해당 좌석이 수정되었습니다!");
+                const { HeadUpdateDoor } = data;
+                if (HeadUpdateDoor.ok) {
+                  toast.success("출입구가 성공적으로 수정 되었습니다!");
+
+                  history.push({
+                    pathname: "/seat-setting",
+                    state: { roomId, branchId }
+                  });
                   this.onSeatEditCancelClick();
                 } else {
-                  toast.error(HeadUpdateSeat.error);
+                  toast.error(HeadUpdateDoor.error);
                 }
               }}
+              refetchQueries={[
+                {
+                  query: HEAD_GET_ROOM,
+                  variables: { roomId }
+                }
+              ]}
             >
-              {updateSeatMutation => {
-                this.updateSeat = updateSeatMutation;
+              {updateDoorMutation => {
+                this.updateDoor = updateDoorMutation;
                 return (
-                  <CreateSeatMutation
-                    mutation={HEAD_CREATE_SEAT}
+                  <CreateDoorMutation
+                    mutation={HEAD_CREATE_DOOR}
                     variables={{
                       branchId,
-                      femaleUsable,
-                      maleUsable,
+                      isFlip,
                       roomId,
                       rotate,
-                      seatNumber,
-                      usable,
                       xpos,
                       ypos
+                    }}
+                    onCompleted={data => {
+                      const { HeadCreateDoor } = data;
+                      if (HeadCreateDoor.ok) {
+                        toast.success("출입구가 성공적으로 추가 되었습니다!");
+
+                        history.push({
+                          pathname: "/seat-setting",
+                          state: { roomId, branchId }
+                        });
+                        this.toggleAddSeatMode();
+                      } else {
+                        toast.error(HeadCreateDoor.error);
+                      }
                     }}
                     refetchQueries={[
                       { query: HEAD_GET_ROOM, variables: { roomId } }
                     ]}
-                    onCompleted={data => {
-                      const { HeadCreateSeat } = data;
-                      if (HeadCreateSeat.ok) {
-                        toast.success("좌석이 성공적으로 추가 되었습니다!");
-                        history.push({
-                          pathname: "/seat-setting",
-                          state: { roomId }
-                        });
-                      } else {
-                        toast.error(HeadCreateSeat.error);
-                      }
-                    }}
                   >
-                    {createSeatMutationFn => {
+                    {createDoorMutation => {
+                      this.createDoor = createDoorMutation;
                       return (
-                        <SettingSeatsPresenter
-                          roomId={roomId}
-                          addSeatMode={addSeatMode}
-                          toggleAddSeatMode={this.toggleAddSeatMode}
-                          onSubmit={this.onSubmit}
-                          onInputChange={this.onInputChange}
-                          femaleUsable={femaleUsable}
-                          maleUsable={maleUsable}
-                          rotate={rotate}
-                          seatNumber={seatNumber}
-                          usable={usable}
-                          xpos={xpos}
-                          ypos={ypos}
-                          toggleSwitch={this.toggleSwitch}
-                          onSeatClick={this.onSeatClick}
-                          onConfirmClick={createSeatMutationFn}
-                          onCancelButtonClick={this.onCancelButtonClick}
-                          selSeatDiscard={selSeatDiscard}
-                          selSeatFemaleUsable={selSeatFemaleUsable}
-                          selSeatId={selSeatId}
-                          selSeatMaleUsable={selSeatMaleUsable}
-                          selSeatNumber={selSeatNumber}
-                          selSeatUsable={selSeatUsable}
-                          selSeatXpos={selSeatXpos}
-                          selSeatYpos={selSeatYpos}
-                          selSeatRotate={selSeatRotate}
-                          onSeatEditCancelClick={this.onSeatEditCancelClick}
-                          onUpdateSeatClick={this.onUpdateSeatClick}
-                        />
+                        <UpdateSeatMutation
+                          mutation={HEAD_UPDATE_SEAT}
+                          variables={{
+                            discard: selSeatDiscard,
+                            femaleUsable: selSeatFemaleUsable,
+                            maleUsable: selSeatMaleUsable,
+                            rotate: selSeatRotate,
+                            seatId: selSeatId,
+                            seatNumber: selSeatNumber,
+                            usable: selSeatUsable,
+                            xpos: selSeatXpos,
+                            ypos: selSeatYpos
+                          }}
+                          refetchQueries={[
+                            { query: HEAD_GET_ROOM, variables: { roomId } }
+                          ]}
+                          onCompleted={data => {
+                            const { HeadUpdateSeat } = data;
+                            if (HeadUpdateSeat.ok) {
+                              toast.success("해당 좌석이 수정되었습니다!");
+                              this.onSeatEditCancelClick();
+                              this.toggleAddSeatMode();
+                            } else {
+                              toast.error(HeadUpdateSeat.error);
+                            }
+                          }}
+                        >
+                          {updateSeatMutation => {
+                            this.updateSeat = updateSeatMutation;
+                            return (
+                              <CreateSeatMutation
+                                mutation={HEAD_CREATE_SEAT}
+                                variables={{
+                                  branchId,
+                                  femaleUsable,
+                                  maleUsable,
+                                  roomId,
+                                  rotate,
+                                  seatNumber,
+                                  usable,
+                                  xpos,
+                                  ypos
+                                }}
+                                refetchQueries={[
+                                  {
+                                    query: HEAD_GET_ROOM,
+                                    variables: { roomId }
+                                  }
+                                ]}
+                                onCompleted={data => {
+                                  const { HeadCreateSeat } = data;
+                                  if (HeadCreateSeat.ok) {
+                                    toast.success(
+                                      "좌석이 성공적으로 추가 되었습니다!"
+                                    );
+                                    history.push({
+                                      pathname: "/seat-setting",
+                                      state: { roomId, branchId }
+                                    });
+                                    this.toggleAddSeatMode();
+                                  } else {
+                                    toast.error(HeadCreateSeat.error);
+                                  }
+                                }}
+                              >
+                                {createSeatMutationFn => {
+                                  this.createSeat = createSeatMutationFn;
+                                  return (
+                                    <SettingSeatsPresenter
+                                      roomId={roomId}
+                                      addSeatMode={addSeatMode}
+                                      toggleAddSeatMode={this.toggleAddSeatMode}
+                                      onSubmit={this.onSubmit}
+                                      onInputChange={this.onInputChange}
+                                      femaleUsable={femaleUsable}
+                                      maleUsable={maleUsable}
+                                      rotate={rotate}
+                                      seatNumber={seatNumber}
+                                      usable={usable}
+                                      xpos={xpos}
+                                      ypos={ypos}
+                                      toggleSwitch={this.toggleSwitch}
+                                      onSeatClick={this.onSeatClick}
+                                      onConfirmClick={this.onSubmit}
+                                      onCancelButtonClick={
+                                        this.onCancelButtonClick
+                                      }
+                                      selSeatDiscard={selSeatDiscard}
+                                      selSeatFemaleUsable={selSeatFemaleUsable}
+                                      selSeatId={selSeatId}
+                                      selSeatMaleUsable={selSeatMaleUsable}
+                                      selSeatNumber={selSeatNumber}
+                                      selSeatUsable={selSeatUsable}
+                                      selSeatXpos={selSeatXpos}
+                                      selSeatYpos={selSeatYpos}
+                                      selSeatRotate={selSeatRotate}
+                                      onSeatEditCancelClick={
+                                        this.onSeatEditCancelClick
+                                      }
+                                      onUpdateSeatClick={this.onUpdateSeatClick}
+                                      isAddDoorMode={isAddDoorMode}
+                                      onAddDoorMode={this.onAddDoorMode}
+                                      isFlip={isFlip}
+                                      toggleIsFlip={this.toggleIsFlip}
+                                      doorEditMode={doorEditMode}
+                                    />
+                                  );
+                                }}
+                              </CreateSeatMutation>
+                            );
+                          }}
+                        </UpdateSeatMutation>
                       );
                     }}
-                  </CreateSeatMutation>
+                  </CreateDoorMutation>
                 );
               }}
-            </UpdateSeatMutation>
+            </UpdateDoorMutation>
           );
         }}
       </ApolloConsumer>
@@ -227,6 +349,7 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
       ...this.state,
       addSeatMode: !this.state.addSeatMode,
       femaleUsable: true,
+      isAddDoorMode: this.state.isAddDoorMode && !this.state.addSeatMode,
       maleUsable: true,
       rotate: 0,
       seatNumber: 0,
@@ -236,11 +359,25 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
-    event.preventDefault();
-    console.log(this.state);
+  public onAddDoorMode = () => {
+    this.setState({
+      ...this.state,
+      addSeatMode: !this.state.addSeatMode,
+      isAddDoorMode: !this.state.addSeatMode,
+      rotate: 0,
+      xpos: 50,
+      ypos: 50
+    });
+  };
 
-    // this.addBranchMutationFn();
+  public onSubmit: React.FormEventHandler<HTMLFormElement> = async event => {
+    event.preventDefault();
+    const { isAddDoorMode } = this.state;
+    if (isAddDoorMode) {
+      await this.createDoor();
+    } else {
+      await this.createSeat();
+    }
   };
 
   public onInputChange: React.ChangeEventHandler<
@@ -316,21 +453,39 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
     const seatData: managerGetSeat_ManagerGetSeat_seat =
       queryData.ManagerGetSeat.seat;
 
-    this.setState({
-      selSeatDiscard: seatData.discard,
-      selSeatFemaleUsable: seatData.usable,
-      selSeatId: seatData.id,
-      selSeatMaleUsable: seatData.maleUsable,
-      selSeatNumber: seatData.seatNumber,
-      selSeatRotate: seatData.rotate,
-      selSeatUsable: seatData.usable,
-      selSeatXpos: seatData.xpos,
-      selSeatYpos: seatData.ypos
-    });
+    if (seatData.isDoor) {
+      this.setState({
+        doorEditMode: true,
+        isFlip: seatData.isFlip,
+        selSeatDiscard: seatData.discard,
+        selSeatId: seatData.id,
+        selSeatNumber: seatData.seatNumber,
+        selSeatRotate: seatData.rotate,
+        selSeatXpos: seatData.xpos,
+        selSeatYpos: seatData.ypos
+      });
+    } else {
+      this.setState({
+        doorEditMode: false,
+        selSeatDiscard: seatData.discard,
+        selSeatFemaleUsable: seatData.usable,
+        selSeatId: seatData.id,
+        selSeatMaleUsable: seatData.maleUsable,
+        selSeatNumber: seatData.seatNumber,
+        selSeatRotate: seatData.rotate,
+        selSeatUsable: seatData.usable,
+        selSeatXpos: seatData.xpos,
+        selSeatYpos: seatData.ypos
+      });
+    }
   };
 
   public onSeatEditCancelClick = () => {
     this.setState({
+      addSeatMode: false,
+      doorEditMode: false,
+      isAddDoorMode: false,
+      isFlip: false,
       selSeatDiscard: true,
       selSeatFemaleUsable: true,
       selSeatId: 0,
@@ -354,8 +509,19 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onUpdateSeatClick = () => {
-    this.updateSeat();
+  public onUpdateSeatClick = async () => {
+    const { doorEditMode } = this.state;
+    if (!doorEditMode) {
+      await this.updateSeat();
+    } else {
+      await this.updateDoor();
+    }
+  };
+
+  public toggleIsFlip = () => {
+    this.setState({
+      isFlip: !this.state.isFlip
+    });
   };
 }
 

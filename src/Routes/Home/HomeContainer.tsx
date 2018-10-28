@@ -54,6 +54,7 @@ class HomeContainer extends React.Component<IProps, IState> {
         query={GET_BRANCH_BY_IP}
         variables={{ ip: nowIp }}
         onCompleted={this.updateFields}
+        fetchPolicy={"cache-and-network"}
       >
         {({ loading: branchLoading }) => (
           <ProfileQuery query={USER_PROFILE}>
@@ -67,6 +68,7 @@ class HomeContainer extends React.Component<IProps, IState> {
                 loungeImage={loungeImage}
                 minimapImage={minimapImage}
                 rooms={rooms}
+                onRoomClick={this.onRoomClick}
               />
             )}
           </ProfileQuery>
@@ -99,6 +101,10 @@ class HomeContainer extends React.Component<IProps, IState> {
         } as any);
       }
     }
+  };
+
+  public onRoomClick = (roomId: number) => {
+    console.log({ roomId });
   };
 }
 export default HomeContainer;

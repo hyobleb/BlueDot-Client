@@ -57,3 +57,49 @@ export const HEAD_UPDATE_SEAT = gql`
     }
   }
 `;
+
+export const HEAD_CREATE_DOOR = gql`
+  mutation headCreateDoor(
+    $branchId: Int!
+    $roomId: Int!
+    $rotate: Float!
+    $xpos: Int!
+    $ypos: Int!
+    $isFlip: Boolean!
+  ) {
+    HeadCreateDoor(
+      branchId: $branchId
+      roomId: $roomId
+      rotate: $rotate
+      xpos: $xpos
+      ypos: $ypos
+      isFlip: $isFlip
+    ) {
+      ok
+      error
+    }
+  }
+`;
+
+export const HEAD_UPDATE_DOOR = gql`
+  mutation headUpdateDoor(
+    $seatId: Int!
+    $rotate: Float
+    $xpos: Int
+    $ypos: Int
+    $discard: Boolean
+    $isFlip: Boolean
+  ) {
+    HeadUpdateDoor(
+      seatId: $seatId
+      rotate: $rotate
+      xpos: $xpos
+      ypos: $ypos
+      discard: $discard
+      isFlip: $isFlip
+    ) {
+      ok
+      error
+    }
+  }
+`;

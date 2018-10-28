@@ -24,6 +24,7 @@ export const GET_BRANCH_BY_IP = gql`
             discard
             nowUsing
             endDatetime
+            usable
           }
         }
       }

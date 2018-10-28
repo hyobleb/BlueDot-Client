@@ -24,7 +24,7 @@ const MenuButton = styled.button`
 `;
 
 const BackContainer = styled.div`
-  margin-top: 40px;
+  margin-top: 80px;
 `;
 
 const Container = styled.div``;
@@ -51,6 +51,7 @@ interface IProps {
   loungeImage: string;
   minimapImage: string;
   rooms: getBranchByIp_UserGetBranchByIP_branch_rooms | null;
+  onRoomClick: (roomId: number) => void;
 }
 
 const HomePresenter: React.SFC<IProps> = ({
@@ -61,9 +62,10 @@ const HomePresenter: React.SFC<IProps> = ({
   branchLoaded,
   loungeImage,
   minimapImage,
-  rooms
+  rooms,
+  onRoomClick
 }) =>
-  profileLoading && branchLoading ? (
+  profileLoading || branchLoading ? (
     <Loading />
   ) : (
     <BackContainer>
@@ -95,6 +97,7 @@ const HomePresenter: React.SFC<IProps> = ({
                 showTempRoom={false}
                 rooms={rooms}
                 minimapImg={minimapImage}
+                onRoomClick={onRoomClick}
               />
             </LoungeCol>
           </LoungeSection>

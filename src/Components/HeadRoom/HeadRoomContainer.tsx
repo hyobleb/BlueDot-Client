@@ -25,6 +25,8 @@ interface IProps {
   selSeatFemaleUsable?: boolean;
   selSeatUsable?: boolean;
   selSeatRotate?: number;
+  isAddDoor?: boolean;
+  isFlip?: boolean;
 }
 
 class HeadRoomQuery extends Query<headGetRoom, headGetRoomVariables> {}
@@ -53,7 +55,9 @@ class HeadRoomContainer extends React.Component<IProps> {
       selSeatMaleUsable = true,
       selSeatFemaleUsable = true,
       selSeatUsable = true,
-      selSeatRotate = 0
+      selSeatRotate = 0,
+      isAddDoor = false,
+      isFlip = false
     } = this.props;
     return (
       <HeadRoomQuery query={HEAD_GET_ROOM} variables={{ roomId }}>
@@ -80,6 +84,8 @@ class HeadRoomContainer extends React.Component<IProps> {
               selSeatFemaleUsable={selSeatFemaleUsable}
               selSeatUsable={selSeatUsable}
               selSeatRotate={selSeatRotate}
+              isAddDoor={isAddDoor}
+              isFlip={isFlip}
             />
           );
         }}

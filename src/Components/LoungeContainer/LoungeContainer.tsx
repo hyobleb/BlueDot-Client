@@ -52,7 +52,7 @@ const MiniMapExtended = styled(Minimap)`
   width: 30%;
   left: 80%;
   top: -5%;
-  z-index: 10;
+  z-index: 2;
 `;
 
 interface IProps {
@@ -95,15 +95,8 @@ const TempRoom: React.SFC<ITRProps> = ({
   tempRoomXpos,
   tempRoomYpos
 }) => {
-  const style = {
-    height: `${tempRoomHegiht}%`,
-    left: `${tempRoomXpos}%`,
-    top: `${tempRoomYpos}%`,
-    width: `${tempRoomWidth}%`
-  };
   return (
     <RoomTransparent
-      style={style}
       height={tempRoomHegiht}
       left={tempRoomXpos}
       top={tempRoomYpos}
@@ -162,7 +155,11 @@ const LoungeContainer: React.SFC<IProps> = ({
         tempRoomYpos={tempRoomYpos}
       />
     )}
-    {minimapImg ? <MiniMapExtended minimapImage={minimapImg} /> : ""}
+    {minimapImg ? (
+      <MiniMapExtended minimapImage={minimapImg} rooms={rooms} />
+    ) : (
+      ""
+    )}
     {rooms &&
       rooms.length > 0 &&
       rooms.map(room => (

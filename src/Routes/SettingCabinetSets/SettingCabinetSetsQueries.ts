@@ -6,6 +6,7 @@ export const HEAD_GET_BRANCH_FOR_CABINETS_SETTING = gql`
       ok
       error
       branch {
+        id
         cabinetLoungeImage
         cabinetSets {
           id

@@ -24,6 +24,8 @@ interface IProps {
   selSeatFemaleUsable?: boolean;
   selSeatUsable?: boolean;
   selSeatRotate?: number;
+  isAddDoor?: boolean;
+  isFlip?: boolean;
 }
 
 interface ISProps {
@@ -36,6 +38,15 @@ interface ISProps {
   femaleUsable: boolean;
   maleUsable: boolean;
   discard?: boolean;
+}
+
+interface IDProps {
+  left: number;
+  top: number;
+  rotate: number;
+  onDoorClick?: () => void;
+  discard?: boolean;
+  isFlip?: boolean;
 }
 
 const BackContainer = styled.div`
@@ -54,10 +65,31 @@ const Container = styled.div`
 const Room = styled.div`
   background-color: "#dedede";
 `;
-const SeatItem = styled.div`
-  width: 15%;
+
+const Item = styled<
+  {
+    left: number;
+    top: number;
+    rotate: number;
+    isFlip?: boolean;
+  },
+  "div"
+>("div")`
+  width: 8%;
+  position: absolute;
+  left: ${props => props.left}%;
+  top: ${props => props.top}%;
+  transform: rotate(${props => props.rotate}deg)
+    ${props => (props.isFlip ? "scaleX(-1)" : "")};
+`;
+
+const SeatItem = styled(Item)`
+  width: 8%;
   position: absolute;
 `;
+
+const DoorItem = styled(Item)``;
+
 const SeatImg = styled.img`
   width: 100%;
   &:hover {
@@ -66,7 +98,8 @@ const SeatImg = styled.img`
 `;
 const SeatNumber = styled.div`
   position: absolute;
-  top: 17%;
+  top: 10%;
+  font-size: 10%;
   &:hover {
     cursor: pointer;
   }
@@ -86,6 +119,32 @@ const ImgContainer = styled.div`
   }
 `;
 
+const Door: React.SFC<IDProps> = ({
+  left,
+  top,
+  rotate,
+  onDoorClick = () => {
+    return;
+  },
+  discard = false,
+  isFlip = false
+}) => {
+  return (
+    <DoorItem left={left} top={top} rotate={rotate} isFlip={isFlip}>
+      <ImgContainer onClick={onDoorClick}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+        >
+          <path d="M16 12.771h-3.091c-.542 0-.82-.188-1.055-.513l-1.244-1.674-2.029 2.199 1.008 1.562c.347.548.373.922.373 1.42v4.235h-1.962v-3.981c-.016-1.1-1.695-2.143-2.313-1.253l-1.176 1.659c-.261.372-.706.498-1.139.498h-3.372v-1.906l2.532-.001c.397 0 .741-.14.928-.586l1.126-2.75c.196-.41.46-.782.782-1.102l2.625-2.6-.741-.647c-.223-.195-.521-.277-.812-.227l-2.181.381-.342-1.599 2.992-.571c.561-.107 1.042.075 1.461.462l2.882 2.66c.456.414.924 1.136 1.654 2.215.135.199.323.477.766.477h2.328v1.642zm-2.982-5.042c1.02-.195 1.688-1.182 1.493-2.201-.172-.901-.96-1.528-1.845-1.528-1.186 0-2.07 1.078-1.85 2.234.196 1.021 1.181 1.69 2.202 1.495zm4.982-5.729v15l6 5v-20h-6z" />
+        </svg>
+      </ImgContainer>
+    </DoorItem>
+  );
+};
+
 const Seat: React.SFC<ISProps> = ({
   left,
   top,
@@ -96,14 +155,8 @@ const Seat: React.SFC<ISProps> = ({
   },
   discard = false
 }) => {
-  const itemStyle = {
-    left: `${left}%`,
-    top: `${top}%`,
-    transform: `rotate(${rotate}deg)`
-  };
-
   return (
-    <SeatItem style={itemStyle}>
+    <SeatItem left={left} top={top} rotate={rotate}>
       <ImgContainer onClick={onSeatClick}>
         <SeatImg src={"https://image.ibb.co/d52ryp/standbyseat-ENXv-SRg.png"} />
         <SeatNumber>{seatNumber}</SeatNumber>
@@ -132,7 +185,9 @@ const HeadRoomPresenter: React.SFC<IProps> = ({
   selSeatMaleUsable = true,
   selSeatFemaleUsable = true,
   selSeatUsable = true,
-  selSeatRotate = 0
+  selSeatRotate = 0,
+  isAddDoor = false,
+  isFlip = false
 }) => {
   return (
     <BackContainer>
@@ -141,19 +196,26 @@ const HeadRoomPresenter: React.SFC<IProps> = ({
       ) : (
         <Container>
           <Room>
-            {showTempSeat ? (
-              <Seat
-                left={tempSeatXpos}
-                top={tempSeatYpos}
-                rotate={tempSeatRotate}
-                seatNumber={tempSeatNumber}
-                usable={tempSeatUsable}
-                femaleUsable={tempSeatFemaleUsable}
-                maleUsable={tempSeatMaleUsable}
-              />
-            ) : (
-              ""
-            )}
+            {showTempSeat
+              ? (!isAddDoor && (
+                  <Seat
+                    left={tempSeatXpos}
+                    top={tempSeatYpos}
+                    rotate={tempSeatRotate}
+                    seatNumber={tempSeatNumber}
+                    usable={tempSeatUsable}
+                    femaleUsable={tempSeatFemaleUsable}
+                    maleUsable={tempSeatMaleUsable}
+                  />
+                )) || (
+                  <Door
+                    left={tempSeatXpos}
+                    top={tempSeatYpos}
+                    rotate={tempSeatRotate}
+                    isFlip={isFlip}
+                  />
+                )
+              : ""}
             {room &&
               room.seats &&
               room.seats.map(
@@ -161,18 +223,29 @@ const HeadRoomPresenter: React.SFC<IProps> = ({
                   seat &&
                   !seat.discard &&
                   (seat.id === selSeatId ? (
-                    <Seat
-                      key={selSeatId}
-                      left={selSeatXpos}
-                      top={selSeatYpos}
-                      usable={selSeatUsable}
-                      discard={selSeatDiscard}
-                      maleUsable={selSeatMaleUsable}
-                      femaleUsable={selSeatFemaleUsable}
-                      rotate={selSeatRotate}
-                      seatNumber={selSeatNumber}
-                    />
-                  ) : (
+                    (!seat.isDoor && (
+                      <Seat
+                        key={selSeatId}
+                        left={selSeatXpos}
+                        top={selSeatYpos}
+                        usable={selSeatUsable}
+                        discard={selSeatDiscard}
+                        maleUsable={selSeatMaleUsable}
+                        femaleUsable={selSeatFemaleUsable}
+                        rotate={selSeatRotate}
+                        seatNumber={selSeatNumber}
+                      />
+                    )) || (
+                      <Door
+                        key={selSeatId}
+                        left={selSeatXpos}
+                        top={selSeatYpos}
+                        rotate={selSeatRotate}
+                        isFlip={isFlip}
+                        onDoorClick={() => onSeatClick(seat.id)}
+                      />
+                    )
+                  ) : !seat.isDoor ? (
                     <Seat
                       key={seat.id}
                       left={seat.xpos}
@@ -184,6 +257,15 @@ const HeadRoomPresenter: React.SFC<IProps> = ({
                       rotate={seat.rotate}
                       seatNumber={seat.seatNumber}
                       onSeatClick={() => onSeatClick(seat.id)}
+                    />
+                  ) : (
+                    <Door
+                      key={seat.id}
+                      left={seat.xpos}
+                      top={seat.ypos}
+                      rotate={seat.rotate}
+                      isFlip={seat.isFlip}
+                      onDoorClick={() => onSeatClick(seat.id)}
                     />
                   ))
               )}

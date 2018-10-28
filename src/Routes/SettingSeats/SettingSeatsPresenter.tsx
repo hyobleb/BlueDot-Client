@@ -1,5 +1,4 @@
 import React from "react";
-import { MutationFn } from "react-apollo";
 import Switch from "react-toggle-switch";
 import SmallButton from "../../Components/SmallButton";
 import styled from "../../typed-components";
@@ -29,6 +28,12 @@ const CancleButton = styled(SmallButton)`
   background-color: ${props => props.theme.redColor};
   margin: 5px;
 `;
+
+const CreateDoorButton = styled(SmallButton)`
+  background-color: ${props => props.theme.orangeColor};
+  margin: 5px;
+`;
+
 const AddButtonContainer = styled.div``;
 const InputLabel = styled.label`
   margin: 5px 0px;
@@ -93,7 +98,7 @@ interface IProps {
   femaleUsable: boolean;
   toggleSwitch: (name: any) => void;
   onSeatClick: (seatId: number) => void;
-  onConfirmClick: MutationFn;
+  onConfirmClick: (event: React.FormEvent<HTMLFormElement>) => void;
   onCancelButtonClick: () => void;
 
   selSeatNumber: number;
@@ -108,6 +113,12 @@ interface IProps {
 
   onSeatEditCancelClick: () => void;
   onUpdateSeatClick: () => void;
+
+  isAddDoorMode: boolean;
+  onAddDoorMode: () => void;
+  isFlip: boolean;
+  toggleIsFlip: () => void;
+  doorEditMode: boolean;
 }
 
 const SettingSeatsPresenter: React.SFC<IProps> = ({
@@ -137,7 +148,12 @@ const SettingSeatsPresenter: React.SFC<IProps> = ({
   selSeatUsable,
   selSeatRotate,
   onUpdateSeatClick,
-  onSeatEditCancelClick
+  onSeatEditCancelClick,
+  isAddDoorMode,
+  onAddDoorMode,
+  isFlip,
+  toggleIsFlip,
+  doorEditMode
 }) => (
   <BackContainer>
     <Container>
@@ -147,6 +163,8 @@ const SettingSeatsPresenter: React.SFC<IProps> = ({
           roomId={roomId}
           onSeatClick={onSeatClick}
           showTempSeat={addSeatMode}
+          isAddDoor={isAddDoorMode}
+          isFlip={isFlip}
           tempSeatXpos={xpos}
           tempSeatYpos={ypos}
           tempSeatRotate={rotate}
@@ -168,16 +186,21 @@ const SettingSeatsPresenter: React.SFC<IProps> = ({
     </Container>
     {addSeatMode && !selSeatId ? (
       <FormExtended submitFn={onSubmit}>
-        <FormTitle>좌석 추가</FormTitle>
-        <InputLabel>
-          <InputTitle>좌석번호 : </InputTitle>
-          <InputExtended
-            value={seatNumber}
-            name={"seatNumber"}
-            onChange={onInputChange}
-            type={"number"}
-          />
-        </InputLabel>
+        <FormTitle>{isAddDoorMode ? "출입구 추가" : "좌석 추가"}</FormTitle>
+        {!isAddDoorMode ? (
+          <InputLabel>
+            <InputTitle>좌석번호 : </InputTitle>
+            <InputExtended
+              value={seatNumber}
+              name={"seatNumber"}
+              onChange={onInputChange}
+              type={"number"}
+            />
+          </InputLabel>
+        ) : (
+          ""
+        )}
+
         <InputLabel>
           <InputTitle>가로 위치 : </InputTitle>
           <InputExtended
@@ -206,46 +229,51 @@ const SettingSeatsPresenter: React.SFC<IProps> = ({
           />
         </InputLabel>
 
-        <SwitchBox>
-          <SwitchRow>
-            <SwitchTitle>이용 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch onClick={() => toggleSwitch("usable")} on={usable}>
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
-          <SwitchRow>
-            <SwitchTitle>남자 이용 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("maleUsable")}
-                on={maleUsable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
-          <SwitchRow>
-            <SwitchTitle>여자 이용 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("femaleUsable")}
-                on={femaleUsable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
-          {/* <SwitchRow>
-            <SwitchTitle>좌석 폐기</SwitchTitle>
-            <SwitchItem>
-              <Switch onClick={null} on={discard}>
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow> */}
-        </SwitchBox>
+        {!isAddDoorMode ? (
+          <SwitchBox>
+            <SwitchRow>
+              <SwitchTitle>이용 가능</SwitchTitle>
+              <SwitchItem>
+                <Switch onClick={() => toggleSwitch("usable")} on={usable}>
+                  <i className="some-icon" />
+                </Switch>
+              </SwitchItem>
+            </SwitchRow>
+            <SwitchRow>
+              <SwitchTitle>남자 이용 가능</SwitchTitle>
+              <SwitchItem>
+                <Switch
+                  onClick={() => toggleSwitch("maleUsable")}
+                  on={maleUsable}
+                >
+                  <i className="some-icon" />
+                </Switch>
+              </SwitchItem>
+            </SwitchRow>
+            <SwitchRow>
+              <SwitchTitle>여자 이용 가능</SwitchTitle>
+              <SwitchItem>
+                <Switch
+                  onClick={() => toggleSwitch("femaleUsable")}
+                  on={femaleUsable}
+                >
+                  <i className="some-icon" />
+                </Switch>
+              </SwitchItem>
+            </SwitchRow>
+          </SwitchBox>
+        ) : (
+          <SwitchBox>
+            <SwitchRow>
+              <SwitchTitle>좌우반전</SwitchTitle>
+              <SwitchItem>
+                <Switch onClick={toggleIsFlip} on={isFlip}>
+                  <i className="some-icon" />
+                </Switch>
+              </SwitchItem>
+            </SwitchRow>
+          </SwitchBox>
+        )}
 
         <AddButtonContainer>
           <ConfirmButton value={"등록"} onClick={onConfirmClick} />
@@ -255,6 +283,7 @@ const SettingSeatsPresenter: React.SFC<IProps> = ({
     ) : (
       !selSeatId && (
         <ButtonContainer>
+          <CreateDoorButton value={"출입문 추가"} onClick={onAddDoorMode} />
           <AddSeatButton value={"추가하기"} onClick={toggleAddSeatMode} />
           <CancleButton value={"뒤로가기"} onClick={onCancelButtonClick} />
         </ButtonContainer>
@@ -263,16 +292,19 @@ const SettingSeatsPresenter: React.SFC<IProps> = ({
 
     {!!selSeatId && (
       <FormExtended submitFn={onSubmit}>
-        <FormTitle>좌석 수정</FormTitle>
-        <InputLabel>
-          <InputTitle>좌석번호 : </InputTitle>
-          <InputExtended
-            value={selSeatNumber}
-            name={"selSeatNumber"}
-            onChange={onInputChange}
-            type={"number"}
-          />
-        </InputLabel>
+        <FormTitle>{doorEditMode ? "출입구 수정" : "좌석 수정"}</FormTitle>
+        {!doorEditMode && (
+          <InputLabel>
+            <InputTitle>좌석번호 : </InputTitle>
+            <InputExtended
+              value={selSeatNumber}
+              name={"selSeatNumber"}
+              onChange={onInputChange}
+              type={"number"}
+            />
+          </InputLabel>
+        )}
+
         <InputLabel>
           <InputTitle>가로 위치 : </InputTitle>
           <InputExtended
@@ -302,39 +334,53 @@ const SettingSeatsPresenter: React.SFC<IProps> = ({
         </InputLabel>
 
         <SwitchBox>
-          <SwitchRow>
-            <SwitchTitle>이용 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("selSeatUsable")}
-                on={selSeatUsable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
-          <SwitchRow>
-            <SwitchTitle>남자 이용 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("selSeatMaleUsable")}
-                on={selSeatMaleUsable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
-          <SwitchRow>
-            <SwitchTitle>여자 이용 가능</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("selSeatFemaleUsable")}
-                on={selSeatFemaleUsable}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
+          {(!doorEditMode && (
+            <>
+              <SwitchRow>
+                <SwitchTitle>이용 가능</SwitchTitle>
+                <SwitchItem>
+                  <Switch
+                    onClick={() => toggleSwitch("selSeatUsable")}
+                    on={selSeatUsable}
+                  >
+                    <i className="some-icon" />
+                  </Switch>
+                </SwitchItem>
+              </SwitchRow>
+              <SwitchRow>
+                <SwitchTitle>남자 이용 가능</SwitchTitle>
+                <SwitchItem>
+                  <Switch
+                    onClick={() => toggleSwitch("selSeatMaleUsable")}
+                    on={selSeatMaleUsable}
+                  >
+                    <i className="some-icon" />
+                  </Switch>
+                </SwitchItem>
+              </SwitchRow>
+              <SwitchRow>
+                <SwitchTitle>여자 이용 가능</SwitchTitle>
+                <SwitchItem>
+                  <Switch
+                    onClick={() => toggleSwitch("selSeatFemaleUsable")}
+                    on={selSeatFemaleUsable}
+                  >
+                    <i className="some-icon" />
+                  </Switch>
+                </SwitchItem>
+              </SwitchRow>
+            </>
+          )) || (
+            <SwitchRow>
+              <SwitchTitle>좌우반전</SwitchTitle>
+              <SwitchItem>
+                <Switch onClick={toggleIsFlip} on={isFlip}>
+                  <i className="some-icon" />
+                </Switch>
+              </SwitchItem>
+            </SwitchRow>
+          )}
+
           <SwitchRow>
             <SwitchTitle>폐기 처리</SwitchTitle>
             <SwitchItem>

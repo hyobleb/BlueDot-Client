@@ -92,6 +92,7 @@ export const GET_BRANCH_FOR_UPDATE_LOUNGE = gql`
       ok
       error
       branch {
+        id
         loungeImage
         rooms {
           id
@@ -136,6 +137,8 @@ export const HEAD_GET_ROOM = gql`
           endDatetime
           maleUsable
           femaleUsable
+          isDoor
+          isFlip
         }
       }
     }
@@ -164,6 +167,8 @@ export const MANAGER_GET_SEAT = gql`
         maleUsable
         femaleUsable
         discard
+        isDoor
+        isFlip
         logs {
           user {
             name

@@ -249,6 +249,7 @@ export interface getBranchForUpdateLounge_HeadGetBranch_branch_rooms {
 
 export interface getBranchForUpdateLounge_HeadGetBranch_branch {
   __typename: "Branch";
+  id: number;
   loungeImage: string;
   rooms: (getBranchForUpdateLounge_HeadGetBranch_branch_rooms | null)[] | null;
 }
@@ -288,6 +289,8 @@ export interface headGetRoom_HeadGetRoom_room_seats {
   endDatetime: string | null;
   maleUsable: boolean;
   femaleUsable: boolean;
+  isDoor: boolean;
+  isFlip: boolean;
 }
 
 export interface headGetRoom_HeadGetRoom_room {
@@ -360,6 +363,8 @@ export interface managerGetSeat_ManagerGetSeat_seat {
   maleUsable: boolean;
   femaleUsable: boolean;
   discard: boolean;
+  isDoor: boolean;
+  isFlip: boolean;
   logs: (managerGetSeat_ManagerGetSeat_seat_logs | null)[] | null;
 }
 
@@ -1039,6 +1044,7 @@ export interface getBranchByIp_UserGetBranchByIP_branch_rooms_seats {
   discard: boolean;
   nowUsing: boolean;
   endDatetime: string | null;
+  usable: boolean;
 }
 
 export interface getBranchByIp_UserGetBranchByIP_branch_rooms {
@@ -1278,6 +1284,7 @@ export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSet
 
 export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch {
   __typename: "Branch";
+  id: number;
   cabinetLoungeImage: string;
   cabinetSets: (headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSets | null)[] | null;
 }
@@ -1524,6 +1531,58 @@ export interface headUpdateSeatVariables {
   maleUsable?: boolean | null;
   femaleUsable?: boolean | null;
   discard?: boolean | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headCreateDoor
+// ====================================================
+
+export interface headCreateDoor_HeadCreateDoor {
+  __typename: "HeadCreateDoorResponse";
+  ok: boolean | null;
+  error: string | null;
+}
+
+export interface headCreateDoor {
+  HeadCreateDoor: headCreateDoor_HeadCreateDoor;
+}
+
+export interface headCreateDoorVariables {
+  branchId: number;
+  roomId: number;
+  rotate: number;
+  xpos: number;
+  ypos: number;
+  isFlip: boolean;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headUpdateDoor
+// ====================================================
+
+export interface headUpdateDoor_HeadUpdateDoor {
+  __typename: "HeadUpdateDoorResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface headUpdateDoor {
+  HeadUpdateDoor: headUpdateDoor_HeadUpdateDoor;
+}
+
+export interface headUpdateDoorVariables {
+  seatId: number;
+  rotate?: number | null;
+  xpos?: number | null;
+  ypos?: number | null;
+  discard?: boolean | null;
+  isFlip?: boolean | null;
 }
 
 /* tslint:disable */
