@@ -1,10 +1,11 @@
+import moment from "moment";
 import React from "react";
 import styled from "../../typed-components";
-import { headGetRoom } from "../../types/api";
+import { getSeats } from "../../types/api";
 import Loading from "../Loading";
 
 interface IProps {
-  data?: headGetRoom;
+  data?: getSeats;
   loading: boolean;
   onSeatClick: (seatId: number) => void;
   showTempSeat: boolean;
@@ -26,6 +27,8 @@ interface IProps {
   selSeatRotate?: number;
   isAddDoor?: boolean;
   isFlip?: boolean;
+  assignSeatId?: number | null;
+  assignSeatLoading?: boolean;
 }
 
 interface ISProps {
@@ -38,6 +41,13 @@ interface ISProps {
   femaleUsable: boolean;
   maleUsable: boolean;
   discard?: boolean;
+  endDatetime?: string | null;
+  nowUsing?: boolean;
+  isDoor?: boolean;
+  gender?: string | null;
+  assignSeatId?: number | null;
+  assignSeatLoading?: boolean;
+  seatId?: number;
 }
 
 interface IDProps {
@@ -49,18 +59,24 @@ interface IDProps {
   isFlip?: boolean;
 }
 
+const SeatLoading = styled(Loading)`
+  width: 100%;
+  height: 100%;
+`;
+
 const BackContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 50px;
 `;
 const Container = styled.div`
-  width: 70%;
+  width: 100%;
   max-width: 500px;
-  min-width: 320px;
-  height: 400px;
-  background-color: powderblue;
+  min-width: 247px;
+  height: 250px;
   position: relative;
+  border: 1px solid #dedede;
+  border-radius: 10px;
 `;
 const Room = styled.div`
   background-color: "#dedede";
@@ -75,7 +91,8 @@ const Item = styled<
   },
   "div"
 >("div")`
-  width: 8%;
+  width: 6%;
+  min-width: 20px;
   position: absolute;
   left: ${props => props.left}%;
   top: ${props => props.top}%;
@@ -83,10 +100,7 @@ const Item = styled<
     ${props => (props.isFlip ? "scaleX(-1)" : "")};
 `;
 
-const SeatItem = styled(Item)`
-  width: 8%;
-  position: absolute;
-`;
+const SeatItem = styled(Item)``;
 
 const DoorItem = styled(Item)``;
 
@@ -150,6 +164,16 @@ const Seat: React.SFC<ISProps> = ({
   top,
   rotate,
   seatNumber,
+  usable,
+  femaleUsable,
+  maleUsable,
+  endDatetime,
+  nowUsing,
+  isDoor,
+  gender,
+  assignSeatId,
+  assignSeatLoading,
+  seatId,
   onSeatClick = () => {
     return;
   },
@@ -157,16 +181,50 @@ const Seat: React.SFC<ISProps> = ({
 }) => {
   return (
     <SeatItem left={left} top={top} rotate={rotate}>
-      <ImgContainer onClick={onSeatClick}>
-        <SeatImg src={"https://image.ibb.co/d52ryp/standbyseat-ENXv-SRg.png"} />
-        <SeatNumber>{seatNumber}</SeatNumber>
-      </ImgContainer>
+      {!discard ? (
+        usable ? (
+          nowUsing && endDatetime && moment(endDatetime) > moment() ? (
+            gender &&
+            ((gender === "MALE" && (
+              <ImgContainer onClick={onSeatClick}>
+                <SeatImg src={"https://image.ibb.co/hcUtaq/1.png"} />
+                <SeatNumber>{seatNumber}</SeatNumber>
+              </ImgContainer>
+            )) ||
+              (gender === "FEMALE" && (
+                <ImgContainer onClick={onSeatClick}>
+                  <SeatImg src={"https://image.ibb.co/cgiKFq/4.png"} />
+                  <SeatNumber>{seatNumber}</SeatNumber>
+                </ImgContainer>
+              )))
+          ) : assignSeatLoading && assignSeatId === seatId ? (
+            <ImgContainer>
+              <SeatLoading loadingType={"spin"} />
+            </ImgContainer>
+          ) : (
+            // TODO:
+            <ImgContainer onClick={onSeatClick}>
+              <SeatImg
+                src={"https://image.ibb.co/d52ryp/standbyseat-ENXv-SRg.png"}
+              />
+              <SeatNumber>{seatNumber}</SeatNumber>
+            </ImgContainer>
+          )
+        ) : (
+          <ImgContainer onClick={onSeatClick}>
+            <SeatImg src={"https://image.ibb.co/gp3uFq/prohibited-seat.png"} />
+            <SeatNumber>{seatNumber}</SeatNumber>
+          </ImgContainer>
+        )
+      ) : (
+        ""
+      )}
     </SeatItem>
   );
 };
 
-const HeadRoomPresenter: React.SFC<IProps> = ({
-  data: { HeadGetRoom: { room = null } = {} } = {},
+const RoomPresenter: React.SFC<IProps> = ({
+  data: { GetSeats: { seats = null } = {} } = {},
   loading,
   onSeatClick,
   showTempSeat,
@@ -187,7 +245,9 @@ const HeadRoomPresenter: React.SFC<IProps> = ({
   selSeatUsable = true,
   selSeatRotate = 0,
   isAddDoor = false,
-  isFlip = false
+  isFlip = false,
+  assignSeatId,
+  assignSeatLoading
 }) => {
   return (
     <BackContainer>
@@ -216,9 +276,8 @@ const HeadRoomPresenter: React.SFC<IProps> = ({
                   />
                 )
               : ""}
-            {room &&
-              room.seats &&
-              room.seats.map(
+            {seats &&
+              seats.map(
                 seat =>
                   seat &&
                   !seat.discard &&
@@ -257,6 +316,13 @@ const HeadRoomPresenter: React.SFC<IProps> = ({
                       rotate={seat.rotate}
                       seatNumber={seat.seatNumber}
                       onSeatClick={() => onSeatClick(seat.id)}
+                      endDatetime={seat.endDatetime}
+                      nowUsing={seat.nowUsing}
+                      isDoor={seat.isDoor}
+                      gender={seat.user && seat.user.gender}
+                      assignSeatId={assignSeatId}
+                      assignSeatLoading={assignSeatLoading}
+                      seatId={seat.id}
                     />
                   ) : (
                     <Door
@@ -276,4 +342,4 @@ const HeadRoomPresenter: React.SFC<IProps> = ({
   );
 };
 
-export default HeadRoomPresenter;
+export default RoomPresenter;

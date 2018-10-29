@@ -1,8 +1,8 @@
 import React from "react";
 import { Query } from "react-apollo";
-import { headGetRoom, headGetRoomVariables } from "../../types/api";
-import { HEAD_GET_ROOM } from "../sharedQueries";
-import HeadRoomPresenter from "./HeadRoomPresenter";
+import { getSeats, getSeatsVariables } from "../../types/api";
+import RoomPresenter from "./RoomPresenter";
+import { GET_SEATS } from "./RoomQueries";
 
 interface IProps {
   roomId: number;
@@ -15,7 +15,6 @@ interface IProps {
   tempSeatUsable?: boolean;
   tempSeatFemaleUsable?: boolean;
   tempSeatMaleUsable?: boolean;
-
   selSeatNumber?: number;
   selSeatId?: number;
   selSeatXpos?: number;
@@ -27,11 +26,13 @@ interface IProps {
   selSeatRotate?: number;
   isAddDoor?: boolean;
   isFlip?: boolean;
+  assignSeatId?: number | null;
+  assignSeatLoading?: boolean;
 }
 
-class HeadRoomQuery extends Query<headGetRoom, headGetRoomVariables> {}
+class GetSeatsQuery extends Query<getSeats, getSeatsVariables> {}
 
-class HeadRoomContainer extends React.Component<IProps> {
+class RoomContainer extends React.Component<IProps> {
   constructor(props) {
     super(props);
   }
@@ -57,13 +58,19 @@ class HeadRoomContainer extends React.Component<IProps> {
       selSeatUsable = true,
       selSeatRotate = 0,
       isAddDoor = false,
-      isFlip = false
+      isFlip = false,
+      assignSeatId,
+      assignSeatLoading
     } = this.props;
     return (
-      <HeadRoomQuery query={HEAD_GET_ROOM} variables={{ roomId }}>
+      <GetSeatsQuery
+        query={GET_SEATS}
+        variables={{ roomId }}
+        fetchPolicy={"cache-and-network"}
+      >
         {({ data, loading }) => {
           return (
-            <HeadRoomPresenter
+            <RoomPresenter
               data={data}
               loading={loading}
               onSeatClick={onSeatClick}
@@ -86,11 +93,13 @@ class HeadRoomContainer extends React.Component<IProps> {
               selSeatRotate={selSeatRotate}
               isAddDoor={isAddDoor}
               isFlip={isFlip}
+              assignSeatId={assignSeatId}
+              assignSeatLoading={assignSeatLoading}
             />
           );
         }}
-      </HeadRoomQuery>
+      </GetSeatsQuery>
     );
   }
 }
-export default HeadRoomContainer;
+export default RoomContainer;

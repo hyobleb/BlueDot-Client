@@ -5,6 +5,7 @@ import Loading from "src/Components/Loading";
 import LoungeContainer from "src/Components/LoungeContainer";
 import { getBranchByIp_UserGetBranchByIP_branch_rooms } from "src/types/api";
 import Menu from "../../Components/Menu";
+import SeatsPopUp from "../../Components/SeatsPopUp";
 import styled from "../../typed-components";
 
 const MenuButton = styled.button`
@@ -52,6 +53,11 @@ interface IProps {
   minimapImage: string;
   rooms: getBranchByIp_UserGetBranchByIP_branch_rooms | null;
   onRoomClick: (roomId: number) => void;
+  nowRoomId: number;
+  onSeatsPopUpCloseClick: () => void;
+  onSeatClick: (seatId: number) => void;
+  assignSeatId: number | null;
+  assignSeatLoading: boolean;
 }
 
 const HomePresenter: React.SFC<IProps> = ({
@@ -63,7 +69,12 @@ const HomePresenter: React.SFC<IProps> = ({
   loungeImage,
   minimapImage,
   rooms,
-  onRoomClick
+  onRoomClick,
+  nowRoomId,
+  onSeatsPopUpCloseClick,
+  onSeatClick,
+  assignSeatId,
+  assignSeatLoading
 }) =>
   profileLoading || branchLoading ? (
     <Loading />
@@ -101,6 +112,15 @@ const HomePresenter: React.SFC<IProps> = ({
               />
             </LoungeCol>
           </LoungeSection>
+          {nowRoomId > 0 && (
+            <SeatsPopUp
+              closeFunc={onSeatsPopUpCloseClick}
+              roomId={nowRoomId}
+              onSeatClick={onSeatClick}
+              assignSeatId={assignSeatId}
+              assignSeatLoading={assignSeatLoading}
+            />
+          )}
         </Container>
       ) : (
         "블루닷라운지 지점 내의 인터넷(와이파이) 사용 안하고 있음"

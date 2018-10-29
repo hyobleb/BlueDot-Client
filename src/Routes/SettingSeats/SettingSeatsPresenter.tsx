@@ -5,8 +5,8 @@ import styled from "../../typed-components";
 const BackContainer = styled.div``;
 const Container = styled.div``;
 import Form from "../../Components/Form";
-import HeadRoom from "../../Components/HeadRoom";
 import Input from "../../Components/Input";
+import Room from "../../Components/Room";
 
 const TitleContainer = styled.div``;
 const RoomContainer = styled.div``;
@@ -159,7 +159,7 @@ const SettingSeatsPresenter: React.SFC<IProps> = ({
     <Container>
       <TitleContainer />
       <RoomContainer>
-        <HeadRoom
+        <Room
           roomId={roomId}
           onSeatClick={onSeatClick}
           showTempSeat={addSeatMode}

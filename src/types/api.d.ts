@@ -50,6 +50,52 @@ export interface modifyCabinetLockVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getSeats
+// ====================================================
+
+export interface getSeats_GetSeats_seats_user {
+  __typename: "User";
+  id: number;
+  gender: string | null;
+}
+
+export interface getSeats_GetSeats_seats {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+  rotate: number;
+  xpos: number;
+  ypos: number;
+  isFlip: boolean;
+  discard: boolean;
+  isDoor: boolean;
+  user: getSeats_GetSeats_seats_user | null;
+  usable: boolean;
+  nowUsing: boolean;
+  endDatetime: string | null;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+}
+
+export interface getSeats_GetSeats {
+  __typename: "GetSeatsResponse";
+  ok: boolean;
+  error: string | null;
+  seats: (getSeats_GetSeats_seats | null)[] | null;
+}
+
+export interface getSeats {
+  GetSeats: getSeats_GetSeats;
+}
+
+export interface getSeatsVariables {
+  roomId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: searchUsers
 // ====================================================
 
@@ -1080,6 +1126,27 @@ export interface getBranchByIp {
 
 export interface getBranchByIpVariables {
   ip: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: userAssignSeat
+// ====================================================
+
+export interface userAssignSeat_UserAssignSeat {
+  __typename: "UserAssignSeatResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface userAssignSeat {
+  UserAssignSeat: userAssignSeat_UserAssignSeat;
+}
+
+export interface userAssignSeatVariables {
+  seatId: number;
 }
 
 /* tslint:disable */
