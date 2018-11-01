@@ -1,4 +1,5 @@
 import React from "react";
+import { MutationFn } from "react-apollo";
 import { Link } from "react-router-dom";
 import styled from "../../typed-components";
 import { userProfile } from "../../types/api";
@@ -18,6 +19,17 @@ const SLink = styled(Link)`
   margin-left: 15px;
   margin-bottom: 25px;
   font-weight: 400;
+`;
+
+const MenuItem = styled.div`
+  font-size: 22px;
+  display: block;
+  margin-left: 15px;
+  margin-bottom: 25px;
+  font-weight: 400;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Image = styled.img`
@@ -74,11 +86,13 @@ const ToggleAuthor = styled<IToggleProps, any>("button")`
 interface IProps {
   data?: userProfile;
   loading: boolean;
+  logUserOutMutation: MutationFn;
 }
 
 const MenuPresenter: React.SFC<IProps> = ({
   data: { GetMyProfile: { user = null } = {} } = {},
-  loading
+  loading,
+  logUserOutMutation
 }) => (
   <Container>
     {!loading &&
@@ -103,6 +117,8 @@ const MenuPresenter: React.SFC<IProps> = ({
           </Header>
           <SLink to="/membership">멤버쉽 정보</SLink>
           <SLink to="/basket">장바구니</SLink>
+          <MenuItem onClick={() => logUserOutMutation()}>로그아웃</MenuItem>
+
           {user.isFranchiser || user.isHead ? (
             <>
               <ToggleAuthor

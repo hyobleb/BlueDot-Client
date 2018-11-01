@@ -28,6 +28,7 @@ interface IProps {
   isFlip?: boolean;
   assignSeatId?: number | null;
   assignSeatLoading?: boolean;
+  onEntranceClick?: () => void;
 }
 
 class GetSeatsQuery extends Query<getSeats, getSeatsVariables> {}
@@ -60,7 +61,8 @@ class RoomContainer extends React.Component<IProps> {
       isAddDoor = false,
       isFlip = false,
       assignSeatId,
-      assignSeatLoading
+      assignSeatLoading,
+      onEntranceClick
     } = this.props;
     return (
       <GetSeatsQuery
@@ -95,6 +97,7 @@ class RoomContainer extends React.Component<IProps> {
               isFlip={isFlip}
               assignSeatId={assignSeatId}
               assignSeatLoading={assignSeatLoading}
+              onEntranceClick={onEntranceClick}
             />
           );
         }}

@@ -1091,6 +1091,7 @@ export interface getBranchByIp_UserGetBranchByIP_branch_rooms_seats {
   nowUsing: boolean;
   endDatetime: string | null;
   usable: boolean;
+  rotate: number;
 }
 
 export interface getBranchByIp_UserGetBranchByIP_branch_rooms {
@@ -1147,6 +1148,46 @@ export interface userAssignSeat {
 
 export interface userAssignSeatVariables {
   seatId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: userReturnSeat
+// ====================================================
+
+export interface userReturnSeat_UserReturnSeat {
+  __typename: "UserReturnSeatResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface userReturnSeat {
+  UserReturnSeat: userReturnSeat_UserReturnSeat;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getMyUsingSeat
+// ====================================================
+
+export interface getMyUsingSeat_GetMyUsingSeat_seat {
+  __typename: "Seat";
+  id: number;
+}
+
+export interface getMyUsingSeat_GetMyUsingSeat {
+  __typename: "GetMyUsingSeatResponse";
+  ok: boolean;
+  error: string | null;
+  seat: getMyUsingSeat_GetMyUsingSeat_seat | null;
+}
+
+export interface getMyUsingSeat {
+  GetMyUsingSeat: getMyUsingSeat_GetMyUsingSeat;
 }
 
 /* tslint:disable */

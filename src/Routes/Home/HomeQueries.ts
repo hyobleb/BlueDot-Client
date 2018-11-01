@@ -25,6 +25,7 @@ export const GET_BRANCH_BY_IP = gql`
             nowUsing
             endDatetime
             usable
+            rotate
           }
         }
       }
@@ -37,6 +38,27 @@ export const USER_ASSIGN_SEAT = gql`
     UserAssignSeat(seatId: $seatId) {
       ok
       error
+    }
+  }
+`;
+
+export const USER_RETURN_SEAT = gql`
+  mutation userReturnSeat {
+    UserReturnSeat {
+      ok
+      error
+    }
+  }
+`;
+
+export const GET_MY_USING_SEAT = gql`
+  query getMyUsingSeat {
+    GetMyUsingSeat {
+      ok
+      error
+      seat {
+        id
+      }
     }
   }
 `;

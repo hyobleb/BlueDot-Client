@@ -2,6 +2,7 @@ import React from "react";
 import { ApolloConsumer, Mutation, MutationFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
+import { GET_SEATS } from "../../Components/Room/RoomQueries";
 import {
   HEAD_GET_ROOM,
   MANAGER_GET_SEAT
@@ -214,7 +215,11 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
                       }
                     }}
                     refetchQueries={[
-                      { query: HEAD_GET_ROOM, variables: { roomId } }
+                      { query: HEAD_GET_ROOM, variables: { roomId } },
+                      {
+                        query: GET_SEATS,
+                        variables: { roomId }
+                      }
                     ]}
                   >
                     {createDoorMutation => {
@@ -234,14 +239,17 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
                             ypos: selSeatYpos
                           }}
                           refetchQueries={[
-                            { query: HEAD_GET_ROOM, variables: { roomId } }
+                            { query: HEAD_GET_ROOM, variables: { roomId } },
+                            {
+                              query: GET_SEATS,
+                              variables: { roomId }
+                            }
                           ]}
                           onCompleted={data => {
                             const { HeadUpdateSeat } = data;
                             if (HeadUpdateSeat.ok) {
                               toast.success("해당 좌석이 수정되었습니다!");
                               this.onSeatEditCancelClick();
-                              this.toggleAddSeatMode();
                             } else {
                               toast.error(HeadUpdateSeat.error);
                             }
@@ -266,6 +274,10 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
                                 refetchQueries={[
                                   {
                                     query: HEAD_GET_ROOM,
+                                    variables: { roomId }
+                                  },
+                                  {
+                                    query: GET_SEATS,
                                     variables: { roomId }
                                   }
                                 ]}
@@ -481,21 +493,25 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
   };
 
   public onSeatEditCancelClick = () => {
-    this.setState({
-      addSeatMode: false,
-      doorEditMode: false,
-      isAddDoorMode: false,
-      isFlip: false,
-      selSeatDiscard: true,
-      selSeatFemaleUsable: true,
-      selSeatId: 0,
-      selSeatMaleUsable: true,
-      selSeatNumber: 0,
-      selSeatRotate: 0,
-      selSeatUsable: true,
-      selSeatXpos: 0,
-      selSeatYpos: 0
-    });
+    this.setState(
+      {
+        ...this.state,
+        addSeatMode: false,
+        doorEditMode: false,
+        isAddDoorMode: false,
+        isFlip: false,
+        selSeatDiscard: true,
+        selSeatFemaleUsable: true,
+        selSeatId: 0,
+        selSeatMaleUsable: true,
+        selSeatNumber: 0,
+        selSeatRotate: 0,
+        selSeatUsable: true,
+        selSeatXpos: 0,
+        selSeatYpos: 0
+      },
+      () => console.log(this.state)
+    );
   };
 
   public onCancelButtonClick = () => {

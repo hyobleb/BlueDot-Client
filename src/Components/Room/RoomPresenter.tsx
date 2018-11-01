@@ -29,6 +29,7 @@ interface IProps {
   isFlip?: boolean;
   assignSeatId?: number | null;
   assignSeatLoading?: boolean;
+  onEntranceClick?: () => void;
 }
 
 interface ISProps {
@@ -100,6 +101,16 @@ const Item = styled<
     ${props => (props.isFlip ? "scaleX(-1)" : "")};
 `;
 
+const SeatNumber = styled<{ numberRotate?: boolean }, "div">("div")`
+  position: absolute;
+  top: 10%;
+  font-size: 10%;
+  &:hover {
+    cursor: pointer;
+  }
+  transform: rotate(${props => props.numberRotate && 180}deg);
+`;
+
 const SeatItem = styled(Item)``;
 
 const DoorItem = styled(Item)``;
@@ -110,14 +121,14 @@ const SeatImg = styled.img`
     cursor: pointer;
   }
 `;
-const SeatNumber = styled.div`
-  position: absolute;
-  top: 10%;
-  font-size: 10%;
-  &:hover {
-    cursor: pointer;
-  }
-`;
+// const SeatNumber = styled.div`
+//   position: absolute;
+//   top: 10%;
+//   font-size: 10%;
+//   &:hover {
+//     cursor: pointer;
+//   }
+// `;
 
 const ImgContainer = styled.div`
   position: relative;
@@ -179,6 +190,7 @@ const Seat: React.SFC<ISProps> = ({
   },
   discard = false
 }) => {
+  const numberRotate = rotate >= 180 || rotate <= -180 ? true : false;
   return (
     <SeatItem left={left} top={top} rotate={rotate}>
       {!discard ? (
@@ -188,13 +200,17 @@ const Seat: React.SFC<ISProps> = ({
             ((gender === "MALE" && (
               <ImgContainer onClick={onSeatClick}>
                 <SeatImg src={"https://image.ibb.co/hcUtaq/1.png"} />
-                <SeatNumber>{seatNumber}</SeatNumber>
+                <SeatNumber numberRotate={numberRotate}>
+                  {seatNumber}
+                </SeatNumber>
               </ImgContainer>
             )) ||
               (gender === "FEMALE" && (
                 <ImgContainer onClick={onSeatClick}>
                   <SeatImg src={"https://image.ibb.co/cgiKFq/4.png"} />
-                  <SeatNumber>{seatNumber}</SeatNumber>
+                  <SeatNumber numberRotate={numberRotate}>
+                    {seatNumber}
+                  </SeatNumber>
                 </ImgContainer>
               )))
           ) : assignSeatLoading && assignSeatId === seatId ? (
@@ -202,12 +218,11 @@ const Seat: React.SFC<ISProps> = ({
               <SeatLoading loadingType={"spin"} />
             </ImgContainer>
           ) : (
-            // TODO:
             <ImgContainer onClick={onSeatClick}>
               <SeatImg
                 src={"https://image.ibb.co/d52ryp/standbyseat-ENXv-SRg.png"}
               />
-              <SeatNumber>{seatNumber}</SeatNumber>
+              <SeatNumber numberRotate={numberRotate}>{seatNumber}</SeatNumber>
             </ImgContainer>
           )
         ) : (
@@ -247,7 +262,8 @@ const RoomPresenter: React.SFC<IProps> = ({
   isAddDoor = false,
   isFlip = false,
   assignSeatId,
-  assignSeatLoading
+  assignSeatLoading,
+  onEntranceClick
 }) => {
   return (
     <BackContainer>
@@ -256,26 +272,6 @@ const RoomPresenter: React.SFC<IProps> = ({
       ) : (
         <Container>
           <Room>
-            {showTempSeat
-              ? (!isAddDoor && (
-                  <Seat
-                    left={tempSeatXpos}
-                    top={tempSeatYpos}
-                    rotate={tempSeatRotate}
-                    seatNumber={tempSeatNumber}
-                    usable={tempSeatUsable}
-                    femaleUsable={tempSeatFemaleUsable}
-                    maleUsable={tempSeatMaleUsable}
-                  />
-                )) || (
-                  <Door
-                    left={tempSeatXpos}
-                    top={tempSeatYpos}
-                    rotate={tempSeatRotate}
-                    isFlip={isFlip}
-                  />
-                )
-              : ""}
             {seats &&
               seats.map(
                 seat =>
@@ -301,7 +297,6 @@ const RoomPresenter: React.SFC<IProps> = ({
                         top={selSeatYpos}
                         rotate={selSeatRotate}
                         isFlip={isFlip}
-                        onDoorClick={() => onSeatClick(seat.id)}
                       />
                     )
                   ) : !seat.isDoor ? (
@@ -331,10 +326,30 @@ const RoomPresenter: React.SFC<IProps> = ({
                       top={seat.ypos}
                       rotate={seat.rotate}
                       isFlip={seat.isFlip}
-                      onDoorClick={() => onSeatClick(seat.id)}
+                      onDoorClick={onEntranceClick}
                     />
                   ))
               )}
+            {showTempSeat
+              ? (!isAddDoor && (
+                  <Seat
+                    left={tempSeatXpos}
+                    top={tempSeatYpos}
+                    rotate={tempSeatRotate}
+                    seatNumber={tempSeatNumber}
+                    usable={tempSeatUsable}
+                    femaleUsable={tempSeatFemaleUsable}
+                    maleUsable={tempSeatMaleUsable}
+                  />
+                )) || (
+                  <Door
+                    left={tempSeatXpos}
+                    top={tempSeatYpos}
+                    rotate={tempSeatRotate}
+                    isFlip={isFlip}
+                  />
+                )
+              : ""}
           </Room>
         </Container>
       )}

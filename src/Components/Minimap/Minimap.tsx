@@ -51,7 +51,7 @@ const Room = styled<
   left: ${props => props.xpos}%;
   top: ${props => props.ypos}%;
 `;
-const Seat = styled<
+const SeatContainer = styled<
   {
     xpos: number;
     ypos: number;
@@ -68,6 +68,17 @@ const Seat = styled<
   top: ${props => props.ypos}%;
   width: 3px;
   height: 3px;
+  transform: rotate(${props => props.rotate}deg);
+`;
+
+const Seat = styled<{ nowUsing: boolean; endDatetime: string }, "div">("div")`
+  position: absolute;
+  top: -80%;
+  width: 3px;
+  height: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${props =>
     props.nowUsing && moment(props.endDatetime) >= moment()
       ? props.theme.redColor
@@ -96,7 +107,7 @@ const Minimap: React.SFC<IProps> = ({ minimapImage, rooms, className }) => (
             seat =>
               !seat.discard &&
               seat.usable && (
-                <Seat
+                <SeatContainer
                   key={seat.id}
                   xpos={seat.xpos}
                   ypos={seat.ypos}
@@ -105,7 +116,12 @@ const Minimap: React.SFC<IProps> = ({ minimapImage, rooms, className }) => (
                   discard={seat.discard}
                   nowUsing={seat.nowUsing}
                   endDatetime={seat.endDatetime}
-                />
+                >
+                  <Seat
+                    nowUsing={seat.nowUsing}
+                    endDatetime={seat.endDatetime}
+                  />
+                </SeatContainer>
               )
           )}
         </Room>

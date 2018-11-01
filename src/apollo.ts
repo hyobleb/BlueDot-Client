@@ -52,6 +52,9 @@ const client = new ApolloClient({
         },
         logUserOut: (_, __, { cache }) => {
           localStorage.removeItem("jwt");
+          localStorage.removeItem("isHead");
+          localStorage.removeItem("isSupervisor");
+          localStorage.removeItem("isFranchiser");
           cache.writeData({
             data: {
               auth: {

@@ -1,6 +1,7 @@
 import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
+import { toast } from "react-toastify";
 import { GET_MY_MEMBERSHIPS, USER_PROFILE } from "src/Components/sharedQueries";
 import { getMyMemberships, userProfile } from "src/types/api";
 import MembershipPresenter from "./MembershipPresenter";
@@ -45,8 +46,7 @@ class MembershipContainer extends React.Component<IProps, IState> {
       <GetMyMembershipsQuery
         query={GET_MY_MEMBERSHIPS}
         fetchPolicy={"cache-and-network"}
-        onError={error => console.log({ error })}
-        onCompleted={data => console.log({ data })}
+        onError={error => toast.error(error)}
       >
         {({ data: myMembershipDatas, loading: myMembershipDatasLoading }) => {
           return (

@@ -51,13 +51,17 @@ interface IProps {
   branchLoaded: boolean;
   loungeImage: string;
   minimapImage: string;
-  rooms: getBranchByIp_UserGetBranchByIP_branch_rooms | null;
+  rooms: [getBranchByIp_UserGetBranchByIP_branch_rooms] | null;
   onRoomClick: (roomId: number) => void;
   nowRoomId: number;
   onSeatsPopUpCloseClick: () => void;
   onSeatClick: (seatId: number) => void;
   assignSeatId: number | null;
   assignSeatLoading: boolean;
+  onEntranceClick: () => void;
+  onReturnClick: () => Promise<void>;
+  branchName: string;
+  myUsingSeatId: number | null;
 }
 
 const HomePresenter: React.SFC<IProps> = ({
@@ -74,7 +78,11 @@ const HomePresenter: React.SFC<IProps> = ({
   onSeatsPopUpCloseClick,
   onSeatClick,
   assignSeatId,
-  assignSeatLoading
+  assignSeatLoading,
+  onEntranceClick,
+  branchName,
+  myUsingSeatId,
+  onReturnClick
 }) =>
   profileLoading || branchLoading ? (
     <Loading />
@@ -100,7 +108,10 @@ const HomePresenter: React.SFC<IProps> = ({
       </Helmet>
       {branchLoaded ? (
         <Container>
-          <HeadSection>현재 있는 곳은 화명 본점입니다</HeadSection>
+          <HeadSection>
+            현재 있는 곳은 {branchName}
+            입니다
+          </HeadSection>
           <LoungeSection>
             <LoungeCol>
               <LoungeContainer
@@ -119,6 +130,9 @@ const HomePresenter: React.SFC<IProps> = ({
               onSeatClick={onSeatClick}
               assignSeatId={assignSeatId}
               assignSeatLoading={assignSeatLoading}
+              onEntranceClick={onEntranceClick}
+              canReturn={myUsingSeatId ? true : false}
+              returnFn={onReturnClick}
             />
           )}
         </Container>

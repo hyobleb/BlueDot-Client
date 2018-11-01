@@ -7,6 +7,9 @@ interface IProps {
   onSeatClick: (seatId: number) => void;
   assignSeatId: number | null;
   assignSeatLoading: boolean;
+  onEntranceClick?: () => void;
+  canReturn?: boolean;
+  returnFn?: () => void;
 }
 
 class SeatsPopUpContainer extends React.Component<IProps> {
@@ -20,7 +23,10 @@ class SeatsPopUpContainer extends React.Component<IProps> {
       roomId,
       onSeatClick,
       assignSeatId,
-      assignSeatLoading
+      assignSeatLoading,
+      onEntranceClick,
+      canReturn,
+      returnFn
     } = this.props;
     return (
       <SeatsPopUpPresenter
@@ -29,6 +35,9 @@ class SeatsPopUpContainer extends React.Component<IProps> {
         onSeatClick={onSeatClick}
         assignSeatId={assignSeatId}
         assignSeatLoading={assignSeatLoading}
+        onEntranceClick={onEntranceClick}
+        canReturn={canReturn}
+        returnFn={returnFn}
       />
     );
   }

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "../../typed-components";
 import Room from "../Room";
+import SmallButton from "../SmallButton";
 
 interface IProps {
   closeFunc: any;
@@ -8,6 +9,9 @@ interface IProps {
   onSeatClick: (seatId: number) => void;
   assignSeatId: number | null;
   assignSeatLoading: boolean;
+  onEntranceClick?: () => void;
+  canReturn?: boolean;
+  returnFn?: () => void;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -23,7 +27,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   width: 90%;
-  height: 60%;
+  height: 80%;
   z-index: 9;
   padding: 20px;
 `;
@@ -46,12 +50,24 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
+const ButtonContainer = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+const Button = styled(SmallButton)``;
+const ReturnButton = styled(Button)``;
+
 const SeatsPopUpPresenter: React.SFC<IProps> = ({
   closeFunc,
   roomId,
   onSeatClick,
   assignSeatId,
-  assignSeatLoading
+  assignSeatLoading,
+  onEntranceClick,
+  canReturn,
+  returnFn
 }) => {
   return (
     <Container>
@@ -62,7 +78,11 @@ const SeatsPopUpPresenter: React.SFC<IProps> = ({
           onSeatClick={onSeatClick}
           assignSeatId={assignSeatId}
           assignSeatLoading={assignSeatLoading}
+          onEntranceClick={onEntranceClick}
         />
+        <ButtonContainer>
+          {canReturn && <ReturnButton value={"반납"} onClick={returnFn} />}
+        </ButtonContainer>
       </BodyContainer>
       <CloseButton onClick={closeFunc}>
         <svg

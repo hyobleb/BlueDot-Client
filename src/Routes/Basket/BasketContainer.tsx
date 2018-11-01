@@ -317,6 +317,7 @@ class BasketContainer extends React.Component<IProps, IState> {
             },
             async rsp => {
               // callback
+
               if (rsp.success) {
                 const paymentCompleteResult = await this.completePaymentFn({
                   variables: {
@@ -336,7 +337,7 @@ class BasketContainer extends React.Component<IProps, IState> {
                   }
                 }
               } else {
-                console.log("실패");
+                toast.error("결제에 실패했습니다");
               }
             }
           );

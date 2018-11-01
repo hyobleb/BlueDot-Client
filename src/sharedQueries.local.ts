@@ -15,3 +15,9 @@ export const LOG_USER_IN = gql`
     ) @client
   }
 `;
+
+export const LOG_USER_OUT = gql`
+  mutation logUserOut {
+    logUserOut @client
+  }
+`;
