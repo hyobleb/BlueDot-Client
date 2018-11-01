@@ -728,10 +728,18 @@ export interface getMyMemberships_GetMyMemberships_memberships_branch {
   name: string;
 }
 
+export interface getMyMemberships_GetMyMemberships_memberships_cabinet_lock {
+  __typename: "CabinetLock";
+  id: number;
+  lockNumber: number;
+  password: string;
+}
+
 export interface getMyMemberships_GetMyMemberships_memberships_cabinet {
   __typename: "Cabinet";
   id: number;
   cabinetNumber: number;
+  lock: getMyMemberships_GetMyMemberships_memberships_cabinet_lock | null;
 }
 
 export interface getMyMemberships_GetMyMemberships_memberships {

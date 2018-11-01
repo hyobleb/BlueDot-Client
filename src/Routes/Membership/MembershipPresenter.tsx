@@ -99,6 +99,7 @@ const MembershipContentRow = styled.div`
 const MembershipTitle = styled(MembershipContentRow)``;
 const StartDatetime = styled(MembershipContentRow)``;
 const EndDatetime = styled(MembershipContentRow)``;
+const CabinetLock = styled(MembershipContentRow)``;
 
 interface IProps {
   name: string;
@@ -234,6 +235,12 @@ const MembershipPresenter: React.SFC<IProps> = ({
                       <EndDatetime>
                         이용 종료 : {membership.endDatetime}
                       </EndDatetime>
+                      <CabinetLock>
+                        자물쇠 비밀번호 :{" "}
+                        {membership.cabinet.lock
+                          ? membership.cabinet.lock.password
+                          : "사물함 이용시작 시간 이후 비밀번호를 열람할수 있습니다"}
+                      </CabinetLock>
                       <ButtonContainer>
                         <ExtendButton
                           value={"연장하기"}

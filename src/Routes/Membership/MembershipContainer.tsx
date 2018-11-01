@@ -49,6 +49,7 @@ class MembershipContainer extends React.Component<IProps, IState> {
         onError={error => toast.error(error)}
       >
         {({ data: myMembershipDatas, loading: myMembershipDatasLoading }) => {
+          // console.log({ myMembershipDatas });
           return (
             <GetProfileQuery
               query={USER_PROFILE}

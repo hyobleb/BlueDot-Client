@@ -97,9 +97,6 @@ const CabinetDisplay: React.SFC<IProps> = ({
         <ColorIndex style={{ backgroundColor: SECONDARY_COLOR }}>
           예약중
         </ColorIndex>
-        <ColorIndex style={{ backgroundColor: DANGER_COLOR }}>
-          이용불가
-        </ColorIndex>
       </ColorIndexContainer>
       {verticalCabients.map((rowCabinets, index) => (
         <CabinetRow key={index}>
@@ -137,7 +134,11 @@ const CabinetDisplay: React.SFC<IProps> = ({
                 }}
                 style={{ backgroundColor }}
               >
-                <CabinetNumber>{cabinet.cabinetNumber}</CabinetNumber>
+                <CabinetNumber>
+                  {!cabinet.usable || !cabinet.lockId
+                    ? "X"
+                    : cabinet.cabinetNumber}
+                </CabinetNumber>
               </CabinetItem>
             );
           })}

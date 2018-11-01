@@ -376,6 +376,11 @@ export const GET_MY_MEMBERSHIPS = gql`
         cabinet {
           id
           cabinetNumber
+          lock {
+            id
+            lockNumber
+            password
+          }
         }
         cabinetId
       }
