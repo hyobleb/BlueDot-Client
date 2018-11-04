@@ -120,9 +120,7 @@ export interface searchUsers {
 }
 
 export interface searchUsersVariables {
-  name?: string | null;
-  phoneNumber?: string | null;
-  userId?: string | null;
+  text: string;
   searchType: SearchType;
 }
 
@@ -1705,6 +1703,108 @@ export interface headUpdateDoorVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: headGetBranchEmployee
+// ====================================================
+
+export interface headGetBranchEmployee_HeadGetBranchEmployee_branch_managers {
+  __typename: "User";
+  id: number;
+  name: string | null;
+  phoneNumber: string | null;
+  isSupervisor: boolean;
+  isFranchiser: boolean;
+}
+
+export interface headGetBranchEmployee_HeadGetBranchEmployee_branch_cleanStaffs {
+  __typename: "User";
+  id: number;
+  name: string | null;
+  phoneNumber: string | null;
+}
+
+export interface headGetBranchEmployee_HeadGetBranchEmployee_branch_managingStaffs {
+  __typename: "User";
+  id: number;
+  name: string | null;
+  phoneNumber: string | null;
+}
+
+export interface headGetBranchEmployee_HeadGetBranchEmployee_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  managers: (headGetBranchEmployee_HeadGetBranchEmployee_branch_managers | null)[] | null;
+  cleanStaffs: (headGetBranchEmployee_HeadGetBranchEmployee_branch_cleanStaffs | null)[] | null;
+  managingStaffs: (headGetBranchEmployee_HeadGetBranchEmployee_branch_managingStaffs | null)[] | null;
+}
+
+export interface headGetBranchEmployee_HeadGetBranchEmployee {
+  __typename: "HeadGetBranchEmployeeResponse";
+  ok: boolean;
+  error: string | null;
+  branch: headGetBranchEmployee_HeadGetBranchEmployee_branch | null;
+}
+
+export interface headGetBranchEmployee {
+  HeadGetBranchEmployee: headGetBranchEmployee_HeadGetBranchEmployee;
+}
+
+export interface headGetBranchEmployeeVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: headSetBranchManager
+// ====================================================
+
+export interface headSetBranchManager_HeadSetBranchManager {
+  __typename: "HeadSetBranchManagerResponse";
+  ok: boolean | null;
+  error: string | null;
+}
+
+export interface headSetBranchManager {
+  HeadSetBranchManager: headSetBranchManager_HeadSetBranchManager;
+}
+
+export interface headSetBranchManagerVariables {
+  userId: number;
+  managerType: HeadSetBranchManagerType;
+  action: HeadSetBranchManagerAction;
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: managerSetBranchStaff
+// ====================================================
+
+export interface managerSetBranchStaff_ManagerSetStaff {
+  __typename: "ManagerSetStaffResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerSetBranchStaff {
+  ManagerSetStaff: managerSetBranchStaff_ManagerSetStaff;
+}
+
+export interface managerSetBranchStaffVariables {
+  userId: number;
+  branchId: number;
+  staffType: ManagerSetStaffType;
+  action: ManagerSetBranchStaffAction;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: getCertification
 // ====================================================
 
@@ -1916,6 +2016,27 @@ export enum CreatePaymentMethodOption {
   PHONE = "PHONE",
   TRANS = "TRANS",
   VBANK = "VBANK",
+}
+
+export enum HeadSetBranchManagerAction {
+  ADD_BRANCH = "ADD_BRANCH",
+  SUB_BRANCH = "SUB_BRANCH",
+}
+
+export enum HeadSetBranchManagerType {
+  FRANCHISER = "FRANCHISER",
+  HEAD = "HEAD",
+  SUPERVISOR = "SUPERVISOR",
+}
+
+export enum ManagerSetBranchStaffAction {
+  ADD_BRANCH = "ADD_BRANCH",
+  SUB_BRANCH = "SUB_BRANCH",
+}
+
+export enum ManagerSetStaffType {
+  CLEAN = "CLEAN",
+  MANAGE = "MANAGE",
 }
 
 export enum SearchType {

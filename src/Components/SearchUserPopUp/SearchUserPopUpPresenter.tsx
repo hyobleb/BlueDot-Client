@@ -1,21 +1,21 @@
-import { ApolloError } from "apollo-boost";
 import React from "react";
+import Dropdown, { Option } from "react-dropdown";
 import styled from "../../typed-components";
 import { searchUsers } from "../../types/api";
 import Button from "../Button";
 import Form from "../Form";
 import Input from "../Input";
+import { searchTypeOptions } from "../shareOptions";
 
 interface IProps {
   inputValue: string;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  closFunc: any;
+  closeFunc: any;
   data: searchUsers | undefined;
-
-  error: ApolloError | undefined;
-  loading: boolean;
   setSearchText: () => void;
-  onUserClick: (id: number) => void;
+  onUserClick?: (userId: number) => Promise<void>;
+  onSerachTypeChange: (arg: Option) => void;
+  searchType: string;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -38,9 +38,7 @@ const Container = styled.div`
 
 const InputContainer = styled.div`
   min-width: 150px;
-  max-width: 400px;
-  margin-right: 10px;
-  width: 70%;
+  max-width: 500px;
 `;
 
 const ExtendInput = styled(Input)`
@@ -48,17 +46,18 @@ const ExtendInput = styled(Input)`
   padding-bottom: 6px;
   font-size: 12px;
   margin-right: 10px;
+  flex-basis: 100px;
+  flex-shrink: 1;
 `;
 
 const HeadContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 30px;
 `;
 
-const BranchSearchButton = styled(Button)`
-  width: 100px;
-  min-width: 50px;
-  max-width: 150px;
+const UserSearchButton = styled(Button)`
+  width: 40px;
   background-color: ${props => props.theme.blueColor};
   color: white;
   text-transform: uppercase;
@@ -122,15 +121,24 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
+const DropDownContainer = styled.div`
+  flex-basis: 102px;
+  margin-right: 10px;
+  flex-shrink: 0;
+  font-size: 12px;
+`;
+
 const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   inputValue,
-  closFunc,
+  closeFunc,
   onInputChange,
   data,
-  error,
-  loading,
   setSearchText,
-  onUserClick
+  onUserClick = userId => {
+    return;
+  },
+  onSerachTypeChange,
+  searchType
 }) => {
   return (
     <Container>
@@ -138,13 +146,23 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
         <InputContainer>
           <ExtendForm submitFn={setSearchText}>
             <ExtendInput
-              placeholder={"지점명 or 주소를 입력해주세요"}
+              placeholder={"회원 이름을 입력해주세요"}
               value={inputValue}
               name={"inputValue"}
               onChange={onInputChange}
               autoComplete={"username"}
             />
-            <BranchSearchButton value="찾기" onClick={setSearchText} />
+            <DropDownContainer>
+              <Dropdown
+                options={searchTypeOptions}
+                onChange={onSerachTypeChange}
+                value={searchType}
+                placeholder={"검색 대상을 선택해주세요"}
+                controlClassName={"control"}
+              />
+            </DropDownContainer>
+
+            <UserSearchButton value="찾기" onClick={setSearchText} />
           </ExtendForm>
         </InputContainer>
       </HeadContainer>
@@ -159,7 +177,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
               user && (
                 <UserContainer
                   key={user.id}
-                  onClick={() => onUserClick(user.id)}
+                  onClick={async () => await onUserClick(user.id)}
                 >
                   <ContentsContainer>
                     <ContextContainer>
@@ -174,7 +192,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
             );
           })}
       </BodyContainer>
-      <CloseButton onClick={closFunc}>
+      <CloseButton onClick={closeFunc}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

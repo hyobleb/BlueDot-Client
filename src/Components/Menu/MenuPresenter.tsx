@@ -66,15 +66,18 @@ const Grid = styled.div`
 interface IToggleProps {
   isHead: boolean;
   isFrenchiser: boolean;
+  isSupervisor: boolean;
 }
 const ToggleAuthor = styled<IToggleProps, any>("button")`
   -webkit-appearance: none;
   background-color: ${props =>
     props.isFrenchiser
       ? props.theme.yellowColor
-      : props.isHead
-        ? props.theme.greenColor
-        : ""};
+      : props.isSupervisor
+        ? props.theme.orangeColor
+        : props.isHead
+          ? props.theme.greenColor
+          : ""};
   width: 100%;
   color: white;
   font-size: 18px;
@@ -93,51 +96,54 @@ const MenuPresenter: React.SFC<IProps> = ({
   data: { GetMyProfile: { user = null } = {} } = {},
   loading,
   logUserOutMutation
-}) => (
-  <Container>
-    {!loading &&
-      user &&
-      user.name && (
-        <React.Fragment>
-          <Header>
-            <Grid>
-              <Link to={"/edit-account"}>
-                <Image
-                  src={
-                    user.profilePhoto ||
-                    require("src/images/default_profile.png")
-                  }
-                />
-              </Link>
-              <Text>
-                <Name>{user.name}</Name>
-                <Rating>4.5</Rating>
-              </Text>
-            </Grid>
-          </Header>
-          <SLink to="/membership">멤버쉽 정보</SLink>
-          <SLink to="/basket">장바구니</SLink>
-          <MenuItem onClick={() => logUserOutMutation()}>로그아웃</MenuItem>
+}) => {
+  console.log({ user });
+  return (
+    <Container>
+      {!loading &&
+        user &&
+        user.name && (
+          <React.Fragment>
+            <Header>
+              <Grid>
+                <Link to={"/edit-account"}>
+                  <Image
+                    src={
+                      user.profilePhoto ||
+                      require("src/images/default_profile.png")
+                    }
+                  />
+                </Link>
+                <Text>
+                  <Name>{user.name}</Name>
+                  <Rating>4.5</Rating>
+                </Text>
+              </Grid>
+            </Header>
+            <SLink to="/membership">멤버쉽 정보</SLink>
+            <SLink to="/basket">장바구니</SLink>
+            <MenuItem onClick={() => logUserOutMutation()}>로그아웃</MenuItem>
 
-          {user.isFranchiser || user.isHead ? (
-            <>
-              <ToggleAuthor
-                isHead={user.isHead}
-                isFrenchiser={user.isFranchiser}
-              >
-                {user.isFranchiser
-                  ? "관리자"
-                  : user.isHead
-                    ? "슈퍼 관리자"
-                    : ""}
-              </ToggleAuthor>
-              <SLink to="/branch-setting">지점 관리</SLink>
-            </>
-          ) : (
-            ""
-          )}
-        </React.Fragment>
-      )}
-  </Container>
-);
+            {user.isFranchiser || user.isSupervisor || user.isHead ? (
+              <>
+                <ToggleAuthor
+                  isHead={user.isHead}
+                  isFrenchiser={user.isFranchiser}
+                >
+                  {user.isFranchiser
+                    ? "관리자"
+                    : user.isHead
+                      ? "슈퍼 관리자"
+                      : ""}
+                </ToggleAuthor>
+                <SLink to="/branch-setting">지점 관리</SLink>
+              </>
+            ) : (
+              ""
+            )}
+          </React.Fragment>
+        )}
+    </Container>
+  );
+};
 export default MenuPresenter;

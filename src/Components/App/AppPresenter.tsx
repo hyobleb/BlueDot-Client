@@ -24,6 +24,7 @@ import SettingCabLock from "../../Routes/SettingCabLock";
 import SettingLounge from "../../Routes/SettingLounge";
 import SettingProduct from "../../Routes/SettingProduct";
 import SettingSeats from "../../Routes/SettingSeats";
+import SettingStaff from "../../Routes/SettingStaff";
 import SignUp from "../../Routes/SignUp";
 import SignUpDetail from "../../Routes/SignUpDetail";
 import SocialLogin from "../../Routes/SocialLogin";
@@ -195,6 +196,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/setting-cablock"}
           exact={true}
           component={SettingCabLock}
+        />,
+        <Route
+          key={13}
+          path={"/setting-staff"}
+          exact={true}
+          component={SettingStaff}
         />
       ]}
 

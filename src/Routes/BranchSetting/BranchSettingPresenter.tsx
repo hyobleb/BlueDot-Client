@@ -99,6 +99,13 @@ const CabLockSettingButton = styled(SmallButton)`
   margin: 5px 5px;
 `;
 
+const StaffSettingButton = styled(SmallButton)`
+  background-color: ${props => props.theme.pinkColor};
+  font-size: 12px;
+
+  margin: 5px 5px;
+`;
+
 const SLink = styled(Link)`
   background-color: ${props => props.theme.orangeColor};
   color: white;
@@ -135,6 +142,7 @@ interface IProps {
   onCainbetSettingClick: (branchId: number) => void;
   onProductSettingClick: (branchId: number) => void;
   onCabLockSettingClick: (branchId: number) => void;
+  onStaffSettingClick: (branchid: number) => void;
 }
 
 const BranchSettingPresenter: React.SFC<IProps> = ({
@@ -146,7 +154,8 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
   onBranchModifyClick,
   onCainbetSettingClick,
   onProductSettingClick,
-  onCabLockSettingClick
+  onCabLockSettingClick,
+  onStaffSettingClick
 }) => (
   <BackContainer>
     <Helmet>
@@ -216,6 +225,10 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
                   <CabLockSettingButton
                     value={"자물쇠 세팅"}
                     onClick={() => onCabLockSettingClick(branch.id)}
+                  />
+                  <StaffSettingButton
+                    value={"스탭 세팅"}
+                    onClick={() => onStaffSettingClick(branch.id)}
                   />
                 </ButtonContainer>
               </BranchContainer>

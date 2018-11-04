@@ -11,6 +11,7 @@ interface IThemeInterface {
   smallFontSize: string;
   redColor: string;
   lightBlueColor: string;
+  pinkColor: string;
 }
 
 const {

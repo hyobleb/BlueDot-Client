@@ -31,3 +31,9 @@ export enum CreatePaymentMethodOption {
   PHONE = "PHONE",
   CASH = "CASH"
 }
+
+export const searchTypeOptions = [
+  { value: "NAME", label: "이름" },
+  { value: "PHONE", label: "전화번호" },
+  { value: "USERID", label: "아이디" }
+];

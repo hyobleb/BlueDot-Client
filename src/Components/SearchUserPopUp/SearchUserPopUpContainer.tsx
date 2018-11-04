@@ -1,18 +1,21 @@
 import React from "react";
 import { Query } from "react-apollo";
+import { Option } from "react-dropdown";
 import { searchUsers } from "../../types/api";
 import SearchUserPopUpPresenter from "./SearchUserPopUpPresenter";
 import { SEARCH_USERS } from "./SearchUserPopUpQueries";
 
 interface IProps {
-  closFunc: any;
+  closeFunc: any;
+  onUserClick: (userId: number) => Promise<void>;
 }
 
 interface IState {
   inputValue: string;
   searchText: string;
+  searchType: string;
+  onUserClick: (userId: number) => Promise<void>;
 }
-
 
 class SearchUsersQuery extends Query<searchUsers> {}
 
@@ -21,29 +24,31 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       inputValue: "",
-      searchText: ""
+      onUserClick: props.onUserClick,
+      searchText: "",
+      searchType: "NAME"
     };
   }
 
   public render() {
-    const { inputValue, searchText } = this.state;
-    const { closFunc } = this.props;
+    const { inputValue, searchText, searchType, onUserClick } = this.state;
+    const { closeFunc } = this.props;
     return (
       <SearchUsersQuery
         query={SEARCH_USERS}
-        variables={{ text: searchText }}
+        variables={{ text: searchText, searchType }}
         skip={!Boolean(searchText)}
       >
-        {({ loading, error, data }) => (
+        {({ data }) => (
           <SearchUserPopUpPresenter
             inputValue={inputValue}
             onInputChange={this.onInputChange}
-            closFunc={closFunc}
+            closeFunc={closeFunc}
             data={data}
-            error={error}
-            loading={loading}
             setSearchText={this.setSearchText}
-            onUserClick={this.onUserClick}
+            onUserClick={onUserClick}
+            onSerachTypeChange={this.onSerachTypeChange}
+            searchType={searchType}
           />
         )}
       </SearchUsersQuery>
@@ -69,8 +74,10 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onUserClick = (id: number) => {
-    console.log(id);
+  public onSerachTypeChange = (arg: Option) => {
+    this.setState({
+      searchType: arg.value
+    });
   };
 }
 
