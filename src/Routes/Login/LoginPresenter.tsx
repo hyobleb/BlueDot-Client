@@ -129,6 +129,9 @@ const LoginPresenter: React.SFC<IProps> = ({
       <FooterColumn>
         <Link to={"/social-phone"}>페이스북 로그인</Link>
       </FooterColumn>
+      <FooterColumn>
+        <Link to={"/req-sign-up"}>오프라인 가입 신청</Link>
+      </FooterColumn>
     </Footer>
   </Container>
 );

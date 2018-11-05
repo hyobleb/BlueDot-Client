@@ -3,16 +3,15 @@ import { ApolloConsumer, Mutation, MutationFn } from "react-apollo";
 import Script from "react-load-script";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
+import { GUEST_GET_BRANCH } from "src/Components/sharedQueries";
 import { LOG_USER_IN } from "../../sharedQueries.local";
 import {
   tempUserIdSignUpMutation,
   tempUserIdSignUpMutationVariables
 } from "../../types/api";
-
 import SignUpDetailPresenter from "./SignUpDetailPresenter";
 import {
   GET_CERTIFICATION,
-  GUEST_GET_BRANCH,
   TEMP_USER_ID_SIGN_UP_MUTATION
 } from "./SignUpDetailQueries";
 
@@ -36,6 +35,7 @@ interface IState {
   imp_uid: string;
   impId: string;
   impKey: string;
+  email: string;
 }
 
 interface IProps extends RouteComponentProps<any> {}
@@ -71,6 +71,7 @@ export default class SignUpDetailContainer extends React.Component<
       birthDay: null,
       birthMonth: null,
       birthYear: null,
+      email: "",
       gender: null,
       impId: "",
       impKey: "",
@@ -173,6 +174,7 @@ export default class SignUpDetailContainer extends React.Component<
                           onVerifyingButtonClick={this.onVerifyingButtonClick}
                           loading={loading}
                           userIdSignUp={this.onSubmit}
+                          email={this.state.email}
                         />
                       );
                     }}
@@ -256,15 +258,26 @@ export default class SignUpDetailContainer extends React.Component<
       birthMonth,
       birthDay,
       imp_uid,
-      unique_key
+      unique_key,
+      email
     } = this.state;
 
     if (!userId) {
       toast.error("아이디가 입력되지 않았습니다");
+    } else if (!new RegExp(/^[a-z0-9_]{4,20}$/).test(userId)) {
+      toast.error("아이디 형태가 올바르지 않습니다");
     } else if (!password || !repassword) {
       toast.error("비밀번호가 입력되지 않았습니다");
     } else if (password !== repassword) {
       toast.error("비밀번호를 다시 확인해주세요");
+    } else if (!email) {
+      toast.error("이메일이 입력되지 않았습니다");
+    } else if (
+      !new RegExp(
+        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+      ).test(email)
+    ) {
+      toast.error("이메일 양식에 맞게 입력해주세요!");
     } else if (!phoneNumber) {
       toast.error("전화번호를 입력해주세요");
     } else if (!baseBranchId) {

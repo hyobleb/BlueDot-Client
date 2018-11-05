@@ -412,3 +412,18 @@ export const GET_MEMBERSHIP_FOR_EXTEND = gql`
     }
   }
 `;
+
+export const GUEST_GET_BRANCH = gql`
+  query guetGetBranch($branchId: Int!) {
+    GuestGetBranch(branchId: $branchId) {
+      ok
+      error
+      branch {
+        id
+        name
+        impKey
+        impId
+      }
+    }
+  }
+`;

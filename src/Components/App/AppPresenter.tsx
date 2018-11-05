@@ -18,6 +18,7 @@ import ReqEnrollMembership from "../../Routes/ReqEnrollMembership";
 import ReqExtendCabinet from "../../Routes/ReqExtendCabinet";
 import ReqExtendMembership from "../../Routes/ReqExtendMembership";
 import ReqMembership from "../../Routes/ReqMembership";
+import ReqSignUp from "../../Routes/ReqSignUp";
 import SettingCabinets from "../../Routes/SettingCabinets";
 import SettingCabinetSets from "../../Routes/SettingCabinetSets";
 import SettingCabLock from "../../Routes/SettingCabLock";
@@ -77,6 +78,7 @@ const LoggedOutRoute: React.SFC = () => (
     {/* <Route path={"/verify-phone/:number"} component={VerifyPhone} /> */}
     {/* ex) /verify-phone/01021231222 */}
     <Route path={"/social-phone"} component={SocialLogin} />
+    <Route path={"/req-sign-up"} component={ReqSignUp} />
 
     <Redirect from={"*"} to={"/"} />
   </Switch>

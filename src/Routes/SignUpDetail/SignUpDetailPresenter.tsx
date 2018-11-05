@@ -25,6 +25,7 @@ interface IProps {
   onVerifyingButtonClick: () => void;
   userIdSignUp: any;
   loading: boolean;
+  email: string;
 }
 
 const Container = styled.div`
@@ -94,7 +95,7 @@ const SelBranchDisplay = styled.div`
   margin-top: 5px;
 `;
 
-const ConifirmButton = styled(Button)`
+const ConfirmButton = styled(Button)`
   &:hover {
     background-color: ${props => props.theme.greyColor};
   }
@@ -113,7 +114,8 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
   baseBranchName,
   onVerifyingButtonClick,
   loading,
-  userIdSignUp
+  userIdSignUp,
+  email
 }) => (
   <Container>
     <Helmet>
@@ -156,6 +158,13 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
             type={"password"}
             autoComplete={"current-password"}
           />
+          <ExtendInput
+            placeholder={"이메일"}
+            value={email}
+            name={"email"}
+            onChange={onInputChange}
+            autoFocus={true}
+          />
 
           <SelBranchButton
             value={"지점선택"}
@@ -188,7 +197,7 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
           {loading ? (
             <Loading />
           ) : (
-            <ConifirmButton
+            <ConfirmButton
               value={"가입하기"}
               type={"submit"}
               onClick={userIdSignUp}

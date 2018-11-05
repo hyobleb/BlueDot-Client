@@ -37,3 +37,13 @@ export const searchTypeOptions = [
   { value: "PHONE", label: "전화번호" },
   { value: "USERID", label: "아이디" }
 ];
+
+export const genderTypeOptions = [
+  { value: "MALE", label: "남자" },
+  { value: "FEMALE", label: "여자" }
+];
+
+export enum CustomerRequestSignUpGender {
+  FEMALE = "FEMALE",
+  MALE = "MALE"
+}

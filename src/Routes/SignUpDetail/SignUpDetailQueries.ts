@@ -82,18 +82,3 @@ export const TEMP_USER_ID_SIGN_UP_MUTATION = gql`
     }
   }
 `;
-
-export const GUEST_GET_BRANCH = gql`
-  query guetGetBranch($branchId: Int!) {
-    GuestGetBranch(branchId: $branchId) {
-      ok
-      error
-      branch {
-        id
-        name
-        impKey
-        impId
-      }
-    }
-  }
-`;

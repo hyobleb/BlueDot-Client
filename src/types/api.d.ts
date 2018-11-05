@@ -811,6 +811,36 @@ export interface getMembershipForExtendVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: guetGetBranch
+// ====================================================
+
+export interface guetGetBranch_GuestGetBranch_branch {
+  __typename: "SimpleBranch";
+  id: number;
+  name: string | null;
+  impKey: string | null;
+  impId: string | null;
+}
+
+export interface guetGetBranch_GuestGetBranch {
+  __typename: "GuestGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: guetGetBranch_GuestGetBranch_branch | null;
+}
+
+export interface guetGetBranch {
+  GuestGetBranch: guetGetBranch_GuestGetBranch;
+}
+
+export interface guetGetBranchVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -1380,6 +1410,36 @@ export interface getBranchForEnrollCabinetVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: reqSignUp
+// ====================================================
+
+export interface reqSignUp_CustomerRequestSignUp {
+  __typename: "CustomerRequestSignUpResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface reqSignUp {
+  CustomerRequestSignUp: reqSignUp_CustomerRequestSignUp;
+}
+
+export interface reqSignUpVariables {
+  inputUserId: string;
+  phoneNumber: string;
+  email: string;
+  birthYear: number;
+  birthMonth: number;
+  birthDay: number;
+  password: string;
+  name: string;
+  gender: CustomerRequestSignUpGender;
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: headGetBranchForCabinetsSetting
 // ====================================================
 
@@ -1897,36 +1957,6 @@ export interface tempUserIdSignUpMutationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: guetGetBranch
-// ====================================================
-
-export interface guetGetBranch_GuestGetBranch_branch {
-  __typename: "SimpleBranch";
-  id: number;
-  name: string | null;
-  impKey: string | null;
-  impId: string | null;
-}
-
-export interface guetGetBranch_GuestGetBranch {
-  __typename: "GuestGetBranchResponse";
-  ok: boolean;
-  error: string | null;
-  branch: guetGetBranch_GuestGetBranch_branch | null;
-}
-
-export interface guetGetBranch {
-  GuestGetBranch: guetGetBranch_GuestGetBranch;
-}
-
-export interface guetGetBranchVariables {
-  branchId: number;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: facebookConnect
 // ====================================================
 
@@ -2016,6 +2046,11 @@ export enum CreatePaymentMethodOption {
   PHONE = "PHONE",
   TRANS = "TRANS",
   VBANK = "VBANK",
+}
+
+export enum CustomerRequestSignUpGender {
+  FEMALE = "FEMALE",
+  MALE = "MALE",
 }
 
 export enum HeadSetBranchManagerAction {
