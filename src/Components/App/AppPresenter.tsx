@@ -9,6 +9,7 @@ import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
+import ManageUsers from "../../Routes/ManageUsers";
 import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import ModifyProduct from "../../Routes/ModifyProduct";
@@ -204,6 +205,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/setting-staff"}
           exact={true}
           component={SettingStaff}
+        />,
+        <Route
+          key={14}
+          path={"/manage-users"}
+          exact={true}
+          component={ManageUsers}
         />
       ]}
 

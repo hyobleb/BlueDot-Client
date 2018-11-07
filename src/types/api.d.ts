@@ -621,7 +621,7 @@ export interface getUsableMyMemberships_GetMyUsableMemberships_memberships {
 
 export interface getUsableMyMemberships_GetMyUsableMemberships {
   __typename: "GetMyUsableMembershipsResponse";
-  ok: boolean | null;
+  ok: boolean;
   error: string | null;
   memberships: (getUsableMyMemberships_GetMyUsableMemberships_memberships | null)[] | null;
 }
@@ -1255,6 +1255,72 @@ export interface userIdSignIn {
 export interface userIdSignInVariables {
   userId: string;
   password: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: headGetMembershipLogs
+// ====================================================
+
+export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_user {
+  __typename: "User";
+  id: number;
+  name: string | null;
+  userId: string | null;
+  phoneNumber: string | null;
+  birthYear: number | null;
+  birthMonth: number | null;
+  birthDay: number | null;
+}
+
+export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs {
+  __typename: "MembershipLog";
+  id: number;
+  status: string;
+  target: string;
+  createdAt: string;
+  startDatetime: string;
+  endDatetime: string;
+  cabinet: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_cabinet | null;
+  user: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_user;
+  branch: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_branch;
+}
+
+export interface headGetMembershipLogs_HeadGetMembershipLogs_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface headGetMembershipLogs_HeadGetMembershipLogs {
+  __typename: "HeadGetMembershipLogsResponse";
+  ok: boolean;
+  error: string | null;
+  membershipLogs: (headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs | null)[] | null;
+  branch: headGetMembershipLogs_HeadGetMembershipLogs_branch | null;
+}
+
+export interface headGetMembershipLogs {
+  HeadGetMembershipLogs: headGetMembershipLogs_HeadGetMembershipLogs;
+}
+
+export interface headGetMembershipLogsVariables {
+  branchId?: number | null;
+  date: string;
 }
 
 /* tslint:disable */
@@ -1919,6 +1985,7 @@ export interface userIdsignUpMutationVariables {
   birthDay: number;
   baseBranchId: number;
   imp_uid: string;
+  email: string;
 }
 
 /* tslint:disable */

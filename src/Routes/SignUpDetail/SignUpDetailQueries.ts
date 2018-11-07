@@ -28,6 +28,7 @@ export const USER_ID_SIGN_UP_MUTATION = gql`
     $birthDay: Int!
     $baseBranchId: Int!
     $imp_uid: String!
+    $email: String!
   ) {
     UserIdSignUp(
       userId: $userId
@@ -41,6 +42,7 @@ export const USER_ID_SIGN_UP_MUTATION = gql`
       birthDay: $birthDay
       baseBranchId: $baseBranchId
       imp_uid: $imp_uid
+      email: $email
     ) {
       ok
       error

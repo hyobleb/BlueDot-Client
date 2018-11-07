@@ -189,6 +189,7 @@ const ReqSignUpPresenter: React.SFC<IProps> = ({
                 timeFormat={false}
                 viewMode="years"
                 onChange={onDatetimeChange}
+                closeOnSelect={true}
               />
             </DatetimePicker>
           </DatetimeSection>

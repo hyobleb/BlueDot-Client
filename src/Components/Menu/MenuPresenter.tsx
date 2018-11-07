@@ -97,7 +97,6 @@ const MenuPresenter: React.SFC<IProps> = ({
   loading,
   logUserOutMutation
 }) => {
-  console.log({ user });
   return (
     <Container>
       {!loading &&
@@ -137,6 +136,7 @@ const MenuPresenter: React.SFC<IProps> = ({
                       : ""}
                 </ToggleAuthor>
                 <SLink to="/branch-setting">지점 관리</SLink>
+                <SLink to="/manage-users">회원 관리</SLink>
               </>
             ) : (
               ""

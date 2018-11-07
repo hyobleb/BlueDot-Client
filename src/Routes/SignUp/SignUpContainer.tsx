@@ -66,7 +66,11 @@ export default class SignUpContainer extends React.Component<IProps, IState> {
   public onConfirmClick = () => {
     const { history } = this.props;
 
-    if (this.state.personalDataCheck && this.state.allChecked) {
+    if (
+      this.state.personalDataCheck &&
+      this.state.allChecked &&
+      this.state.termsAndConditionsCheck
+    ) {
       history.push({
         pathname: "/sign-up-detail",
         state: {

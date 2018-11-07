@@ -205,34 +205,6 @@ class ReqSignUpContainer extends React.Component<IProps, IState> {
     } else {
       this.reqSignUp();
     }
-
-    // const {
-    //   userId,
-    //   password,
-    //   repassword,
-    //   phoneNumber,
-    //   baseBranchId,
-    //   name,
-    //   gender,
-    //   birthYear,
-    //   birthMonth,
-    //   birthDay,
-    //   imp_uid,
-    //   unique_key
-    // } = this.state;
-    // if (!userId) {
-    //   toast.error("아이디가 입력되지 않았습니다");
-    // } else if (!password || !repassword) {
-    //   toast.error("비밀번호가 입력되지 않았습니다");
-    // } else if (password !== repassword) {
-    //   toast.error("비밀번호를 다시 확인해주세요");
-    // } else if (!phoneNumber) {
-    //   toast.error("전화번호를 입력해주세요");
-    // } else if (!baseBranchId) {
-    //   toast.error("지점을 선택해주세요");
-    // } else if (!name || !gender || !birthYear || !birthMonth || !birthDay) {
-    //   toast.error("본인인증을 해주세요!");
-    // }
   };
   public onBranchClick = async (branchId: number) => {
     const { GuestGetBranch } = await this.getBranch(branchId);
