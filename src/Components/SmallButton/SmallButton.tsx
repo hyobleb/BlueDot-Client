@@ -13,7 +13,7 @@ const Container = styled.input`
   cursor: pointer;
   font-weight: 500;
   text-align: center;
-  border-radius: 5%;
+  border-radius: 5px;
   &:active,
   &:focus {
     outline: none;

@@ -1261,6 +1261,30 @@ export interface userIdSignInVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: managerCreateMembership
+// ====================================================
+
+export interface managerCreateMembership_ManagerCreateMembership {
+  __typename: "ManagerCreateMembershipResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerCreateMembership {
+  ManagerCreateMembership: managerCreateMembership_ManagerCreateMembership;
+}
+
+export interface managerCreateMembershipVariables {
+  userId: number;
+  branchId: number;
+  startDatetime: string;
+  endDatetime: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: headGetMembershipLogs
 // ====================================================
 
@@ -1276,9 +1300,9 @@ export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_user
   name: string | null;
   userId: string | null;
   phoneNumber: string | null;
-  birthYear: number | null;
-  birthMonth: number | null;
-  birthDay: number | null;
+  birthYear: number;
+  birthMonth: number;
+  birthDay: number;
 }
 
 export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_branch {
@@ -1290,6 +1314,7 @@ export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_bran
 export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs {
   __typename: "MembershipLog";
   id: number;
+  userId: number;
   status: string;
   target: string;
   createdAt: string;
@@ -1321,6 +1346,39 @@ export interface headGetMembershipLogs {
 export interface headGetMembershipLogsVariables {
   branchId?: number | null;
   date: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: headGetNowUsingUsers
+// ====================================================
+
+export interface headGetNowUsingUsers_HeadGetNowUsingUsers_users {
+  __typename: "User";
+  id: number;
+  name: string | null;
+  userId: string | null;
+  birthYear: number;
+  birthMonth: number;
+  birthDay: number;
+  phoneNumber: string | null;
+}
+
+export interface headGetNowUsingUsers_HeadGetNowUsingUsers {
+  __typename: "HeadGetNowUsingUsersResponse";
+  ok: boolean;
+  error: string | null;
+  users: (headGetNowUsingUsers_HeadGetNowUsingUsers_users | null)[] | null;
+}
+
+export interface headGetNowUsingUsers {
+  HeadGetNowUsingUsers: headGetNowUsingUsers_HeadGetNowUsingUsers;
+}
+
+export interface headGetNowUsingUsersVariables {
+  branchId?: number | null;
 }
 
 /* tslint:disable */
@@ -2098,6 +2156,145 @@ export interface headUpdateRoomVariables {
   xpos?: number | null;
   ypos?: number | null;
   usable?: boolean | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: headGetUserDetail
+// ====================================================
+
+export interface headGetUserDetail_HeadGetUserDetail_user_baseBranch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet_lock {
+  __typename: "CabinetLock";
+  id: number;
+  password: string;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+  lock: headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet_lock | null;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_memberships {
+  __typename: "Membership";
+  id: number;
+  startDatetime: string;
+  endDatetime: string;
+  status: string;
+  usable: boolean;
+  cabinetId: number | null;
+  cabinet: headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet | null;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_managingBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_cleaningBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_staffManangingBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_membershipLogs_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_membershipLogs_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_membershipLogs {
+  __typename: "MembershipLog";
+  id: number;
+  branch: headGetUserDetail_HeadGetUserDetail_user_membershipLogs_branch;
+  cabinet: headGetUserDetail_HeadGetUserDetail_user_membershipLogs_cabinet | null;
+  status: string;
+  startDatetime: string;
+  endDatetime: string;
+  updatedAt: string;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_seatLogs_seat {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_seatLogs {
+  __typename: "SeatLog";
+  id: number;
+  seat: headGetUserDetail_HeadGetUserDetail_user_seatLogs_seat;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user_payments {
+  __typename: "Payment";
+  id: number;
+  amount: number;
+  updatedAt: string | null;
+  payMethod: string | null;
+  status: string;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail_user {
+  __typename: "User";
+  id: number;
+  name: string | null;
+  userId: string | null;
+  phoneNumber: string | null;
+  profilePhoto: string | null;
+  gender: string | null;
+  birthYear: number;
+  birthMonth: number;
+  birthDay: number;
+  email: string | null;
+  isHead: boolean;
+  isSupervisor: boolean;
+  isFranchiser: boolean;
+  baseBranch: headGetUserDetail_HeadGetUserDetail_user_baseBranch;
+  memberships: (headGetUserDetail_HeadGetUserDetail_user_memberships | null)[];
+  managingBranches: (headGetUserDetail_HeadGetUserDetail_user_managingBranches | null)[] | null;
+  cleaningBranches: (headGetUserDetail_HeadGetUserDetail_user_cleaningBranches | null)[] | null;
+  staffManangingBranches: (headGetUserDetail_HeadGetUserDetail_user_staffManangingBranches | null)[] | null;
+  membershipLogs: (headGetUserDetail_HeadGetUserDetail_user_membershipLogs | null)[] | null;
+  seatLogs: (headGetUserDetail_HeadGetUserDetail_user_seatLogs | null)[] | null;
+  payments: (headGetUserDetail_HeadGetUserDetail_user_payments | null)[] | null;
+}
+
+export interface headGetUserDetail_HeadGetUserDetail {
+  __typename: "HeadGetUserDetailResponse";
+  ok: boolean;
+  error: string | null;
+  user: headGetUserDetail_HeadGetUserDetail_user | null;
+}
+
+export interface headGetUserDetail {
+  HeadGetUserDetail: headGetUserDetail_HeadGetUserDetail;
+}
+
+export interface headGetUserDetailVariables {
+  userId: number;
 }
 
 /* tslint:disable */

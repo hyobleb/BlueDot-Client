@@ -5,6 +5,7 @@ import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
 import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
 import Loading from "src/Components/Loading";
+import SearchUserPopUp from "src/Components/SearchUserPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 
@@ -15,6 +16,7 @@ const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-top: 40px;
+  margin-bottom: 100px;
 `;
 const Section = styled.section``;
 const HeadButtonSection = styled(Section)`
@@ -82,6 +84,12 @@ const RegistMemberList = styled.div`
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 15px;
+  cursor: pointer;
+  transition-duration: 0.2s;
+  &:hover {
+    background-color: ${props => props.theme.lightBlueColor};
+    color: white;
+  }
 `;
 const RegistMemberDataRow = styled.div``;
 const RegistMemberDataCol = styled.div`
@@ -105,11 +113,6 @@ const StatusTitle = styled.div`
   width: 100%;
 `;
 
-const ExtendedLoading = styled(Loading)`
-  width: 100%;
-  height: 100%;
-`;
-
 const StatusDisplay = styled.div`
   padding: 10px;
   text-align: center;
@@ -125,6 +128,29 @@ const ExtendStatus = styled(StatusDisplay)`
   color: white;
 `;
 
+const TotalMembersSection = styled.div`
+  margin-top: 20px;
+`;
+const TotalMembersHead = styled.div`
+  margin-bottom: 10px;
+`;
+const TotalMembersBody = styled.div``;
+const TotalMembersContainer = styled(RegistMembersContainer)``;
+const TotalMemberList = styled(RegistMemberList)``;
+const TotalMemberCol = styled(RegistMemberDataCol)``;
+
+const UserSearchSection = styled(Section)`
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+const UserSearchButton = styled(Button)`
+  width: 80%;
+  min-width: 200px;
+  max-width: 500px;
+  padding: 15px 0;
+`;
+
 interface IProps {
   selDate: Moment;
   onDatetimeChange: (datetimeValue: Moment) => void;
@@ -133,6 +159,12 @@ interface IProps {
   toggleBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
   membershipLogsLoading: boolean;
+  usingUsersLoading: boolean;
+  nowUsingUsers: any[];
+  onAllBranchClick: () => void;
+  toggleShowUserSearchPopUp: () => void;
+  showUserSearchPopUp: boolean;
+  onUserClick: (userId: number) => Promise<void>;
 }
 
 const ManageUsersPresenter: React.SFC<IProps> = ({
@@ -142,139 +174,203 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
   branchSearchPopupShow,
   toggleBranchPopUpShow,
   onBranchClick,
-  membershipLogsLoading
+  membershipLogsLoading,
+  usingUsersLoading,
+  nowUsingUsers,
+  onAllBranchClick,
+  toggleShowUserSearchPopUp,
+  showUserSearchPopUp,
+  onUserClick
 }) => (
   <BackContainer>
     <Helmet>
       <title>membership | BlueDot</title>
     </Helmet>
     <BackArrowExtended backTo="/home" />
-    <Container>
-      <HeadButtonSection>
-        <SearchBranchButton
-          value={"지점 검색"}
-          onClick={toggleBranchPopUpShow}
-        />
-        <TotalBranchButton value={"전체 지점"} />
-      </HeadButtonSection>
-      <BranchTitleSection>
-        <BranchTitle>전체 지점</BranchTitle>
-      </BranchTitleSection>
-      <DateMemberSection>
-        <DatetimeSelRow>
-          <DatetimePicker>
-            <DatetimeExtended
-              value={selDate}
-              dateFormat="YYYY년 MMMM Do"
-              timeFormat={false}
-              viewMode="days"
-              closeOnSelect={true}
-              onChange={onDatetimeChange}
-            />
-          </DatetimePicker>
-        </DatetimeSelRow>
-        <DateMembersRow>
-          <RegistMembersContainer>
-            {membershipLogsByDate.length ? (
-              membershipLogsByDate.map(membershipLog => {
-                return (
-                  <RegistMemberList key={membershipLog.id}>
-                    <RegistMemberDataRow>
-                      <RegistMemberDataCol>
-                        <StatusTitle>
-                          {membershipLog.status === "REGIST" ? (
-                            <RegistStatus>등록</RegistStatus>
-                          ) : membershipLog.status === "EXTENDED" ? (
-                            <ExtendStatus>연장</ExtendStatus>
-                          ) : (
-                            ""
+    {membershipLogsLoading || usingUsersLoading ? (
+      <Loading />
+    ) : (
+      <Container>
+        <HeadButtonSection>
+          <SearchBranchButton
+            value={"지점 검색"}
+            onClick={toggleBranchPopUpShow}
+          />
+          <TotalBranchButton value={"전체 지점"} onClick={onAllBranchClick} />
+        </HeadButtonSection>
+        <BranchTitleSection>
+          <BranchTitle>전체 지점</BranchTitle>
+        </BranchTitleSection>
+        <DateMemberSection>
+          <DatetimeSelRow>
+            <DatetimePicker>
+              <DatetimeExtended
+                value={selDate}
+                dateFormat="YYYY년 MMMM Do"
+                timeFormat={false}
+                viewMode="days"
+                closeOnSelect={true}
+                onChange={onDatetimeChange}
+              />
+            </DatetimePicker>
+          </DatetimeSelRow>
+          <DateMembersRow>
+            <RegistMembersContainer>
+              {membershipLogsByDate.length
+                ? membershipLogsByDate.map(membershipLog => {
+                    return (
+                      <RegistMemberList
+                        key={membershipLog.id}
+                        onClick={async () =>
+                          await onUserClick(membershipLog.userId)
+                        }
+                      >
+                        <RegistMemberDataRow>
+                          <RegistMemberDataCol>
+                            <StatusTitle>
+                              {membershipLog.status === "REGIST" ? (
+                                <RegistStatus>등록</RegistStatus>
+                              ) : membershipLog.status === "EXTENDED" ? (
+                                <ExtendStatus>연장</ExtendStatus>
+                              ) : (
+                                ""
+                              )}
+                            </StatusTitle>
+                          </RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>지점 :</DataItemTitle>
+                            <DataItemValue>
+                              {membershipLog.branch.name}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>등록대상 :</DataItemTitle>
+                            <DataItemValue>
+                              {membershipLog.cabinetId ? "사물함" : "멤버쉽"}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                          {membershipLog.cabinetId && (
+                            <RegistMemberDataCol>
+                              <DataItemTitle>사물함 :</DataItemTitle>
+                              <DataItemValue>
+                                {membershipLog.cabinet.cabinetNumber}번
+                              </DataItemValue>
+                            </RegistMemberDataCol>
                           )}
-                        </StatusTitle>
-                      </RegistMemberDataCol>
-                      <RegistMemberDataCol>
-                        <DataItemTitle>지점 :</DataItemTitle>
-                        <DataItemValue>
-                          {membershipLog.branch.name}
-                        </DataItemValue>
-                      </RegistMemberDataCol>
-                      <RegistMemberDataCol>
-                        <DataItemTitle>등록대상 :</DataItemTitle>
-                        <DataItemValue>
-                          {membershipLog.cabinetId ? "사물함" : "멤버쉽"}
-                        </DataItemValue>
-                      </RegistMemberDataCol>
-                      {membershipLog.cabinetId && (
-                        <RegistMemberDataCol>
-                          <DataItemTitle>사물함 :</DataItemTitle>
-                          <DataItemValue>
-                            {membershipLog.cabinet.cabinetNumber}번
-                          </DataItemValue>
-                        </RegistMemberDataCol>
-                      )}
 
-                      <RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>이름 :</DataItemTitle>
+                            <DataItemValue>
+                              {membershipLog.user.name}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>아이디 :</DataItemTitle>
+                            <DataItemValue>
+                              {membershipLog.user.userId}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>전화번호 :</DataItemTitle>
+                            <DataItemValue>
+                              {membershipLog.user.phoneNumber}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>생년월일 :</DataItemTitle>
+                            <DataItemValue>
+                              {moment()
+                                .set("year", membershipLog.user.birthYear)
+                                .set("month", membershipLog.user.birthMonth - 1)
+                                .set("date", membershipLog.user.birthDay)
+                                .format("YYYY-MM-DD")}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>등록일시 :</DataItemTitle>
+                            <DataItemValue>
+                              {moment(
+                                new Date(membershipLog.createdAt).toUTCString()
+                              ).format("YYYY-MM-DD HH:mm:ss")}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>시작 :</DataItemTitle>
+                            <DataItemValue>
+                              {membershipLog.startDatetime}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                          <RegistMemberDataCol>
+                            <DataItemTitle>종료 :</DataItemTitle>
+                            <DataItemValue>
+                              {membershipLog.endDatetime}
+                            </DataItemValue>
+                          </RegistMemberDataCol>
+                        </RegistMemberDataRow>
+                      </RegistMemberList>
+                    );
+                  })
+                : "해당 날짜의 등록자가 없습니다"}
+            </RegistMembersContainer>
+          </DateMembersRow>
+        </DateMemberSection>
+        <TotalMembersSection>
+          <TotalMembersHead>전체 회원</TotalMembersHead>
+          <TotalMembersBody>
+            <TotalMembersContainer>
+              {nowUsingUsers.length
+                ? nowUsingUsers.map(user => (
+                    <TotalMemberList
+                      key={user.id}
+                      onClick={() => onUserClick(user.id)}
+                    >
+                      <TotalMemberCol>
                         <DataItemTitle>이름 :</DataItemTitle>
-                        <DataItemValue>{membershipLog.user.name}</DataItemValue>
-                      </RegistMemberDataCol>
-                      <RegistMemberDataCol>
-                        <DataItemTitle>아이디 :</DataItemTitle>
-                        <DataItemValue>
-                          {membershipLog.user.userId}
-                        </DataItemValue>
-                      </RegistMemberDataCol>
-                      <RegistMemberDataCol>
-                        <DataItemTitle>전화번호 :</DataItemTitle>
-                        <DataItemValue>
-                          {membershipLog.user.phoneNumber}
-                        </DataItemValue>
-                      </RegistMemberDataCol>
-                      <RegistMemberDataCol>
+                        <DataItemValue>{user.name}</DataItemValue>
+                      </TotalMemberCol>
+                      <TotalMemberCol>
                         <DataItemTitle>생년월일 :</DataItemTitle>
                         <DataItemValue>
                           {moment()
-                            .set("year", membershipLog.user.birthYear)
-                            .set("month", membershipLog.user.birthMonth)
-                            .set("date", membershipLog.user.birthDay)
+                            .set("year", user.birthYear)
+                            .set("month", user.birthMonth - 1)
+                            .set("date", user.birthDay)
                             .format("YYYY-MM-DD")}
                         </DataItemValue>
-                      </RegistMemberDataCol>
-                      <RegistMemberDataCol>
-                        <DataItemTitle>등록일시 :</DataItemTitle>
-                        <DataItemValue>
-                          {moment(
-                            new Date(membershipLog.createdAt).toUTCString()
-                          ).format("YYYY-MM-DD HH:mm:ss")}
-                        </DataItemValue>
-                      </RegistMemberDataCol>
-                      <RegistMemberDataCol>
-                        <DataItemTitle>시작 :</DataItemTitle>
-                        <DataItemValue>
-                          {membershipLog.startDatetime}
-                        </DataItemValue>
-                      </RegistMemberDataCol>
-                      <RegistMemberDataCol>
-                        <DataItemTitle>종료 :</DataItemTitle>
-                        <DataItemValue>
-                          {membershipLog.endDatetime}
-                        </DataItemValue>
-                      </RegistMemberDataCol>
-                    </RegistMemberDataRow>
-                  </RegistMemberList>
-                );
-              })
-            ) : membershipLogsLoading ? (
-              <ExtendedLoading loadingType={"spin"} />
-            ) : (
-              "해당 날짜의 등록자가 없습니다"
-            )}
-          </RegistMembersContainer>
-        </DateMembersRow>
-      </DateMemberSection>
-    </Container>
+                      </TotalMemberCol>
+                      <TotalMemberCol>
+                        <DataItemTitle>아이디 :</DataItemTitle>
+                        <DataItemValue>{user.userId}</DataItemValue>
+                      </TotalMemberCol>
+                      <TotalMemberCol>
+                        <DataItemTitle>전화번호 :</DataItemTitle>
+                        <DataItemValue>{user.phoneNumber}</DataItemValue>
+                      </TotalMemberCol>
+                    </TotalMemberList>
+                  ))
+                : "현재 회원이 없습니다"}
+            </TotalMembersContainer>
+          </TotalMembersBody>
+        </TotalMembersSection>
+        <UserSearchSection>
+          <UserSearchButton
+            value={"사용자 검색"}
+            onClick={toggleShowUserSearchPopUp}
+          />
+        </UserSearchSection>
+      </Container>
+    )}
+
     {branchSearchPopupShow && (
       <BranchSearchPopUp
         closeFunc={toggleBranchPopUpShow}
         onBranchClick={onBranchClick}
+      />
+    )}
+    {showUserSearchPopUp && (
+      <SearchUserPopUp
+        closeFunc={toggleShowUserSearchPopUp}
+        onUserClick={onUserClick}
       />
     )}
   </BackContainer>

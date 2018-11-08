@@ -9,6 +9,7 @@ import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
+import ManagerEnrollMembership from "../../Routes/ManagerEnrollMembership";
 import ManageUsers from "../../Routes/ManageUsers";
 import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
@@ -32,6 +33,7 @@ import SignUpDetail from "../../Routes/SignUpDetail";
 import SocialLogin from "../../Routes/SocialLogin";
 import UpdateCabinetSet from "../../Routes/UpdateCabinetSet";
 import UpdateLounge from "../../Routes/UpdateLounge";
+import UserDetail from "../../Routes/UserDetail";
 
 interface IProps {
   isLoggedIn: boolean;
@@ -211,6 +213,18 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/manage-users"}
           exact={true}
           component={ManageUsers}
+        />,
+        <Route
+          key={15}
+          path={"/user-detail"}
+          exact={true}
+          component={UserDetail}
+        />,
+        <Route
+          key={15}
+          path={"/manager-enroll-membership"}
+          exact={true}
+          component={ManagerEnrollMembership}
         />
       ]}
 

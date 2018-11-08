@@ -7,6 +7,7 @@ export const HEAD_GET_MEMBERSHIP_LOGS = gql`
       error
       membershipLogs {
         id
+        userId
         status
         target
         createdAt
@@ -33,6 +34,24 @@ export const HEAD_GET_MEMBERSHIP_LOGS = gql`
       branch {
         id
         name
+      }
+    }
+  }
+`;
+
+export const HEAD_GET_NOW_USING_USERS = gql`
+  query headGetNowUsingUsers($branchId: Int) {
+    HeadGetNowUsingUsers(branchId: $branchId) {
+      ok
+      error
+      users {
+        id
+        name
+        userId
+        birthYear
+        birthMonth
+        birthDay
+        phoneNumber
       }
     }
   }
