@@ -153,20 +153,6 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
   userName,
   userIdName
 }) => {
-  const productOptions = new Array();
-  if (
-    productDatas &&
-    productDatas.UserGetBranch &&
-    productDatas.UserGetBranch.branch &&
-    productDatas.UserGetBranch.branch.products
-  ) {
-    productDatas.UserGetBranch.branch.products.forEach(product => {
-      if (product && product.target === "MEMBERSHIP" && !product.discard) {
-        const productItem = { value: product.id, label: product.title };
-        productOptions.push(productItem);
-      }
-    });
-  }
   return (
     <BackContainer>
       <Helmet>

@@ -7,8 +7,7 @@ import {
   GET_BRANCH_FOR_ERNOLL_CABINET,
   GET_CABINET,
   GET_CABINETS,
-  USER_GET_PRODUCTS,
-  USER_REQUEST_CABINET
+  USER_GET_PRODUCTS
 } from "src/Components/sharedQueries";
 import {
   getBranchForEnrollCabinet,
@@ -17,12 +16,13 @@ import {
   getCabinets,
   getCabinetsVariables,
   getCabinetVariables,
+  managerEnrollCabinet,
+  managerEnrollCabinetVariables,
   userGetProducts,
-  userGetProductsVariables,
-  userRequestCabinet,
-  userRequestCabinetVariables
+  userGetProductsVariables
 } from "src/types/api";
-import ReqEnrollCabinetPresenter from "./ReqEnrollCabinetPresenter";
+import ManagerEnrollCabinetPresenter from "./ManagerEnrollCabinetPresenter";
+import { MANAGER_ENROLL_CABINET } from "./ManagerEnrollCabinetQueries";
 
 interface IState {
   branchId: number;
@@ -37,15 +37,20 @@ interface IState {
   cabinets: any;
   horizontalNumber: number;
   isFirstLoaidng: boolean;
+  userId: number;
+  userIdName: string;
+  userName: string;
+  selEndDatetime: string;
 }
 
 interface IProps extends RouteComponentProps<any> {}
 
 class GetBranchQuery extends Query<userGetProducts, userGetProductsVariables> {}
-class UserReqCabinetMutation extends Mutation<
-  userRequestCabinet,
-  userRequestCabinetVariables
+class ManangerCreateCabinet extends Mutation<
+  managerEnrollCabinet,
+  managerEnrollCabinetVariables
 > {}
+
 class GetCabinetSetsQuery extends Query<
   getBranchForEnrollCabinet,
   getBranchForEnrollCabinetVariables
@@ -54,11 +59,22 @@ class GetCabinetSetsQuery extends Query<
 class GetCabinetSetQuery extends Query<getCabinets, getCabinetsVariables> {}
 class GetCabinetQuery extends Query<getCabinet, getCabinetVariables> {}
 
-class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
-  public reqCabinetFn;
+class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
+  public enrollCabinetFn;
 
   constructor(props) {
     super(props);
+    if (!props.location.state) {
+      props.history.push("/");
+      if (
+        !props.location.state.userId ||
+        !props.location.state.userName ||
+        !props.location.state.userIdName
+      ) {
+        props.history.push("/");
+      }
+    }
+
     this.state = {
       branchId: props.location.state
         ? props.location.state.branchId
@@ -73,9 +89,13 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       isFirstLoaidng: true,
       productId: 0,
       productTitle: "",
+      selEndDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
       setId: 0,
       startDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
-      tempSetId: 0
+      tempSetId: 0,
+      userId: props.location.state.userId,
+      userIdName: props.location.state.userIdName,
+      userName: props.location.state.userName
     };
   }
 
@@ -84,7 +104,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       branchId,
       branchPopUpShow,
       cabinetId,
-      productId,
+      userId,
       productTitle,
       startDatetime,
       tempSetId,
@@ -92,7 +112,10 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       cabinets,
       horizontalNumber,
       cabinetNumber,
-      isFirstLoaidng
+      isFirstLoaidng,
+      selEndDatetime,
+      userIdName,
+      userName
     } = this.state;
     return (
       <GetCabinetQuery
@@ -186,17 +209,18 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                 >
                   {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => {
                     return (
-                      <UserReqCabinetMutation
-                        mutation={USER_REQUEST_CABINET}
+                      <ManangerCreateCabinet
+                        mutation={MANAGER_ENROLL_CABINET}
                         variables={{
                           branchId,
                           cabinetId,
-                          productId,
-                          startDatetime
+                          endDatetime: selEndDatetime,
+                          startDatetime,
+                          userId
                         }}
                       >
                         {userRequestCabinetFn => {
-                          this.reqCabinetFn = userRequestCabinetFn;
+                          this.enrollCabinetFn = userRequestCabinetFn;
                           return (
                             <GetBranchQuery
                               query={USER_GET_PRODUCTS}
@@ -211,7 +235,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                               skip={branchId === 0}
                             >
                               {({ data: productDatas }) => (
-                                <ReqEnrollCabinetPresenter
+                                <ManagerEnrollCabinetPresenter
                                   branchId={branchId}
                                   branchPopUpShow={branchPopUpShow}
                                   cabinetId={cabinetId}
@@ -228,10 +252,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                                   }
                                   onBranchClick={this.onBranchClick}
                                   onDatetimeChange={this.onDatetimeChange}
-                                  onThrowBasketButtonClick={
-                                    this.onThrowBasketButtonClick
-                                  }
-                                  onCancelClick={this.onCancelClick}
+                                  onEnrollClick={this.onEnrollClick}
                                   cabinetSetDatas={cabinetSetDatas}
                                   tempSetId={tempSetId}
                                   onSetHover={this.onSetHover}
@@ -244,12 +265,22 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                                   cabinetNumber={cabinetNumber}
                                   cabinetSetLoading={cabinetSetLoading}
                                   isFirstLoaidng={isFirstLoaidng}
+                                  selEndDatetime={selEndDatetime}
+                                  onEndDatetimeChange={this.onEndDatetimeChange}
+                                  onDateTimeAddClick={this.onDateTimeAddClick}
+                                  userIdName={userIdName}
+                                  userName={userName}
+                                  setDatetimeValueNow={this.setDatetimeValueNow}
+                                  setEndDatetimeToStart={
+                                    this.setEndDatetimeToStart
+                                  }
+                                  onBackClick={this.onBackClick}
                                 />
                               )}
                             </GetBranchQuery>
                           );
                         }}
-                      </UserReqCabinetMutation>
+                      </ManangerCreateCabinet>
                     );
                   }}
                 </GetCabinetSetsQuery>
@@ -263,7 +294,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
 
   public onSubmit: React.FormEventHandler<HTMLFormElement> = async event => {
     event.preventDefault();
-    await this.onThrowBasketButtonClick();
+    await this.onEnrollClick();
   };
 
   public onOptionChange = (arg: any) => {
@@ -299,38 +330,34 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onThrowBasketButtonClick = async () => {
-    const { branchId, startDatetime, productId, cabinetId } = this.state;
-    const { history } = this.props;
+  public onEndDatetimeChange = (endDatetime: Moment) => {
+    this.setState({
+      selEndDatetime: endDatetime.format("YYYY-MM-DD HH:mm:ss")
+    });
+  };
+
+  public onEnrollClick = async () => {
+    const { branchId, startDatetime, selEndDatetime, cabinetId } = this.state;
     if (!branchId) {
       toast.error("지점 선택이 이루어지지 않았습니다");
     } else if (!cabinetId) {
       toast.error("사물함 선택이 이루어지지 않았습니다");
     } else if (!startDatetime) {
-      toast.error("날짜 선택이 이루어지지 않았습니다");
-    } else if (!productId) {
-      toast.error("이옹권 선택이 이루어지지 않았습니다");
+      toast.error("시작 일시 선택이 이루어지지 않았습니다");
+    } else if (!selEndDatetime) {
+      toast.error("종료 일시 선택이 이루어지지 않았습니다");
     } else {
-      const result = await this.reqCabinetFn();
+      const result = await this.enrollCabinetFn();
       const {
-        data: { RequestRegistCabinet }
+        data: { ManagerCreateCabMembership }
       } = result;
-      if (RequestRegistCabinet.ok) {
-        toast.success("장바구니에 무사히 담겼습니다!");
-        history.push({
-          pathname: "/basket"
-        });
+      if (ManagerCreateCabMembership.ok) {
+        toast.success("사물함이 무사히 등록되었습니다");
+        this.onBackClick();
       } else {
-        toast.error(RequestRegistCabinet.error);
+        toast.error(ManagerCreateCabMembership.error);
       }
     }
-  };
-
-  public onCancelClick = () => {
-    const { history } = this.props;
-    history.push({
-      pathname: "/basket"
-    });
   };
 
   public onSetHover = (setId: number) => {
@@ -360,6 +387,36 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       cabinetId
     });
   };
+
+  public onBackClick = () => {
+    const { history } = this.props;
+    const { userId } = this.state;
+
+    history.push({
+      pathname: "/user-detail",
+      state: { userId }
+    });
+  };
+
+  public onDateTimeAddClick = (hours: number) => {
+    this.setState({
+      selEndDatetime: moment(this.state.selEndDatetime)
+        .add(hours, "h")
+        .format("YYYY-MM-DD HH:mm:ss")
+    });
+  };
+
+  public setDatetimeValueNow = () => {
+    this.setState({
+      startDatetime: moment().format("YYYY-MM-DD HH:mm:ss")
+    });
+  };
+
+  public setEndDatetimeToStart = () => {
+    this.setState({
+      selEndDatetime: this.state.startDatetime
+    });
+  };
 }
 
-export default ReqEnrollCabinetContainer;
+export default ManagerEnrollCabinetContainer;

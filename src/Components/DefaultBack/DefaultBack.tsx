@@ -22,10 +22,12 @@ const BackArrowExtended = styled(BackArrow)`
 interface IProps {
   className?: string;
   title: string;
-  backUrl: string;
+  backUrl?: string;
   children: React.ReactNode;
+  backFn?: any;
 }
 const DefaultBack: React.SFC<IProps> = ({
+  backFn,
   className,
   title,
   backUrl,
@@ -36,7 +38,12 @@ const DefaultBack: React.SFC<IProps> = ({
       <Helmet>
         <title>{title} | BlueDot</title>
       </Helmet>
-      <BackArrowExtended backTo={backUrl} />
+      {backUrl ? (
+        <BackArrowExtended backTo={backUrl} />
+      ) : (
+        <BackArrowExtended backFn={backFn} />
+      )}
+
       <Container>{children}</Container>
     </BackContainer>
   );

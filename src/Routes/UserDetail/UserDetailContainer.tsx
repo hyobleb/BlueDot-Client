@@ -49,6 +49,7 @@ class UserDetailContainer extends React.Component<IProps, IState> {
               getUserDetailLoading={getUserDetailLoading}
               user={user}
               enrollMembershipClick={this.enrollMembershipClick}
+              enrollCabinetClick={this.enrollCabinetClick}
             />
           );
         }}
@@ -75,6 +76,20 @@ class UserDetailContainer extends React.Component<IProps, IState> {
 
     history.push({
       pathname: "/manager-enroll-membership",
+      state: {
+        backUrl: "/user-detail",
+        userId,
+        userIdName: user && user.userId,
+        userName: user && user.name
+      }
+    });
+  };
+  public enrollCabinetClick = (userId: number) => {
+    const { history } = this.props;
+    const { user } = this.state;
+
+    history.push({
+      pathname: "/manager-enroll-cabinet",
       state: {
         backUrl: "/user-detail",
         userId,

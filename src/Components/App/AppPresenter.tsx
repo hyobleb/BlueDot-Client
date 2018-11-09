@@ -9,6 +9,7 @@ import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
+import ManagerEnrollCabinet from "../../Routes/ManagerEnrollCabinet";
 import ManagerEnrollMembership from "../../Routes/ManagerEnrollMembership";
 import ManageUsers from "../../Routes/ManageUsers";
 import Membership from "../../Routes/Membership";
@@ -221,10 +222,16 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           component={UserDetail}
         />,
         <Route
-          key={15}
+          key={16}
           path={"/manager-enroll-membership"}
           exact={true}
           component={ManagerEnrollMembership}
+        />,
+        <Route
+          key={17}
+          path={"/manager-enroll-cabinet"}
+          exact={true}
+          component={ManagerEnrollCabinet}
         />
       ]}
 

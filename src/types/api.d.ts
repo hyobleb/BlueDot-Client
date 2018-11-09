@@ -841,6 +841,54 @@ export interface guetGetBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getBranchForEnrollCabinet
+// ====================================================
+
+export interface getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets_cabinets {
+  __typename: "Cabinet";
+  id: number;
+}
+
+export interface getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets {
+  __typename: "CabinetSet";
+  id: number;
+  cabinets: (getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets_cabinets | null)[] | null;
+  title: string;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  setNumber: number;
+  horizontalNumber: number;
+  verticalNumber: number;
+}
+
+export interface getBranchForEnrollCabinet_UserGetBranch_branch {
+  __typename: "Branch";
+  id: number;
+  cabinetLoungeImage: string;
+  cabinetSets: (getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets | null)[] | null;
+}
+
+export interface getBranchForEnrollCabinet_UserGetBranch {
+  __typename: "UserGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: getBranchForEnrollCabinet_UserGetBranch_branch | null;
+}
+
+export interface getBranchForEnrollCabinet {
+  UserGetBranch: getBranchForEnrollCabinet_UserGetBranch;
+}
+
+export interface getBranchForEnrollCabinetVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -1261,6 +1309,31 @@ export interface userIdSignInVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: managerEnrollCabinet
+// ====================================================
+
+export interface managerEnrollCabinet_ManagerCreateCabMembership {
+  __typename: "ManagerCreateCabMembershipResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerEnrollCabinet {
+  ManagerCreateCabMembership: managerEnrollCabinet_ManagerCreateCabMembership;
+}
+
+export interface managerEnrollCabinetVariables {
+  userId: number;
+  branchId: number;
+  startDatetime: string;
+  endDatetime: string;
+  cabinetId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: managerCreateMembership
 // ====================================================
 
@@ -1480,54 +1553,6 @@ export interface headGetProduct {
 
 export interface headGetProductVariables {
   productId: number;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: getBranchForEnrollCabinet
-// ====================================================
-
-export interface getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets_cabinets {
-  __typename: "Cabinet";
-  id: number;
-}
-
-export interface getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets {
-  __typename: "CabinetSet";
-  id: number;
-  cabinets: (getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets_cabinets | null)[] | null;
-  title: string;
-  width: number;
-  height: number;
-  xpos: number;
-  ypos: number;
-  setNumber: number;
-  horizontalNumber: number;
-  verticalNumber: number;
-}
-
-export interface getBranchForEnrollCabinet_UserGetBranch_branch {
-  __typename: "Branch";
-  id: number;
-  cabinetLoungeImage: string;
-  cabinetSets: (getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets | null)[] | null;
-}
-
-export interface getBranchForEnrollCabinet_UserGetBranch {
-  __typename: "UserGetBranchResponse";
-  ok: boolean;
-  error: string | null;
-  branch: getBranchForEnrollCabinet_UserGetBranch_branch | null;
-}
-
-export interface getBranchForEnrollCabinet {
-  UserGetBranch: getBranchForEnrollCabinet_UserGetBranch;
-}
-
-export interface getBranchForEnrollCabinetVariables {
-  branchId: number;
 }
 
 /* tslint:disable */
