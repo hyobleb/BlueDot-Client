@@ -168,7 +168,6 @@ class UserDetailContainer extends React.Component<IProps, IState> {
 
   public onExpireConfirmClick = async () => {
     const { tempSelMembershipId } = this.state;
-    console.log({ tempSelMembershipId });
     await this.expireMembershipFn({
       variables: { membershipId: tempSelMembershipId }
     });

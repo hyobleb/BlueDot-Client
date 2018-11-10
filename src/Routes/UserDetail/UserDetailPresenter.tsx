@@ -292,7 +292,12 @@ const UserDetailPresenter: React.SFC<IProps> = ({
                                   onExtendCabinetClick(membership.id)
                                 }
                               />
-                              <ExpireBtn value={"만료하기"} />
+                              <ExpireBtn
+                                value={"만료하기"}
+                                onClick={() =>
+                                  onMembershipExpireClick(membership.id)
+                                }
+                              />
                             </ButtonContainer>
                           </MembershipContRow>
                         </MembershipContList>
