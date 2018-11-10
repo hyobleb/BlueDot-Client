@@ -90,6 +90,7 @@ interface IProps {
   tempSelMembershipId?: number;
   onMembershipExpireClick: (membershipId: number) => void;
   onExpireConfirmClick: () => Promise<void>;
+  onExtendCabinetClick: (membershipId: number) => void;
 }
 
 const UserDetailPresenter: React.SFC<IProps> = ({
@@ -101,7 +102,8 @@ const UserDetailPresenter: React.SFC<IProps> = ({
   showExpirePopUp,
   showExpirePopUpToggle,
   onMembershipExpireClick,
-  onExpireConfirmClick
+  onExpireConfirmClick,
+  onExtendCabinetClick
 }) => {
   let memberships;
   let cabinetMemberships;
@@ -284,7 +286,12 @@ const UserDetailPresenter: React.SFC<IProps> = ({
 
                           <MembershipContRow>
                             <ButtonContainer>
-                              <ExtendBtn value={"연장하기"} />
+                              <ExtendBtn
+                                value={"연장하기"}
+                                onClick={() =>
+                                  onExtendCabinetClick(membership.id)
+                                }
+                              />
                               <ExpireBtn value={"만료하기"} />
                             </ButtonContainer>
                           </MembershipContRow>

@@ -88,6 +88,7 @@ class UserDetailContainer extends React.Component<IProps, IState> {
                     tempSelMembershipId={tempSelMembershipId}
                     onMembershipExpireClick={this.onMembershipExpireClick}
                     onExpireConfirmClick={this.onExpireConfirmClick}
+                    onExtendCabinetClick={this.onExtendCabinetClick}
                   />
                 );
               }}
@@ -170,6 +171,16 @@ class UserDetailContainer extends React.Component<IProps, IState> {
     console.log({ tempSelMembershipId });
     await this.expireMembershipFn({
       variables: { membershipId: tempSelMembershipId }
+    });
+  };
+
+  public onExtendCabinetClick = (membershipId: number) => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/manager-extend-cabinet",
+      state: {
+        selMembershipId: membershipId
+      }
     });
   };
 }

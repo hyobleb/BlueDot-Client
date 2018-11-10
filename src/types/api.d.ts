@@ -815,6 +815,7 @@ export interface getMembershipForExtend {
 
 export interface getMembershipForExtendVariables {
   membershipId: number;
+  target?: targetOptions | null;
 }
 
 /* tslint:disable */
@@ -2399,6 +2400,11 @@ export enum roomTypeOptions {
   FOCUS = "FOCUS",
   OPEN = "OPEN",
   SINGLE = "SINGLE",
+}
+
+export enum targetOptions {
+  CABINET = "CABINET",
+  MEMBERSHIP = "MEMBERSHIP",
 }
 
 //==============================================================

@@ -371,6 +371,16 @@
                   }
                 },
                 "defaultValue": null
+              },
+              {
+                "name": "target",
+                "description": "",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "targetOptions",
+                  "ofType": null
+                },
+                "defaultValue": null
               }
             ],
             "type": {
@@ -5865,6 +5875,29 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "targetOptions",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "MEMBERSHIP",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "CABINET",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {

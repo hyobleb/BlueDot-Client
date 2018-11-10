@@ -1,23 +1,24 @@
+import moment = require("moment");
 import React from "react";
 import { ApolloConsumer, Mutation, MutationFn, Query } from "react-apollo";
-import { Option } from "react-dropdown";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   GET_MEMBERSHIP_FOR_EXTEND,
   GET_MY_MEMBERSHIPS,
-  USER_GET_PRODUCTS,
-  USER_REQUEST_EXTEND_CABINET
+  MANAGER_EXTEND_MEMBERSHIP,
+  USER_GET_PRODUCTS
 } from "src/Components/sharedQueries";
+import { modifyOptions } from "src/Components/shareOptions";
 import {
   getMembershipForExtend,
   getMyMemberships,
+  managerExtendMembership,
+  managerExtendMembershipVariables,
   userGetProducts,
-  userGetProductsVariables,
-  userRequestCabinetVariables,
-  userRequestExtendCabinet
+  userGetProductsVariables
 } from "src/types/api";
-import ReqExtendCabinetPresenter from "./ReqExtendCabinetPresenter";
+import ManagerExtendCabinetPresenter from "./ManagerExtendCabinetPresenter";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -27,6 +28,8 @@ interface IState {
   products: any;
   selProductId: number | null;
   selProductTitle: string;
+  selEndDatetime: string;
+  totalExtHours: number;
 }
 
 class GetMembershipsQuery extends Query<getMyMemberships> {}
@@ -35,24 +38,26 @@ class GetProductsQuery extends Query<
   userGetProductsVariables
 > {}
 
-class RequestExtendCabinet extends Mutation<
-  userRequestExtendCabinet,
-  userRequestCabinetVariables
+class ExtendCabinetMutation extends Mutation<
+  managerExtendMembership,
+  managerExtendMembershipVariables
 > {}
 
-class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
+class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
   public getMembershipFn;
-  public reqExtCabinetFn: MutationFn;
+  public extendCabinetFn: MutationFn;
 
   constructor(props) {
     super(props);
     this.state = {
       exstingMemberships: null,
       products: null,
+      selEndDatetime: "",
       selMembership: null,
       selProductId: null,
       selProductTitle: "",
-      showMembershipPopUp: false
+      showMembershipPopUp: false,
+      totalExtHours: 0
     };
   }
 
@@ -64,13 +69,13 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
       const result: {} | getMembershipForExtend = await this.getMembershipFn(
         this.props.location.state.selMembershipId
       );
-      console.log({ result });
       if ("GetMembership" in result) {
         const {
           GetMembership: { membership }
         } = result;
         if (membership !== null) {
           this.setState({
+            selEndDatetime: membership.endDatetime,
             selMembership: membership
           });
         }
@@ -85,7 +90,8 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
       exstingMemberships,
       selMembership,
       products,
-      selProductTitle
+      totalExtHours,
+      selEndDatetime
     } = this.state;
     return (
       <ApolloConsumer>
@@ -98,19 +104,22 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
             return data;
           };
           return (
-            <RequestExtendCabinet
-              mutation={USER_REQUEST_EXTEND_CABINET}
+            <ExtendCabinetMutation
+              mutation={MANAGER_EXTEND_MEMBERSHIP}
               onCompleted={data => {
-                if (data.RequestExtendCabinet.ok) {
-                  toast.success("장바구니에 담았습니다");
-                  history.push("/basket");
+                if (data.ManagerUpdateMembershipDatetime.ok) {
+                  toast.success("해당 사물함을 연장했습니다");
+                  history.push({
+                    pathname: "/user-detail",
+                    state: { userId: selMembership.userId }
+                  });
                 } else {
-                  toast.error(data.RequestExtendCabinet.error);
+                  toast.error(data.ManagerUpdateMembershipDatetime.error);
                 }
               }}
             >
-              {reqExtendCabinetMutaiton => {
-                this.reqExtCabinetFn = reqExtendCabinetMutaiton;
+              {extendCabinetMutation => {
+                this.extendCabinetFn = extendCabinetMutation;
                 return (
                   <GetProductsQuery
                     query={USER_GET_PRODUCTS}
@@ -130,18 +139,17 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
                         >
                           {() => {
                             return (
-                              <ReqExtendCabinetPresenter
+                              <ManagerExtendCabinetPresenter
                                 showMembershipPopUp={showMembershipPopUp}
-                                toggleShowMembershipPopUp={
-                                  this.toggleShowMembershipPopUp
-                                }
                                 exstingMemberships={exstingMemberships}
                                 selMembership={selMembership}
                                 onMembershipClick={this.onMembershipClick}
                                 products={products}
-                                onOptionChange={this.onOptionChange}
-                                selProductTitle={selProductTitle}
-                                onThrowBasketClick={this.onThrowBasketClick}
+                                onExtendConfirmClick={this.onExtendConfirmClick}
+                                totalExtHours={totalExtHours}
+                                onResetClick={this.onResetClick}
+                                onDateTimeAddClick={this.onDateTimeAddClick}
+                                selEndDatetime={selEndDatetime}
                               />
                             );
                           }}
@@ -151,7 +159,7 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
                   </GetProductsQuery>
                 );
               }}
-            </RequestExtendCabinet>
+            </ExtendCabinetMutation>
           );
         }}
       </ApolloConsumer>
@@ -219,30 +227,36 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
     }
   };
 
-  public onOptionChange = (arg: Option) => {
-    this.setState({
-      selProductId: parseFloat(arg.value),
-      selProductTitle: arg.label
-    });
-  };
-
-  public onThrowBasketClick = async () => {
-    const { selMembership, selProductId } = this.state;
-    if (!selMembership) {
-      toast.error("연장할 멤버쉽을 선택하지 않았습니다");
-      return;
-    } else if (!selProductId) {
-      toast.error("연장 기간을 선택해주세요!");
+  public onExtendConfirmClick = async () => {
+    const { selEndDatetime, selMembership } = this.state;
+    if (moment(selEndDatetime) <= moment(selMembership.endDatetime)) {
+      toast.error("기간이 연장되지 않았습니다!");
       return;
     } else {
-      await this.reqExtCabinetFn({
+      await this.extendCabinetFn({
         variables: {
-          exstingMembershipId: selMembership.id,
-          productId: selProductId
+          endDatetime: selEndDatetime,
+          membershipId: this.props.location.state.selMembershipId,
+          modifyType: modifyOptions.EXTENDED
         }
       });
     }
   };
+  public onResetClick = () => {
+    this.setState({
+      selEndDatetime: this.state.selMembership.endDatetime,
+      totalExtHours: 0
+    });
+  };
+
+  public onDateTimeAddClick = (hours: number) => {
+    this.setState({
+      selEndDatetime: moment(this.state.selEndDatetime)
+        .add(hours, "h")
+        .format("YYYY-MM-DD HH:mm:ss"),
+      totalExtHours: this.state.totalExtHours + hours
+    });
+  };
 }
 
-export default ReqExtendMembershipContainer;
+export default ManagerExtendCabinetContainer;

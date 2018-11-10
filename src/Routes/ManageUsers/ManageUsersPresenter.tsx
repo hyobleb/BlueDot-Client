@@ -128,6 +128,14 @@ const ExtendStatus = styled(StatusDisplay)`
   color: white;
 `;
 
+const DatetimeModStatus = styled(StatusDisplay)`
+  background-color: ${props => props.theme.orangeColor};
+  color: white;
+`;
+const ExpireStatus = styled(StatusDisplay)`
+  background-color: ${props => props.theme.greyColor};
+  color: white;
+`;
 const TotalMembersSection = styled.div`
   margin-top: 20px;
 `;
@@ -234,8 +242,13 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                                 <RegistStatus>등록</RegistStatus>
                               ) : membershipLog.status === "EXTENDED" ? (
                                 <ExtendStatus>연장</ExtendStatus>
+                              ) : membershipLog.status ===
+                                "DATETIME_MODIFIED" ? (
+                                <DatetimeModStatus>수정</DatetimeModStatus>
+                              ) : membershipLog.status === "EXPIRED" ? (
+                                <ExpireStatus>만료</ExpireStatus>
                               ) : (
-                                ""
+                                membershipLog.status
                               )}
                             </StatusTitle>
                           </RegistMemberDataCol>

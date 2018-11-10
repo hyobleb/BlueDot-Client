@@ -395,8 +395,8 @@ export const GET_MY_MEMBERSHIPS = gql`
 `;
 
 export const GET_MEMBERSHIP_FOR_EXTEND = gql`
-  query getMembershipForExtend($membershipId: Int!) {
-    GetMembership(membershipId: $membershipId) {
+  query getMembershipForExtend($membershipId: Int!, $target: targetOptions) {
+    GetMembership(membershipId: $membershipId, target: $target) {
       ok
       error
       membership {

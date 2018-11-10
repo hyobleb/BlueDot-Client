@@ -1,6 +1,4 @@
-// import moment, { Moment } from "moment";
 import React from "react";
-// import Datetime from "react-datetime";
 import Helmet from "react-helmet";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
@@ -40,6 +38,11 @@ const ButtonSection = styled(Section)`
   text-align: center;
 `;
 
+const ResetButton = styled(Button)`
+  background-color: ${props => props.theme.yellowColor};
+  width: 200px;
+`;
+
 const AddDatetimeCon = styled.div`
   display: flex;
   justify-content: center;
@@ -49,94 +52,48 @@ const AddDatetimeBtn = styled(Button)`
   margin: 0 3px;
 `;
 
-const ResetButton = styled(Button)`
-  background-color: ${props => props.theme.yellowColor};
-  width: 200px;
-`;
-
-// const DatetimePicker = styled.div`
-//   &:hover {
-//     cursor: pointer;
-//   }
-// `;
-
-// const DatetimeExtended = styled(Datetime)`
-//   input {
-//     width: 160px;
-//     height: 35px;
-//     text-align: center;
-//     &:hover {
-//       cursor: pointer;
-//       background-color: ${props => props.theme.blueColor};
-//       color: white;
-//     }
-//   }
-// `;
-
 interface IProps {
+  showMembershipPopUp: boolean;
+  exstingMemberships: any;
   selMembership: any;
+  onMembershipClick: (membershipId: number) => void;
   products: any;
-  selProductTitle: string;
-  extendMembership: () => void;
-  selEndDatetime: string;
-  selStartDatetime: string;
-  onDateTimeAddClick: (hours: number) => void;
+  onExtendConfirmClick: () => void;
   totalExtHours: number;
   onResetClick: () => void;
-  // onStartDatetimeChange: (datetimeValue: Moment) => void;
-  // onEndDatetimeChange: (datetimeValue: Moment) => void;
+  onDateTimeAddClick: (hours: number) => void;
+  selEndDatetime: string;
 }
 
-const ManagerExtendMembershipPresenter: React.SFC<IProps> = ({
+const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
   selMembership,
   products,
-  selProductTitle,
-  extendMembership,
-  selEndDatetime,
-  selStartDatetime,
-  onDateTimeAddClick,
+  onExtendConfirmClick,
   totalExtHours,
-  onResetClick
-  // onStartDatetimeChange,
-  // onEndDatetimeChange
+  onResetClick,
+  onDateTimeAddClick,
+  selEndDatetime
 }) => {
-  const productOptions = new Array();
-  if (products) {
-    products.forEach(product => {
-      if (product && product.target === "MEMBERSHIP" && !product.discard) {
-        const productItem = { value: product.id, label: product.title };
-        productOptions.push(productItem);
-      }
-    });
-  }
   return (
     <BackContainer>
       <Helmet>
-        <title>Extend Membership | BlueDot</title>
+        <title>Extend Cabinet | BlueDot</title>
       </Helmet>
       <Container>
-        <HeadSection>멤버쉽 연장</HeadSection>
+        <HeadSection>사물함 연장</HeadSection>
         <MembershipSection>
           <MembershipContainer>
-            {selMembership && (
+            {selMembership && selMembership.cabinetId && (
               <>
                 <MembershipDataRow>
-                  {selMembership.branch.name} 멤버쉽
+                  {selMembership.branch.name}{" "}
+                  {selMembership.cabinet.cabinetNumber}번 사물함
                 </MembershipDataRow>
                 <MembershipDataRow>
-                  이용 시작 : {selStartDatetime}
+                  이용 시작 : {selMembership.startDatetime}
                 </MembershipDataRow>
                 <MembershipDataRow>
                   이용 만료 : {selEndDatetime}
-                  {/* <DatetimePicker>
-                    <DatetimeExtended
-                      value={moment(selEndDatetime)}
-                      dateFormat="YYYY MMMM Do"
-                      timeFormat="A hh:mm"
-                      locale="de"
-                      onChange={onEndDatetimeChange}
-                    />
-                  </DatetimePicker> */}
                 </MembershipDataRow>
                 <MembershipDataRow>
                   <ResetButton value={"리셋"} onClick={onResetClick} />
@@ -167,12 +124,13 @@ const ManagerExtendMembershipPresenter: React.SFC<IProps> = ({
                   )
               )}
         </AddDatetimeCon>
+
         <ButtonSection>
-          <ExtendConfirmBtn value={"연장하기"} onClick={extendMembership} />
+          <ExtendConfirmBtn value={"연장하기"} onClick={onExtendConfirmClick} />
         </ButtonSection>
       </Container>
     </BackContainer>
   );
 };
 
-export default ManagerExtendMembershipPresenter;
+export default ManagerExtendCabinetPresenter;
