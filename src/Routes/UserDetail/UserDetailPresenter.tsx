@@ -35,16 +35,22 @@ const ProfileItemValue = styled.div``;
 
 const ButtonSection = styled(Section)``;
 const ButtonContainer = styled.div`
-  margin-top: 50px;
   padding-top: 15px;
   border-top: 1px solid #dedede;
   text-align: center;
+  width: 100%;
 `;
 const Button = styled(SmallButton)`
   margin: 0 5px;
 `;
 const EnrollMembershipBtn = styled(Button)``;
 const EnrollCabinetBtn = styled(Button)``;
+const ExtendBtn = styled(Button)`
+  background-color: ${props => props.theme.greenColor};
+`;
+const ExpireBtn = styled(Button)`
+  background-color: ${props => props.theme.redColor};
+`;
 const MembershipSection = styled(Section)`
   margin-top: 20px;
   border: 1px solid #dedede;
@@ -77,13 +83,15 @@ interface IProps {
   user?: headGetUserDetail_HeadGetUserDetail_user;
   enrollMembershipClick: (userId: number) => void;
   enrollCabinetClick: (userId: number) => void;
+  onMembershipExtendClick: (membershipId: number) => void;
 }
 
 const UserDetailPresenter: React.SFC<IProps> = ({
   getUserDetailLoading,
   user,
   enrollMembershipClick,
-  enrollCabinetClick
+  enrollCabinetClick,
+  onMembershipExtendClick
 }) => {
   let memberships;
   let cabinetMemberships;
@@ -198,6 +206,17 @@ const UserDetailPresenter: React.SFC<IProps> = ({
                               : {membership.endDatetime}
                             </MembershipContVal>
                           </MembershipContRow>
+                          <MembershipContRow>
+                            <ButtonContainer>
+                              <ExtendBtn
+                                value={"연장하기"}
+                                onClick={() =>
+                                  onMembershipExtendClick(membership.id)
+                                }
+                              />
+                              <ExpireBtn value={"만료하기"} />
+                            </ButtonContainer>
+                          </MembershipContRow>
                         </MembershipContList>
                       )
                   )
@@ -209,7 +228,7 @@ const UserDetailPresenter: React.SFC<IProps> = ({
               </MembershipContent>
             </MembershipContainer>
             <CabinetContianer>
-              <MembershipTitle>이용중인 멤버쉽</MembershipTitle>
+              <MembershipTitle>이용중인 사물함</MembershipTitle>
               <MembershipContent>
                 {cabinetMemberships.length > 0 ? (
                   cabinetMemberships.map(
@@ -246,6 +265,13 @@ const UserDetailPresenter: React.SFC<IProps> = ({
                               {" "}
                               : {membership.endDatetime}
                             </MembershipContVal>
+                          </MembershipContRow>
+
+                          <MembershipContRow>
+                            <ButtonContainer>
+                              <ExtendBtn value={"연장하기"} />
+                              <ExpireBtn value={"만료하기"} />
+                            </ButtonContainer>
                           </MembershipContRow>
                         </MembershipContList>
                       )

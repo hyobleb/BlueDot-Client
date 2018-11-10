@@ -165,6 +165,7 @@ interface IProps {
   toggleShowUserSearchPopUp: () => void;
   showUserSearchPopUp: boolean;
   onUserClick: (userId: number) => Promise<void>;
+  branchName?: string;
 }
 
 const ManageUsersPresenter: React.SFC<IProps> = ({
@@ -180,7 +181,8 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
   onAllBranchClick,
   toggleShowUserSearchPopUp,
   showUserSearchPopUp,
-  onUserClick
+  onUserClick,
+  branchName
 }) => (
   <BackContainer>
     <Helmet>
@@ -199,7 +201,7 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
           <TotalBranchButton value={"전체 지점"} onClick={onAllBranchClick} />
         </HeadButtonSection>
         <BranchTitleSection>
-          <BranchTitle>전체 지점</BranchTitle>
+          <BranchTitle>{branchName ? branchName : "전체 지점"}</BranchTitle>
         </BranchTitleSection>
         <DateMemberSection>
           <DatetimeSelRow>

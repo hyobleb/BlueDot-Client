@@ -8504,6 +8504,16 @@
                   "ofType": null
                 },
                 "defaultValue": null
+              },
+              {
+                "name": "modifyType",
+                "description": "",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "modifyOptions",
+                  "ofType": null
+                },
+                "defaultValue": null
               }
             ],
             "type": {
@@ -11792,6 +11802,29 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "modifyOptions",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "DATETIME_MODIFIED",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "EXTENDED",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {

@@ -1,3 +1,8 @@
+export enum modifyOptions {
+  DATETIME_MODIFIED = "DATETIME_MODIFIED",
+  EXTENDED = "EXTENDED"
+}
+
 export enum roomTypeOptions {
   FOCUS = "FOCUS",
   OPEN = "OPEN",

@@ -4,7 +4,7 @@ import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { getMyMemberships } from "src/types/api";
+import { getUsableMyMemberships } from "src/types/api";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 
 const Container = styled.div`
@@ -110,7 +110,7 @@ interface IProps {
   cabinetPopUpShow: () => void;
   popUpCloseFunc: () => void;
   onBranchClick: (branchId: number) => void;
-  myMembershipDatas?: getMyMemberships;
+  myMembershipDatas?: getUsableMyMemberships;
   myMembershipDatasLoading: boolean;
   onMembershipExtendClick: (selMembershipId: number) => void;
   onCabinetExtendClick: (selMembershipId: number) => void;
@@ -168,12 +168,12 @@ const MembershipPresenter: React.SFC<IProps> = ({
 
           <ContentContainer>
             {(myMembershipDatas &&
-              myMembershipDatas.GetMyMemberships &&
-              myMembershipDatas.GetMyMemberships.memberships &&
-              myMembershipDatas.GetMyMemberships.memberships.filter(
+              myMembershipDatas.GetMyUsableMemberships &&
+              myMembershipDatas.GetMyUsableMemberships.memberships &&
+              myMembershipDatas.GetMyUsableMemberships.memberships.filter(
                 membership => membership && !membership.cabinetId
               ).length > 0 &&
-              myMembershipDatas.GetMyMemberships.memberships.map(
+              myMembershipDatas.GetMyUsableMemberships.memberships.map(
                 membership =>
                   membership &&
                   !membership.cabinet && (
@@ -214,13 +214,13 @@ const MembershipPresenter: React.SFC<IProps> = ({
           </SectionHead>
           <ContentContainer>
             {(myMembershipDatas &&
-              myMembershipDatas.GetMyMemberships &&
-              myMembershipDatas.GetMyMemberships.memberships &&
-              myMembershipDatas.GetMyMemberships.memberships.filter(
+              myMembershipDatas.GetMyUsableMemberships &&
+              myMembershipDatas.GetMyUsableMemberships.memberships &&
+              myMembershipDatas.GetMyUsableMemberships.memberships.filter(
                 membership => membership && membership.cabinet
               ).length > 0 &&
-              myMembershipDatas.GetMyMemberships.memberships.length > 0 &&
-              myMembershipDatas.GetMyMemberships.memberships.map(
+              myMembershipDatas.GetMyUsableMemberships.memberships.length > 0 &&
+              myMembershipDatas.GetMyUsableMemberships.memberships.map(
                 membership =>
                   membership &&
                   membership.cabinet && (

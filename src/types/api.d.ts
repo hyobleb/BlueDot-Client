@@ -603,10 +603,19 @@ export interface getUsableMyMemberships_GetMyUsableMemberships_memberships_branc
   name: string;
 }
 
+export interface getUsableMyMemberships_GetMyUsableMemberships_memberships_cabinet_lock {
+  __typename: "CabinetLock";
+  id: number;
+  lockNumber: number;
+  password: string;
+}
+
 export interface getUsableMyMemberships_GetMyUsableMemberships_memberships_cabinet {
   __typename: "Cabinet";
   id: number;
   cabinetNumber: number;
+  lockId: number | null;
+  lock: getUsableMyMemberships_GetMyUsableMemberships_memberships_cabinet_lock | null;
 }
 
 export interface getUsableMyMemberships_GetMyUsableMemberships_memberships {
@@ -783,6 +792,7 @@ export interface getMembershipForExtend_GetMembership_membership {
   __typename: "Membership";
   id: number;
   branch: getMembershipForExtend_GetMembership_membership_branch;
+  userId: number;
   startDatetime: string;
   endDatetime: string;
   status: string;
@@ -883,6 +893,30 @@ export interface getBranchForEnrollCabinet {
 
 export interface getBranchForEnrollCabinetVariables {
   branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: managerExtendMembership
+// ====================================================
+
+export interface managerExtendMembership_ManagerUpdateMembershipDatetime {
+  __typename: "ManagerUpdateMembershipDatetimeReseponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerExtendMembership {
+  ManagerUpdateMembershipDatetime: managerExtendMembership_ManagerUpdateMembershipDatetime;
+}
+
+export interface managerExtendMembershipVariables {
+  membershipId: number;
+  startDatetime?: string | null;
+  endDatetime?: string | null;
+  modifyType?: modifyOptions | null;
 }
 
 /* tslint:disable */
@@ -2377,6 +2411,11 @@ export enum UserIdSignUpGender {
 export enum membershipOptions {
   CABINET = "CABINET",
   MEMBERSHIP = "MEMBERSHIP",
+}
+
+export enum modifyOptions {
+  DATETIME_MODIFIED = "DATETIME_MODIFIED",
+  EXTENDED = "EXTENDED",
 }
 
 export enum roomTypeOptions {

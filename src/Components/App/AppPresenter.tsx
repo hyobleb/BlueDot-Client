@@ -11,6 +11,7 @@ import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
 import ManagerEnrollCabinet from "../../Routes/ManagerEnrollCabinet";
 import ManagerEnrollMembership from "../../Routes/ManagerEnrollMembership";
+import ManagerExtendMembership from "../../Routes/ManagerExtendMembership";
 import ManageUsers from "../../Routes/ManageUsers";
 import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
@@ -232,6 +233,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/manager-enroll-cabinet"}
           exact={true}
           component={ManagerEnrollCabinet}
+        />,
+        <Route
+          key={18}
+          path={"/manager-extend-membership"}
+          exact={true}
+          component={ManagerExtendMembership}
         />
       ]}
 

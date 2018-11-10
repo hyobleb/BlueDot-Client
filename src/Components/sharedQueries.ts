@@ -303,6 +303,12 @@ export const GET_USABLE_MY_MEMBERSHIPS = gql`
         cabinet {
           id
           cabinetNumber
+          lockId
+          lock {
+            id
+            lockNumber
+            password
+          }
         }
         cabinetId
       }
@@ -398,6 +404,7 @@ export const GET_MEMBERSHIP_FOR_EXTEND = gql`
         branch {
           id
         }
+        userId
         startDatetime
         endDatetime
         status
@@ -451,6 +458,25 @@ export const GET_BRANCH_FOR_ERNOLL_CABINET = gql`
           verticalNumber
         }
       }
+    }
+  }
+`;
+
+export const MANAGER_EXTEND_MEMBERSHIP = gql`
+  mutation managerExtendMembership(
+    $membershipId: Int!
+    $startDatetime: String
+    $endDatetime: String
+    $modifyType: modifyOptions
+  ) {
+    ManagerUpdateMembershipDatetime(
+      membershipId: $membershipId
+      startDatetime: $startDatetime
+      endDatetime: $endDatetime
+      modifyType: $modifyType
+    ) {
+      ok
+      error
     }
   }
 `;

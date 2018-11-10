@@ -2,8 +2,11 @@ import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GET_MY_MEMBERSHIPS, USER_PROFILE } from "src/Components/sharedQueries";
-import { getMyMemberships, userProfile } from "src/types/api";
+import {
+  GET_USABLE_MY_MEMBERSHIPS,
+  USER_PROFILE
+} from "src/Components/sharedQueries";
+import { getUsableMyMemberships, userProfile } from "src/types/api";
 import MembershipPresenter from "./MembershipPresenter";
 
 interface IProps extends RouteComponentProps<any> {}
@@ -16,7 +19,7 @@ interface IState {
 }
 
 class GetProfileQuery extends Query<userProfile> {}
-class GetMyMembershipsQuery extends Query<getMyMemberships> {}
+class GetMyMembershipsQuery extends Query<getUsableMyMemberships> {}
 
 class MembershipContainer extends React.Component<IProps, IState> {
   constructor(props) {
@@ -44,12 +47,12 @@ class MembershipContainer extends React.Component<IProps, IState> {
     } = this.state;
     return (
       <GetMyMembershipsQuery
-        query={GET_MY_MEMBERSHIPS}
+        query={GET_USABLE_MY_MEMBERSHIPS}
         fetchPolicy={"cache-and-network"}
         onError={error => toast.error(error)}
       >
         {({ data: myMembershipDatas, loading: myMembershipDatasLoading }) => {
-          // console.log({ myMembershipDatas });
+          console.log({ myMembershipDatas });
           return (
             <GetProfileQuery
               query={USER_PROFILE}

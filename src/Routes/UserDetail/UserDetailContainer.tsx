@@ -34,6 +34,7 @@ class UserDetailContainer extends React.Component<IProps, IState> {
   }
   public render() {
     const { userId, user } = this.state;
+    console.log({ userId, user });
     return (
       <GetUserDetailQuery
         query={HEAD_GET_USER_DETAIL}
@@ -50,6 +51,7 @@ class UserDetailContainer extends React.Component<IProps, IState> {
               user={user}
               enrollMembershipClick={this.enrollMembershipClick}
               enrollCabinetClick={this.enrollCabinetClick}
+              onMembershipExtendClick={this.onMembershipExtendClick}
             />
           );
         }}
@@ -95,6 +97,16 @@ class UserDetailContainer extends React.Component<IProps, IState> {
         userId,
         userIdName: user && user.userId,
         userName: user && user.name
+      }
+    });
+  };
+
+  public onMembershipExtendClick = (membershipId: number) => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/manager-extend-membership",
+      state: {
+        selMembershipId: membershipId
       }
     });
   };

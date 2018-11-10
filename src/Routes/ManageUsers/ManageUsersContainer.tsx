@@ -22,6 +22,7 @@ interface IState {
   branchSearchPopupShow: boolean;
   selBranchId?: number;
   showUserSearchPopUp: boolean;
+  branchName?: string;
 }
 
 class GetNowUsingUsersQuery extends Query<
@@ -52,7 +53,8 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
       branchSearchPopupShow,
       selBranchId,
       nowUsingUsers,
-      showUserSearchPopUp
+      showUserSearchPopUp,
+      branchName
     } = this.state;
     return (
       <GetNowUsingUsersQuery
@@ -90,6 +92,7 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
                     toggleShowUserSearchPopUp={this.toggleShowUserSearchPopUp}
                     showUserSearchPopUp={showUserSearchPopUp}
                     onUserClick={this.onUserClick}
+                    branchName={branchName}
                   />
                 );
               }}
@@ -111,10 +114,11 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
   ) => {
     if ("HeadGetMembershipLogs" in data) {
       const {
-        HeadGetMembershipLogs: { membershipLogs }
+        HeadGetMembershipLogs: { membershipLogs, branch }
       } = data;
       if (membershipLogs !== null) {
         this.setState({
+          branchName: branch ? branch.name : undefined,
           membershipLogsByDate: membershipLogs
         });
       }
