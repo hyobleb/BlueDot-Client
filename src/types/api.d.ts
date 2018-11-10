@@ -923,6 +923,27 @@ export interface managerExtendMembershipVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: managerExpireMembership
+// ====================================================
+
+export interface managerExpireMembership_ManagerExpireMembership {
+  __typename: "ManagerExpireMembershipResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerExpireMembership {
+  ManagerExpireMembership: managerExpireMembership_ManagerExpireMembership;
+}
+
+export interface managerExpireMembershipVariables {
+  membershipId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -2254,24 +2275,6 @@ export interface headGetUserDetail_HeadGetUserDetail_user_memberships {
   cabinet: headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet | null;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user_managingBranches {
-  __typename: "Branch";
-  id: number;
-  name: string;
-}
-
-export interface headGetUserDetail_HeadGetUserDetail_user_cleaningBranches {
-  __typename: "Branch";
-  id: number;
-  name: string;
-}
-
-export interface headGetUserDetail_HeadGetUserDetail_user_staffManangingBranches {
-  __typename: "Branch";
-  id: number;
-  name: string;
-}
-
 export interface headGetUserDetail_HeadGetUserDetail_user_membershipLogs_branch {
   __typename: "Branch";
   id: number;
@@ -2295,27 +2298,6 @@ export interface headGetUserDetail_HeadGetUserDetail_user_membershipLogs {
   updatedAt: string;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user_seatLogs_seat {
-  __typename: "Seat";
-  id: number;
-  seatNumber: number;
-}
-
-export interface headGetUserDetail_HeadGetUserDetail_user_seatLogs {
-  __typename: "SeatLog";
-  id: number;
-  seat: headGetUserDetail_HeadGetUserDetail_user_seatLogs_seat;
-}
-
-export interface headGetUserDetail_HeadGetUserDetail_user_payments {
-  __typename: "Payment";
-  id: number;
-  amount: number;
-  updatedAt: string | null;
-  payMethod: string | null;
-  status: string;
-}
-
 export interface headGetUserDetail_HeadGetUserDetail_user {
   __typename: "User";
   id: number;
@@ -2333,12 +2315,7 @@ export interface headGetUserDetail_HeadGetUserDetail_user {
   isFranchiser: boolean;
   baseBranch: headGetUserDetail_HeadGetUserDetail_user_baseBranch;
   memberships: (headGetUserDetail_HeadGetUserDetail_user_memberships | null)[];
-  managingBranches: (headGetUserDetail_HeadGetUserDetail_user_managingBranches | null)[] | null;
-  cleaningBranches: (headGetUserDetail_HeadGetUserDetail_user_cleaningBranches | null)[] | null;
-  staffManangingBranches: (headGetUserDetail_HeadGetUserDetail_user_staffManangingBranches | null)[] | null;
   membershipLogs: (headGetUserDetail_HeadGetUserDetail_user_membershipLogs | null)[] | null;
-  seatLogs: (headGetUserDetail_HeadGetUserDetail_user_seatLogs | null)[] | null;
-  payments: (headGetUserDetail_HeadGetUserDetail_user_payments | null)[] | null;
 }
 
 export interface headGetUserDetail_HeadGetUserDetail {

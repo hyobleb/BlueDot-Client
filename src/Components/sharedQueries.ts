@@ -480,3 +480,12 @@ export const MANAGER_EXTEND_MEMBERSHIP = gql`
     }
   }
 `;
+
+export const MANAGER_EXPIRE_MEMBERSHIP = gql`
+  mutation managerExpireMembership($membershipId: Int!) {
+    ManagerExpireMembership(membershipId: $membershipId) {
+      ok
+      error
+    }
+  }
+`;

@@ -1,5 +1,6 @@
 import moment from "moment";
 import React from "react";
+import AlertPopUp from "src/Components/AlertPopUp";
 import DefaultBack from "src/Components/DefaultBack";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
@@ -84,6 +85,11 @@ interface IProps {
   enrollMembershipClick: (userId: number) => void;
   enrollCabinetClick: (userId: number) => void;
   onMembershipExtendClick: (membershipId: number) => void;
+  showExpirePopUp: boolean;
+  showExpirePopUpToggle: () => void;
+  tempSelMembershipId?: number;
+  onMembershipExpireClick: (membershipId: number) => void;
+  onExpireConfirmClick: () => Promise<void>;
 }
 
 const UserDetailPresenter: React.SFC<IProps> = ({
@@ -91,7 +97,11 @@ const UserDetailPresenter: React.SFC<IProps> = ({
   user,
   enrollMembershipClick,
   enrollCabinetClick,
-  onMembershipExtendClick
+  onMembershipExtendClick,
+  showExpirePopUp,
+  showExpirePopUpToggle,
+  onMembershipExpireClick,
+  onExpireConfirmClick
 }) => {
   let memberships;
   let cabinetMemberships;
@@ -214,7 +224,12 @@ const UserDetailPresenter: React.SFC<IProps> = ({
                                   onMembershipExtendClick(membership.id)
                                 }
                               />
-                              <ExpireBtn value={"만료하기"} />
+                              <ExpireBtn
+                                value={"만료하기"}
+                                onClick={() =>
+                                  onMembershipExpireClick(membership.id)
+                                }
+                              />
                             </ButtonContainer>
                           </MembershipContRow>
                         </MembershipContList>
@@ -285,6 +300,18 @@ const UserDetailPresenter: React.SFC<IProps> = ({
             </CabinetContianer>
           </MembershipSection>
         </>
+      )}
+
+      {showExpirePopUp ? (
+        <AlertPopUp
+          closeFunc={showExpirePopUpToggle}
+          message={"해당 멤버쉽을 만료시키시겠습니까?"}
+          onOkClick={async () => {
+            await onExpireConfirmClick();
+          }}
+        />
+      ) : (
+        ""
       )}
     </Back>
   );

@@ -39,18 +39,7 @@ export const HEAD_GET_USER_DETAIL = gql`
             }
           }
         }
-        managingBranches {
-          id
-          name
-        }
-        cleaningBranches {
-          id
-          name
-        }
-        staffManangingBranches {
-          id
-          name
-        }
+
         membershipLogs {
           id
           branch {
@@ -65,20 +54,6 @@ export const HEAD_GET_USER_DETAIL = gql`
           startDatetime
           endDatetime
           updatedAt
-        }
-        seatLogs {
-          id
-          seat {
-            id
-            seatNumber
-          }
-        }
-        payments {
-          id
-          amount
-          updatedAt
-          payMethod
-          status
         }
       }
     }
