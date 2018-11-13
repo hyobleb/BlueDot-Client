@@ -62,4 +62,4 @@ typings/
 
 
 # keys
-src/keys.ts
+src/keys.*
