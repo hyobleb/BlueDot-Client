@@ -93,6 +93,8 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
                     showUserSearchPopUp={showUserSearchPopUp}
                     onUserClick={this.onUserClick}
                     branchName={branchName}
+                    onChartBtnClick={this.onChartBtnClick}
+                    onOfflineReqBtnClick={this.onOfflineReqBtnClick}
                   />
                 );
               }}
@@ -169,6 +171,20 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
         userId
       }
     });
+  };
+
+  public onChartBtnClick = () => {
+    const { history } = this.props;
+
+    history.push({
+      pathname: "/chart"
+    });
+  };
+
+  public onOfflineReqBtnClick = () => {
+    const { selBranchId } = this.state;
+    console.log({ selBranchId });
+    // TODO: 여기서부터
   };
 }
 

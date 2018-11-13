@@ -903,21 +903,20 @@ export interface getBranchForEnrollCabinetVariables {
 // GraphQL mutation operation: managerExtendMembership
 // ====================================================
 
-export interface managerExtendMembership_ManagerUpdateMembershipDatetime {
-  __typename: "ManagerUpdateMembershipDatetimeReseponse";
+export interface managerExtendMembership_ManagerUpdateMembershipEndDatetime {
+  __typename: "ManagerUpdateMembershipEndDatetimeReseponse";
   ok: boolean;
   error: string | null;
 }
 
 export interface managerExtendMembership {
-  ManagerUpdateMembershipDatetime: managerExtendMembership_ManagerUpdateMembershipDatetime;
+  ManagerUpdateMembershipEndDatetime: managerExtendMembership_ManagerUpdateMembershipEndDatetime;
 }
 
 export interface managerExtendMembershipVariables {
   membershipId: number;
-  startDatetime?: string | null;
-  endDatetime?: string | null;
-  modifyType?: modifyOptions | null;
+  endDatetime: string;
+  status: modifyOptions;
 }
 
 /* tslint:disable */
@@ -1196,6 +1195,49 @@ export interface completePaymentVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getMembershipLogs
+// ====================================================
+
+export interface getMembershipLogs_GetMembershipLogs_membershipLogs_user {
+  __typename: "User";
+  id: number;
+  birthYear: number;
+  birthMonth: number;
+  birthDay: number;
+  gender: string | null;
+}
+
+export interface getMembershipLogs_GetMembershipLogs_membershipLogs {
+  __typename: "MembershipLog";
+  id: number;
+  status: string;
+  target: string;
+  updatedAt: string;
+  hours: number;
+  actualStartDatetime: string;
+  user: getMembershipLogs_GetMembershipLogs_membershipLogs_user;
+}
+
+export interface getMembershipLogs_GetMembershipLogs {
+  __typename: "GetMembershipLogsResponse";
+  ok: boolean;
+  error: string | null;
+  membershipLogs: (getMembershipLogs_GetMembershipLogs_membershipLogs | null)[] | null;
+}
+
+export interface getMembershipLogs {
+  GetMembershipLogs: getMembershipLogs_GetMembershipLogs;
+}
+
+export interface getMembershipLogsVariables {
+  branchId?: number | null;
+  target?: targetOptions | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: updateProfile
 // ====================================================
 
@@ -1449,6 +1491,7 @@ export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs {
   createdAt: string;
   startDatetime: string;
   endDatetime: string;
+  cabinetId: number | null;
   cabinet: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_cabinet | null;
   user: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_user;
   branch: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_branch;

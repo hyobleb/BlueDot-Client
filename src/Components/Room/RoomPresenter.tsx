@@ -60,10 +60,10 @@ interface IDProps {
   isFlip?: boolean;
 }
 
-const SeatLoading = styled(Loading)`
-  width: 100%;
-  height: 100%;
-`;
+// const SeatLoading = styled(Loading)`
+//   width: 100%;
+//   height: 100%;
+// `;
 
 const BackContainer = styled.div`
   display: flex;
@@ -201,7 +201,7 @@ const Seat: React.SFC<ISProps> = ({
               <ImgContainer onClick={onSeatClick}>
                 <SeatImg src={"https://image.ibb.co/hcUtaq/1.png"} />
                 <SeatNumber numberRotate={numberRotate}>
-                  {seatNumber}
+                  {/* {seatNumber} */}
                 </SeatNumber>
               </ImgContainer>
             )) ||
@@ -209,13 +209,18 @@ const Seat: React.SFC<ISProps> = ({
                 <ImgContainer onClick={onSeatClick}>
                   <SeatImg src={"https://image.ibb.co/cgiKFq/4.png"} />
                   <SeatNumber numberRotate={numberRotate}>
-                    {seatNumber}
+                    {/* {seatNumber} */}
                   </SeatNumber>
                 </ImgContainer>
               )))
           ) : assignSeatLoading && assignSeatId === seatId ? (
             <ImgContainer>
-              <SeatLoading loadingType={"spin"} />
+              <SeatImg
+                src={"https://www.opet.com.tr/assets/images/loading_3.gif"}
+              />
+              <SeatNumber numberRotate={numberRotate}>
+                {/* {seatNumber} */}
+              </SeatNumber>{" "}
             </ImgContainer>
           ) : (
             <ImgContainer onClick={onSeatClick}>

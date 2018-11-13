@@ -152,12 +152,23 @@ const UserSearchSection = styled(Section)`
   margin-top: 20px;
   margin-bottom: 20px;
 `;
-const UserSearchButton = styled(Button)`
+
+const MoreInfoBtn = styled(Button)`
   width: 80%;
   min-width: 200px;
   max-width: 500px;
   padding: 15px 0;
+  margin-bottom: 10px;
 `;
+
+const UserSearchButton = styled(MoreInfoBtn)`
+  background-color: ${props => props.theme.orangeColor};
+`;
+const AnalysisButton = styled(MoreInfoBtn)`
+  background-color: ${props => props.theme.pinkColor};
+`;
+
+const OfflineReqButton = styled(MoreInfoBtn)``;
 
 interface IProps {
   selDate: Moment;
@@ -174,6 +185,8 @@ interface IProps {
   showUserSearchPopUp: boolean;
   onUserClick: (userId: number) => Promise<void>;
   branchName?: string;
+  onChartBtnClick: () => void;
+  onOfflineReqBtnClick: () => void;
 }
 
 const ManageUsersPresenter: React.SFC<IProps> = ({
@@ -190,7 +203,9 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
   toggleShowUserSearchPopUp,
   showUserSearchPopUp,
   onUserClick,
-  branchName
+  branchName,
+  onChartBtnClick,
+  onOfflineReqBtnClick
 }) => (
   <BackContainer>
     <Helmet>
@@ -371,6 +386,14 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
           <UserSearchButton
             value={"사용자 검색"}
             onClick={toggleShowUserSearchPopUp}
+          />
+          <AnalysisButton
+            value={"통계 보기"}
+            onClick={() => onChartBtnClick()}
+          />
+          <OfflineReqButton
+            value={"오프라인 가입자"}
+            onClick={onOfflineReqBtnClick}
           />
         </UserSearchSection>
       </Container>

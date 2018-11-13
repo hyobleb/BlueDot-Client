@@ -29,10 +29,7 @@ const LoadingContainer = styled.div`
   left: 0;
 `;
 
-const Loading: React.SFC<IProps> = ({
-  className,
-  loadingType = "spinningBubbles"
-}) => (
+const Loading: React.SFC<IProps> = ({ className, loadingType = "spokes" }) => (
   <LoadingContainer className={className}>
     <ReactLoading type={loadingType} color={"#0E298B"} />
   </LoadingContainer>

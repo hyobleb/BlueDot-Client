@@ -107,14 +107,14 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
             <ExtendCabinetMutation
               mutation={MANAGER_EXTEND_MEMBERSHIP}
               onCompleted={data => {
-                if (data.ManagerUpdateMembershipDatetime.ok) {
+                if (data.ManagerUpdateMembershipEndDatetime.ok) {
                   toast.success("해당 사물함을 연장했습니다");
                   history.push({
                     pathname: "/user-detail",
                     state: { userId: selMembership.userId }
                   });
                 } else {
-                  toast.error(data.ManagerUpdateMembershipDatetime.error);
+                  toast.error(data.ManagerUpdateMembershipEndDatetime.error);
                 }
               }}
             >
@@ -237,7 +237,7 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
         variables: {
           endDatetime: selEndDatetime,
           membershipId: this.props.location.state.selMembershipId,
-          modifyType: modifyOptions.EXTENDED
+          status: modifyOptions.EXTENDED
         }
       });
     }

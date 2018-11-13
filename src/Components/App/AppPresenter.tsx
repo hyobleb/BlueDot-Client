@@ -5,6 +5,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
 import Basket from "../../Routes/Basket";
+import Chart from "../../Routes/Chart";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
@@ -246,7 +247,8 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/manager-extend-cabinet"}
           exact={true}
           component={ManagerExtendCabinet}
-        />
+        />,
+        <Route key={20} path={"/chart"} exact={true} component={Chart} />
       ]}
 
       <Redirect from={"*"} to={"/"} />

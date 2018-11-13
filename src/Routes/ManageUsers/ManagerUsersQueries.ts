@@ -13,6 +13,7 @@ export const HEAD_GET_MEMBERSHIP_LOGS = gql`
         createdAt
         startDatetime
         endDatetime
+        cabinetId
         cabinet {
           id
           cabinetNumber

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {
   DANGER_COLOR,
   PRIMARY_COLOR,
-  SECONDARY_COLOR,
+  // SECONDARY_COLOR,
   SUCCESS_COLOR,
   WARNING_COLOR
 } from "src/keys/colors";
@@ -57,7 +57,7 @@ const ColorIndexContainer = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 320px;
 `;
 const ColorIndex = styled.div`
@@ -66,6 +66,8 @@ const ColorIndex = styled.div`
   width: 60px;
   font-size: 10px;
   text-align: center;
+  margin-left: 3px;
+  margin-right: 3px;
 `;
 
 const CabinetDisplay: React.SFC<IProps> = ({
@@ -94,9 +96,6 @@ const CabinetDisplay: React.SFC<IProps> = ({
         <ColorIndex style={{ backgroundColor: SUCCESS_COLOR }}>
           선택한 사물함
         </ColorIndex>
-        <ColorIndex style={{ backgroundColor: SECONDARY_COLOR }}>
-          예약중
-        </ColorIndex>
       </ColorIndexContainer>
       {verticalCabients.map((rowCabinets, index) => (
         <CabinetRow key={index}>
@@ -104,14 +103,14 @@ const CabinetDisplay: React.SFC<IProps> = ({
             const backgroundColor =
               !cabinet.usable || !cabinet.lockId
                 ? DANGER_COLOR
-                : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
-                  ? WARNING_COLOR
-                  : cabinet.status === "RESERVED" &&
-                    moment(cabinet.reservedDatetime) > moment()
-                    ? SECONDARY_COLOR
-                    : cabinet.id === selCabinetId
-                      ? SUCCESS_COLOR
-                      : PRIMARY_COLOR;
+                : cabinet.nowUsing || moment(cabinet.endDatetime) > moment()
+                ? WARNING_COLOR
+                : cabinet.status === "RESERVED" &&
+                  moment(cabinet.reservedDatetime) > moment()
+                ? WARNING_COLOR
+                : cabinet.id === selCabinetId
+                ? SUCCESS_COLOR
+                : PRIMARY_COLOR;
             return (
               <CabinetItem
                 key={cabinet.id}

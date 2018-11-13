@@ -465,15 +465,13 @@ export const GET_BRANCH_FOR_ERNOLL_CABINET = gql`
 export const MANAGER_EXTEND_MEMBERSHIP = gql`
   mutation managerExtendMembership(
     $membershipId: Int!
-    $startDatetime: String
-    $endDatetime: String
-    $modifyType: modifyOptions
+    $endDatetime: String!
+    $status: modifyOptions!
   ) {
-    ManagerUpdateMembershipDatetime(
+    ManagerUpdateMembershipEndDatetime(
       membershipId: $membershipId
-      startDatetime: $startDatetime
       endDatetime: $endDatetime
-      modifyType: $modifyType
+      status: $status
     ) {
       ok
       error

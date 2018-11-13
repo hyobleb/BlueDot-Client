@@ -104,20 +104,20 @@ class ManagerExtendMembershipContainer extends React.Component<IProps, IState> {
             <ExtendMembershipMutation
               mutation={MANAGER_EXTEND_MEMBERSHIP}
               onCompleted={data => {
-                if (data.ManagerUpdateMembershipDatetime.ok) {
+                if (data.ManagerUpdateMembershipEndDatetime.ok) {
                   toast.success("기간을 연장했습니다");
                   history.push({
                     pathname: "/user-detail",
                     state: { userId: selMembership.userId }
                   });
                 } else {
-                  toast.error(data.ManagerUpdateMembershipDatetime.error);
+                  toast.error(data.ManagerUpdateMembershipEndDatetime.error);
                 }
               }}
               variables={{
                 endDatetime: selEndDatetime,
                 membershipId: this.props.location.state.selMembershipId,
-                modifyType: modifyOptions.EXTENDED
+                status: modifyOptions.EXTENDED
               }}
             >
               {extendMembershipMutation => {
