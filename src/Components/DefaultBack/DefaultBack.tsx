@@ -17,6 +17,7 @@ const BackArrowExtended = styled(BackArrow)`
   position: fixed;
   bottom: 20px;
   left: 20px;
+  cursor: pointer;
 `;
 
 interface IProps {

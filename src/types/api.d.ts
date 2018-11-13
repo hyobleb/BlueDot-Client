@@ -2380,6 +2380,98 @@ export interface headGetUserDetailVariables {
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
+// ====================================================
+// GraphQL query operation: getRequestSignUps
+// ====================================================
+
+export interface getRequestSignUps_ManagerGetRequestSignUps_requestSignUps_baseBranch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getRequestSignUps_ManagerGetRequestSignUps_requestSignUps {
+  __typename: "RequestSignUp";
+  id: number;
+  inputUserId: string;
+  email: string;
+  phoneNumber: string;
+  birthYear: number;
+  birthMonth: number;
+  birthDay: number;
+  name: string;
+  gender: string;
+  baseBranch: getRequestSignUps_ManagerGetRequestSignUps_requestSignUps_baseBranch;
+  updatedAt: string | null;
+}
+
+export interface getRequestSignUps_ManagerGetRequestSignUps_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getRequestSignUps_ManagerGetRequestSignUps {
+  __typename: "ManagerGetRequestSignUpsResponse";
+  ok: boolean;
+  error: string | null;
+  requestSignUps: (getRequestSignUps_ManagerGetRequestSignUps_requestSignUps | null)[] | null;
+  branch: getRequestSignUps_ManagerGetRequestSignUps_branch | null;
+}
+
+export interface getRequestSignUps {
+  ManagerGetRequestSignUps: getRequestSignUps_ManagerGetRequestSignUps;
+}
+
+export interface getRequestSignUpsVariables {
+  branchId?: number | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: acceptRequestSignUp
+// ====================================================
+
+export interface acceptRequestSignUp_ManagerAcceptReqSignUp {
+  __typename: "ManagerAcceptReqSignUpResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface acceptRequestSignUp {
+  ManagerAcceptReqSignUp: acceptRequestSignUp_ManagerAcceptReqSignUp;
+}
+
+export interface acceptRequestSignUpVariables {
+  reqSignUpId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: rejectRequestSignUp
+// ====================================================
+
+export interface rejectRequestSignUp_ManagerRejectReqSignUp {
+  __typename: "ManagerRejectReqSignUpResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface rejectRequestSignUp {
+  ManagerRejectReqSignUp: rejectRequestSignUp_ManagerRejectReqSignUp;
+}
+
+export interface rejectRequestSignUpVariables {
+  reqSignUpId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
 //==============================================================
 // START Enums and Input Objects
 //==============================================================

@@ -42,6 +42,11 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
       branchSearchPopupShow: false,
       membershipLogsByDate: [],
       nowUsingUsers: [],
+      selBranchId: props.location.state
+        ? props.location.state.branchId
+          ? props.location.state.branchId
+          : undefined
+        : undefined,
       selDate: moment(),
       showUserSearchPopUp: false
     };
@@ -182,9 +187,14 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
   };
 
   public onOfflineReqBtnClick = () => {
+    const { history } = this.props;
     const { selBranchId } = this.state;
-    console.log({ selBranchId });
-    // TODO: 여기서부터
+    history.push({
+      pathname: "/view-req-sign-up",
+      state: {
+        branchId: selBranchId
+      }
+    });
   };
 }
 

@@ -38,6 +38,7 @@ import SocialLogin from "../../Routes/SocialLogin";
 import UpdateCabinetSet from "../../Routes/UpdateCabinetSet";
 import UpdateLounge from "../../Routes/UpdateLounge";
 import UserDetail from "../../Routes/UserDetail";
+import ViewReqSignUp from "../../Routes/ViewReqSignUp";
 
 interface IProps {
   isLoggedIn: boolean;
@@ -248,7 +249,13 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           exact={true}
           component={ManagerExtendCabinet}
         />,
-        <Route key={20} path={"/chart"} exact={true} component={Chart} />
+        <Route key={20} path={"/chart"} exact={true} component={Chart} />,
+        <Route
+          key={21}
+          path={"/view-req-sign-up"}
+          exact={true}
+          component={ViewReqSignUp}
+        />
       ]}
 
       <Redirect from={"*"} to={"/"} />
