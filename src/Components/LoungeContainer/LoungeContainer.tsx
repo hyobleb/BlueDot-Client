@@ -35,8 +35,6 @@ const RoomTransparent = styled<
   width: ${props => props.width}%;
   top: ${props => props.top}%;
   left: ${props => props.left}%;
-  backgroundcolor: ${props =>
-    props.tempSelected ? props.theme.redColor : props.theme.lightBlueColor};
   &:hover {
     background-color: white;
     opacity: 0.6;
@@ -50,8 +48,8 @@ const ExsitingRoomTransparent = styled(RoomTransparent)`
 const MiniMapExtended = styled(Minimap)`
   position: absolute;
   width: 30%;
-  left: 80%;
-  top: -5%;
+  left: -22%;
+  top: 77%;
   z-index: 2;
 `;
 

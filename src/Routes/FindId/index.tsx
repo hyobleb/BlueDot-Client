@@ -1,5 +1,3 @@
-import React from "react";
+import FindIdContainer from "./FindIdContainer";
 
-const R = () => <span>lala</span>;
-
-export default R;
+export default FindIdContainer;

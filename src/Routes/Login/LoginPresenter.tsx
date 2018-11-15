@@ -126,12 +126,12 @@ const LoginPresenter: React.SFC<IProps> = ({
         <Link to={"/find-id"}>아이디 찾기</Link> |
         <Link to={"/find-password"}>비밀번호 찾기</Link>
       </FooterColumn>
-      <FooterColumn>
+      {/* <FooterColumn>
         <Link to={"/social-phone"}>페이스북 로그인</Link>
-      </FooterColumn>
-      <FooterColumn>
+      </FooterColumn> */}
+      {/* <FooterColumn>
         <Link to={"/req-sign-up"}>오프라인 가입 신청</Link>
-      </FooterColumn>
+      </FooterColumn> */}
     </Footer>
   </Container>
 );

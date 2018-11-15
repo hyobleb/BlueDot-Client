@@ -356,6 +356,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
         this.onBackClick();
       } else {
         toast.error(ManagerCreateCabMembership.error);
+        console.log(this.state);
       }
     }
   };

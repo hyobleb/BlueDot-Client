@@ -9,6 +9,11 @@ export enum roomTypeOptions {
   SINGLE = "SINGLE"
 }
 
+export enum targetOptions {
+  CABINET = "CABINET",
+  MEMBERSHIP = "MEMBERSHIP"
+}
+
 export enum membershipOptions {
   CABINET = "CABINET",
   MEMBERSHIP = "MEMBERSHIP"

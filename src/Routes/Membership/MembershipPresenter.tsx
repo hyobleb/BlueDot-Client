@@ -114,6 +114,7 @@ interface IProps {
   myMembershipDatasLoading: boolean;
   onMembershipExtendClick: (selMembershipId: number) => void;
   onCabinetExtendClick: (selMembershipId: number) => void;
+  overtimeCabinetMemberships: any[];
 }
 
 const MembershipPresenter: React.SFC<IProps> = ({
@@ -128,7 +129,8 @@ const MembershipPresenter: React.SFC<IProps> = ({
   myMembershipDatas,
   myMembershipDatasLoading,
   onMembershipExtendClick,
-  onCabinetExtendClick
+  onCabinetExtendClick,
+  overtimeCabinetMemberships
 }) => (
   <Container>
     <Helmet>
@@ -251,11 +253,47 @@ const MembershipPresenter: React.SFC<IProps> = ({
                   )
               )) || (
               <NoMembershipContainer>
-                현재 사물함이 없습니다
+                현재 이용중인 사물함이 없습니다
               </NoMembershipContainer>
             )}
           </ContentContainer>
         </Section>
+
+        {overtimeCabinetMemberships.length > 0 ? (
+          <Section>
+            <SectionHead>
+              <SectionTitle>기간이 지난 사물함</SectionTitle>
+            </SectionHead>
+
+            <ContentContainer>
+              {overtimeCabinetMemberships.map(
+                membership =>
+                  membership.cabinet && (
+                    <MembershipContainer key={membership.id}>
+                      <MembershipTitle>
+                        {membership.cabinet.branch.name}
+                        {membership.cabinet.cabinetNumber}번 사물함
+                      </MembershipTitle>
+                      <StartDatetime>
+                        이용 시작 : {membership.startDatetime}
+                      </StartDatetime>
+                      <EndDatetime>
+                        이용 종료 : {membership.endDatetime}
+                      </EndDatetime>
+                      <ButtonContainer>
+                        <ExtendButton
+                          value={"연장하기"}
+                          onClick={() => onCabinetExtendClick(membership.id)}
+                        />
+                      </ButtonContainer>
+                    </MembershipContainer>
+                  )
+              )}
+            </ContentContainer>
+          </Section>
+        ) : (
+          ""
+        )}
       </>
     )}
 

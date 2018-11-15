@@ -1,23 +1,26 @@
 import React from "react";
-import { ApolloConsumer, Mutation, MutationFn, Query } from "react-apollo";
+import { Mutation, MutationFn, Query } from "react-apollo";
 import { Option } from "react-dropdown";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   GET_MEMBERSHIP_FOR_EXTEND,
-  GET_MY_MEMBERSHIPS,
   USER_GET_PRODUCTS,
   USER_REQUEST_EXTEND_CABINET
 } from "src/Components/sharedQueries";
+import { targetOptions } from "src/Components/shareOptions";
 import {
+  getExtendableMemberships,
+  getExtendableMembershipsVariables,
   getMembershipForExtend,
-  getMyMemberships,
+  getMembershipForExtendVariables,
   userGetProducts,
   userGetProductsVariables,
   userRequestCabinetVariables,
   userRequestExtendCabinet
 } from "src/types/api";
 import ReqExtendCabinetPresenter from "./ReqExtendCabinetPresenter";
+import { GET_EXTENDABLE_MEMBERSHIPS } from "./ReqExtendCabinetQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -27,9 +30,18 @@ interface IState {
   products: any;
   selProductId: number | null;
   selProductTitle: string;
+  membershipId: number;
 }
 
-class GetMembershipsQuery extends Query<getMyMemberships> {}
+class GetMembershipsForExtendQuery extends Query<
+  getMembershipForExtend,
+  getMembershipForExtendVariables
+> {}
+
+class GetMyExtendableMemberships extends Query<
+  getExtendableMemberships,
+  getExtendableMembershipsVariables
+> {}
 class GetProductsQuery extends Query<
   userGetProducts,
   userGetProductsVariables
@@ -48,34 +60,14 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       exstingMemberships: null,
+      membershipId:
+        (props.location.state && props.location.state.selMembershipId) || 0,
       products: null,
       selMembership: null,
       selProductId: null,
       selProductTitle: "",
       showMembershipPopUp: false
     };
-  }
-
-  public async componentDidMount() {
-    if (
-      this.props.location.state &&
-      this.props.location.state.selMembershipId
-    ) {
-      const result: {} | getMembershipForExtend = await this.getMembershipFn(
-        this.props.location.state.selMembershipId
-      );
-      console.log({ result });
-      if ("GetMembership" in result) {
-        const {
-          GetMembership: { membership }
-        } = result;
-        if (membership !== null) {
-          this.setState({
-            selMembership: membership
-          });
-        }
-      }
-    }
   }
 
   public render() {
@@ -85,76 +77,75 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
       exstingMemberships,
       selMembership,
       products,
-      selProductTitle
+      selProductTitle,
+      membershipId
     } = this.state;
     return (
-      <ApolloConsumer>
-        {client => {
-          this.getMembershipFn = async (membershipId: number) => {
-            const { data } = await client.query({
-              query: GET_MEMBERSHIP_FOR_EXTEND,
-              variables: { membershipId, target: "CABINET" }
-            });
-            return data;
-          };
-          return (
-            <RequestExtendCabinet
-              mutation={USER_REQUEST_EXTEND_CABINET}
-              onCompleted={data => {
-                if (data.RequestExtendCabinet.ok) {
-                  toast.success("장바구니에 담았습니다");
-                  history.push("/basket");
-                } else {
-                  toast.error(data.RequestExtendCabinet.error);
-                }
-              }}
-            >
-              {reqExtendCabinetMutaiton => {
-                this.reqExtCabinetFn = reqExtendCabinetMutaiton;
-                return (
-                  <GetProductsQuery
-                    query={USER_GET_PRODUCTS}
-                    skip={selMembership === null}
-                    variables={{
-                      branchId: selMembership ? selMembership.branch.id : 0
-                    }}
-                    onCompleted={this.updateFields}
-                    fetchPolicy={"cache-and-network"}
-                  >
-                    {() => {
-                      return (
-                        <GetMembershipsQuery
-                          query={GET_MY_MEMBERSHIPS}
-                          onCompleted={this.updateFields}
-                          fetchPolicy={"cache-and-network"}
-                        >
-                          {() => {
-                            return (
-                              <ReqExtendCabinetPresenter
-                                showMembershipPopUp={showMembershipPopUp}
-                                toggleShowMembershipPopUp={
-                                  this.toggleShowMembershipPopUp
-                                }
-                                exstingMemberships={exstingMemberships}
-                                selMembership={selMembership}
-                                onMembershipClick={this.onMembershipClick}
-                                products={products}
-                                onOptionChange={this.onOptionChange}
-                                selProductTitle={selProductTitle}
-                                onThrowBasketClick={this.onThrowBasketClick}
-                              />
-                            );
-                          }}
-                        </GetMembershipsQuery>
-                      );
-                    }}
-                  </GetProductsQuery>
-                );
-              }}
-            </RequestExtendCabinet>
-          );
-        }}
-      </ApolloConsumer>
+      <GetMembershipsForExtendQuery
+        query={GET_MEMBERSHIP_FOR_EXTEND}
+        variables={{ membershipId, target: targetOptions.CABINET }}
+        skip={!membershipId}
+        onCompleted={this.updateFields}
+        fetchPolicy={"cache-and-network"}
+      >
+        {() => (
+          <RequestExtendCabinet
+            mutation={USER_REQUEST_EXTEND_CABINET}
+            onCompleted={data => {
+              if (data.RequestExtendCabinet.ok) {
+                toast.success("장바구니에 담았습니다");
+                history.push("/basket");
+              } else {
+                toast.error(data.RequestExtendCabinet.error);
+              }
+            }}
+          >
+            {reqExtendCabinetMutaiton => {
+              this.reqExtCabinetFn = reqExtendCabinetMutaiton;
+              return (
+                <GetProductsQuery
+                  query={USER_GET_PRODUCTS}
+                  skip={selMembership === null}
+                  variables={{
+                    branchId: selMembership ? selMembership.branch.id : 0
+                  }}
+                  onCompleted={this.updateFields}
+                  fetchPolicy={"cache-and-network"}
+                >
+                  {() => {
+                    return (
+                      <GetMyExtendableMemberships
+                        query={GET_EXTENDABLE_MEMBERSHIPS}
+                        onCompleted={this.updateFields}
+                        fetchPolicy={"cache-and-network"}
+                        variables={{ target: targetOptions.CABINET }}
+                      >
+                        {() => {
+                          return (
+                            <ReqExtendCabinetPresenter
+                              showMembershipPopUp={showMembershipPopUp}
+                              toggleShowMembershipPopUp={
+                                this.toggleShowMembershipPopUp
+                              }
+                              exstingMemberships={exstingMemberships}
+                              selMembership={selMembership}
+                              onMembershipClick={this.onMembershipClick}
+                              products={products}
+                              onOptionChange={this.onOptionChange}
+                              selProductTitle={selProductTitle}
+                              onThrowBasketClick={this.onThrowBasketClick}
+                            />
+                          );
+                        }}
+                      </GetMyExtendableMemberships>
+                    );
+                  }}
+                </GetProductsQuery>
+              );
+            }}
+          </RequestExtendCabinet>
+        )}
+      </GetMembershipsForExtendQuery>
     );
   }
 
@@ -164,11 +155,17 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public updateFields = (data: {} | getMyMemberships | userGetProducts) => {
+  public updateFields = (
+    data:
+      | {}
+      | getExtendableMemberships
+      | userGetProducts
+      | getMembershipForExtend
+  ) => {
     const { history } = this.props;
-    if ("GetMyMemberships" in data) {
+    if ("GetExtendableMemberships" in data) {
       const {
-        GetMyMemberships: { memberships }
+        GetExtendableMemberships: { memberships }
       } = data;
 
       if (memberships !== null) {
@@ -196,27 +193,26 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
           });
         }
       }
+    } else if ("GetMembership" in data) {
+      const {
+        GetMembership: { membership }
+      } = data;
+      if (membership) {
+        this.setState({
+          selMembership: membership
+        });
+      }
     }
   };
   public onMembershipClick = async (membershipId: number) => {
-    const result: {} | getMembershipForExtend = await this.getMembershipFn(
-      membershipId
-    );
-    if ("GetMembership" in result) {
-      const {
-        GetMembership: { membership }
-      } = result;
-      if (membership !== null) {
-        this.setState(
-          {
-            selMembership: membership
-          },
-          () => {
-            this.toggleShowMembershipPopUp();
-          }
-        );
+    this.setState(
+      {
+        membershipId
+      },
+      () => {
+        this.toggleShowMembershipPopUp();
       }
-    }
+    );
   };
 
   public onOptionChange = (arg: Option) => {

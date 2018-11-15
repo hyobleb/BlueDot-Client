@@ -62,9 +62,9 @@ export default class LoginContainer extends React.Component<
                 // }, 2000);
               } else {
                 toast.error(UserIdSignIn.error);
-                return;
               }
             }}
+            onError={err => toast.error(err)}
             // onCompleted에서는 data가 이미 type이 되어 있음
             // update={this.afterSbumit}
             // mutation은 child로 함수를 받아야함

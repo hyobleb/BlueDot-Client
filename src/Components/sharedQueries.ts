@@ -5,6 +5,7 @@ export const USER_PROFILE = gql`
       ok
       error
       user {
+        id
         profilePhoto
         name
         email
@@ -421,14 +422,13 @@ export const GET_MEMBERSHIP_FOR_EXTEND = gql`
 `;
 
 export const GUEST_GET_BRANCH = gql`
-  query guetGetBranch($branchId: Int!) {
+  query guestGetBranch($branchId: Int!) {
     GuestGetBranch(branchId: $branchId) {
       ok
       error
       branch {
         id
         name
-        impKey
         impId
       }
     }

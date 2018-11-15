@@ -158,9 +158,9 @@ const BasketPresenter: React.SFC<IProps> = ({
                       {reqMembership.product.target === "MEMBERSHIP"
                         ? " 멤버쉽"
                         : reqMembership.product.target === "CABINET"
-                          ? ` ${reqMembership.cabinet &&
-                              reqMembership.cabinet.cabinetNumber}번 사물함`
-                          : ""}
+                        ? ` ${reqMembership.cabinet &&
+                            reqMembership.cabinet.cabinetNumber}번 사물함`
+                        : ""}
                     </ReqRow>
                     <ReqRow>
                       {reqMembership.product.hours}
@@ -181,17 +181,16 @@ const BasketPresenter: React.SFC<IProps> = ({
                       />
                     </ReqDelRow>
                   </ReqItem>
-                ) : reqMembership && reqMembership.status === "EXTEND" ? (
+                ) : reqMembership && reqMembership.status === "EXTENDED" ? (
                   <ReqItem key={reqMembership.id}>
                     <ReqRow>
                       {reqMembership.branch.name}
                       {reqMembership.product.target === "MEMBERSHIP"
                         ? " 멤버쉽 연장"
                         : reqMembership.product.target === "CABINET"
-                          ? ` ${reqMembership.cabinet &&
-                              reqMembership.cabinet
-                                .cabinetNumber}번 사물함 연장`
-                          : ""}
+                        ? ` ${reqMembership.cabinet &&
+                            reqMembership.cabinet.cabinetNumber}번 사물함 연장`
+                        : ""}
                     </ReqRow>
                     <ReqRow>
                       {reqMembership.product.hours}

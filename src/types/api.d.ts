@@ -133,9 +133,10 @@ export interface searchUsersVariables {
 
 export interface userProfile_GetMyProfile_user {
   __typename: "User";
+  id: number;
   profilePhoto: string | null;
   name: string | null;
-  email: string | null;
+  email: string;
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;
@@ -822,29 +823,28 @@ export interface getMembershipForExtendVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: guetGetBranch
+// GraphQL query operation: guestGetBranch
 // ====================================================
 
-export interface guetGetBranch_GuestGetBranch_branch {
+export interface guestGetBranch_GuestGetBranch_branch {
   __typename: "SimpleBranch";
   id: number;
   name: string | null;
-  impKey: string | null;
   impId: string | null;
 }
 
-export interface guetGetBranch_GuestGetBranch {
+export interface guestGetBranch_GuestGetBranch {
   __typename: "GuestGetBranchResponse";
   ok: boolean;
   error: string | null;
-  branch: guetGetBranch_GuestGetBranch_branch | null;
+  branch: guestGetBranch_GuestGetBranch_branch | null;
 }
 
-export interface guetGetBranch {
-  GuestGetBranch: guetGetBranch_GuestGetBranch;
+export interface guestGetBranch {
+  GuestGetBranch: guestGetBranch_GuestGetBranch;
 }
 
-export interface guetGetBranchVariables {
+export interface guestGetBranchVariables {
   branchId: number;
 }
 
@@ -1557,6 +1557,49 @@ export interface headGetNowUsingUsersVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: userGetOvertimeCabinetMemberships
+// ====================================================
+
+export interface userGetOvertimeCabinetMemberships_GetOvertimeCabinetMemberships_memberships_cabinet_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface userGetOvertimeCabinetMemberships_GetOvertimeCabinetMemberships_memberships_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+  branch: userGetOvertimeCabinetMemberships_GetOvertimeCabinetMemberships_memberships_cabinet_branch;
+}
+
+export interface userGetOvertimeCabinetMemberships_GetOvertimeCabinetMemberships_memberships {
+  __typename: "Membership";
+  id: number;
+  startDatetime: string;
+  endDatetime: string;
+  cabinet: userGetOvertimeCabinetMemberships_GetOvertimeCabinetMemberships_memberships_cabinet | null;
+}
+
+export interface userGetOvertimeCabinetMemberships_GetOvertimeCabinetMemberships {
+  __typename: "GetOvertimeCabinetMembershipsResponse";
+  ok: boolean;
+  error: string | null;
+  memberships: (userGetOvertimeCabinetMemberships_GetOvertimeCabinetMemberships_memberships | null)[] | null;
+}
+
+export interface userGetOvertimeCabinetMemberships {
+  GetOvertimeCabinetMemberships: userGetOvertimeCabinetMemberships_GetOvertimeCabinetMemberships;
+}
+
+export interface userGetOvertimeCabinetMembershipsVariables {
+  userId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: updateBranch
 // ====================================================
 
@@ -1652,6 +1695,51 @@ export interface headGetProduct {
 
 export interface headGetProductVariables {
   productId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getExtendableMemberships
+// ====================================================
+
+export interface getExtendableMemberships_GetExtendableMemberships_memberships_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getExtendableMemberships_GetExtendableMemberships_memberships_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface getExtendableMemberships_GetExtendableMemberships_memberships {
+  __typename: "Membership";
+  id: number;
+  branch: getExtendableMemberships_GetExtendableMemberships_memberships_branch;
+  startDatetime: string;
+  endDatetime: string;
+  cabinet: getExtendableMemberships_GetExtendableMemberships_memberships_cabinet | null;
+  cabinetId: number | null;
+}
+
+export interface getExtendableMemberships_GetExtendableMemberships {
+  __typename: "GetExtendableMembershipsResponse";
+  ok: boolean | null;
+  error: string | null;
+  memberships: (getExtendableMemberships_GetExtendableMemberships_memberships | null)[] | null;
+}
+
+export interface getExtendableMemberships {
+  GetExtendableMemberships: getExtendableMemberships_GetExtendableMemberships;
+}
+
+export interface getExtendableMembershipsVariables {
+  userId?: number | null;
+  target: targetOptions;
 }
 
 /* tslint:disable */
@@ -2353,7 +2441,7 @@ export interface headGetUserDetail_HeadGetUserDetail_user {
   birthYear: number;
   birthMonth: number;
   birthDay: number;
-  email: string | null;
+  email: string;
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;

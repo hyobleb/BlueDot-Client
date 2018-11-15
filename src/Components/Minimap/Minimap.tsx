@@ -4,7 +4,7 @@ import styled from "src/typed-components";
 
 const Container = styled.div`
   position: relative;
-  max-width: 200px;
+  max-width: 150px;
   min-width: 100px;
 `;
 const MiniMapImg = styled.img`

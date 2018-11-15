@@ -34,7 +34,6 @@ interface IState {
   birthDay: number | null;
   imp_uid: string;
   impId: string;
-  impKey: string;
   email: string;
 }
 
@@ -49,7 +48,7 @@ export default class SignUpDetailContainer extends React.Component<
   IProps,
   IState
 > {
-  public certificateUser: (impUid: string, branchId: number) => {};
+  public certificateUser: (impUid: string, branchId: number) => Promise<any>;
   public userIdSignUpMutation: MutationFn;
   public getBranch;
 
@@ -74,7 +73,6 @@ export default class SignUpDetailContainer extends React.Component<
       email: "",
       gender: null,
       impId: "",
-      impKey: "",
       imp_uid: "",
       importLoad: false,
       jqueryLoad: false,
@@ -110,12 +108,19 @@ export default class SignUpDetailContainer extends React.Component<
       <>
         <Script
           url="https://code.jquery.com/jquery-1.12.4.min.js"
-          onLoad={this.setJqueryLoad}
+          onLoad={() => {
+            this.setJqueryLoad();
+          }}
+          onCreate={this.setJqueryLoad}
         />
         <Script
           url="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"
-          onLoad={this.setImportLoad}
+          onLoad={() => {
+            this.setImportLoad();
+          }}
+          onCreate={this.setImportLoad}
         />
+
         <Mutation mutation={LOG_USER_IN}>
           {logUserIn => (
             <UserIdSignUpMutation
@@ -208,15 +213,14 @@ export default class SignUpDetailContainer extends React.Component<
       return;
     }
 
-    const { id, impId, impKey, name } = GuestGetBranch.branch;
+    const { id, impId, name } = GuestGetBranch.branch;
 
     this.setState(
       {
         ...this.state,
         baseBranchId: id,
         baseBranchName: name,
-        impId,
-        impKey
+        impId
       },
       () => {
         this.toggleShowBranchSearch();
@@ -304,81 +308,91 @@ export default class SignUpDetailContainer extends React.Component<
   };
 
   public onVerifyingButtonClick = async () => {
-    if (!this.state.baseBranchId) {
-      toast.error("지점을 먼저 선택해주세요!");
-      return;
-    }
-    this.setState({
-      ...this.state,
-      birthDay: 1,
-      birthMonth: 1,
-      birthYear: 1989,
-      gender: "MALE",
-      name: "방문자",
-      unique_key: "1234"
-    });
+    // if (!this.state.baseBranchId) {
+    //   toast.error("지점을 먼저 선택해주세요!");
+    //   return;
+    // }
+    // this.setState({
+    //   ...this.state,
+    //   birthDay: 1,
+    //   birthMonth: 1,
+    //   birthYear: 1989,
+    //   gender: "MALE",
+    //   name: "방문자",
+    //   unique_key: "1234"
+    // });
 
-    toast.success("본인인증에 성공했습니다");
+    // toast.success("본인인증에 성공했습니다");
 
     // ------------------------------------------------------------
 
-    // if (!this.state.baseBranchId) {
-    //   toast.error("지점을 먼저 설정하셔야 됩니다");
-    //   return;
-    // }
+    const { IMP } = this.state;
+    const { baseBranchId, impId } = this.state;
 
-    // if (this.state.IMP) {
-    //   // IMP.certification(param, callback) 호출
-    //   await this.state.IMP.certification(
-    //     {
-    //       // param
-    //       // merchant_uid: "ORD20180131-0000011" // 옵션 값
-    //     },
-    //     rsp => {
-    //       // callback
-    //       if (rsp.success) {
-    //         // 인증 성공 시 로직,
+    if (!baseBranchId || !impId) {
+      toast.error("지점을 먼저 설정하셔야 됩니다");
+      return;
+    }
 
-    //         const data = this.certificateUser(rsp.imp_uid);
-    //         if (
-    //           data &&
-    //           data.unique_key &&
-    //           data.name &&
-    //           data.gender &&
-    //           data.birthYear &&
-    //           data.birthMonth &&
-    //           data.birthDay
-    //         ) {
-    //           this.setState({
-    //             ...this.state,
-    //             birthDay: data.birthDay,
-    //             birthMonth: data.birthMonth,
-    //             birthYear: data.birthYear,
-    //             gender: data.gender,
-    //             imp_uid: rsp.imp_uid,
-    //             name: data.name,
-    //             unique_key: data.unique_key
-    //           });
-    //         }
+    if (IMP) {
+      // IMP.certification(param, callback) 호출
+      const result = await IMP.init(impId); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
+      console.dir(result);
+      console.log(impId);
+      IMP.certification(
+        {
+          popup: true
+          // param
+          // merchant_uid: "ORD20180131-0000011" // 옵션 값
+        },
+        async rsp => {
+          // callback
+          if (rsp.success) {
+            // 인증 성공 시 로직,
 
-    //         // const {
-    //         //   data: { secure_url }
-    //         // } = await axios.post(
-    //         //   "https://api.cloudinary.com/v1_1/drijcu8ak/image/upload/",
-    //         //   formData
-    //         // );
-    //       } else {
-    //         // 인증 실패 시 로직,
-    //         toast.error(
-    //           `인증에 실패했습니다. 에러 내용 :  ${rsp.error_msg &&
-    //             rsp.error_msg}`
-    //         );
-    //       }
-    //     }
-    //   );
-    // } else {
-    //   toast.error("인증 모듈이 로드 되지 않았습니다");
-    // }
+            const data = await this.certificateUser(rsp.imp_uid, baseBranchId);
+            if (
+              data &&
+              data.unique_key &&
+              data.name &&
+              data.gender &&
+              data.birthYear &&
+              data.birthMonth &&
+              data.birthDay
+            ) {
+              this.setState(
+                {
+                  ...this.state,
+                  birthDay: data.birthDay,
+                  birthMonth: data.birthMonth,
+                  birthYear: data.birthYear,
+                  gender: data.gender,
+                  imp_uid: rsp.imp_uid,
+                  name: data.name,
+                  unique_key: data.unique_key
+                },
+                () => console.log(this.state)
+              );
+            }
+
+            // const {
+            //   data: { secure_url }
+            // } = await axios.post(
+            //   "https://api.cloudinary.com/v1_1/drijcu8ak/image/upload/",
+            //   formData
+            // );
+          } else {
+            // 인증 실패 시 로직,
+            toast.error(
+              `인증에 실패했습니다. 에러 내용 :  ${rsp.error_msg &&
+                rsp.error_msg}`
+            );
+          }
+        }
+      );
+    } else {
+      toast.error("인증 모듈이 로드 되지 않았습니다");
+    }
     // ------------------------------------------------------------
   };
 }
