@@ -1939,6 +1939,89 @@ export interface getCabinetLockVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getCoBranches
+// ====================================================
+
+export interface getCoBranches_HeadGetCoBranches_branches_alliedBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getCoBranches_HeadGetCoBranches_branches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  address: string;
+  detailAddress: string;
+  descriptionPosition: string;
+  branchImage: (string | null)[];
+  alliedBranches: (getCoBranches_HeadGetCoBranches_branches_alliedBranches | null)[] | null;
+}
+
+export interface getCoBranches_HeadGetCoBranches {
+  __typename: "HeadGetCoBranchesResponse";
+  ok: boolean;
+  error: string | null;
+  branches: (getCoBranches_HeadGetCoBranches_branches | null)[] | null;
+}
+
+export interface getCoBranches {
+  HeadGetCoBranches: getCoBranches_HeadGetCoBranches;
+}
+
+export interface getCoBranchesVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: setCoBranch
+// ====================================================
+
+export interface setCoBranch_HeadSetCoBranch {
+  __typename: "HeadSetCoBranchResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface setCoBranch {
+  HeadSetCoBranch: setCoBranch_HeadSetCoBranch;
+}
+
+export interface setCoBranchVariables {
+  branchId: number;
+  coBranchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: delCoBranch
+// ====================================================
+
+export interface delCoBranch_HeadDelCoBranch {
+  __typename: "HeadDelCoBranchResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface delCoBranch {
+  HeadDelCoBranch: delCoBranch_HeadDelCoBranch;
+}
+
+export interface delCoBranchVariables {
+  branchId: number;
+  coBranchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: headCreateRoom
 // ====================================================
 
@@ -2310,7 +2393,7 @@ export interface facebookConnect {
 
 export interface facebookConnectVariables {
   name: string;
-  email?: string | null;
+  email: string;
   fbId: string;
 }
 

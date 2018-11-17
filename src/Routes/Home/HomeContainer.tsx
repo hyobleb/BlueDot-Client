@@ -1,15 +1,20 @@
 import ip from "ip";
+import moment from "moment";
 import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GET_SEATS } from "src/Components/Room/RoomQueries";
-import { USER_PROFILE } from "../../Components/sharedQueries";
+import {
+  GET_USABLE_MY_MEMBERSHIPS,
+  USER_PROFILE
+} from "../../Components/sharedQueries";
 import {
   getBranchByIp,
   getBranchByIp_UserGetBranchByIP_branch_rooms,
   getBranchByIpVariables,
   getMyUsingSeat,
+  getUsableMyMemberships,
   userAssignSeat,
   userAssignSeatVariables,
   userProfile,
@@ -38,6 +43,7 @@ interface IState {
 }
 interface IProps extends RouteComponentProps<any> {}
 
+class GetMyUsableMemberships extends Query<getUsableMyMemberships> {}
 class GetMyUsingSeatMutation extends Query<getMyUsingSeat> {}
 class ReturnSeatMutation extends Mutation<userReturnSeat> {}
 class AssignSeatMutation extends Mutation<
@@ -81,115 +87,128 @@ class HomeContainer extends React.Component<IProps, IState> {
       myUsingSeatId
     } = this.state;
     return (
-      <GetMyUsingSeatMutation
-        query={GET_MY_USING_SEAT}
-        onCompleted={data => {
-          if ("GetMyUsingSeat" in data) {
-            const { GetMyUsingSeat } = data;
-            if (GetMyUsingSeat.ok) {
-              if (GetMyUsingSeat.seat) {
-                this.setState({ myUsingSeatId: GetMyUsingSeat.seat.id });
-              } else {
-                this.setState({ myUsingSeatId: null });
-              }
-            } else {
-              toast.error(GetMyUsingSeat.error);
-            }
-          }
-        }}
-        fetchPolicy={"cache-and-network"}
+      <GetMyUsableMemberships
+        query={GET_USABLE_MY_MEMBERSHIPS}
+        onCompleted={this.updateFields}
       >
-        {() => {
-          return (
-            <ReturnSeatMutation
-              mutation={USER_RETURN_SEAT}
-              refetchQueries={[
-                { query: GET_BRANCH_BY_IP, variables: { ip: nowIp } },
-                { query: GET_MY_USING_SEAT }
-              ]}
-              onCompleted={data => {
-                const { UserReturnSeat } = data;
-                if (UserReturnSeat.ok) {
-                  toast.success("좌석을 반납했습니다!");
+        {() => (
+          <GetMyUsingSeatMutation
+            query={GET_MY_USING_SEAT}
+            onCompleted={data => {
+              if ("GetMyUsingSeat" in data) {
+                const { GetMyUsingSeat } = data;
+                if (GetMyUsingSeat.ok) {
+                  if (GetMyUsingSeat.seat) {
+                    this.setState({ myUsingSeatId: GetMyUsingSeat.seat.id });
+                  } else {
+                    this.setState({ myUsingSeatId: null });
+                  }
                 } else {
-                  toast.error(UserReturnSeat.error);
+                  toast.error(GetMyUsingSeat.error);
                 }
-              }}
-            >
-              {userReturnSeatMutation => {
-                this.returnSeatFn = userReturnSeatMutation;
-                return (
-                  <AssignSeatMutation
-                    mutation={USER_ASSIGN_SEAT}
-                    refetchQueries={[
-                      { query: GET_SEATS, variables: { roomId: nowRoomId } },
-                      { query: GET_BRANCH_BY_IP, variables: { ip: nowIp } },
-                      { query: GET_MY_USING_SEAT }
-                    ]}
-                    onCompleted={data => {
-                      const { UserAssignSeat } = data;
-                      if (UserAssignSeat.ok) {
-                        toast.success("좌석을 배정했습니다!");
-                        this.setState({
-                          assignSeatId: null
-                        });
-                      } else {
-                        toast.error(UserAssignSeat.error);
-                      }
-                    }}
-                    onError={err => {
-                      if (err.graphQLErrors[0].message) {
-                        toast.error(err.graphQLErrors[0].message);
-                      }
-                    }}
-                  >
-                    {(assignSeatMutation, { loading: assignSeatLoading }) => {
-                      this.assignSeatFn = assignSeatMutation;
-                      return (
-                        <GetBranchByIpQuery
-                          query={GET_BRANCH_BY_IP}
-                          variables={{ ip: nowIp }}
-                          onCompleted={this.updateFields}
-                          fetchPolicy={"cache-and-network"}
-                        >
-                          {({ loading: branchLoading }) => (
-                            <ProfileQuery query={USER_PROFILE}>
-                              {({ loading: profileLoading }) => (
-                                <HomePresenter
-                                  profileLoading={profileLoading}
-                                  branchLoading={branchLoading}
-                                  isMenuOpen={isMenuOpen}
-                                  toggleMenu={this.toggleMenu}
-                                  branchLoaded={branchLoaded}
-                                  loungeImage={loungeImage}
-                                  minimapImage={minimapImage}
-                                  rooms={rooms}
-                                  onRoomClick={this.onRoomClick}
-                                  nowRoomId={nowRoomId}
-                                  onSeatsPopUpCloseClick={
-                                    this.onSeatsPopUpCloseClick
-                                  }
-                                  onSeatClick={this.onSeatClick}
-                                  assignSeatId={assignSeatId}
-                                  assignSeatLoading={assignSeatLoading}
-                                  onEntranceClick={this.onEntranceClick}
-                                  onReturnClick={this.onReturnClick}
-                                  branchName={branchName}
-                                  myUsingSeatId={myUsingSeatId}
-                                />
+              }
+            }}
+            fetchPolicy={"cache-and-network"}
+          >
+            {() => {
+              return (
+                <ReturnSeatMutation
+                  mutation={USER_RETURN_SEAT}
+                  refetchQueries={[
+                    { query: GET_BRANCH_BY_IP, variables: { ip: nowIp } },
+                    { query: GET_MY_USING_SEAT }
+                  ]}
+                  onCompleted={data => {
+                    const { UserReturnSeat } = data;
+                    if (UserReturnSeat.ok) {
+                      toast.success("좌석을 반납했습니다!");
+                    } else {
+                      toast.error(UserReturnSeat.error);
+                    }
+                  }}
+                >
+                  {userReturnSeatMutation => {
+                    this.returnSeatFn = userReturnSeatMutation;
+                    return (
+                      <AssignSeatMutation
+                        mutation={USER_ASSIGN_SEAT}
+                        refetchQueries={[
+                          {
+                            query: GET_SEATS,
+                            variables: { roomId: nowRoomId }
+                          },
+                          { query: GET_BRANCH_BY_IP, variables: { ip: nowIp } },
+                          { query: GET_MY_USING_SEAT }
+                        ]}
+                        onCompleted={data => {
+                          const { UserAssignSeat } = data;
+                          if (UserAssignSeat.ok) {
+                            toast.success("좌석을 배정했습니다!");
+                            this.setState({
+                              assignSeatId: null
+                            });
+                          } else {
+                            toast.error(UserAssignSeat.error);
+                          }
+                        }}
+                        onError={err => {
+                          if (err.graphQLErrors[0].message) {
+                            toast.error(err.graphQLErrors[0].message);
+                          }
+                        }}
+                      >
+                        {(
+                          assignSeatMutation,
+                          { loading: assignSeatLoading }
+                        ) => {
+                          this.assignSeatFn = assignSeatMutation;
+                          return (
+                            <GetBranchByIpQuery
+                              query={GET_BRANCH_BY_IP}
+                              variables={{ ip: nowIp }}
+                              onCompleted={this.updateFields}
+                              fetchPolicy={"cache-and-network"}
+                            >
+                              {({ loading: branchLoading }) => (
+                                <ProfileQuery query={USER_PROFILE}>
+                                  {({ loading: profileLoading }) => (
+                                    <HomePresenter
+                                      profileLoading={profileLoading}
+                                      branchLoading={branchLoading}
+                                      isMenuOpen={isMenuOpen}
+                                      toggleMenu={this.toggleMenu}
+                                      branchLoaded={branchLoaded}
+                                      loungeImage={loungeImage}
+                                      minimapImage={minimapImage}
+                                      rooms={rooms}
+                                      onRoomClick={this.onRoomClick}
+                                      nowRoomId={nowRoomId}
+                                      onSeatsPopUpCloseClick={
+                                        this.onSeatsPopUpCloseClick
+                                      }
+                                      onSeatClick={this.onSeatClick}
+                                      assignSeatId={assignSeatId}
+                                      assignSeatLoading={assignSeatLoading}
+                                      onEntranceClick={this.onEntranceClick}
+                                      onReturnClick={this.onReturnClick}
+                                      branchName={branchName}
+                                      myUsingSeatId={myUsingSeatId}
+                                    />
+                                  )}
+                                </ProfileQuery>
                               )}
-                            </ProfileQuery>
-                          )}
-                        </GetBranchByIpQuery>
-                      );
-                    }}
-                  </AssignSeatMutation>
-                );
-              }}
-            </ReturnSeatMutation>
-          );
-        }}
-      </GetMyUsingSeatMutation>
+                            </GetBranchByIpQuery>
+                          );
+                        }}
+                      </AssignSeatMutation>
+                    );
+                  }}
+                </ReturnSeatMutation>
+              );
+            }}
+          </GetMyUsingSeatMutation>
+        )}
+      </GetMyUsableMemberships>
     );
   }
   // 자동으로 실행되는 query를 skip하고 싶으면 query 속성에 skip을 추가해주면 됨
@@ -201,7 +220,7 @@ class HomeContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public updateFields = (data: {} | getBranchByIp) => {
+  public updateFields = (data: {} | getBranchByIp | getUsableMyMemberships) => {
     if ("UserGetBranchByIP" in data) {
       const {
         UserGetBranchByIP: { branch }
@@ -216,6 +235,53 @@ class HomeContainer extends React.Component<IProps, IState> {
           minimapImage,
           rooms
         } as any);
+      }
+    } else if ("GetMyUsableMemberships" in data) {
+      const {
+        GetMyUsableMemberships: { memberships }
+      } = data;
+
+      let findMembership;
+      if (memberships) {
+        findMembership = memberships.find(membership => {
+          if (membership) {
+            const startDatetime = moment(membership.startDatetime);
+            const endDatetime = moment(membership.endDatetime);
+            if (startDatetime.diff(endDatetime, "days") >= 15) {
+              if (moment().add(3, "d") >= moment(membership.endDatetime)) {
+                return true;
+              } else {
+                return false;
+              }
+            } else if (startDatetime.diff(endDatetime, "hours") >= 16) {
+              if (moment().add(3, "h") >= moment(membership.endDatetime)) {
+                return true;
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        });
+
+        const usableMembership = memberships.find(membership => {
+          if (membership && !membership.cabinetId) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+
+        if (!usableMembership) {
+          toast.info("블루닷라운지 이용을 위해 멤버쉽에 가입해주세요");
+        }
+      }
+
+      if (findMembership) {
+        toast.error("멤버쉽 기간이 얼마 남지 않았습니다!");
       }
     }
   };

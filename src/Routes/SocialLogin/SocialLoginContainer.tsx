@@ -14,7 +14,7 @@ class LoginMutation extends Mutation<
 
 interface IState {
   name: string;
-  email?: string;
+  email: string;
   fbId: string;
 }
 

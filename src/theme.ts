@@ -5,6 +5,7 @@ const theme = {
   lightBlueColor: "#686de0",
   orangeColor: "#FF9800",
   pinkColor: "#D6A2E8",
+  purpleColor: "#6D214F",
   redColor: "#F44336",
   smallFontSize: "13px",
   yellowColor: "#f1c40f"

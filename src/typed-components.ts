@@ -12,6 +12,7 @@ interface IThemeInterface {
   redColor: string;
   lightBlueColor: string;
   pinkColor: string;
+  purpleColor: string;
 }
 
 const {

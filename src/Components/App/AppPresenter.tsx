@@ -28,6 +28,7 @@ import ReqSignUp from "../../Routes/ReqSignUp";
 import SettingCabinets from "../../Routes/SettingCabinets";
 import SettingCabinetSets from "../../Routes/SettingCabinetSets";
 import SettingCabLock from "../../Routes/SettingCabLock";
+import SettingCoBranch from "../../Routes/SettingCoBranch";
 import SettingLounge from "../../Routes/SettingLounge";
 import SettingProduct from "../../Routes/SettingProduct";
 import SettingSeats from "../../Routes/SettingSeats";
@@ -255,6 +256,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/view-req-sign-up"}
           exact={true}
           component={ViewReqSignUp}
+        />,
+        <Route
+          key={22}
+          path={"/setting-cobranch"}
+          exact={true}
+          component={SettingCoBranch}
         />
       ]}
 

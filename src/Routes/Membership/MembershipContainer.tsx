@@ -75,6 +75,7 @@ class MembershipContainer extends React.Component<IProps, IState> {
             query={GET_USABLE_MY_MEMBERSHIPS}
             fetchPolicy={"cache-and-network"}
             onError={error => toast.error(error)}
+            onCompleted={data => console.log({ data })}
           >
             {({
               data: myMembershipDatas,
