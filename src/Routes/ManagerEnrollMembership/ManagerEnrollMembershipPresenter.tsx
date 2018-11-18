@@ -83,7 +83,9 @@ const CancleButton = styled(Button)`
 `;
 
 const AddDatetimeCon = styled.div``;
-const AddDatetimeBtn = styled(Button)``;
+const AddDatetimeBtn = styled(Button)`
+  width: 130px;
+`;
 
 const ResetButton = styled(Button)`
   background-color: ${props => props.theme.yellowColor};
@@ -230,7 +232,11 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
                   product && (
                     <AddDatetimeBtn
                       key={product.id}
-                      value={`+ ${product.hours}시간`}
+                      value={`+ ${product.hours}시간 ${
+                        product.hours % 24 === 0
+                          ? `(${product.hours / 24}일)`
+                          : ""
+                      }`}
                       onClick={() => onDateTimeAddClick(product.hours)}
                     />
                   )

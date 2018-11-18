@@ -161,7 +161,11 @@ const ManagerExtendMembershipPresenter: React.SFC<IProps> = ({
                   product && (
                     <AddDatetimeBtn
                       key={product.id}
-                      value={`+ ${product.hours}시간`}
+                      value={`+ ${product.hours}시간 ${
+                        product.hours % 24 === 0
+                          ? `(${product.hours / 24}일)`
+                          : ""
+                      }`}
                       onClick={() => onDateTimeAddClick(product.hours)}
                     />
                   )
