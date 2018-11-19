@@ -14,6 +14,8 @@ import ManagerEnrollCabinet from "../../Routes/ManagerEnrollCabinet";
 import ManagerEnrollMembership from "../../Routes/ManagerEnrollMembership";
 import ManagerExtendCabinet from "../../Routes/ManagerExtendCabinet";
 import ManagerExtendMembership from "../../Routes/ManagerExtendMembership";
+import ManageSeat from "../../Routes/ManageSeat";
+import ManageSeats from "../../Routes/ManageSeats";
 import ManageUsers from "../../Routes/ManageUsers";
 import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
@@ -262,6 +264,18 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/setting-cobranch"}
           exact={true}
           component={SettingCoBranch}
+        />,
+        <Route
+          key={23}
+          path={"/manage-seats"}
+          exact={true}
+          component={ManageSeats}
+        />,
+        <Route
+          key={24}
+          path={"/manage-seat"}
+          exact={true}
+          component={ManageSeat}
         />
       ]}
 

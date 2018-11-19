@@ -1456,6 +1456,158 @@ export interface managerCreateMembershipVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: managerGetSeatLogs
+// ====================================================
+
+export interface managerGetSeatLogs_ManagerGetSeatLogs_seatLogs_user {
+  __typename: "User";
+  id: number;
+  name: string | null;
+}
+
+export interface managerGetSeatLogs_ManagerGetSeatLogs_seatLogs {
+  __typename: "SeatLog";
+  id: number;
+  user: managerGetSeatLogs_ManagerGetSeatLogs_seatLogs_user;
+  status: string;
+  endDatetime: string;
+  updatedAt: string | null;
+}
+
+export interface managerGetSeatLogs_ManagerGetSeatLogs_seat_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface managerGetSeatLogs_ManagerGetSeatLogs_seat {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+  branch: managerGetSeatLogs_ManagerGetSeatLogs_seat_branch;
+}
+
+export interface managerGetSeatLogs_ManagerGetSeatLogs {
+  __typename: "ManagerGetSeatLogsResponse";
+  ok: boolean;
+  error: string | null;
+  seatLogs: (managerGetSeatLogs_ManagerGetSeatLogs_seatLogs | null)[] | null;
+  seat: managerGetSeatLogs_ManagerGetSeatLogs_seat | null;
+}
+
+export interface managerGetSeatLogs {
+  ManagerGetSeatLogs: managerGetSeatLogs_ManagerGetSeatLogs;
+}
+
+export interface managerGetSeatLogsVariables {
+  seatId: number;
+  startDatetime: string;
+  endDatetime: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: managerAssignUser
+// ====================================================
+
+export interface managerAssignUser_ManagerAssignUser {
+  __typename: "ManagerAssignUserResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerAssignUser {
+  ManagerAssignUser: managerAssignUser_ManagerAssignUser;
+}
+
+export interface managerAssignUserVariables {
+  userId: number;
+  seatId: number;
+  startDatetime?: string | null;
+  endDatetime?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: managerReturnSeat
+// ====================================================
+
+export interface managerReturnSeat_ManagerReturnSeat {
+  __typename: "ManagerReturnSeatResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerReturnSeat {
+  ManagerReturnSeat: managerReturnSeat_ManagerReturnSeat;
+}
+
+export interface managerReturnSeatVariables {
+  seatId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getBranchForManSeat
+// ====================================================
+
+export interface getBranchForManSeat_GetBranchForManSeat_branch_rooms_seats {
+  __typename: "Seat";
+  id: number;
+  xpos: number;
+  ypos: number;
+  discard: boolean;
+  nowUsing: boolean;
+  endDatetime: string | null;
+  usable: boolean;
+  rotate: number;
+}
+
+export interface getBranchForManSeat_GetBranchForManSeat_branch_rooms {
+  __typename: "Room";
+  id: number;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  usable: boolean;
+  seats: (getBranchForManSeat_GetBranchForManSeat_branch_rooms_seats | null)[] | null;
+}
+
+export interface getBranchForManSeat_GetBranchForManSeat_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  loungeImage: string;
+  minimapImage: string;
+  rooms: (getBranchForManSeat_GetBranchForManSeat_branch_rooms | null)[] | null;
+}
+
+export interface getBranchForManSeat_GetBranchForManSeat {
+  __typename: "GetBranchForManSeatResponse";
+  ok: boolean;
+  error: string | null;
+  branch: getBranchForManSeat_GetBranchForManSeat_branch | null;
+}
+
+export interface getBranchForManSeat {
+  GetBranchForManSeat: getBranchForManSeat_GetBranchForManSeat;
+}
+
+export interface getBranchForManSeatVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: headGetMembershipLogs
 // ====================================================
 

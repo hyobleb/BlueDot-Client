@@ -7,11 +7,12 @@ interface IProps {
   closeFunc: any;
   roomId: number;
   onSeatClick: (seatId: number) => void;
-  assignSeatId: number | null;
-  assignSeatLoading: boolean;
+  assignSeatId?: number | null;
+  assignSeatLoading?: boolean;
   onEntranceClick?: () => void;
   canReturn?: boolean;
   returnFn?: () => void;
+  title?: string;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -67,11 +68,12 @@ const SeatsPopUpPresenter: React.SFC<IProps> = ({
   assignSeatLoading,
   onEntranceClick,
   canReturn,
-  returnFn
+  returnFn,
+  title = "좌석을 배정/반납해주세요!"
 }) => {
   return (
     <Container>
-      <HeadContainer>좌석을 배정/반납해주세요!</HeadContainer>
+      <HeadContainer>{title}</HeadContainer>
       <BodyContainer>
         <Room
           roomId={roomId}

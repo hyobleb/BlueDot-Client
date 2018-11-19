@@ -74,10 +74,10 @@ const ToggleAuthor = styled<IToggleProps, any>("button")`
     props.isFrenchiser
       ? props.theme.yellowColor
       : props.isSupervisor
-        ? props.theme.orangeColor
-        : props.isHead
-          ? props.theme.greenColor
-          : ""};
+      ? props.theme.orangeColor
+      : props.isHead
+      ? props.theme.greenColor
+      : ""};
   width: 100%;
   color: white;
   font-size: 18px;
@@ -99,50 +99,49 @@ const MenuPresenter: React.SFC<IProps> = ({
 }) => {
   return (
     <Container>
-      {!loading &&
-        user &&
-        user.name && (
-          <React.Fragment>
-            <Header>
-              <Grid>
-                <Link to={"/edit-account"}>
-                  <Image
-                    src={
-                      user.profilePhoto ||
-                      require("src/images/default_profile.png")
-                    }
-                  />
-                </Link>
-                <Text>
-                  <Name>{user.name}</Name>
-                  <Rating>4.5</Rating>
-                </Text>
-              </Grid>
-            </Header>
-            <SLink to="/membership">멤버쉽 정보</SLink>
-            <SLink to="/basket">장바구니</SLink>
-            <MenuItem onClick={() => logUserOutMutation()}>로그아웃</MenuItem>
+      {!loading && user && user.name && (
+        <React.Fragment>
+          <Header>
+            <Grid>
+              <Link to={"/edit-account"}>
+                <Image
+                  src={
+                    user.profilePhoto ||
+                    require("src/images/default_profile.png")
+                  }
+                />
+              </Link>
+              <Text>
+                <Name>{user.name}</Name>
+                <Rating>4.5</Rating>
+              </Text>
+            </Grid>
+          </Header>
+          <SLink to="/membership">멤버쉽 정보</SLink>
+          <SLink to="/basket">장바구니</SLink>
+          <MenuItem onClick={() => logUserOutMutation()}>로그아웃</MenuItem>
 
-            {user.isFranchiser || user.isSupervisor || user.isHead ? (
-              <>
-                <ToggleAuthor
-                  isHead={user.isHead}
-                  isFrenchiser={user.isFranchiser}
-                >
-                  {user.isFranchiser
-                    ? "관리자"
-                    : user.isHead
-                      ? "슈퍼 관리자"
-                      : ""}
-                </ToggleAuthor>
-                <SLink to="/branch-setting">지점 관리</SLink>
-                <SLink to="/manage-users">회원 관리</SLink>
-              </>
-            ) : (
-              ""
-            )}
-          </React.Fragment>
-        )}
+          {user.isFranchiser || user.isSupervisor || user.isHead ? (
+            <>
+              <ToggleAuthor
+                isHead={user.isHead}
+                isFrenchiser={user.isFranchiser}
+              >
+                {user.isFranchiser
+                  ? "관리자"
+                  : user.isHead
+                  ? "슈퍼 관리자"
+                  : ""}
+              </ToggleAuthor>
+              <SLink to="/branch-setting">지점 관리</SLink>
+              <SLink to="/manage-users">회원 관리</SLink>
+              <SLink to="/manage-seats">좌석 관리</SLink>
+            </>
+          ) : (
+            ""
+          )}
+        </React.Fragment>
+      )}
     </Container>
   );
 };

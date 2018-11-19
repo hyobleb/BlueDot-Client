@@ -91,6 +91,7 @@ interface IProps {
   onMembershipExpireClick: (membershipId: number) => void;
   onExpireConfirmClick: () => Promise<void>;
   onExtendCabinetClick: (membershipId: number) => void;
+  onBackClick: () => void;
 }
 
 const UserDetailPresenter: React.SFC<IProps> = ({
@@ -103,7 +104,8 @@ const UserDetailPresenter: React.SFC<IProps> = ({
   showExpirePopUpToggle,
   onMembershipExpireClick,
   onExpireConfirmClick,
-  onExtendCabinetClick
+  onExtendCabinetClick,
+  onBackClick
 }) => {
   let memberships;
   let cabinetMemberships;
@@ -125,7 +127,7 @@ const UserDetailPresenter: React.SFC<IProps> = ({
   }
 
   return (
-    <Back backUrl={"/manage-users"} title={"user-detail"}>
+    <Back backFn={onBackClick} title={"user-detail"}>
       {getUserDetailLoading || !user ? (
         <Loading />
       ) : (

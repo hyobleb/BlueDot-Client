@@ -19,6 +19,8 @@ interface IState {
   user?: headGetUserDetail_HeadGetUserDetail_user;
   showExpirePopUp: boolean;
   tempSelMembershipId?: number;
+  backUrl: string;
+  backInfo?: any;
 }
 
 class ExpireMembershipMutation extends Mutation<
@@ -40,6 +42,12 @@ class UserDetailContainer extends React.Component<IProps, IState> {
       props.history.push("/");
     }
     this.state = {
+      backInfo: props.location.state.backInfo
+        ? {
+            ...props.location.state.backInfo
+          }
+        : undefined,
+      backUrl: props.location.state.backUrl || "/manage-users",
       showExpirePopUp: false,
       userId: this.props.location.state.userId
     };
@@ -89,6 +97,7 @@ class UserDetailContainer extends React.Component<IProps, IState> {
                     onMembershipExpireClick={this.onMembershipExpireClick}
                     onExpireConfirmClick={this.onExpireConfirmClick}
                     onExtendCabinetClick={this.onExtendCabinetClick}
+                    onBackClick={this.onBackClick}
                   />
                 );
               }}
@@ -179,6 +188,17 @@ class UserDetailContainer extends React.Component<IProps, IState> {
       pathname: "/manager-extend-cabinet",
       state: {
         selMembershipId: membershipId
+      }
+    });
+  };
+
+  public onBackClick = () => {
+    const { history } = this.props;
+    const { backUrl, backInfo } = this.state;
+    history.push({
+      pathname: backUrl,
+      state: {
+        ...backInfo
       }
     });
   };
