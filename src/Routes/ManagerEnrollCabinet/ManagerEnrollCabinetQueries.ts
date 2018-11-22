@@ -20,3 +20,15 @@ export const MANAGER_ENROLL_CABINET = gql`
     }
   }
 `;
+
+export const MANAGER_SHIFT_CABINET = gql`
+  mutation managerShiftCabinet($membershipId: Int!, $targetCabinetId: Int!) {
+    ManagerShiftCabinetMembership(
+      membershipId: $membershipId
+      targetCabinetId: $targetCabinetId
+    ) {
+      ok
+      error
+    }
+  }
+`;

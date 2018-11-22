@@ -1,6 +1,6 @@
 import moment, { Moment } from "moment";
 import React from "react";
-import { Mutation, Query } from "react-apollo";
+import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -18,11 +18,16 @@ import {
   getCabinetVariables,
   managerEnrollCabinet,
   managerEnrollCabinetVariables,
+  managerShiftCabinet,
+  managerShiftCabinetVariables,
   userGetProducts,
   userGetProductsVariables
 } from "src/types/api";
 import ManagerEnrollCabinetPresenter from "./ManagerEnrollCabinetPresenter";
-import { MANAGER_ENROLL_CABINET } from "./ManagerEnrollCabinetQueries";
+import {
+  MANAGER_ENROLL_CABINET,
+  MANAGER_SHIFT_CABINET
+} from "./ManagerEnrollCabinetQueries";
 
 interface IState {
   branchId: number;
@@ -41,9 +46,13 @@ interface IState {
   userIdName: string;
   userName: string;
   selEndDatetime: string;
+  isShifitCabinet: boolean;
+  nowMembershipId?: number;
 }
 
-interface IProps extends RouteComponentProps<any> {}
+interface IProps extends RouteComponentProps<any> {
+  backInfo: any;
+}
 
 class GetBranchQuery extends Query<userGetProducts, userGetProductsVariables> {}
 class ManangerCreateCabinet extends Mutation<
@@ -59,8 +68,14 @@ class GetCabinetSetsQuery extends Query<
 class GetCabinetSetQuery extends Query<getCabinets, getCabinetsVariables> {}
 class GetCabinetQuery extends Query<getCabinet, getCabinetVariables> {}
 
+class ShiftCabinetMutation extends Mutation<
+  managerShiftCabinet,
+  managerShiftCabinetVariables
+> {}
+
 class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
   public enrollCabinetFn;
+  public shiftCabinetFn: MutationFn;
 
   constructor(props) {
     super(props);
@@ -75,6 +90,10 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       }
     }
 
+    const cabinetId = props.location.state.cabinetId || 0;
+    const setId = props.location.state.setId || 0;
+    const isShifitCabinet = props.location.state.isShifitCabinet || false;
+
     this.state = {
       branchId: props.location.state
         ? props.location.state.branchId
@@ -82,15 +101,17 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
           : 0
         : 0,
       branchPopUpShow: false,
-      cabinetId: 0,
+      cabinetId,
       cabinetNumber: 0,
       cabinets: null,
       horizontalNumber: 0,
       isFirstLoaidng: true,
+      isShifitCabinet,
+      nowMembershipId: props.location.state.nowMembershipId,
       productId: 0,
       productTitle: "",
       selEndDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
-      setId: 0,
+      setId,
       startDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
       tempSetId: 0,
       userId: props.location.state.userId,
@@ -115,180 +136,209 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       isFirstLoaidng,
       selEndDatetime,
       userIdName,
-      userName
+      userName,
+      isShifitCabinet
     } = this.state;
     return (
-      <GetCabinetQuery
-        query={GET_CABINET}
-        variables={{ cabinetId }}
-        fetchPolicy={"cache-and-network"}
+      <ShiftCabinetMutation
+        mutation={MANAGER_SHIFT_CABINET}
         onCompleted={data => {
-          if ("UserGetCabinet" in data) {
-            const {
-              UserGetCabinet: { cabinet }
-            } = data;
-
-            if (cabinet !== null) {
-              const {
-                cabinetNumber: findCabinetNumber,
-                usable,
-                nowUsing,
-                status,
-                reservedDatetime,
-                endDatetime
-              } = cabinet;
-
-              if (!usable) {
-                toast.error("해당 사물함은 사용할 수 없는 상태입니다");
-                this.setState({
-                  cabinetId: 0
-                });
-              } else if (
-                nowUsing ||
-                (endDatetime && moment(endDatetime) > moment())
-              ) {
-                toast.error("해당 사물함은 현재 이용중입니다");
-                this.setState({
-                  cabinetId: 0
-                });
-              } else if (
-                status === "RESERVED" &&
-                (reservedDatetime && moment(reservedDatetime) > moment())
-              ) {
-                toast.error("해당 사물함은 현재 예약 중입니다");
-                this.setState({
-                  cabinetId: 0
-                });
-              } else {
-                this.setState({
-                  cabinetNumber: findCabinetNumber
-                });
-              }
-            }
+          const { ManagerShiftCabinetMembership } = data;
+          if (ManagerShiftCabinetMembership.ok) {
+            toast.success("해당 사물함으로 이동했습니다!");
+            this.onBackClick();
+          } else {
+            toast.error(ManagerShiftCabinetMembership.error);
           }
         }}
-        skip={cabinetId === 0}
       >
-        {() => (
-          <GetCabinetSetQuery
-            query={GET_CABINETS}
-            variables={{ cabinetSetId: setId }}
-            onCompleted={data => {
-              if ("GetCabinetSet" in data) {
-                const {
-                  GetCabinetSet: { cabinetSet }
-                } = data;
-
-                if (cabinetSet !== null) {
+        {shiftCabinetMutation => {
+          this.shiftCabinetFn = shiftCabinetMutation;
+          return (
+            <GetCabinetQuery
+              query={GET_CABINET}
+              variables={{ cabinetId }}
+              fetchPolicy={"cache-and-network"}
+              onCompleted={data => {
+                if ("UserGetCabinet" in data) {
                   const {
-                    cabinets: findCabinets,
-                    horizontalNumber: findHorizontalNumber
-                  } = cabinetSet;
+                    UserGetCabinet: { cabinet }
+                  } = data;
 
-                  if (findCabinets && findHorizontalNumber) {
-                    this.setState({
-                      cabinets: findCabinets.sort((a, b) => {
-                        return a!.id - b!.id;
-                      }),
-                      horizontalNumber: findHorizontalNumber
-                    });
+                  if (cabinet !== null) {
+                    const {
+                      cabinetNumber: findCabinetNumber,
+                      usable,
+                      nowUsing,
+                      status,
+                      reservedDatetime,
+                      endDatetime
+                    } = cabinet;
+
+                    if (!usable) {
+                      toast.error("해당 사물함은 사용할 수 없는 상태입니다");
+                      this.setState({
+                        cabinetId: 0
+                      });
+                    } else if (
+                      nowUsing ||
+                      (endDatetime && moment(endDatetime) > moment())
+                    ) {
+                      toast.error("해당 사물함은 현재 이용중입니다");
+                      this.setState({
+                        cabinetId: 0
+                      });
+                    } else if (
+                      status === "RESERVED" &&
+                      (reservedDatetime && moment(reservedDatetime) > moment())
+                    ) {
+                      toast.error("해당 사물함은 현재 예약 중입니다");
+                      this.setState({
+                        cabinetId: 0
+                      });
+                    } else {
+                      this.setState({
+                        cabinetNumber: findCabinetNumber
+                      });
+                    }
                   }
                 }
-              }
-            }}
-            skip={setId === 0}
-            fetchPolicy={"cache-and-network"}
-          >
-            {() => {
-              return (
-                // sometimes this part is not excuted, I expected that it was excuted when render
-                <GetCabinetSetsQuery
-                  query={GET_BRANCH_FOR_ERNOLL_CABINET}
-                  variables={{ branchId: this.state.branchId }}
+              }}
+              skip={cabinetId === 0}
+            >
+              {() => (
+                <GetCabinetSetQuery
+                  query={GET_CABINETS}
+                  variables={{ cabinetSetId: setId }}
+                  onCompleted={data => {
+                    if ("GetCabinetSet" in data) {
+                      const {
+                        GetCabinetSet: { cabinetSet }
+                      } = data;
+
+                      if (cabinetSet !== null) {
+                        const {
+                          cabinets: findCabinets,
+                          horizontalNumber: findHorizontalNumber
+                        } = cabinetSet;
+
+                        if (findCabinets && findHorizontalNumber) {
+                          this.setState({
+                            cabinets: findCabinets.sort((a, b) => {
+                              return a!.id - b!.id;
+                            }),
+                            horizontalNumber: findHorizontalNumber
+                          });
+                        }
+                      }
+                    }
+                  }}
+                  skip={setId === 0}
                   fetchPolicy={"cache-and-network"}
                 >
-                  {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => {
+                  {() => {
                     return (
-                      <ManangerCreateCabinet
-                        mutation={MANAGER_ENROLL_CABINET}
-                        variables={{
-                          branchId,
-                          cabinetId,
-                          endDatetime: selEndDatetime,
-                          startDatetime,
-                          userId
-                        }}
+                      // sometimes this part is not excuted, I expected that it was excuted when render
+                      <GetCabinetSetsQuery
+                        query={GET_BRANCH_FOR_ERNOLL_CABINET}
+                        variables={{ branchId: this.state.branchId }}
+                        fetchPolicy={"cache-and-network"}
                       >
-                        {userRequestCabinetFn => {
-                          this.enrollCabinetFn = userRequestCabinetFn;
+                        {({
+                          data: cabinetSetDatas,
+                          loading: cabinetSetLoading
+                        }) => {
                           return (
-                            <GetBranchQuery
-                              query={USER_GET_PRODUCTS}
-                              variables={{ branchId }}
-                              fetchPolicy={"cache-and-network"}
-                              onCompleted={data => {
-                                this.setState({
-                                  productId: 0,
-                                  productTitle: ""
-                                });
+                            <ManangerCreateCabinet
+                              mutation={MANAGER_ENROLL_CABINET}
+                              variables={{
+                                branchId,
+                                cabinetId,
+                                endDatetime: selEndDatetime,
+                                startDatetime,
+                                userId
                               }}
-                              skip={branchId === 0}
                             >
-                              {({ data: productDatas }) => (
-                                <ManagerEnrollCabinetPresenter
-                                  branchId={branchId}
-                                  branchPopUpShow={branchPopUpShow}
-                                  cabinetId={cabinetId}
-                                  productTitle={productTitle}
-                                  startDatetime={startDatetime}
-                                  onSubmit={this.onSubmit}
-                                  productDatas={productDatas}
-                                  onOptionChange={this.onOptionChange}
-                                  setTrueBranchPopUpShow={
-                                    this.setTrueBranchPopUpShow
-                                  }
-                                  setFalseBranchPopUpShow={
-                                    this.setFalseBranchPopUpShow
-                                  }
-                                  onBranchClick={this.onBranchClick}
-                                  onDatetimeChange={this.onDatetimeChange}
-                                  onEnrollClick={this.onEnrollClick}
-                                  cabinetSetDatas={cabinetSetDatas}
-                                  tempSetId={tempSetId}
-                                  onSetHover={this.onSetHover}
-                                  onSetHoverOut={this.onSetHoverOut}
-                                  onSetClick={this.onSetClick}
-                                  setId={setId}
-                                  cabinets={cabinets}
-                                  horizontalNumber={horizontalNumber}
-                                  onCabinetClick={this.onCabinetClick}
-                                  cabinetNumber={cabinetNumber}
-                                  cabinetSetLoading={cabinetSetLoading}
-                                  isFirstLoaidng={isFirstLoaidng}
-                                  selEndDatetime={selEndDatetime}
-                                  onEndDatetimeChange={this.onEndDatetimeChange}
-                                  onDateTimeAddClick={this.onDateTimeAddClick}
-                                  userIdName={userIdName}
-                                  userName={userName}
-                                  setDatetimeValueNow={this.setDatetimeValueNow}
-                                  setEndDatetimeToStart={
-                                    this.setEndDatetimeToStart
-                                  }
-                                  onBackClick={this.onBackClick}
-                                />
-                              )}
-                            </GetBranchQuery>
+                              {userRequestCabinetFn => {
+                                this.enrollCabinetFn = userRequestCabinetFn;
+                                return (
+                                  <GetBranchQuery
+                                    query={USER_GET_PRODUCTS}
+                                    variables={{ branchId }}
+                                    fetchPolicy={"cache-and-network"}
+                                    onCompleted={data => {
+                                      this.setState({
+                                        productId: 0,
+                                        productTitle: ""
+                                      });
+                                    }}
+                                    skip={branchId === 0}
+                                  >
+                                    {({ data: productDatas }) => (
+                                      <ManagerEnrollCabinetPresenter
+                                        branchId={branchId}
+                                        branchPopUpShow={branchPopUpShow}
+                                        cabinetId={cabinetId}
+                                        productTitle={productTitle}
+                                        startDatetime={startDatetime}
+                                        onSubmit={this.onSubmit}
+                                        productDatas={productDatas}
+                                        onOptionChange={this.onOptionChange}
+                                        setTrueBranchPopUpShow={
+                                          this.setTrueBranchPopUpShow
+                                        }
+                                        setFalseBranchPopUpShow={
+                                          this.setFalseBranchPopUpShow
+                                        }
+                                        onBranchClick={this.onBranchClick}
+                                        onDatetimeChange={this.onDatetimeChange}
+                                        onEnrollClick={this.onEnrollClick}
+                                        cabinetSetDatas={cabinetSetDatas}
+                                        tempSetId={tempSetId}
+                                        onSetHover={this.onSetHover}
+                                        onSetHoverOut={this.onSetHoverOut}
+                                        onSetClick={this.onSetClick}
+                                        setId={setId}
+                                        cabinets={cabinets}
+                                        horizontalNumber={horizontalNumber}
+                                        onCabinetClick={this.onCabinetClick}
+                                        cabinetNumber={cabinetNumber}
+                                        cabinetSetLoading={cabinetSetLoading}
+                                        isFirstLoaidng={isFirstLoaidng}
+                                        selEndDatetime={selEndDatetime}
+                                        onEndDatetimeChange={
+                                          this.onEndDatetimeChange
+                                        }
+                                        onDateTimeAddClick={
+                                          this.onDateTimeAddClick
+                                        }
+                                        userIdName={userIdName}
+                                        userName={userName}
+                                        setDatetimeValueNow={
+                                          this.setDatetimeValueNow
+                                        }
+                                        setEndDatetimeToStart={
+                                          this.setEndDatetimeToStart
+                                        }
+                                        onBackClick={this.onBackClick}
+                                        isShifitCabinet={isShifitCabinet}
+                                      />
+                                    )}
+                                  </GetBranchQuery>
+                                );
+                              }}
+                            </ManangerCreateCabinet>
                           );
                         }}
-                      </ManangerCreateCabinet>
+                      </GetCabinetSetsQuery>
                     );
                   }}
-                </GetCabinetSetsQuery>
-              );
-            }}
-          </GetCabinetSetQuery>
-        )}
-      </GetCabinetQuery>
+                </GetCabinetSetQuery>
+              )}
+            </GetCabinetQuery>
+          );
+        }}
+      </ShiftCabinetMutation>
     );
   }
 
@@ -337,7 +387,14 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
   };
 
   public onEnrollClick = async () => {
-    const { branchId, startDatetime, selEndDatetime, cabinetId } = this.state;
+    const {
+      branchId,
+      startDatetime,
+      selEndDatetime,
+      cabinetId,
+      isShifitCabinet,
+      nowMembershipId
+    } = this.state;
     if (!branchId) {
       toast.error("지점 선택이 이루어지지 않았습니다");
     } else if (!cabinetId) {
@@ -347,16 +404,28 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
     } else if (!selEndDatetime) {
       toast.error("종료 일시 선택이 이루어지지 않았습니다");
     } else {
-      const result = await this.enrollCabinetFn();
-      const {
-        data: { ManagerCreateCabMembership }
-      } = result;
-      if (ManagerCreateCabMembership.ok) {
-        toast.success("사물함이 무사히 등록되었습니다");
-        this.onBackClick();
+      if (isShifitCabinet) {
+        if (!nowMembershipId) {
+          toast.error("해당 사물함 멤버쉽 정보가 없습니다");
+        } else {
+          await this.shiftCabinetFn({
+            variables: {
+              membershipId: nowMembershipId,
+              targetCabinetId: cabinetId
+            }
+          });
+        }
       } else {
-        toast.error(ManagerCreateCabMembership.error);
-        console.log(this.state);
+        const result = await this.enrollCabinetFn();
+        const {
+          data: { ManagerCreateCabMembership }
+        } = result;
+        if (ManagerCreateCabMembership.ok) {
+          toast.success("사물함이 무사히 등록되었습니다");
+          this.onBackClick();
+        } else {
+          toast.error(ManagerCreateCabMembership.error);
+        }
       }
     }
   };
@@ -390,13 +459,23 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
   };
 
   public onBackClick = () => {
-    const { history } = this.props;
+    const { history, location } = this.props;
     const { userId } = this.state;
+    const { backInfo } = location.state;
 
-    history.push({
-      pathname: "/user-detail",
-      state: { userId }
-    });
+    if (backInfo) {
+      history.push({
+        pathname: backInfo.backUrl,
+        state: {
+          ...backInfo.content
+        }
+      });
+    } else {
+      history.push({
+        pathname: "/user-detail",
+        state: { userId }
+      });
+    }
   };
 
   public onDateTimeAddClick = (hours: number) => {

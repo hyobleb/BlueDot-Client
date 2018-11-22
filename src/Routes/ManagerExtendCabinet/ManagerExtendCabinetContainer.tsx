@@ -84,7 +84,6 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { history } = this.props;
     const {
       showMembershipPopUp,
       exstingMemberships,
@@ -109,10 +108,7 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
               onCompleted={data => {
                 if (data.ManagerUpdateMembershipEndDatetime.ok) {
                   toast.success("해당 사물함을 연장했습니다");
-                  history.push({
-                    pathname: "/user-detail",
-                    state: { userId: selMembership.userId }
-                  });
+                  this.onBackClick();
                 } else {
                   toast.error(data.ManagerUpdateMembershipEndDatetime.error);
                 }
@@ -150,6 +146,7 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
                                 onResetClick={this.onResetClick}
                                 onDateTimeAddClick={this.onDateTimeAddClick}
                                 selEndDatetime={selEndDatetime}
+                                onBackClick={this.onBackClick}
                               />
                             );
                           }}
@@ -256,6 +253,26 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
         .format("YYYY-MM-DD HH:mm:ss"),
       totalExtHours: this.state.totalExtHours + hours
     });
+  };
+
+  public onBackClick = () => {
+    const { history, location } = this.props;
+    const { selMembership } = this.state;
+    const { backInfo } = location.state;
+
+    if (backInfo) {
+      history.push({
+        pathname: backInfo.backUrl,
+        state: {
+          ...backInfo.content
+        }
+      });
+    } else {
+      history.push({
+        pathname: "/user-detail",
+        state: { userId: selMembership.userId }
+      });
+    }
   };
 }
 

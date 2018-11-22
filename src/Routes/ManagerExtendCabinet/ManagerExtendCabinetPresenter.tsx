@@ -1,5 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
+import BackArrow from "src/Components/BackArrow";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 
@@ -50,6 +51,17 @@ const AddDatetimeCon = styled.div`
 `;
 const AddDatetimeBtn = styled(Button)`
   margin: 0 3px;
+  font-size: 11px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: ${props => props.theme.greenColor};
+`;
+
+const BackArrowExtended = styled(BackArrow)`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  cursor: pointer;
 `;
 
 interface IProps {
@@ -63,6 +75,7 @@ interface IProps {
   onResetClick: () => void;
   onDateTimeAddClick: (hours: number) => void;
   selEndDatetime: string;
+  onBackClick: () => void;
 }
 
 const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
@@ -72,13 +85,16 @@ const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
   totalExtHours,
   onResetClick,
   onDateTimeAddClick,
-  selEndDatetime
+  selEndDatetime,
+  onBackClick
 }) => {
   return (
     <BackContainer>
       <Helmet>
         <title>Extend Cabinet | BlueDot</title>
       </Helmet>
+      <BackArrowExtended backFn={onBackClick} />
+
       <Container>
         <HeadSection>사물함 연장</HeadSection>
         <MembershipSection>

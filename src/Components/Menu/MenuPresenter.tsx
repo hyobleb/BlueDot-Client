@@ -136,6 +136,7 @@ const MenuPresenter: React.SFC<IProps> = ({
               <SLink to="/branch-setting">지점 관리</SLink>
               <SLink to="/manage-users">회원 관리</SLink>
               <SLink to="/manage-seats">좌석 관리</SLink>
+              <SLink to="/manage-cabinets">사물함 관리</SLink>
             </>
           ) : (
             ""

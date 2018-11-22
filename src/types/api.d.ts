@@ -877,6 +877,7 @@ export interface getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets {
 export interface getBranchForEnrollCabinet_UserGetBranch_branch {
   __typename: "Branch";
   id: number;
+  name: string;
   cabinetLoungeImage: string;
   cabinetSets: (getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets | null)[] | null;
 }
@@ -1407,6 +1408,90 @@ export interface userIdSignInVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: managerGetCabinetLogs
+// ====================================================
+
+export interface managerGetCabinetLogs_ManagerGetCabinetLogs_cabinetLogs_user {
+  __typename: "User";
+  id: number;
+  name: string | null;
+}
+
+export interface managerGetCabinetLogs_ManagerGetCabinetLogs_cabinetLogs {
+  __typename: "MembershipLog";
+  id: number;
+  user: managerGetCabinetLogs_ManagerGetCabinetLogs_cabinetLogs_user;
+  status: string;
+  endDatetime: string;
+  updatedAt: string;
+  membershipId: number;
+}
+
+export interface managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet_memberships {
+  __typename: "Membership";
+  id: number;
+  endDatetime: string;
+}
+
+export interface managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet_lock {
+  __typename: "CabinetLock";
+  id: number;
+  lockNumber: number;
+  password: string;
+}
+
+export interface managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet_user {
+  __typename: "User";
+  id: number;
+  name: string | null;
+  userId: string | null;
+}
+
+export interface managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+  nowUsing: boolean;
+  status: string | null;
+  reservedDatetime: string | null;
+  startDatetime: string | null;
+  endDatetime: string | null;
+  updatedAt: string;
+  usable: boolean;
+  memberships: (managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet_memberships | null)[];
+  lock: managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet_lock | null;
+  user: managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet_user | null;
+  branch: managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet_branch;
+}
+
+export interface managerGetCabinetLogs_ManagerGetCabinetLogs {
+  __typename: "ManagerGetCabinetLogsResponse";
+  ok: boolean;
+  error: string | null;
+  cabinetLogs: (managerGetCabinetLogs_ManagerGetCabinetLogs_cabinetLogs | null)[] | null;
+  cabinet: managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet | null;
+}
+
+export interface managerGetCabinetLogs {
+  ManagerGetCabinetLogs: managerGetCabinetLogs_ManagerGetCabinetLogs;
+}
+
+export interface managerGetCabinetLogsVariables {
+  cabinetId: number;
+  startDatetime: string;
+  endDatetime: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: managerEnrollCabinet
 // ====================================================
 
@@ -1426,6 +1511,28 @@ export interface managerEnrollCabinetVariables {
   startDatetime: string;
   endDatetime: string;
   cabinetId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: managerShiftCabinet
+// ====================================================
+
+export interface managerShiftCabinet_ManagerShiftCabinetMembership {
+  __typename: "ManagerShiftCabinetResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerShiftCabinet {
+  ManagerShiftCabinetMembership: managerShiftCabinet_ManagerShiftCabinetMembership;
+}
+
+export interface managerShiftCabinetVariables {
+  membershipId: number;
+  targetCabinetId: number;
 }
 
 /* tslint:disable */

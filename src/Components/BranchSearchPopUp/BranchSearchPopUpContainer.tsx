@@ -7,6 +7,7 @@ import BranchSearchPopUpPresenter from "./BranchSearchPopUpPresenter";
 interface IProps {
   closeFunc: any;
   onBranchClick: (branchId: number) => void;
+  title?: string;
 }
 
 interface IState {
@@ -27,7 +28,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
 
   public render() {
     const { inputBranch, searchText } = this.state;
-    const { closeFunc } = this.props;
+    const { closeFunc, title } = this.props;
     return (
       <BranchSearchQuery
         query={SEARCH_BRANCH}
@@ -51,6 +52,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
             loading={loading}
             setSearchText={this.setSearchText}
             onBranchClick={this.onBranchClick}
+            title={title}
           />
         )}
       </BranchSearchQuery>

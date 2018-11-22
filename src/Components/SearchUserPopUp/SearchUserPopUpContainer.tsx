@@ -7,14 +7,14 @@ import { SEARCH_USERS } from "./SearchUserPopUpQueries";
 
 interface IProps {
   closeFunc: any;
-  onUserClick: (userId: number) => Promise<void>;
+  onUserClick: (userId: number) => Promise<void> | void;
 }
 
 interface IState {
   inputValue: string;
   searchText: string;
   searchType: string;
-  onUserClick: (userId: number) => Promise<void>;
+  onUserClick: (userId: number) => Promise<void> | void;
 }
 
 class SearchUsersQuery extends Query<searchUsers> {}

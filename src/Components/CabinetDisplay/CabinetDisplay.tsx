@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {
   DANGER_COLOR,
   PRIMARY_COLOR,
-  // SECONDARY_COLOR,
+  SECONDARY_COLOR,
   SUCCESS_COLOR,
   WARNING_COLOR
 } from "src/keys/colors";
@@ -16,6 +16,7 @@ interface IProps {
   horizontalNumber: number;
   onCabinetClick?: (cabinetId: number) => void;
   selCabinetId?: number;
+  isMan?: boolean;
 }
 
 const Container = styled.div`
@@ -76,7 +77,8 @@ const CabinetDisplay: React.SFC<IProps> = ({
   onCabinetClick = () => {
     return;
   },
-  selCabinetId
+  selCabinetId,
+  isMan
 }) => {
   const verticalCabients = new Array();
   for (let hIndex = 1; hIndex <= horizontalNumber; hIndex++) {
@@ -96,11 +98,18 @@ const CabinetDisplay: React.SFC<IProps> = ({
         <ColorIndex style={{ backgroundColor: SUCCESS_COLOR }}>
           선택한 사물함
         </ColorIndex>
+        {isMan ? (
+          <ColorIndex style={{ backgroundColor: SECONDARY_COLOR }}>
+            예약한 사물함
+          </ColorIndex>
+        ) : (
+          ""
+        )}
       </ColorIndexContainer>
       {verticalCabients.map((rowCabinets, index) => (
         <CabinetRow key={index}>
           {rowCabinets.map(cabinet => {
-            const backgroundColor =
+            let backgroundColor =
               !cabinet.usable || !cabinet.lockId
                 ? DANGER_COLOR
                 : cabinet.nowUsing || moment(cabinet.endDatetime) > moment()
@@ -111,24 +120,37 @@ const CabinetDisplay: React.SFC<IProps> = ({
                 : cabinet.id === selCabinetId
                 ? SUCCESS_COLOR
                 : PRIMARY_COLOR;
+
+            if (isMan) {
+              if (cabinet.id === selCabinetId) {
+                backgroundColor = SUCCESS_COLOR;
+              } else if (moment(cabinet.reservedDatetime) > moment()) {
+                backgroundColor = SECONDARY_COLOR;
+              }
+            }
+
             return (
               <CabinetItem
                 key={cabinet.id}
                 onClick={() => {
-                  if (!cabinet.usable || !cabinet.lockId) {
-                    toast.error("해당 사물함은 이용할수 없습니다");
-                  } else if (
-                    cabinet.nowUsing &&
-                    moment(cabinet.endDatetime) > moment()
-                  ) {
-                    toast.error("해당 사물함은 현재 이용중입니다");
-                  } else if (
-                    cabinet.status === "RESERVED" &&
-                    moment(cabinet.reservedDatetime) > moment()
-                  ) {
-                    toast.error("해당 사물함은 예약 중입니다");
-                  } else {
+                  if (isMan) {
                     onCabinetClick(cabinet.id);
+                  } else {
+                    if (!cabinet.usable || !cabinet.lockId) {
+                      toast.error("해당 사물함은 이용할수 없습니다");
+                    } else if (
+                      cabinet.nowUsing &&
+                      moment(cabinet.endDatetime) > moment()
+                    ) {
+                      toast.error("해당 사물함은 현재 이용중입니다");
+                    } else if (
+                      cabinet.status === "RESERVED" &&
+                      moment(cabinet.reservedDatetime) > moment()
+                    ) {
+                      toast.error("해당 사물함은 예약 중입니다");
+                    } else {
+                      onCabinetClick(cabinet.id);
+                    }
                   }
                 }}
                 style={{ backgroundColor }}

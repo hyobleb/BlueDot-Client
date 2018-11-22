@@ -13,7 +13,7 @@ interface IProps {
   closeFunc: any;
   data: searchUsers | undefined;
   setSearchText: () => void;
-  onUserClick?: (userId: number) => Promise<void>;
+  onUserClick?: (userId: number) => Promise<void> | void;
   onSerachTypeChange: (arg: Option) => void;
   searchType: string;
 }

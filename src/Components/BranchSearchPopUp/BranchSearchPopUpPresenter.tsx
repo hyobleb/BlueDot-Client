@@ -15,6 +15,7 @@ interface IProps {
   loading: boolean;
   setSearchText: () => void;
   onBranchClick: (id: number) => void;
+  title?: string;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -35,6 +36,11 @@ const Container = styled.div`
   padding: 20px;
 `;
 
+const Title = styled.div`
+  font-size: 18px;
+  margin-bottom: 10px;
+`;
+
 const InputContainer = styled.div`
   min-width: 150px;
   max-width: 400px;
@@ -51,7 +57,7 @@ const ExtendInput = styled(Input)`
 
 const HeadContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 `;
 
 const BranchSearchButton = styled(Button)`
@@ -138,11 +144,14 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   error,
   loading,
   setSearchText,
-  onBranchClick
+  onBranchClick,
+  title
 }) => {
   return (
     <Container>
       <HeadContainer>
+        {title ? <Title>{title}</Title> : ""}
+
         <InputContainer>
           <ExtendForm submitFn={setSearchText}>
             <ExtendInput

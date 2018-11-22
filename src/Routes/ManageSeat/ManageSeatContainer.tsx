@@ -181,15 +181,25 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
   };
 
   public onStartDatetimeChange = (startDatetimeValue: Moment) => {
-    this.setState({
-      startDatetime: startDatetimeValue
-    });
+    const { endDatetime } = this.state;
+    if (endDatetime < startDatetimeValue) {
+      toast.warn("기간설정이 잘 못 되었습니다");
+    } else {
+      this.setState({
+        startDatetime: startDatetimeValue
+      });
+    }
   };
 
   public onEndDatetimeChange = (endDatetimeValue: Moment) => {
-    this.setState({
-      endDatetime: endDatetimeValue
-    });
+    const { startDatetime } = this.state;
+    if (endDatetimeValue < startDatetime) {
+      toast.warn("기간설정이 잘 못 되었습니다");
+    } else {
+      this.setState({
+        endDatetime: endDatetimeValue
+      });
+    }
   };
 
   public updateFields = (data: {} | managerGetSeatLogs) => {

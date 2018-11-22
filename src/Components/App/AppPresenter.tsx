@@ -10,6 +10,8 @@ import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
+import ManageCabinet from "../../Routes/ManageCabinet";
+import ManageCabinets from "../../Routes/ManageCabinets";
 import ManagerEnrollCabinet from "../../Routes/ManagerEnrollCabinet";
 import ManagerEnrollMembership from "../../Routes/ManagerEnrollMembership";
 import ManagerExtendCabinet from "../../Routes/ManagerExtendCabinet";
@@ -276,6 +278,18 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/manage-seat"}
           exact={true}
           component={ManageSeat}
+        />,
+        <Route
+          key={25}
+          path={"/manage-cabinets"}
+          exact={true}
+          component={ManageCabinets}
+        />,
+        <Route
+          key={26}
+          path={"/manage-cabinet"}
+          exact={true}
+          component={ManageCabinet}
         />
       ]}
 

@@ -79,6 +79,7 @@ const DatetimePicker = styled.div`
 const DatetimeSection = styled(Section)`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 const ButtonSection = styled(Section)`
   justify-content: center;
@@ -135,7 +136,9 @@ const CabinetDisplayTitle = styled.div`
 `;
 
 const AddDatetimeCon = styled.div``;
-const AddDatetimeBtn = styled(Button)``;
+const AddDatetimeBtn = styled(Button)`
+  font-size: 12px;
+`;
 
 const ResetButton = styled(Button)`
   background-color: ${props => props.theme.yellowColor};
@@ -175,6 +178,7 @@ interface IProps {
   setDatetimeValueNow: () => void;
   setEndDatetimeToStart: () => void;
   onBackClick: () => void;
+  isShifitCabinet: boolean;
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -209,7 +213,8 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
   userName,
   setDatetimeValueNow,
   setEndDatetimeToStart,
-  onBackClick
+  onBackClick,
+  isShifitCabinet
 }) => {
   const productOptions = new Array();
   if (
@@ -231,10 +236,13 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
       <Helmet>
         <title>Enroll Requset Cabinet | BlueDot</title>
       </Helmet>
-      <BackArrowExtended backTo="/membership" />
+      <BackArrowExtended backFn={onBackClick} />
       <FormExtended submitFn={onSubmit}>
         <TitleSection>
-          <Title>{`${userName}(${userIdName})`}님 사물함 등록</Title>
+          <Title>
+            {`${userName}(${userIdName})`}님 사물함{" "}
+            {isShifitCabinet ? "이동" : "등록"}
+          </Title>
         </TitleSection>
         <BranchSection>
           <BranchNameCol>
@@ -329,68 +337,79 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
               </>
             )}
         </CabinetSection>
-        <DatetimeSection>
-          <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
-          <DatetimePicker>
-            <DatetimeExtended
-              value={moment(startDatetime)}
-              dateFormat="YYYY MMMM Do"
-              timeFormat="A hh:mm"
-              locale="de"
-              onChange={onDatetimeChange}
-            />
-          </DatetimePicker>
-          <ResetButton
-            value={"현재시각으로 맞추기"}
-            onClick={setDatetimeValueNow}
-          />
-        </DatetimeSection>
-        <DatetimeSection>
-          <DatetimeTitle>이용 종료 일시를 선택해주세요</DatetimeTitle>
-          <DatetimePicker>
-            <DatetimeExtended
-              value={moment(selEndDatetime)}
-              dateFormat="YYYY MMMM Do"
-              timeFormat="A hh:mm"
-              locale="de"
-              onChange={onEndDatetimeChange}
-            />
-          </DatetimePicker>
-          <ResetButton
-            value={"시작일시로 맞추기"}
-            onClick={setEndDatetimeToStart}
-          />
-        </DatetimeSection>
+        {isShifitCabinet ? (
+          ""
+        ) : (
+          <>
+            <DatetimeSection>
+              <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
+              <DatetimePicker>
+                <DatetimeExtended
+                  value={moment(startDatetime)}
+                  dateFormat="YYYY MMMM Do"
+                  timeFormat="A hh:mm"
+                  locale="de"
+                  onChange={onDatetimeChange}
+                />
+              </DatetimePicker>
+              <ResetButton
+                value={"현재시각으로 맞추기"}
+                onClick={setDatetimeValueNow}
+              />
+            </DatetimeSection>
+            <DatetimeSection>
+              <DatetimeTitle>이용 종료 일시를 선택해주세요</DatetimeTitle>
+              <DatetimePicker>
+                <DatetimeExtended
+                  value={moment(selEndDatetime)}
+                  dateFormat="YYYY MMMM Do"
+                  timeFormat="A hh:mm"
+                  locale="de"
+                  onChange={onEndDatetimeChange}
+                />
+              </DatetimePicker>
+              <ResetButton
+                value={"시작일시로 맞추기"}
+                onClick={setEndDatetimeToStart}
+              />
+            </DatetimeSection>
 
-        <AddDatetimeCon>
-          {productDatas &&
-            productDatas.UserGetBranch &&
-            productDatas.UserGetBranch.branch &&
-            productDatas.UserGetBranch.branch.products &&
-            productDatas.UserGetBranch.branch.products
-              .filter(
-                product =>
-                  product && product.target === "MEMBERSHIP" && !product.discard
-              )
-              .map(
-                product =>
-                  product && (
-                    <AddDatetimeBtn
-                      key={product.id}
-                      value={`+ ${product.hours}시간 ${
-                        product.hours % 24 === 0
-                          ? `(${product.hours / 24}일)`
-                          : ""
-                      }`}
-                      onClick={() => onDateTimeAddClick(product.hours)}
-                    />
+            <AddDatetimeCon>
+              {productDatas &&
+                productDatas.UserGetBranch &&
+                productDatas.UserGetBranch.branch &&
+                productDatas.UserGetBranch.branch.products &&
+                productDatas.UserGetBranch.branch.products
+                  .filter(
+                    product =>
+                      product &&
+                      product.target === "MEMBERSHIP" &&
+                      !product.discard
                   )
-              )}
-        </AddDatetimeCon>
+                  .map(
+                    product =>
+                      product && (
+                        <AddDatetimeBtn
+                          key={product.id}
+                          value={`+ ${product.hours}시간 ${
+                            product.hours % 24 === 0
+                              ? `(${product.hours / 24}일)`
+                              : ""
+                          }`}
+                          onClick={() => onDateTimeAddClick(product.hours)}
+                        />
+                      )
+                  )}
+            </AddDatetimeCon>
+          </>
+        )}
 
         <ButtonSection>
           <ButtonContainer>
-            <ThrowBasketButton value={"등록하기"} onClick={onEnrollClick} />
+            <ThrowBasketButton
+              value={isShifitCabinet ? "이동하기" : "등록하기"}
+              onClick={onEnrollClick}
+            />
             <CancleButton value={"취소"} onClick={onBackClick} />
           </ButtonContainer>
         </ButtonSection>
