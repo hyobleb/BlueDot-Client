@@ -8,10 +8,13 @@ import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
 import Form from "src/Components/Form";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { userGetProducts } from "src/types/api";
+import {
+  userGetProducts,
+  userGetProducts_UserGetBranch_branch_products
+} from "src/types/api";
 
 const FormExtended = styled(Form)`
-  width: 90%;
+  width: 95%;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -25,7 +28,7 @@ const FormExtended = styled(Form)`
   align-items: center;
 `;
 const Section = styled.div`
-  width: 80%;
+  width: 95%;
   padding: 10px 0;
   display: flex;
 `;
@@ -71,7 +74,15 @@ const ButtonSection = styled(Section)`
 `;
 const ButtonContainer = styled.div``;
 const Button = styled(SmallButton)`
-  margin: 3px;
+  margin: 2px;
+  font-size: 10px;
+  width: 30%;
+  min-width: 70px;
+  max-width: 100px;
+`;
+
+const CashCreateMembershpBtn = styled(Button)`
+  background-color: ${props => props.theme.lightBlueColor};
 `;
 
 const CreateMembershipBtn = styled(Button)`
@@ -106,6 +117,33 @@ const DatetimeExtended = styled(Datetime)`
 `;
 const BackContainer = styled.div``;
 
+const EndDatetime = styled.div`
+  border: 1px solid #dedede;
+  display: inline-block;
+  padding: 8px;
+  font-size: 13px;
+`;
+
+const ProductsSection = styled.div`
+  margin-top: 10px;
+  width: 90%;
+`;
+const ProductsTitle = styled.div`
+  font-size: 20px;
+`;
+const ProductContainer = styled.div`
+  min-height: 40px;
+  width: 100%;
+  border: 1px solid #dedede;
+  padding: 10px;
+  margin-top: 10px;
+`;
+const ProductItem = styled.div`
+  padding: 10px;
+  border: 1px solid #dedede;
+  margin: 3px 0;
+`;
+
 interface IProps {
   datetimeValue: string;
   productId: number;
@@ -119,16 +157,20 @@ interface IProps {
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
   onDatetimeChange: (datetimeValue: moment.Moment) => void;
-  onCreateMembershipClick: () => Promise<void>;
+  onCreateMembershipClick: (cashEnroll?: boolean | undefined) => Promise<void>;
   backUrl: string;
   onEndDatetimeChange: (datetimeValue: moment.Moment) => void;
   endDatetimeValue: string;
-  onDateTimeAddClick: (hours: number) => void;
+  onDateTimeAddClick: (
+    product: userGetProducts_UserGetBranch_branch_products,
+    hours: number
+  ) => void;
   onBackClick: () => void;
   setDatetimeValueNow: () => void;
   setEndDatetimeToStart: () => void;
   userName: string;
   userIdName: string;
+  selProducts: userGetProducts_UserGetBranch_branch_products[];
 }
 
 const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
@@ -153,7 +195,8 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
   setDatetimeValueNow,
   setEndDatetimeToStart,
   userName,
-  userIdName
+  userIdName,
+  selProducts
 }) => {
   return (
     <BackContainer>
@@ -204,13 +247,9 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
         <DatetimeSection>
           <DatetimeTitle>이용 종료 일시를 선택해주세요</DatetimeTitle>
           <DatetimePicker>
-            <DatetimeExtended
-              value={moment(endDatetimeValue)}
-              dateFormat="YYYY MMMM Do"
-              timeFormat="A hh:mm"
-              locale="de"
-              onChange={onEndDatetimeChange}
-            />
+            <EndDatetime>
+              {moment(endDatetimeValue).format("YYYY MMMM Do a HH:mm")}
+            </EndDatetime>
           </DatetimePicker>
           <ResetButton
             value={"시작일시로 맞추기"}
@@ -237,16 +276,32 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
                           ? `(${product.hours / 24}일)`
                           : ""
                       }`}
-                      onClick={() => onDateTimeAddClick(product.hours)}
+                      onClick={() => onDateTimeAddClick(product, product.hours)}
                     />
                   )
               )}
         </AddDatetimeCon>
+        <ProductsSection>
+          <ProductsTitle>선택한 멤버쉽 상품</ProductsTitle>
+          <ProductContainer>
+            {selProducts.length > 0
+              ? selProducts.map((product, index) => (
+                  <ProductItem key={index}>
+                    {product.title} : {product.amount}
+                  </ProductItem>
+                ))
+              : "선택한 이용권이 없습니다"}
+          </ProductContainer>
+        </ProductsSection>
 
         <ButtonSection>
           <ButtonContainer>
+            <CashCreateMembershpBtn
+              value={"현금 결제 등록"}
+              onClick={() => onCreateMembershipClick(true)}
+            />
             <CreateMembershipBtn
-              value={"등록하기"}
+              value={"등록"}
               onClick={onCreateMembershipClick}
             />
             <CancleButton value={"취소"} onClick={onBackClick} />

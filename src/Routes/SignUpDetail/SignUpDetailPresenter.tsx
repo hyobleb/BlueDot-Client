@@ -163,7 +163,6 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
             value={email}
             name={"email"}
             onChange={onInputChange}
-            autoFocus={true}
           />
 
           <SelBranchButton

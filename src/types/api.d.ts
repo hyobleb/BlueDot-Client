@@ -1557,6 +1557,8 @@ export interface managerCreateMembershipVariables {
   branchId: number;
   startDatetime: string;
   endDatetime: string;
+  products?: (number | null)[] | null;
+  payMethod?: CreatePaymentMethodOption | null;
 }
 
 /* tslint:disable */

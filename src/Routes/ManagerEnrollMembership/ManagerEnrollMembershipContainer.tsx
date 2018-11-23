@@ -9,6 +9,7 @@ import {
   managerCreateMembership,
   managerCreateMembershipVariables,
   userGetProducts,
+  userGetProducts_UserGetBranch_branch_products,
   userGetProductsVariables
 } from "src/types/api";
 import ManagerEnrollMembershipPresenter from "./ManagerEnrollMembershipPresenter";
@@ -34,6 +35,7 @@ interface IState {
   backUrl: string;
   userName: string;
   userIdName: string;
+  selProducts: userGetProducts_UserGetBranch_branch_products[];
 }
 
 class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
@@ -61,6 +63,7 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
       endDatetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
       productId: 0,
       productTitle: "",
+      selProducts: [],
       userId: props.location.state.userId,
       userIdName: props.location.state.userIdName,
       userName: props.location.state.userName
@@ -77,7 +80,8 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
       backUrl,
       endDatetimeValue,
       userName,
-      userIdName
+      userIdName,
+      selProducts
     } = this.state;
     return (
       <CreateMembershipMutation mutation={MANAGER_CREATE_MEMBERSHIP}>
@@ -120,6 +124,7 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
                   setEndDatetimeToStart={this.setEndDatetimeToStart}
                   userName={userName}
                   userIdName={userIdName}
+                  selProducts={selProducts}
                 />
               )}
             </GetBranchQuery>
@@ -170,9 +175,14 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
   };
 
   public onDatetimeChange = (datetimeValue: Moment) => {
-    this.setState({
-      datetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss")
-    });
+    if (datetimeValue < moment()) {
+      toast.error("이미 지난 일시입니다");
+    } else {
+      this.setState({
+        datetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss"),
+        endDatetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss")
+      });
+    }
   };
 
   public onEndDatetimeChange = (datetimeValue: Moment) => {
@@ -181,19 +191,31 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onCreateMembershipClick = async () => {
-    const { branchId, datetimeValue, userId, endDatetimeValue } = this.state;
+  public onCreateMembershipClick = async (cashEnroll?: boolean) => {
+    const {
+      branchId,
+      datetimeValue,
+      userId,
+      endDatetimeValue,
+      selProducts
+    } = this.state;
     if (!branchId) {
       toast.error("지점 선택이 이루어지지 않았습니다");
     } else if (!datetimeValue) {
       toast.error("날짜 선택이 이루어지지 않았습니다");
     } else if (!endDatetimeValue) {
       toast.error("종료 시각이 선택되지 않았습니다");
+    } else if (moment(endDatetimeValue) <= moment(datetimeValue)) {
+      toast.error("시간 선택이 이루어지지 않았습니다");
     } else {
       const result = await this.createMembershipFn({
         variables: {
           branchId,
           endDatetime: endDatetimeValue,
+          payMethod: cashEnroll ? "CASH" : undefined,
+          products: cashEnroll
+            ? selProducts.map(product => product.id)
+            : undefined,
           startDatetime: datetimeValue,
           userId
         }
@@ -203,7 +225,7 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
         data: { ManagerCreateMembership }
       } = result;
       if (ManagerCreateMembership.ok) {
-        toast.success("해당 회원을 멤버쉽에 무사히 등록되었습니다");
+        toast.success("해당 회원이 멤버쉽에 무사히 등록되었습니다");
         this.onBackClick();
       } else {
         toast.error(ManagerCreateMembership.error);
@@ -211,12 +233,21 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
     }
   };
 
-  public onDateTimeAddClick = (hours: number) => {
-    this.setState({
-      endDatetimeValue: moment(this.state.endDatetimeValue)
-        .add(hours, "h")
-        .format("YYYY-MM-DD HH:mm:ss")
-    });
+  public onDateTimeAddClick = (
+    product: userGetProducts_UserGetBranch_branch_products,
+    hours: number
+  ) => {
+    const { selProducts } = this.state;
+    selProducts.push(product);
+    this.setState(
+      {
+        endDatetimeValue: moment(this.state.endDatetimeValue)
+          .add(hours, "h")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        selProducts
+      },
+      () => console.log(this.state.selProducts)
+    );
   };
 
   public onBackClick = () => {
@@ -230,13 +261,15 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
   };
   public setDatetimeValueNow = () => {
     this.setState({
-      datetimeValue: moment().format("YYYY-MM-DD HH:mm:ss")
+      datetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
+      selProducts: []
     });
   };
 
   public setEndDatetimeToStart = () => {
     this.setState({
-      endDatetimeValue: this.state.datetimeValue
+      endDatetimeValue: this.state.datetimeValue,
+      selProducts: []
     });
   };
 }

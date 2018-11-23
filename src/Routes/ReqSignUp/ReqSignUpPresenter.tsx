@@ -209,6 +209,7 @@ const ReqSignUpPresenter: React.SFC<IProps> = ({
             onChange={onInputChange}
             type={"text"}
             maxlength={11}
+            autoFocus={true}
           />
           <ExtendInput
             placeholder={"비밀번호"}
@@ -243,6 +244,7 @@ const ReqSignUpPresenter: React.SFC<IProps> = ({
             onChange={onInputChange}
             type={"email"}
             maxlength={30}
+            autoFocus={false}
           />
           <ExtendInput
             placeholder={"연락가능한 전화번호('-'없이 입력해주세요)"}
