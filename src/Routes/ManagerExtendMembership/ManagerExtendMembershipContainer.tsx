@@ -10,13 +10,17 @@ import {
   MANAGER_EXTEND_MEMBERSHIP,
   USER_GET_PRODUCTS
 } from "src/Components/sharedQueries";
-import { modifyOptions } from "src/Components/shareOptions";
+import {
+  CreatePaymentMethodOption,
+  modifyOptions
+} from "src/Components/shareOptions";
 import {
   getMembershipForExtend,
   getMyMemberships,
   managerExtendMembership,
   managerExtendMembershipVariables,
   userGetProducts,
+  userGetProducts_UserGetBranch_branch_products,
   userGetProductsVariables
 } from "src/types/api";
 import ManagerExtendMembershipPresenter from "./ManagerExtendMembershipPresenter";
@@ -29,6 +33,7 @@ interface IState {
   selStartDatetime: string;
   selEndDatetime: string;
   totalExtHours: number;
+  selProducts: userGetProducts_UserGetBranch_branch_products[];
 }
 
 class GetMembershipsQuery extends Query<getMyMemberships> {}
@@ -52,6 +57,7 @@ class ManagerExtendMembershipContainer extends React.Component<IProps, IState> {
       products: null,
       selEndDatetime: "",
       selProductTitle: "",
+      selProducts: [],
       selStartDatetime: "",
       totalExtHours: 0
     };
@@ -88,7 +94,8 @@ class ManagerExtendMembershipContainer extends React.Component<IProps, IState> {
       selProductTitle,
       selEndDatetime,
       selStartDatetime,
-      totalExtHours
+      totalExtHours,
+      selProducts
     } = this.state;
     return (
       <ApolloConsumer>
@@ -113,11 +120,6 @@ class ManagerExtendMembershipContainer extends React.Component<IProps, IState> {
                 } else {
                   toast.error(data.ManagerUpdateMembershipEndDatetime.error);
                 }
-              }}
-              variables={{
-                endDatetime: selEndDatetime,
-                membershipId: this.props.location.state.selMembershipId,
-                status: modifyOptions.EXTENDED
               }}
             >
               {extendMembershipMutation => {
@@ -151,6 +153,7 @@ class ManagerExtendMembershipContainer extends React.Component<IProps, IState> {
                                 onDateTimeAddClick={this.onDateTimeAddClick}
                                 totalExtHours={totalExtHours}
                                 onResetClick={this.onResetClick}
+                                selProducts={selProducts}
                                 // onStartDatetimeChange={
                                 //   this.onStartDatetimeChange
                                 // }
@@ -187,23 +190,42 @@ class ManagerExtendMembershipContainer extends React.Component<IProps, IState> {
     }
   };
 
-  public extendMembership = async () => {
-    const { selMembership, totalExtHours } = this.state;
+  public extendMembership = async (payMethod?: CreatePaymentMethodOption) => {
+    const {
+      selMembership,
+      totalExtHours,
+      selEndDatetime,
+      selProducts
+    } = this.state;
     if (!selMembership) {
       toast.error("연장할 멤버쉽을 선택하지 않았습니다");
       return;
     } else if (!totalExtHours) {
       toast.error("연장 시간이 입력되지 않았습니다");
     } else {
-      await this.extMembershipFn();
+      await this.extMembershipFn({
+        variables: {
+          endDatetime: selEndDatetime,
+          membershipId: this.props.location.state.selMembershipId,
+          payMethod,
+          products: selProducts.map(product => product.id),
+          status: modifyOptions.EXTENDED
+        }
+      });
     }
   };
 
-  public onDateTimeAddClick = (hours: number) => {
+  public onDateTimeAddClick = (
+    product: userGetProducts_UserGetBranch_branch_products,
+    hours: number
+  ) => {
+    const { selProducts } = this.state;
+    selProducts.push(product);
     this.setState({
       selEndDatetime: moment(this.state.selEndDatetime)
         .add(hours, "h")
         .format("YYYY-MM-DD HH:mm:ss"),
+      selProducts,
       totalExtHours: this.state.totalExtHours + hours
     });
   };

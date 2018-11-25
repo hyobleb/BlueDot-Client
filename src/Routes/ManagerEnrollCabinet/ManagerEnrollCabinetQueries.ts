@@ -7,6 +7,8 @@ export const MANAGER_ENROLL_CABINET = gql`
     $startDatetime: String!
     $endDatetime: String!
     $cabinetId: Int!
+    $products: [Int]
+    $payMethod: CreatePaymentMethodOption
   ) {
     ManagerCreateCabMembership(
       userId: $userId
@@ -14,6 +16,8 @@ export const MANAGER_ENROLL_CABINET = gql`
       startDatetime: $startDatetime
       endDatetime: $endDatetime
       cabinetId: $cabinetId
+      products: $products
+      payMethod: $payMethod
     ) {
       ok
       error

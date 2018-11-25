@@ -9,13 +9,17 @@ import {
   MANAGER_EXTEND_MEMBERSHIP,
   USER_GET_PRODUCTS
 } from "src/Components/sharedQueries";
-import { modifyOptions } from "src/Components/shareOptions";
+import {
+  CreatePaymentMethodOption,
+  modifyOptions
+} from "src/Components/shareOptions";
 import {
   getMembershipForExtend,
   getMyMemberships,
   managerExtendMembership,
   managerExtendMembershipVariables,
   userGetProducts,
+  userGetProducts_UserGetBranch_branch_products,
   userGetProductsVariables
 } from "src/types/api";
 import ManagerExtendCabinetPresenter from "./ManagerExtendCabinetPresenter";
@@ -30,6 +34,7 @@ interface IState {
   selProductTitle: string;
   selEndDatetime: string;
   totalExtHours: number;
+  selProducts: userGetProducts_UserGetBranch_branch_products[];
 }
 
 class GetMembershipsQuery extends Query<getMyMemberships> {}
@@ -56,6 +61,7 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
       selMembership: null,
       selProductId: null,
       selProductTitle: "",
+      selProducts: [],
       showMembershipPopUp: false,
       totalExtHours: 0
     };
@@ -90,7 +96,8 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
       selMembership,
       products,
       totalExtHours,
-      selEndDatetime
+      selEndDatetime,
+      selProducts
     } = this.state;
     return (
       <ApolloConsumer>
@@ -147,6 +154,7 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
                                 onDateTimeAddClick={this.onDateTimeAddClick}
                                 selEndDatetime={selEndDatetime}
                                 onBackClick={this.onBackClick}
+                                selProducts={selProducts}
                               />
                             );
                           }}
@@ -224,8 +232,10 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
     }
   };
 
-  public onExtendConfirmClick = async () => {
-    const { selEndDatetime, selMembership } = this.state;
+  public onExtendConfirmClick = async (
+    payMethod?: CreatePaymentMethodOption
+  ) => {
+    const { selEndDatetime, selMembership, selProducts } = this.state;
     if (moment(selEndDatetime) <= moment(selMembership.endDatetime)) {
       toast.error("기간이 연장되지 않았습니다!");
       return;
@@ -234,6 +244,8 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
         variables: {
           endDatetime: selEndDatetime,
           membershipId: this.props.location.state.selMembershipId,
+          payMethod,
+          products: selProducts.map(product => product.id),
           status: modifyOptions.EXTENDED
         }
       });
@@ -246,11 +258,17 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onDateTimeAddClick = (hours: number) => {
+  public onDateTimeAddClick = (
+    product: userGetProducts_UserGetBranch_branch_products,
+    hours: number
+  ) => {
+    const { selProducts } = this.state;
+    selProducts.push(product);
     this.setState({
       selEndDatetime: moment(this.state.selEndDatetime)
         .add(hours, "h")
         .format("YYYY-MM-DD HH:mm:ss"),
+      selProducts,
       totalExtHours: this.state.totalExtHours + hours
     });
   };

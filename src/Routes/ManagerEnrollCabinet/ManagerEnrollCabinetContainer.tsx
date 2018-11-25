@@ -9,6 +9,7 @@ import {
   GET_CABINETS,
   USER_GET_PRODUCTS
 } from "src/Components/sharedQueries";
+import { CreatePaymentMethodOption } from "src/Components/shareOptions";
 import {
   getBranchForEnrollCabinet,
   getBranchForEnrollCabinetVariables,
@@ -21,6 +22,7 @@ import {
   managerShiftCabinet,
   managerShiftCabinetVariables,
   userGetProducts,
+  userGetProducts_UserGetBranch_branch_products,
   userGetProductsVariables
 } from "src/types/api";
 import ManagerEnrollCabinetPresenter from "./ManagerEnrollCabinetPresenter";
@@ -48,6 +50,7 @@ interface IState {
   selEndDatetime: string;
   isShifitCabinet: boolean;
   nowMembershipId?: number;
+  selProducts: userGetProducts_UserGetBranch_branch_products[];
 }
 
 interface IProps extends RouteComponentProps<any> {
@@ -111,6 +114,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       productId: 0,
       productTitle: "",
       selEndDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+      selProducts: [],
       setId,
       startDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
       tempSetId: 0,
@@ -125,7 +129,6 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       branchId,
       branchPopUpShow,
       cabinetId,
-      userId,
       productTitle,
       startDatetime,
       tempSetId,
@@ -137,7 +140,8 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       selEndDatetime,
       userIdName,
       userName,
-      isShifitCabinet
+      isShifitCabinet,
+      selProducts
     } = this.state;
     return (
       <ShiftCabinetMutation
@@ -251,13 +255,6 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                           return (
                             <ManangerCreateCabinet
                               mutation={MANAGER_ENROLL_CABINET}
-                              variables={{
-                                branchId,
-                                cabinetId,
-                                endDatetime: selEndDatetime,
-                                startDatetime,
-                                userId
-                              }}
                             >
                               {userRequestCabinetFn => {
                                 this.enrollCabinetFn = userRequestCabinetFn;
@@ -322,6 +319,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                         }
                                         onBackClick={this.onBackClick}
                                         isShifitCabinet={isShifitCabinet}
+                                        selProducts={selProducts}
                                       />
                                     )}
                                   </GetBranchQuery>
@@ -386,14 +384,16 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onEnrollClick = async () => {
+  public onEnrollClick = async (payMethod?: CreatePaymentMethodOption) => {
     const {
       branchId,
       startDatetime,
       selEndDatetime,
       cabinetId,
       isShifitCabinet,
-      nowMembershipId
+      nowMembershipId,
+      userId,
+      selProducts
     } = this.state;
     if (!branchId) {
       toast.error("지점 선택이 이루어지지 않았습니다");
@@ -416,7 +416,19 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
           });
         }
       } else {
-        const result = await this.enrollCabinetFn();
+        const result = await this.enrollCabinetFn({
+          variables: {
+            branchId,
+            cabinetId,
+            endDatetime: selEndDatetime,
+            payMethod: payMethod ? payMethod : undefined,
+            products: payMethod
+              ? selProducts.map(product => product.id)
+              : undefined,
+            startDatetime,
+            userId
+          }
+        });
         const {
           data: { ManagerCreateCabMembership }
         } = result;
@@ -478,12 +490,21 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
     }
   };
 
-  public onDateTimeAddClick = (hours: number) => {
-    this.setState({
-      selEndDatetime: moment(this.state.selEndDatetime)
-        .add(hours, "h")
-        .format("YYYY-MM-DD HH:mm:ss")
-    });
+  public onDateTimeAddClick = (
+    product: userGetProducts_UserGetBranch_branch_products,
+    hours: number
+  ) => {
+    const { selProducts } = this.state;
+    selProducts.push(product);
+    this.setState(
+      {
+        selEndDatetime: moment(this.state.selEndDatetime)
+          .add(hours, "h")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        selProducts
+      },
+      () => console.log(this.state.selProducts)
+    );
   };
 
   public setDatetimeValueNow = () => {

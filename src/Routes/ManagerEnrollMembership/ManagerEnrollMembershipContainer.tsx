@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { USER_GET_PRODUCTS } from "src/Components/sharedQueries";
 
 import {
+  CreatePaymentMethodOption,
   managerCreateMembership,
   managerCreateMembershipVariables,
   userGetProducts,
@@ -191,7 +192,9 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onCreateMembershipClick = async (cashEnroll?: boolean) => {
+  public onCreateMembershipClick = async (
+    payMethod?: CreatePaymentMethodOption
+  ) => {
     const {
       branchId,
       datetimeValue,
@@ -212,8 +215,8 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
         variables: {
           branchId,
           endDatetime: endDatetimeValue,
-          payMethod: cashEnroll ? "CASH" : undefined,
-          products: cashEnroll
+          payMethod: payMethod ? payMethod : undefined,
+          products: payMethod
             ? selProducts.map(product => product.id)
             : undefined,
           startDatetime: datetimeValue,
@@ -239,15 +242,12 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
   ) => {
     const { selProducts } = this.state;
     selProducts.push(product);
-    this.setState(
-      {
-        endDatetimeValue: moment(this.state.endDatetimeValue)
-          .add(hours, "h")
-          .format("YYYY-MM-DD HH:mm:ss"),
-        selProducts
-      },
-      () => console.log(this.state.selProducts)
-    );
+    this.setState({
+      endDatetimeValue: moment(this.state.endDatetimeValue)
+        .add(hours, "h")
+        .format("YYYY-MM-DD HH:mm:ss"),
+      selProducts
+    });
   };
 
   public onBackClick = () => {

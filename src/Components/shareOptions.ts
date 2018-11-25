@@ -39,7 +39,8 @@ export enum CreatePaymentMethodOption {
   TRANS = "TRANS",
   VBANK = "VBANK",
   PHONE = "PHONE",
-  CASH = "CASH"
+  CASH = "CASH",
+  FIELD_CARD = "FIELD_CARD"
 }
 
 export const searchTypeOptions = [

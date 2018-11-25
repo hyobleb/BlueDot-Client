@@ -468,11 +468,15 @@ export const MANAGER_EXTEND_MEMBERSHIP = gql`
     $membershipId: Int!
     $endDatetime: String!
     $status: modifyOptions!
+    $products: [Int]
+    $payMethod: CreatePaymentMethodOption
   ) {
     ManagerUpdateMembershipEndDatetime(
       membershipId: $membershipId
       endDatetime: $endDatetime
       status: $status
+      products: $products
+      payMethod: $payMethod
     ) {
       ok
       error

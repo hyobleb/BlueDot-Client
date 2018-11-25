@@ -7,12 +7,14 @@ import BackArrow from "src/Components/BackArrow";
 import CabinetSetsContainer from "src/Components/CabinetSetsContainer";
 import Form from "src/Components/Form";
 import Loading from "src/Components/Loading";
+import { CreatePaymentMethodOption } from "src/Components/shareOptions";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import {
   getBranchForEnrollCabinet,
   getCabinets_GetCabinetSet_cabinetSet_cabinets,
-  userGetProducts
+  userGetProducts,
+  userGetProducts_UserGetBranch_branch_products
 } from "src/types/api";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 import CabinetDisplay from "../../Components/CabinetDisplay";
@@ -109,6 +111,14 @@ const DatetimeExtended = styled(Datetime)`
     }
   }
 `;
+
+const EndDatetime = styled.div`
+  border: 1px solid #dedede;
+  display: inline-block;
+  padding: 8px;
+  font-size: 13px;
+`;
+
 const BackContainer = styled.div``;
 
 const SetTitleContainer = styled.div`
@@ -144,6 +154,35 @@ const ResetButton = styled(Button)`
   background-color: ${props => props.theme.yellowColor};
   width: 200px;
 `;
+
+const ProductsSection = styled.div`
+  margin-top: 10px;
+  width: 90%;
+`;
+const ProductsTitle = styled.div`
+  font-size: 20px;
+`;
+const ProductContainer = styled.div`
+  min-height: 40px;
+  width: 100%;
+  border: 1px solid #dedede;
+  padding: 10px;
+  margin-top: 10px;
+`;
+const ProductItem = styled.div`
+  padding: 10px;
+  border: 1px solid #dedede;
+  margin: 3px 0;
+`;
+
+const CashCreateMembershipBtn = styled(Button)`
+  background-color: ${props => props.theme.lightBlueColor};
+`;
+
+const FieldCardCreateMembershipBtn = styled(Button)`
+  background-color: ${props => props.theme.lightBlueColor};
+`;
+
 interface IProps {
   branchId: number;
   branchPopUpShow: boolean;
@@ -157,7 +196,9 @@ interface IProps {
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
   onDatetimeChange: (startDatetime: moment.Moment) => void;
-  onEnrollClick: () => Promise<void>;
+  onEnrollClick: (
+    payMethod?: CreatePaymentMethodOption | undefined
+  ) => Promise<void>;
   cabinetSetDatas?: getBranchForEnrollCabinet;
   tempSetId: number;
   onSetHover: (setId: number) => void;
@@ -172,13 +213,17 @@ interface IProps {
   isFirstLoaidng: boolean;
   selEndDatetime: string;
   onEndDatetimeChange: (endDatetime: moment.Moment) => void;
-  onDateTimeAddClick: (hours: number) => void;
+  onDateTimeAddClick: (
+    product: userGetProducts_UserGetBranch_branch_products,
+    hours: number
+  ) => void;
   userIdName: string;
   userName: string;
   setDatetimeValueNow: () => void;
   setEndDatetimeToStart: () => void;
   onBackClick: () => void;
   isShifitCabinet: boolean;
+  selProducts: userGetProducts_UserGetBranch_branch_products[];
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -214,7 +259,8 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
   setDatetimeValueNow,
   setEndDatetimeToStart,
   onBackClick,
-  isShifitCabinet
+  isShifitCabinet,
+  selProducts
 }) => {
   const productOptions = new Array();
   if (
@@ -358,15 +404,11 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
               />
             </DatetimeSection>
             <DatetimeSection>
-              <DatetimeTitle>이용 종료 일시를 선택해주세요</DatetimeTitle>
+              <DatetimeTitle>이용 종료 일시</DatetimeTitle>
               <DatetimePicker>
-                <DatetimeExtended
-                  value={moment(selEndDatetime)}
-                  dateFormat="YYYY MMMM Do"
-                  timeFormat="A hh:mm"
-                  locale="de"
-                  onChange={onEndDatetimeChange}
-                />
+                <EndDatetime>
+                  {moment(selEndDatetime).format("YYYY MMMM Do a hh:mm")}
+                </EndDatetime>
               </DatetimePicker>
               <ResetButton
                 value={"시작일시로 맞추기"}
@@ -396,16 +438,40 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
                               ? `(${product.hours / 24}일)`
                               : ""
                           }`}
-                          onClick={() => onDateTimeAddClick(product.hours)}
+                          onClick={() =>
+                            onDateTimeAddClick(product, product.hours)
+                          }
                         />
                       )
                   )}
             </AddDatetimeCon>
+            <ProductsSection>
+              <ProductsTitle>선택한 멤버쉽 상품</ProductsTitle>
+              <ProductContainer>
+                {selProducts.length > 0
+                  ? selProducts.map((product, index) => (
+                      <ProductItem key={index}>
+                        {product.title} : {product.amount}원
+                      </ProductItem>
+                    ))
+                  : "선택한 이용권이 없습니다"}
+              </ProductContainer>
+            </ProductsSection>
           </>
         )}
 
         <ButtonSection>
           <ButtonContainer>
+            <FieldCardCreateMembershipBtn
+              value={"카드 현장 등록"}
+              onClick={() =>
+                onEnrollClick(CreatePaymentMethodOption.FIELD_CARD)
+              }
+            />
+            <CashCreateMembershipBtn
+              value={"현금 결제 등록"}
+              onClick={() => onEnrollClick(CreatePaymentMethodOption.CASH)}
+            />
             <ThrowBasketButton
               value={isShifitCabinet ? "이동하기" : "등록하기"}
               onClick={onEnrollClick}

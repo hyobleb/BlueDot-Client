@@ -918,6 +918,8 @@ export interface managerExtendMembershipVariables {
   membershipId: number;
   endDatetime: string;
   status: modifyOptions;
+  products?: (number | null)[] | null;
+  payMethod?: CreatePaymentMethodOption | null;
 }
 
 /* tslint:disable */
@@ -1511,6 +1513,8 @@ export interface managerEnrollCabinetVariables {
   startDatetime: string;
   endDatetime: string;
   cabinetId: number;
+  products?: (number | null)[] | null;
+  payMethod?: CreatePaymentMethodOption | null;
 }
 
 /* tslint:disable */
@@ -2911,6 +2915,7 @@ export interface rejectRequestSignUpVariables {
 export enum CreatePaymentMethodOption {
   CARD = "CARD",
   CASH = "CASH",
+  FIELD_CARD = "FIELD_CARD",
   PHONE = "PHONE",
   TRANS = "TRANS",
   VBANK = "VBANK",

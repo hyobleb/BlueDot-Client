@@ -1,8 +1,10 @@
 import React from "react";
 import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
+import { CreatePaymentMethodOption } from "src/Components/shareOptions";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
+import { userGetProducts_UserGetBranch_branch_products } from "src/types/api";
 
 const BackContainer = styled.div`
   margin-top: 30px;
@@ -30,12 +32,20 @@ const MembershipContainer = styled.div`
 `;
 const Button = styled(SmallButton)``;
 
-const ExtendConfirmBtn = styled(Button)``;
+const ExtendConfirmBtn = styled(Button)`
+  width: 150px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+`;
 const MembershipDataRow = styled.div`
   padding: 5px 0;
 `;
 
 const ButtonSection = styled(Section)`
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 `;
 
@@ -64,18 +74,44 @@ const BackArrowExtended = styled(BackArrow)`
   cursor: pointer;
 `;
 
+const ProductsSection = styled.div`
+  margin-top: 10px;
+  width: 90%;
+`;
+const ProductsTitle = styled.div`
+  font-size: 20px;
+`;
+const ProductContainer = styled.div`
+  min-height: 40px;
+  width: 100%;
+  border: 1px solid #dedede;
+  padding: 10px;
+  margin-top: 10px;
+`;
+const ProductItem = styled.div`
+  padding: 10px;
+  border: 1px solid #dedede;
+  margin: 3px 0;
+`;
+
 interface IProps {
   showMembershipPopUp: boolean;
   exstingMemberships: any;
   selMembership: any;
   onMembershipClick: (membershipId: number) => void;
   products: any;
-  onExtendConfirmClick: () => void;
+  onExtendConfirmClick: (
+    payMethod?: CreatePaymentMethodOption | undefined
+  ) => Promise<void>;
   totalExtHours: number;
   onResetClick: () => void;
-  onDateTimeAddClick: (hours: number) => void;
+  onDateTimeAddClick: (
+    product: userGetProducts_UserGetBranch_branch_products,
+    hours: number
+  ) => void;
   selEndDatetime: string;
   onBackClick: () => void;
+  selProducts: userGetProducts_UserGetBranch_branch_products[];
 }
 
 const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
@@ -86,7 +122,8 @@ const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
   onResetClick,
   onDateTimeAddClick,
   selEndDatetime,
-  onBackClick
+  onBackClick,
+  selProducts
 }) => {
   return (
     <BackContainer>
@@ -139,14 +176,38 @@ const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
                           ? `(${product.hours / 24}일)`
                           : ""
                       }`}
-                      onClick={() => onDateTimeAddClick(product.hours)}
+                      onClick={() => onDateTimeAddClick(product, product.hours)}
                     />
                   )
               )}
         </AddDatetimeCon>
-
+        <ProductsSection>
+          <ProductsTitle>선택한 멤버쉽 상품</ProductsTitle>
+          <ProductContainer>
+            {selProducts.length > 0
+              ? selProducts.map((product, index) => (
+                  <ProductItem key={index}>
+                    {product.title} : {product.amount}원
+                  </ProductItem>
+                ))
+              : "선택한 이용권이 없습니다"}
+          </ProductContainer>
+        </ProductsSection>
         <ButtonSection>
-          <ExtendConfirmBtn value={"연장하기"} onClick={onExtendConfirmClick} />
+          <ExtendConfirmBtn
+            value={"현장 현금결제 연장"}
+            onClick={() => onExtendConfirmClick(CreatePaymentMethodOption.CASH)}
+          />
+          <ExtendConfirmBtn
+            value={"현장 카드결제 연장"}
+            onClick={() =>
+              onExtendConfirmClick(CreatePaymentMethodOption.FIELD_CARD)
+            }
+          />
+          <ExtendConfirmBtn
+            value={"무결제 연장"}
+            onClick={onExtendConfirmClick}
+          />
         </ButtonSection>
       </Container>
     </BackContainer>

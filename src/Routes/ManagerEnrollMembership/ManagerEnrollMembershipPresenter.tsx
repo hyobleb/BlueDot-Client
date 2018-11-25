@@ -6,6 +6,7 @@ import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
 import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
 import Form from "src/Components/Form";
+import { CreatePaymentMethodOption } from "src/Components/shareOptions";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import {
@@ -72,7 +73,11 @@ const DatetimeSection = styled(Section)`
 const ButtonSection = styled(Section)`
   justify-content: center;
 `;
-const ButtonContainer = styled.div``;
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
 const Button = styled(SmallButton)`
   margin: 2px;
   font-size: 10px;
@@ -81,7 +86,11 @@ const Button = styled(SmallButton)`
   max-width: 100px;
 `;
 
-const CashCreateMembershpBtn = styled(Button)`
+const FieldCardCreateMembershipBtn = styled(Button)`
+  background-color: ${props => props.theme.lightBlueColor};
+`;
+
+const CashCreateMembershipBtn = styled(Button)`
   background-color: ${props => props.theme.lightBlueColor};
 `;
 
@@ -157,7 +166,9 @@ interface IProps {
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
   onDatetimeChange: (datetimeValue: moment.Moment) => void;
-  onCreateMembershipClick: (cashEnroll?: boolean | undefined) => Promise<void>;
+  onCreateMembershipClick: (
+    payMethod?: CreatePaymentMethodOption | undefined
+  ) => Promise<void>;
   backUrl: string;
   onEndDatetimeChange: (datetimeValue: moment.Moment) => void;
   endDatetimeValue: string;
@@ -248,7 +259,7 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
           <DatetimeTitle>이용 종료 일시를 선택해주세요</DatetimeTitle>
           <DatetimePicker>
             <EndDatetime>
-              {moment(endDatetimeValue).format("YYYY MMMM Do a HH:mm")}
+              {moment(endDatetimeValue).format("YYYY MMMM Do a hh:mm")}
             </EndDatetime>
           </DatetimePicker>
           <ResetButton
@@ -287,7 +298,7 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
             {selProducts.length > 0
               ? selProducts.map((product, index) => (
                   <ProductItem key={index}>
-                    {product.title} : {product.amount}
+                    {product.title} : {product.amount}원
                   </ProductItem>
                 ))
               : "선택한 이용권이 없습니다"}
@@ -296,12 +307,20 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
 
         <ButtonSection>
           <ButtonContainer>
-            <CashCreateMembershpBtn
+            <FieldCardCreateMembershipBtn
+              value={"카드 현장 등록"}
+              onClick={() =>
+                onCreateMembershipClick(CreatePaymentMethodOption.FIELD_CARD)
+              }
+            />
+            <CashCreateMembershipBtn
               value={"현금 결제 등록"}
-              onClick={() => onCreateMembershipClick(true)}
+              onClick={() =>
+                onCreateMembershipClick(CreatePaymentMethodOption.CASH)
+              }
             />
             <CreateMembershipBtn
-              value={"등록"}
+              value={"무결제 등록"}
               onClick={onCreateMembershipClick}
             />
             <CancleButton value={"취소"} onClick={onBackClick} />
