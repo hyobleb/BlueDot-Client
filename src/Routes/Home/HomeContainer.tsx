@@ -15,9 +15,11 @@ import {
   getBranchByIpVariables,
   getMyUsingSeat,
   getUsableMyMemberships,
+  getUsableMyMemberships_GetMyUsableMemberships_memberships,
   userAssignSeat,
   userAssignSeatVariables,
   userProfile,
+  userProfile_GetMyProfile_user,
   userReturnSeat
 } from "../../types/api";
 import HomePresenter from "./HomePresenter";
@@ -40,6 +42,11 @@ interface IState {
   assignSeatId: number | null;
   branchName: string;
   myUsingSeatId: number | null;
+  user?: userProfile_GetMyProfile_user;
+  usableMembership?: getUsableMyMemberships_GetMyUsableMemberships_memberships;
+  profileFetched: boolean;
+  branchFetched: boolean;
+  usableMembershipFetched: boolean;
 }
 interface IProps extends RouteComponentProps<any> {}
 
@@ -60,6 +67,7 @@ class HomeContainer extends React.Component<IProps, IState> {
     super(props);
     this.state = {
       assignSeatId: null,
+      branchFetched: false,
       branchLoaded: false,
       branchName: "",
       isMenuOpen: false,
@@ -69,7 +77,9 @@ class HomeContainer extends React.Component<IProps, IState> {
       nowBranchId: null,
       nowIp: ip.address(),
       nowRoomId: 0,
-      rooms: null
+      profileFetched: false,
+      rooms: null,
+      usableMembershipFetched: false
     };
   }
 
@@ -170,7 +180,10 @@ class HomeContainer extends React.Component<IProps, IState> {
                               fetchPolicy={"cache-and-network"}
                             >
                               {({ loading: branchLoading }) => (
-                                <ProfileQuery query={USER_PROFILE}>
+                                <ProfileQuery
+                                  query={USER_PROFILE}
+                                  onCompleted={this.updateFields}
+                                >
                                   {({ loading: profileLoading }) => (
                                     <HomePresenter
                                       profileLoading={profileLoading}
@@ -220,7 +233,9 @@ class HomeContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public updateFields = (data: {} | getBranchByIp | getUsableMyMemberships) => {
+  public updateFields = (
+    data: {} | getBranchByIp | getUsableMyMemberships | userProfile
+  ) => {
     if ("UserGetBranchByIP" in data) {
       const {
         UserGetBranchByIP: { branch }
@@ -229,6 +244,7 @@ class HomeContainer extends React.Component<IProps, IState> {
       if (branch !== null) {
         const { loungeImage, minimapImage, rooms, name } = branch;
         this.setState({
+          branchFetched: true,
           branchLoaded: true,
           branchName: name,
           loungeImage,
@@ -275,13 +291,113 @@ class HomeContainer extends React.Component<IProps, IState> {
           }
         });
 
-        if (!usableMembership) {
-          toast.info("블루닷라운지 이용을 위해 멤버쉽에 가입해주세요");
+        if (usableMembership) {
+          this.setState({
+            usableMembership,
+            usableMembershipFetched: true
+          });
         }
+
+        // if (!usableMembership) {
+        //   toast.info("블루닷라운지 이용을 위해 멤버쉽에 가입해주세요");
+        // }
       }
 
       if (findMembership) {
         toast.error("멤버쉽 기간이 얼마 남지 않았습니다!");
+      }
+    } else if ("GetMyProfile" in data) {
+      const {
+        GetMyProfile: { user }
+      } = data;
+
+      if (user !== null) {
+        this.setState({
+          profileFetched: true,
+          user
+        } as any);
+      }
+    }
+  };
+
+  public membershipCheck = () => {
+    const {
+      user,
+      usableMembership,
+      branchFetched,
+      profileFetched,
+      usableMembershipFetched,
+      nowBranchId
+    } = this.state;
+
+    if (branchFetched && profileFetched && usableMembershipFetched) {
+      if (!usableMembership) {
+        if (user) {
+          const {
+            isHead,
+            isSupervisor,
+            isFranchiser,
+            managingBranches,
+            cleaningBranches,
+            staffManangingBranches
+          } = user;
+          if (!isHead && (isSupervisor || isFranchiser)) {
+            if (isSupervisor || isFranchiser) {
+              if (managingBranches) {
+                const findBranch = managingBranches.find(managingBranch => {
+                  if (managingBranch && managingBranch.id === nowBranchId) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                });
+                if (!findBranch) {
+                  toast.info("블루닷라운지 이용을 위해 멤버쉽에 가입해주세요");
+                }
+              }
+            } else {
+              if (cleaningBranches) {
+                const matchedCleaningBranch = cleaningBranches.find(
+                  cleaningBranch => {
+                    if (cleaningBranch && cleaningBranch.id === nowBranchId) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  }
+                );
+                if (!matchedCleaningBranch) {
+                  if (staffManangingBranches) {
+                    const matchedStaffManagingBranch = staffManangingBranches.find(
+                      staffMangingBranch => {
+                        if (
+                          staffMangingBranch &&
+                          staffMangingBranch.id === nowBranchId
+                        ) {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      }
+                    );
+
+                    if (!matchedStaffManagingBranch) {
+                      toast.info(
+                        "블루닷라운지 이용을 위해 멤버쉽에 가입해주세요"
+                      );
+                    }
+                  } else {
+                    toast.info(
+                      "블루닷라운지 이용을 위해 멤버쉽에 가입해주세요"
+                    );
+                  }
+                }
+              }
+            }
+          } else {
+            toast.info("블루닷라운지 이용을 위해 멤버쉽에 가입해주세요");
+          }
+        }
       }
     }
   };

@@ -131,6 +131,21 @@ export interface searchUsersVariables {
 // GraphQL query operation: userProfile
 // ====================================================
 
+export interface userProfile_GetMyProfile_user_managingBranches {
+  __typename: "Branch";
+  id: number;
+}
+
+export interface userProfile_GetMyProfile_user_cleaningBranches {
+  __typename: "Branch";
+  id: number;
+}
+
+export interface userProfile_GetMyProfile_user_staffManangingBranches {
+  __typename: "Branch";
+  id: number;
+}
+
 export interface userProfile_GetMyProfile_user {
   __typename: "User";
   id: number;
@@ -140,6 +155,9 @@ export interface userProfile_GetMyProfile_user {
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;
+  managingBranches: (userProfile_GetMyProfile_user_managingBranches | null)[] | null;
+  cleaningBranches: (userProfile_GetMyProfile_user_cleaningBranches | null)[] | null;
+  staffManangingBranches: (userProfile_GetMyProfile_user_staffManangingBranches | null)[] | null;
 }
 
 export interface userProfile_GetMyProfile {

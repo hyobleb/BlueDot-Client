@@ -12,6 +12,15 @@ export const USER_PROFILE = gql`
         isHead
         isSupervisor
         isFranchiser
+        managingBranches {
+          id
+        }
+        cleaningBranches {
+          id
+        }
+        staffManangingBranches {
+          id
+        }
       }
     }
   }
