@@ -54,9 +54,9 @@ export const CERTIFICATE_USER = gql`
   }
 `;
 
-export const HEAD_GET_BRANCH = gql`
-  query headGetBranch($branchId: Int!) {
-    HeadGetBranch(branchId: $branchId) {
+export const MANAGER_GET_BRANCH = gql`
+  query managerGetBranch($branchId: Int!) {
+    ManagerGetBranch(branchId: $branchId) {
       ok
       error
       branch {
@@ -73,6 +73,7 @@ export const HEAD_GET_BRANCH = gql`
         comment
         branchImage
         loungeImage
+        cabinetLoungeImage
         minimapImage
         ips
         directManaged
@@ -98,7 +99,7 @@ export const HEAD_GET_BRANCH = gql`
 
 export const GET_BRANCH_FOR_UPDATE_LOUNGE = gql`
   query getBranchForUpdateLounge($branchId: Int!) {
-    HeadGetBranch(branchId: $branchId) {
+    ManagerGetBranch(branchId: $branchId) {
       ok
       error
       branch {
@@ -498,6 +499,26 @@ export const MANAGER_EXPIRE_MEMBERSHIP = gql`
     ManagerExpireMembership(membershipId: $membershipId) {
       ok
       error
+    }
+  }
+`;
+
+export const GET_MANAGING_BRANCHES = gql`
+  query getManaingBranches {
+    GetManagingBranches {
+      ok
+      error
+      branches {
+        id
+        name
+        descriptionPosition
+        address
+        detailAddress
+        alliedBranches {
+          id
+          name
+        }
+      }
     }
   }
 `;

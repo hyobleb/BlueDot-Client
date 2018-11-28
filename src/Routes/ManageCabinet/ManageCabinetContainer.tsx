@@ -11,7 +11,7 @@ import {
   managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet,
   managerGetCabinetLogsVariables
 } from "src/types/api";
-import { HEAD_GET_USER_DETAIL } from "../UserDetail/UserDetailQueries";
+import { MANAGER_GET_USER_DETAIL } from "../UserDetail/UserDetailQueries";
 import ManageCabinetPresenter from "./ManageCabinetPresenter";
 import { MANAGER_GET_CABINET_LOGS } from "./ManageCabinetQueries";
 
@@ -29,6 +29,9 @@ interface IState {
   nowMembershipId?: number;
   showExpireConfirmPopUp: boolean;
   showBranchSearchPopUp: boolean;
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
 }
 
 class GetCabinetLogsQuery extends Query<
@@ -60,6 +63,9 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       branchName,
       cabinetId,
       endDatetime: moment(),
+      isFranchiser: props.location.state.isFranchiser,
+      isHead: props.location.state.isHead,
+      isSupervisor: props.location.state.isSupervisor,
       selBranchId,
       selSetId,
       showBranchSearchPopUp: false,
@@ -249,13 +255,13 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
     } = this.state;
 
     const { data } = await this.apolloClient.query({
-      query: HEAD_GET_USER_DETAIL,
+      query: MANAGER_GET_USER_DETAIL,
       variables: { userId }
     });
 
-    if ("HeadGetUserDetail" in data) {
+    if ("ManagerGetUserDetail" in data) {
       const {
-        HeadGetUserDetail: { user }
+        ManagerGetUserDetail: { user }
       } = data;
 
       if (user !== null && cabinet) {

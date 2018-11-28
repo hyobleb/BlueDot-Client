@@ -160,9 +160,9 @@ const ExpBtn = styled(CabButton)`
 const SftBtn = styled(CabButton)`
   background-color: ${props => props.theme.orangeColor};
 `;
-const ModBtn = styled(CabButton)`
-  background-color: ${props => props.theme.lightBlueColor};
-`;
+// const ModBtn = styled(CabButton)`
+//   background-color: ${props => props.theme.lightBlueColor};
+// `;
 
 interface IProps {
   endDatetime: Moment;
@@ -257,7 +257,7 @@ const ManageCabinetPresenter: React.SFC<IProps> = ({
                       value={"이동"}
                       onClick={toggleShowBranchSearchPopUp}
                     />
-                    <ModBtn value={"수정"} />
+                    {/* <ModBtn value={"수정"} /> */}
                   </NowUserBtnCon>
                 </NowUserCon>
               )) ||

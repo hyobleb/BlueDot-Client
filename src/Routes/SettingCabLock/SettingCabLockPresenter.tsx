@@ -132,30 +132,38 @@ const SettingCabLockPresenter: React.SFC<IProps> = ({
           {lockDatas &&
             lockDatas.ManagerGetCabinetLocks &&
             lockDatas.ManagerGetCabinetLocks.cabinetLocks &&
-            lockDatas.ManagerGetCabinetLocks.cabinetLocks.map(
-              lock =>
-                lock && (
-                  <RowContainer key={lock.id}>
-                    <DataRow>
-                      <CabNumCol>
-                        {lock.cabinet && lock.cabinet.cabinetNumber}
-                      </CabNumCol>
-                      <LockNumCol>{lock.lockNumber}</LockNumCol>
-                      <PasswordCol>{lock.password}</PasswordCol>
-                      <ButtonCol>
-                        <ModifyButton
-                          value={"수정"}
-                          onClick={() => onModifyClick(lock.id)}
-                        />
-                        <DelButton
-                          value={"삭제"}
-                          onClick={() => onRemoveClick(lock.id)}
-                        />
-                      </ButtonCol>
-                    </DataRow>
-                  </RowContainer>
-                )
-            )}
+            lockDatas.ManagerGetCabinetLocks.cabinetLocks
+              .sort((a, b) => {
+                if (a!.cabinet!.cabinetNumber >= b!.cabinet!.cabinetNumber) {
+                  return 1;
+                } else {
+                  return -1;
+                }
+              })
+              .map(
+                lock =>
+                  lock && (
+                    <RowContainer key={lock.id}>
+                      <DataRow>
+                        <CabNumCol>
+                          {lock.cabinet && lock.cabinet.cabinetNumber}
+                        </CabNumCol>
+                        <LockNumCol>{lock.lockNumber}</LockNumCol>
+                        <PasswordCol>{lock.password}</PasswordCol>
+                        <ButtonCol>
+                          <ModifyButton
+                            value={"수정"}
+                            onClick={() => onModifyClick(lock.id)}
+                          />
+                          <DelButton
+                            value={"삭제"}
+                            onClick={() => onRemoveClick(lock.id)}
+                          />
+                        </ButtonCol>
+                      </DataRow>
+                    </RowContainer>
+                  )
+              )}
         </BodySection>
       </Container>
       {popUpShow ? (

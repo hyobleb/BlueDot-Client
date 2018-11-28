@@ -4,23 +4,26 @@ import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
 import { MANAGER_EXPIRE_MEMBERSHIP } from "src/Components/sharedQueries";
 import {
-  headGetUserDetail,
-  headGetUserDetail_HeadGetUserDetail_user,
-  headGetUserDetailVariables,
   managerExpireMembership,
-  managerExpireMembershipVariables
+  managerExpireMembershipVariables,
+  managerGetUserDetail,
+  managerGetUserDetail_ManagerGetUserDetail_user,
+  managerGetUserDetailVariables
 } from "src/types/api";
 import UserDetailPresenter from "./UserDetailPresenter";
-import { HEAD_GET_USER_DETAIL } from "./UserDetailQueries";
+import { MANAGER_GET_USER_DETAIL } from "./UserDetailQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
   userId: number;
-  user?: headGetUserDetail_HeadGetUserDetail_user;
+  user?: managerGetUserDetail_ManagerGetUserDetail_user;
   showExpirePopUp: boolean;
   tempSelMembershipId?: number;
   backUrl: string;
   backInfo?: any;
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
 }
 
 class ExpireMembershipMutation extends Mutation<
@@ -29,8 +32,8 @@ class ExpireMembershipMutation extends Mutation<
 > {}
 
 class GetUserDetailQuery extends Query<
-  headGetUserDetail,
-  headGetUserDetailVariables
+  managerGetUserDetail,
+  managerGetUserDetailVariables
 > {}
 
 class UserDetailContainer extends React.Component<IProps, IState> {
@@ -48,8 +51,11 @@ class UserDetailContainer extends React.Component<IProps, IState> {
           }
         : undefined,
       backUrl: props.location.state.backUrl || "/manage-users",
+      isFranchiser: props.location.state.isFranchiser || false,
+      isHead: props.location.state.isHead || false,
+      isSupervisor: props.location.state.isSupervisor || false,
       showExpirePopUp: false,
-      userId: this.props.location.state.userId
+      userId: props.location.state.userId
     };
   }
   public render() {
@@ -69,14 +75,14 @@ class UserDetailContainer extends React.Component<IProps, IState> {
           }
         }}
         refetchQueries={[
-          { query: HEAD_GET_USER_DETAIL, variables: { userId } }
+          { query: MANAGER_GET_USER_DETAIL, variables: { userId } }
         ]}
       >
         {expireMembershipMutationFn => {
           this.expireMembershipFn = expireMembershipMutationFn;
           return (
             <GetUserDetailQuery
-              query={HEAD_GET_USER_DETAIL}
+              query={MANAGER_GET_USER_DETAIL}
               variables={{ userId }}
               onCompleted={this.updateFields}
               onError={err => toast.error(err)}
@@ -108,11 +114,12 @@ class UserDetailContainer extends React.Component<IProps, IState> {
     );
   }
 
-  public updateFields = (data: {} | headGetUserDetail) => {
-    if ("HeadGetUserDetail" in data) {
+  public updateFields = (data: {} | managerGetUserDetail) => {
+    if ("ManagerGetUserDetail" in data) {
       const {
-        HeadGetUserDetail: { user }
+        ManagerGetUserDetail: { user }
       } = data;
+
       if (user !== null) {
         this.setState({
           user
@@ -123,12 +130,15 @@ class UserDetailContainer extends React.Component<IProps, IState> {
 
   public enrollMembershipClick = (userId: number) => {
     const { history } = this.props;
-    const { user } = this.state;
+    const { user, isHead, isFranchiser, isSupervisor } = this.state;
 
     history.push({
       pathname: "/manager-enroll-membership",
       state: {
         backUrl: "/user-detail",
+        isFranchiser,
+        isHead,
+        isSupervisor,
         userId,
         userIdName: user && user.userId,
         userName: user && user.name
@@ -137,12 +147,15 @@ class UserDetailContainer extends React.Component<IProps, IState> {
   };
   public enrollCabinetClick = (userId: number) => {
     const { history } = this.props;
-    const { user } = this.state;
+    const { user, isHead, isFranchiser, isSupervisor } = this.state;
 
     history.push({
       pathname: "/manager-enroll-cabinet",
       state: {
         backUrl: "/user-detail",
+        isFranchiser,
+        isHead,
+        isSupervisor,
         userId,
         userIdName: user && user.userId,
         userName: user && user.name

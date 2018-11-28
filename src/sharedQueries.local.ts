@@ -6,12 +6,16 @@ export const LOG_USER_IN = gql`
     $isHead: Boolean!
     $isSupervisor: Boolean!
     $isFranchiser: Boolean!
+    $isCleanStaff: Boolean!
+    $isManStaff: Boolean!
   ) {
     logUserIn(
       token: $token
       isHead: $isHead
       isSupervisor: $isSupervisor
       isFranchiser: $isFranchiser
+      isCleanStaff: $isCleanStaff
+      isManStaff: $isManStaff
     ) @client
   }
 `;

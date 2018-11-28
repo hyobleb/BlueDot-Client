@@ -113,12 +113,9 @@ class SettingCoBranchContainer extends React.Component<IProps, IState> {
         HeadGetCoBranches: { branches }
       } = data;
       if (branches !== null) {
-        this.setState(
-          {
-            coBranches: branches
-          },
-          () => console.log(this.state)
-        );
+        this.setState({
+          coBranches: branches
+        });
       }
     }
   };

@@ -122,13 +122,10 @@ class ViewReqSignUpContainer extends React.Component<IProps, IState> {
         ManagerGetRequestSignUps: { requestSignUps, branch }
       } = data;
       if (requestSignUps !== null) {
-        this.setState(
-          {
-            branchName: branch ? branch.name : "",
-            requestSignUps
-          },
-          () => console.log(this.state)
-        );
+        this.setState({
+          branchName: branch ? branch.name : "",
+          requestSignUps
+        });
       }
     }
   };

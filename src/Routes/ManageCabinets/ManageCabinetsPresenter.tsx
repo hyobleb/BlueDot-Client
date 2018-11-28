@@ -6,7 +6,10 @@ import DefaultBack from "src/Components/DefaultBack";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { getBranchForEnrollCabinet_UserGetBranch_branch } from "src/types/api";
+import {
+  getBranchForEnrollCabinet_UserGetBranch_branch,
+  managerGetManagingBranches_GetManagingBranches_branches
+} from "src/types/api";
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
@@ -51,6 +54,7 @@ const CabinetDisplayTitle = styled.div`
   margin-top: 30px;
   margin-bottom: 10px;
 `;
+const BranchBtn = styled(Button)``;
 
 interface IProps {
   showBranchSearchPopUp: boolean;
@@ -68,6 +72,10 @@ interface IProps {
   horizontalNumber: number;
   onCabinetClick: (cabinetId: number) => void;
   cabinetNumber: number;
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
+  managingBranches?: Array<managerGetManagingBranches_GetManagingBranches_branches | null>;
 }
 
 const ManageCabinetsPresenter: React.SFC<IProps> = ({
@@ -85,20 +93,35 @@ const ManageCabinetsPresenter: React.SFC<IProps> = ({
   cabinets,
   horizontalNumber,
   onCabinetClick,
-  cabinetNumber
+  cabinetNumber,
+  isHead,
+  isFranchiser,
+  isSupervisor,
+  managingBranches
 }) => (
   <Back title={"manage-cabinets"} backUrl={"/"}>
     <HeadSection>
-      <BranchSearchBtn
-        value={"지점 검색"}
-        onClick={toggleSearchBranchPopUpShow}
-      />
+      {isHead && (
+        <BranchSearchBtn
+          value={"지점 검색"}
+          onClick={toggleSearchBranchPopUpShow}
+        />
+      )}
+      {(isSupervisor || isFranchiser) &&
+        managingBranches &&
+        managingBranches.map(
+          managingBanch =>
+            managingBanch && (
+              <BranchBtn key={managingBanch.id} value={managingBanch.name} />
+            )
+        )}
     </HeadSection>
+
     {getBranchLoading ? (
       selBranchId ? (
         <Loading />
       ) : (
-        <LoungeSection>지점을 검색해주세요</LoungeSection>
+        isHead && <LoungeSection>지점을 검색해주세요</LoungeSection>
       )
     ) : (
       <LoungeSection>

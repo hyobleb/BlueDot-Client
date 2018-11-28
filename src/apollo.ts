@@ -10,9 +10,11 @@ const client = new ApolloClient({
     defaults: {
       auth: {
         __typename: "Auth",
+        isCleanStaff: Boolean(localStorage.getItem("isCleanStaff")) || false,
         isFranchiser: Boolean(localStorage.getItem("isFranchiser")) || false,
         isHead: Boolean(localStorage.getItem("isHead")) || false,
         isLoggedIn: Boolean(localStorage.getItem("jwt")) || false,
+        isManStaff: Boolean(localStorage.getItem("isManStaff")) || false,
         isSupervisor: Boolean(localStorage.getItem("isSupervisor")) || false
       }
     },
@@ -24,7 +26,14 @@ const client = new ApolloClient({
 
         logUserIn: (
           _,
-          { token, isHead, isSupervisor, isFranchiser },
+          {
+            token,
+            isHead,
+            isSupervisor,
+            isFranchiser,
+            isManStaff,
+            isCleanStaff
+          },
           { cache }
         ) => {
           localStorage.setItem("jwt", token);
@@ -37,13 +46,21 @@ const client = new ApolloClient({
           if (isFranchiser) {
             localStorage.setItem("isFranchiser", token);
           }
+          if (isManStaff) {
+            localStorage.setItem("isManStaff", token);
+          }
+          if (isCleanStaff) {
+            localStorage.setItem("isCleanStaff", token);
+          }
           cache.writeData({
             data: {
               auth: {
                 __typename: "Auth",
+                isCleanStaff,
                 isFranchiser,
                 isHead,
                 isLoggedIn: true,
+                isManStaff,
                 isSupervisor
               }
             }
@@ -55,12 +72,16 @@ const client = new ApolloClient({
           localStorage.removeItem("isHead");
           localStorage.removeItem("isSupervisor");
           localStorage.removeItem("isFranchiser");
+          localStorage.removeItem("isManStaff");
+          localStorage.removeItem("isCleanStaff");
           cache.writeData({
             data: {
               auth: {
                 __typename: "Auth",
+                isCleanStaff: false,
                 isHead: null,
                 isLoggedIn: false,
+                isManStaff: false,
                 isManager: false
               }
             }

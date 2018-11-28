@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
-export const HEAD_GET_USER_DETAIL = gql`
-  query headGetUserDetail($userId: Int!) {
-    HeadGetUserDetail(userId: $userId) {
+export const MANAGER_GET_USER_DETAIL = gql`
+  query managerGetUserDetail($userId: Int!) {
+    ManagerGetUserDetail(userId: $userId) {
       ok
       error
       user {

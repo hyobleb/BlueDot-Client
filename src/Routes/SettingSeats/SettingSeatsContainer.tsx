@@ -493,25 +493,22 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
   };
 
   public onSeatEditCancelClick = () => {
-    this.setState(
-      {
-        ...this.state,
-        addSeatMode: false,
-        doorEditMode: false,
-        isAddDoorMode: false,
-        isFlip: false,
-        selSeatDiscard: true,
-        selSeatFemaleUsable: true,
-        selSeatId: 0,
-        selSeatMaleUsable: true,
-        selSeatNumber: 0,
-        selSeatRotate: 0,
-        selSeatUsable: true,
-        selSeatXpos: 0,
-        selSeatYpos: 0
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      ...this.state,
+      addSeatMode: false,
+      doorEditMode: false,
+      isAddDoorMode: false,
+      isFlip: false,
+      selSeatDiscard: true,
+      selSeatFemaleUsable: true,
+      selSeatId: 0,
+      selSeatMaleUsable: true,
+      selSeatNumber: 0,
+      selSeatRotate: 0,
+      selSeatUsable: true,
+      selSeatXpos: 0,
+      selSeatYpos: 0
+    });
   };
 
   public onCancelButtonClick = () => {

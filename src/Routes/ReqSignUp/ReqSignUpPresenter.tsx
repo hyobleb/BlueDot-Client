@@ -210,6 +210,7 @@ const ReqSignUpPresenter: React.SFC<IProps> = ({
             type={"text"}
             maxlength={11}
             autoFocus={true}
+            autoComplete={"username"}
           />
           <ExtendInput
             placeholder={"비밀번호"}

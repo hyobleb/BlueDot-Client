@@ -9,6 +9,8 @@ export const USER_ID_SIGN_IN = gql`
         isHead
         isSupervisor
         isFranchiser
+        isCleanStaff
+        isManStaff
       }
     }
   }

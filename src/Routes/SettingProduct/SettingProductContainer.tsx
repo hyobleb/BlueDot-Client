@@ -2,12 +2,12 @@ import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { HEAD_GET_BRANCH } from "src/Components/sharedQueries";
+import { MANAGER_GET_BRANCH } from "src/Components/sharedQueries";
 import {
-  headGetBranch,
-  headGetBranchVariables,
   headRemoveProduct,
-  headRemoveProductVariables
+  headRemoveProductVariables,
+  managerGetBranch,
+  managerGetBranchVariables
 } from "src/types/api";
 import SettingProductPresenter from "./SettingProductPresenter";
 import { HEAD_REMOVE_PRODUCT } from "./SettingProductQueries";
@@ -19,7 +19,10 @@ interface IState {
   targetProductId: number;
 }
 
-class GetBranchQuery extends Query<headGetBranch, headGetBranchVariables> {}
+class GetBranchQuery extends Query<
+  managerGetBranch,
+  managerGetBranchVariables
+> {}
 class RemoveProductMutation extends Mutation<
   headRemoveProduct,
   headRemoveProductVariables
@@ -54,12 +57,14 @@ class SettingProductContainer extends React.Component<IProps, IState> {
             toast.error(HeadModifyProduct.error);
           }
         }}
-        refetchQueries={[{ query: HEAD_GET_BRANCH, variables: { branchId } }]}
+        refetchQueries={[
+          { query: MANAGER_GET_BRANCH, variables: { branchId } }
+        ]}
       >
         {removeProductMutationFn => {
           this.removeProductFn = removeProductMutationFn;
           return (
-            <GetBranchQuery query={HEAD_GET_BRANCH} variables={{ branchId }}>
+            <GetBranchQuery query={MANAGER_GET_BRANCH} variables={{ branchId }}>
               {({ data: branchData, loading: branchLoading }) => (
                 <SettingProductPresenter
                   onAddButtonClick={this.onAddButtonClick}

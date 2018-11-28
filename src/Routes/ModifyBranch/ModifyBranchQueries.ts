@@ -53,3 +53,36 @@ export const UPDATE_BRANCH = gql`
     }
   }
 `;
+
+export const MANAGER_UPDATE_BRANCH = gql`
+  mutation managerUpdateBranch(
+    $branchId: Int!
+    $detailAddress: String
+    $descriptionPosition: String
+    $ips: [String]
+    $manAcceptable: Boolean
+    $womanAcceptable: Boolean
+    $boyAcceptable: Boolean
+    $girlAcceptable: Boolean
+    $maleMax: Int
+    $femaleMax: Int
+    $available: Boolean
+  ) {
+    ManagerUpdateBranch(
+      branchId: $branchId
+      detailAddress: $detailAddress
+      descriptionPosition: $descriptionPosition
+      ips: $ips
+      manAcceptable: $manAcceptable
+      womanAcceptable: $womanAcceptable
+      boyAcceptable: $boyAcceptable
+      girlAcceptable: $girlAcceptable
+      maleMax: $maleMax
+      femaleMax: $femaleMax
+      available: $available
+    ) {
+      ok
+      error
+    }
+  }
+`;

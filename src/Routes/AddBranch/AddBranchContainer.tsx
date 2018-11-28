@@ -318,7 +318,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       loungeImg,
       minimapImg,
       manMax,
-      womanMax
+      womanMax,
+      cabinetLoungeImg
     } = this.state;
 
     if (!branchName) {
@@ -327,6 +328,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       toast.error("지점 번호를 입력해주세요!");
     } else if (!loungeImg) {
       toast.error("열람실 이미지를 업로드 해주세요");
+    } else if (!cabinetLoungeImg) {
+      toast.error("사물함 라운지 이미지를 업로드해주세요");
     } else if (!minimapImg) {
       toast.error("미니맵 이미지를 업로드해주세요");
     } else if (!manMax) {

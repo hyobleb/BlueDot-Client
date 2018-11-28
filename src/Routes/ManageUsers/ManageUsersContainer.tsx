@@ -3,18 +3,25 @@ import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import {
-  headGetMembershipLogs,
-  headGetMembershipLogsVariables,
-  headGetNowUsingUsers,
-  headGetNowUsingUsersVariables
+  managerGetManagingBranches,
+  managerGetManagingBranches_GetManagingBranches_branches,
+  managerGetMembershipLogs,
+  managerGetMembershipLogsVariables,
+  managerGetNowUsingUsers,
+  managerGetNowUsingUsersVariables
 } from "src/types/api";
 import {
-  HEAD_GET_MEMBERSHIP_LOGS,
-  HEAD_GET_NOW_USING_USERS
+  MANAGER_GET_MANAGING_BRANCHES,
+  MANAGER_GET_MEMBERSHIP_LOGS,
+  MANAGER_GET_NOW_USING_USERS
 } from "./ManagerUsersQueries";
 import ManageUsersPresenter from "./ManageUsersPresenter";
 
-interface IProps extends RouteComponentProps<any> {}
+interface IProps extends RouteComponentProps<any> {
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
+}
 interface IState {
   selDate: Moment;
   membershipLogsByDate: any[];
@@ -23,16 +30,18 @@ interface IState {
   selBranchId?: number;
   showUserSearchPopUp: boolean;
   branchName?: string;
+  managingBranches?: Array<managerGetManagingBranches_GetManagingBranches_branches | null>;
 }
 
+class GetManagingBranchesQuery extends Query<managerGetManagingBranches> {}
 class GetNowUsingUsersQuery extends Query<
-  headGetNowUsingUsers,
-  headGetNowUsingUsersVariables
+  managerGetNowUsingUsers,
+  managerGetNowUsingUsersVariables
 > {}
 
 class GetMembershipLogsQuery extends Query<
-  headGetMembershipLogs,
-  headGetMembershipLogsVariables
+  managerGetMembershipLogs,
+  managerGetMembershipLogsVariables
 > {}
 
 class ManageUsersContainer extends React.Component<IProps, IState> {
@@ -52,6 +61,8 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
     };
   }
   public render() {
+    const { isHead, isFranchiser, isSupervisor } = this.props;
+
     const {
       selDate,
       membershipLogsByDate,
@@ -59,54 +70,71 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
       selBranchId,
       nowUsingUsers,
       showUserSearchPopUp,
-      branchName
+      branchName,
+      managingBranches
     } = this.state;
     return (
-      <GetNowUsingUsersQuery
-        query={HEAD_GET_NOW_USING_USERS}
-        variables={{
-          branchId: selBranchId
-        }}
+      <GetManagingBranchesQuery
+        query={MANAGER_GET_MANAGING_BRANCHES}
+        skip={isHead}
         onCompleted={this.updateFields}
         fetchPolicy={"cache-and-network"}
       >
-        {({ loading: usingUsersLoading }) => {
-          return (
-            <GetMembershipLogsQuery
-              query={HEAD_GET_MEMBERSHIP_LOGS}
-              variables={{
-                branchId: selBranchId,
-                date: moment(selDate).format("YYYY-MM-DD")
-              }}
-              onCompleted={this.updateFields}
-              fetchPolicy={"cache-and-network"}
-            >
-              {({ loading: membershipLogsLoading }) => {
-                return (
-                  <ManageUsersPresenter
-                    selDate={selDate}
-                    onDatetimeChange={this.onDatetimeChange}
-                    membershipLogsByDate={membershipLogsByDate}
-                    branchSearchPopupShow={branchSearchPopupShow}
-                    toggleBranchPopUpShow={this.toggleBranchPopUpShow}
-                    onBranchClick={this.onBranchClick}
-                    membershipLogsLoading={membershipLogsLoading}
-                    usingUsersLoading={usingUsersLoading}
-                    nowUsingUsers={nowUsingUsers}
-                    onAllBranchClick={this.onAllBranchClick}
-                    toggleShowUserSearchPopUp={this.toggleShowUserSearchPopUp}
-                    showUserSearchPopUp={showUserSearchPopUp}
-                    onUserClick={this.onUserClick}
-                    branchName={branchName}
-                    onChartBtnClick={this.onChartBtnClick}
-                    onOfflineReqBtnClick={this.onOfflineReqBtnClick}
-                  />
-                );
-              }}
-            </GetMembershipLogsQuery>
-          );
-        }}
-      </GetNowUsingUsersQuery>
+        {() => (
+          <GetNowUsingUsersQuery
+            query={MANAGER_GET_NOW_USING_USERS}
+            variables={{
+              branchId: selBranchId
+            }}
+            onCompleted={this.updateFields}
+            fetchPolicy={"cache-and-network"}
+          >
+            {({ loading: usingUsersLoading }) => {
+              return (
+                <GetMembershipLogsQuery
+                  query={MANAGER_GET_MEMBERSHIP_LOGS}
+                  variables={{
+                    branchId: selBranchId,
+                    date: moment(selDate).format("YYYY-MM-DD")
+                  }}
+                  onCompleted={this.updateFields}
+                  fetchPolicy={"cache-and-network"}
+                >
+                  {({ loading: membershipLogsLoading }) => {
+                    return (
+                      <ManageUsersPresenter
+                        selDate={selDate}
+                        onDatetimeChange={this.onDatetimeChange}
+                        membershipLogsByDate={membershipLogsByDate}
+                        branchSearchPopupShow={branchSearchPopupShow}
+                        toggleBranchPopUpShow={this.toggleBranchPopUpShow}
+                        onBranchClick={this.onBranchClick}
+                        membershipLogsLoading={membershipLogsLoading}
+                        usingUsersLoading={usingUsersLoading}
+                        nowUsingUsers={nowUsingUsers}
+                        onAllBranchClick={this.onAllBranchClick}
+                        toggleShowUserSearchPopUp={
+                          this.toggleShowUserSearchPopUp
+                        }
+                        showUserSearchPopUp={showUserSearchPopUp}
+                        onUserClick={this.onUserClick}
+                        branchName={branchName}
+                        onChartBtnClick={this.onChartBtnClick}
+                        onOfflineReqBtnClick={this.onOfflineReqBtnClick}
+                        isHead={isHead}
+                        isFranchiser={isFranchiser}
+                        isSupervisor={isSupervisor}
+                        managingBranches={managingBranches}
+                        onBranchBtnClick={this.onBranchBtnClick}
+                      />
+                    );
+                  }}
+                </GetMembershipLogsQuery>
+              );
+            }}
+          </GetNowUsingUsersQuery>
+        )}
+      </GetManagingBranchesQuery>
     );
   }
 
@@ -117,11 +145,15 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
   };
 
   public updateFields = (
-    data: {} | headGetMembershipLogs | headGetNowUsingUsers
+    data:
+      | {}
+      | managerGetMembershipLogs
+      | managerGetNowUsingUsers
+      | managerGetManagingBranches
   ) => {
-    if ("HeadGetMembershipLogs" in data) {
+    if ("ManagerGetMembershipLogs" in data) {
       const {
-        HeadGetMembershipLogs: { membershipLogs, branch }
+        ManagerGetMembershipLogs: { membershipLogs, branch }
       } = data;
       if (membershipLogs !== null) {
         this.setState({
@@ -129,14 +161,24 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
           membershipLogsByDate: membershipLogs
         });
       }
-    } else if ("HeadGetNowUsingUsers" in data) {
+    } else if ("ManagerGetNowUsingUsers" in data) {
       const {
-        HeadGetNowUsingUsers: { users }
+        ManagerGetNowUsingUsers: { users }
       } = data;
 
       if (users !== null) {
         this.setState({
           nowUsingUsers: users
+        });
+      }
+    } else if ("GetManagingBranches" in data) {
+      const {
+        GetManagingBranches: { branches }
+      } = data;
+
+      if (branches !== null) {
+        this.setState({
+          managingBranches: branches
         });
       }
     }
@@ -145,6 +187,12 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
   public toggleBranchPopUpShow = () => {
     this.setState({
       branchSearchPopupShow: !this.state.branchSearchPopupShow
+    });
+  };
+
+  public onBranchBtnClick = (branchId: number) => {
+    this.setState({
+      selBranchId: branchId
     });
   };
 
@@ -169,10 +217,14 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
 
   public onUserClick = async (userId: number) => {
     const { history } = this.props;
+    const { isHead, isFranchiser, isSupervisor } = this.props;
 
     history.push({
       pathname: "/user-detail",
       state: {
+        isFranchiser,
+        isHead,
+        isSupervisor,
         userId
       }
     });

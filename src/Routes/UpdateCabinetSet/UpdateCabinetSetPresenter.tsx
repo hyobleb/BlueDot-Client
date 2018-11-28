@@ -106,17 +106,17 @@ const UpdateCabinetSetPresenter: React.SFC<IProps> = ({
     ) : (
       <>
         {branchData &&
-          branchData.HeadGetBranch &&
-          branchData.HeadGetBranch.branch &&
-          branchData.HeadGetBranch.branch.cabinetLoungeImage && (
+          branchData.ManagerGetBranch &&
+          branchData.ManagerGetBranch.branch &&
+          branchData.ManagerGetBranch.branch.cabinetLoungeImage && (
             <CabinetSetsContainer
-              imgUrl={branchData.HeadGetBranch.branch.cabinetLoungeImage}
+              imgUrl={branchData.ManagerGetBranch.branch.cabinetLoungeImage}
               showTempCabinetSet={false}
               targetCainbetSetHeight={height}
               targetCabinetSetWidth={width}
               targetCabinetSetXpos={xpos}
               targetCabinetSetYpos={ypos}
-              cabinetSets={branchData.HeadGetBranch.branch.cabinetSets}
+              cabinetSets={branchData.ManagerGetBranch.branch.cabinetSets}
               tempSelCabinetSetId={setId}
             />
           )}

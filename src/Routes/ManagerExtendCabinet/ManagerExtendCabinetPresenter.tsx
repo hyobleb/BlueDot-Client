@@ -96,7 +96,6 @@ const ProductItem = styled.div`
 
 interface IProps {
   showMembershipPopUp: boolean;
-  exstingMemberships: any;
   selMembership: any;
   onMembershipClick: (membershipId: number) => void;
   products: any;
@@ -206,7 +205,7 @@ const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
           />
           <ExtendConfirmBtn
             value={"무결제 연장"}
-            onClick={onExtendConfirmClick}
+            onClick={() => onExtendConfirmClick()}
           />
         </ButtonSection>
       </Container>

@@ -85,6 +85,9 @@ interface IProps {
   delCleanStaff: (userId: number) => Promise<void>;
   onManagingStaffEnrollClick: () => void;
   delManaingStaff: (userId: number) => Promise<void>;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
 }
 
 const SettingStaffPresenter: React.SFC<IProps> = ({
@@ -103,7 +106,10 @@ const SettingStaffPresenter: React.SFC<IProps> = ({
   onCleanStaffEnrollClick,
   delCleanStaff,
   onManagingStaffEnrollClick,
-  delManaingStaff
+  delManaingStaff,
+  isFranchiser,
+  isHead,
+  isSupervisor
 }) => (
   <BackContainer>
     <Helmet>
@@ -115,65 +121,81 @@ const SettingStaffPresenter: React.SFC<IProps> = ({
     ) : (
       <Container>
         <HeadSection>{branchName}</HeadSection>
-        <MemberSection>
-          <MemberHeadRow>
-            <MemberHeadTitle>점주</MemberHeadTitle>
-            <MemberHeadButtonContainer>
-              <EnrollButton value={"등록"} onClick={onFranchiserEnrollClick} />
-            </MemberHeadButtonContainer>
-          </MemberHeadRow>
-          <MemberContentRow>
-            {managers.filter(manager => manager.isFranchiser).length > 0 ? (
-              managers
-                .filter(manager => manager.isFranchiser)
-                .map(franchiser => (
-                  <MemberList key={franchiser.id}>
-                    <MemberContent>
-                      {franchiser.name} {franchiser.phone}
-                    </MemberContent>
-                    <DeleteButton
-                      value={"삭제"}
-                      onClick={async () => await delFranchiser(franchiser.id)}
-                    />
+        {isHead && (
+          <>
+            <MemberSection>
+              <MemberHeadRow>
+                <MemberHeadTitle>점주</MemberHeadTitle>
+                <MemberHeadButtonContainer>
+                  <EnrollButton
+                    value={"등록"}
+                    onClick={onFranchiserEnrollClick}
+                  />
+                </MemberHeadButtonContainer>
+              </MemberHeadRow>
+              <MemberContentRow>
+                {managers &&
+                managers.filter(manager => manager.isFranchiser).length > 0 ? (
+                  managers
+                    .filter(manager => manager.isFranchiser)
+                    .map(franchiser => (
+                      <MemberList key={franchiser.id}>
+                        <MemberContent>
+                          {franchiser.name} {franchiser.phone}
+                        </MemberContent>
+                        <DeleteButton
+                          value={"삭제"}
+                          onClick={async () =>
+                            await delFranchiser(franchiser.id)
+                          }
+                        />
+                      </MemberList>
+                    ))
+                ) : (
+                  <MemberList>
+                    <MemberContent>현재 점주가 없습니다</MemberContent>
                   </MemberList>
-                ))
-            ) : (
-              <MemberList>
-                <MemberContent>현재 점주가 없습니다</MemberContent>
-              </MemberList>
-            )}
-          </MemberContentRow>
-        </MemberSection>
+                )}
+              </MemberContentRow>
+            </MemberSection>
 
-        <MemberSection>
-          <MemberHeadRow>
-            <MemberHeadTitle>슈퍼바이저</MemberHeadTitle>
-            <MemberHeadButtonContainer>
-              <EnrollButton value={"등록"} onClick={onSupervisorEnrollClick} />
-            </MemberHeadButtonContainer>
-          </MemberHeadRow>
-          <MemberContentRow>
-            {managers.filter(manager => manager.isSupervisor).length > 0 ? (
-              managers
-                .filter(manager => manager.isSupervisor)
-                .map(supervisor => (
-                  <MemberList key={supervisor.id}>
-                    <MemberContent>
-                      {supervisor.name} {supervisor.phone}
-                    </MemberContent>
-                    <DeleteButton
-                      value={"삭제"}
-                      onClick={async () => await delSupervisor(supervisor.id)}
-                    />
+            <MemberSection>
+              <MemberHeadRow>
+                <MemberHeadTitle>슈퍼바이저</MemberHeadTitle>
+                <MemberHeadButtonContainer>
+                  <EnrollButton
+                    value={"등록"}
+                    onClick={onSupervisorEnrollClick}
+                  />
+                </MemberHeadButtonContainer>
+              </MemberHeadRow>
+              <MemberContentRow>
+                {managers &&
+                managers.filter(manager => manager.isSupervisor).length > 0 ? (
+                  managers
+                    .filter(manager => manager.isSupervisor)
+                    .map(supervisor => (
+                      <MemberList key={supervisor.id}>
+                        <MemberContent>
+                          {supervisor.name} {supervisor.phone}
+                        </MemberContent>
+                        <DeleteButton
+                          value={"삭제"}
+                          onClick={async () =>
+                            await delSupervisor(supervisor.id)
+                          }
+                        />
+                      </MemberList>
+                    ))
+                ) : (
+                  <MemberList>
+                    <MemberContent>현재 슈퍼바이저가 없습니다</MemberContent>
                   </MemberList>
-                ))
-            ) : (
-              <MemberList>
-                <MemberContent>현재 슈퍼바이저가 없습니다</MemberContent>
-              </MemberList>
-            )}
-          </MemberContentRow>
-        </MemberSection>
+                )}
+              </MemberContentRow>
+            </MemberSection>
+          </>
+        )}
 
         <MemberSection>
           <MemberHeadRow>
@@ -183,7 +205,7 @@ const SettingStaffPresenter: React.SFC<IProps> = ({
             </MemberHeadButtonContainer>
           </MemberHeadRow>
           <MemberContentRow>
-            {cleanStaffs.length > 0 ? (
+            {cleanStaffs && cleanStaffs.length > 0 ? (
               cleanStaffs.map(cleanStaff => (
                 <MemberList key={cleanStaff.id}>
                   <MemberContent>
@@ -214,7 +236,7 @@ const SettingStaffPresenter: React.SFC<IProps> = ({
             </MemberHeadButtonContainer>
           </MemberHeadRow>
           <MemberContentRow>
-            {managingStaffs.length > 0 ? (
+            {managingStaffs && managingStaffs.length > 0 ? (
               managingStaffs.map(managingStaff => (
                 <MemberList key={managingStaff.id}>
                   <MemberContent>

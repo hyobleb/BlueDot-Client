@@ -2,7 +2,7 @@ import React from "react";
 import { Mutation } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { HEAD_GET_BRANCH } from "src/Components/sharedQueries";
+import { MANAGER_GET_BRANCH } from "src/Components/sharedQueries";
 import { membershipOptions } from "src/Components/shareOptions";
 import { addProduct, addProductVariables } from "src/types/api";
 import AddProductPresenter from "./AddProductPresenter";
@@ -70,7 +70,9 @@ class AddProductContainer extends React.Component<IProps, IState> {
             toast.error(HeadCreateProduct.error);
           }
         }}
-        refetchQueries={[{ query: HEAD_GET_BRANCH, variables: { branchId } }]}
+        refetchQueries={[
+          { query: MANAGER_GET_BRANCH, variables: { branchId } }
+        ]}
       >
         {addProductMutationFn => {
           this.addProductFn = addProductMutationFn;

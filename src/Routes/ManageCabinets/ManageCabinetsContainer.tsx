@@ -11,11 +11,18 @@ import {
   getBranchForEnrollCabinetVariables,
   getCabinet,
   getCabinets,
-  getCabinetsVariables
+  getCabinetsVariables,
+  managerGetManagingBranches,
+  managerGetManagingBranches_GetManagingBranches_branches
 } from "src/types/api";
-import ManageCabinetsPresenter from "./ManageCabinetsPreseneter";
+import { MANAGER_GET_MANAGING_BRANCHES } from "../ManageUsers/ManagerUsersQueries";
+import ManageCabinetsPresenter from "./ManageCabinetsPresenter";
 
-interface IProps extends RouteComponentProps<any> {}
+interface IProps extends RouteComponentProps<any> {
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
+}
 interface IState {
   showBranchSearchPopUp: boolean;
   selBranchId: number;
@@ -25,7 +32,10 @@ interface IState {
   cabinets: any;
   horizontalNumber: number;
   cabinetNumber: number;
+  managingBranches?: Array<managerGetManagingBranches_GetManagingBranches_branches | null>;
 }
+
+class GetManagingBranchesQuery extends Query<managerGetManagingBranches> {}
 
 class GetCabinetsQuery extends Query<getCabinets, getCabinetsVariables> {}
 
@@ -67,45 +77,63 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       selSetId,
       cabinets,
       horizontalNumber,
-      cabinetNumber
+      cabinetNumber,
+      managingBranches
     } = this.state;
+
+    const { isHead, isFranchiser, isSupervisor } = this.props;
     return (
-      <GetCabinetsQuery
-        query={GET_CABINETS}
-        variables={{ cabinetSetId: selSetId }}
+      <GetManagingBranchesQuery
+        query={MANAGER_GET_MANAGING_BRANCHES}
+        skip={isHead}
         onCompleted={this.updateFields}
         fetchPolicy={"cache-and-network"}
       >
         {() => (
-          <GetBranchQuery
-            query={GET_BRANCH_FOR_ERNOLL_CABINET}
-            variables={{ branchId: selBranchId }}
-            skip={selBranchId === 0}
+          <GetCabinetsQuery
+            query={GET_CABINETS}
+            variables={{ cabinetSetId: selSetId }}
             onCompleted={this.updateFields}
             fetchPolicy={"cache-and-network"}
           >
-            {({ loading: getBranchLoading }) => (
-              <ManageCabinetsPresenter
-                showBranchSearchPopUp={showBranchSearchPopUp}
-                toggleSearchBranchPopUpShow={this.toggleSearchBranchPopUpShow}
-                branch={branch}
-                selBranchId={selBranchId}
-                getBranchLoading={getBranchLoading}
-                onBranchClick={this.onBranchClick}
-                tempSetId={tempSetId}
-                selSetId={selSetId}
-                onSetHover={this.onSetHover}
-                onSetHoverOut={this.onSetHoverOut}
-                onSetClick={this.onSetClick}
-                cabinets={cabinets}
-                horizontalNumber={horizontalNumber}
-                onCabinetClick={this.onCabinetClick}
-                cabinetNumber={cabinetNumber}
-              />
+            {() => (
+              <GetBranchQuery
+                query={GET_BRANCH_FOR_ERNOLL_CABINET}
+                variables={{ branchId: selBranchId }}
+                skip={selBranchId === 0}
+                onCompleted={this.updateFields}
+                fetchPolicy={"cache-and-network"}
+              >
+                {({ loading: getBranchLoading }) => (
+                  <ManageCabinetsPresenter
+                    showBranchSearchPopUp={showBranchSearchPopUp}
+                    toggleSearchBranchPopUpShow={
+                      this.toggleSearchBranchPopUpShow
+                    }
+                    branch={branch}
+                    selBranchId={selBranchId}
+                    getBranchLoading={getBranchLoading}
+                    onBranchClick={this.onBranchClick}
+                    tempSetId={tempSetId}
+                    selSetId={selSetId}
+                    onSetHover={this.onSetHover}
+                    onSetHoverOut={this.onSetHoverOut}
+                    onSetClick={this.onSetClick}
+                    cabinets={cabinets}
+                    horizontalNumber={horizontalNumber}
+                    onCabinetClick={this.onCabinetClick}
+                    cabinetNumber={cabinetNumber}
+                    isHead={isHead}
+                    isFranchiser={isFranchiser}
+                    isSupervisor={isSupervisor}
+                    managingBranches={managingBranches}
+                  />
+                )}
+              </GetBranchQuery>
             )}
-          </GetBranchQuery>
+          </GetCabinetsQuery>
         )}
-      </GetCabinetsQuery>
+      </GetManagingBranchesQuery>
     );
   }
 
@@ -116,7 +144,12 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
   };
 
   public updateFields = (
-    data: {} | getBranchForEnrollCabinet | getCabinets | getCabinet
+    data:
+      | {}
+      | getBranchForEnrollCabinet
+      | getCabinets
+      | getCabinet
+      | managerGetManagingBranches
   ) => {
     if ("UserGetBranch" in data) {
       const {
@@ -155,6 +188,27 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
           cabinetNumber: findCabinetNumber
         });
       }
+    } else if ("GetManagingBranches" in data) {
+      const {
+        GetManagingBranches: { branches }
+      } = data;
+      const { isHead, isSupervisor, isFranchiser } = this.props;
+
+      if (branches !== null) {
+        if (!isHead && (isSupervisor || isFranchiser) && branches !== null) {
+          let oneBranchId = 0;
+          if (branches.length === 1) {
+            if (branches[0] !== null) {
+              oneBranchId = branches[0]!.id;
+            }
+          }
+
+          this.setState({
+            managingBranches: branches,
+            selBranchId: oneBranchId
+          });
+        }
+      }
     }
   };
 
@@ -189,11 +243,15 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
   public onCabinetClick = (cabinetId: number) => {
     const { history } = this.props;
     const { selBranchId, selSetId, branch } = this.state;
+    const { isHead, isFranchiser, isSupervisor } = this.props;
     history.push({
       pathname: "/manage-cabinet",
       state: {
         branchName: branch && branch.name,
         cabinetId,
+        isFranchiser,
+        isHead,
+        isSupervisor,
         selBranchId,
         selSetId
       }

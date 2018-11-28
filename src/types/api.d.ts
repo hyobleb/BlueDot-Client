@@ -234,10 +234,10 @@ export interface certificateUserVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: headGetBranch
+// GraphQL query operation: managerGetBranch
 // ====================================================
 
-export interface headGetBranch_HeadGetBranch_branch_products {
+export interface managerGetBranch_ManagerGetBranch_branch_products {
   __typename: "Product";
   id: number;
   title: string;
@@ -248,7 +248,7 @@ export interface headGetBranch_HeadGetBranch_branch_products {
   discard: boolean;
 }
 
-export interface headGetBranch_HeadGetBranch_branch {
+export interface managerGetBranch_ManagerGetBranch_branch {
   __typename: "Branch";
   id: number;
   name: string;
@@ -263,6 +263,7 @@ export interface headGetBranch_HeadGetBranch_branch {
   comment: string | null;
   branchImage: (string | null)[];
   loungeImage: string;
+  cabinetLoungeImage: string;
   minimapImage: string;
   ips: (string | null)[] | null;
   directManaged: boolean | null;
@@ -272,21 +273,21 @@ export interface headGetBranch_HeadGetBranch_branch {
   womanAcceptable: boolean | null;
   boyAcceptable: boolean | null;
   girlAcceptable: boolean | null;
-  products: (headGetBranch_HeadGetBranch_branch_products | null)[] | null;
+  products: (managerGetBranch_ManagerGetBranch_branch_products | null)[] | null;
 }
 
-export interface headGetBranch_HeadGetBranch {
-  __typename: "HeadGetBranchResponse";
+export interface managerGetBranch_ManagerGetBranch {
+  __typename: "ManagerGetBranchResponse";
   ok: boolean;
   error: string | null;
-  branch: headGetBranch_HeadGetBranch_branch | null;
+  branch: managerGetBranch_ManagerGetBranch_branch | null;
 }
 
-export interface headGetBranch {
-  HeadGetBranch: headGetBranch_HeadGetBranch;
+export interface managerGetBranch {
+  ManagerGetBranch: managerGetBranch_ManagerGetBranch;
 }
 
-export interface headGetBranchVariables {
+export interface managerGetBranchVariables {
   branchId: number;
 }
 
@@ -297,7 +298,7 @@ export interface headGetBranchVariables {
 // GraphQL query operation: getBranchForUpdateLounge
 // ====================================================
 
-export interface getBranchForUpdateLounge_HeadGetBranch_branch_rooms {
+export interface getBranchForUpdateLounge_ManagerGetBranch_branch_rooms {
   __typename: "Room";
   id: number;
   width: number;
@@ -310,22 +311,22 @@ export interface getBranchForUpdateLounge_HeadGetBranch_branch_rooms {
   usable: boolean;
 }
 
-export interface getBranchForUpdateLounge_HeadGetBranch_branch {
+export interface getBranchForUpdateLounge_ManagerGetBranch_branch {
   __typename: "Branch";
   id: number;
   loungeImage: string;
-  rooms: (getBranchForUpdateLounge_HeadGetBranch_branch_rooms | null)[] | null;
+  rooms: (getBranchForUpdateLounge_ManagerGetBranch_branch_rooms | null)[] | null;
 }
 
-export interface getBranchForUpdateLounge_HeadGetBranch {
-  __typename: "HeadGetBranchResponse";
+export interface getBranchForUpdateLounge_ManagerGetBranch {
+  __typename: "ManagerGetBranchResponse";
   ok: boolean;
   error: string | null;
-  branch: getBranchForUpdateLounge_HeadGetBranch_branch | null;
+  branch: getBranchForUpdateLounge_ManagerGetBranch_branch | null;
 }
 
 export interface getBranchForUpdateLounge {
-  HeadGetBranch: getBranchForUpdateLounge_HeadGetBranch;
+  ManagerGetBranch: getBranchForUpdateLounge_ManagerGetBranch;
 }
 
 export interface getBranchForUpdateLoungeVariables {
@@ -965,6 +966,40 @@ export interface managerExpireMembershipVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getManaingBranches
+// ====================================================
+
+export interface getManaingBranches_GetManagingBranches_branches_alliedBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getManaingBranches_GetManagingBranches_branches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  descriptionPosition: string;
+  address: string;
+  detailAddress: string;
+  alliedBranches: (getManaingBranches_GetManagingBranches_branches_alliedBranches | null)[] | null;
+}
+
+export interface getManaingBranches_GetManagingBranches {
+  __typename: "GetManagingBranchesResponse";
+  ok: boolean;
+  error: string | null;
+  branches: (getManaingBranches_GetManagingBranches_branches | null)[] | null;
+}
+
+export interface getManaingBranches {
+  GetManagingBranches: getManaingBranches_GetManagingBranches;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -1405,6 +1440,8 @@ export interface userIdSignIn_UserIdSignIn_user {
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;
+  isCleanStaff: boolean;
+  isManStaff: boolean;
 }
 
 export interface userIdSignIn_UserIdSignIn {
@@ -1739,16 +1776,16 @@ export interface getBranchForManSeatVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: headGetMembershipLogs
+// GraphQL query operation: managerGetMembershipLogs
 // ====================================================
 
-export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_cabinet {
+export interface managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs_cabinet {
   __typename: "Cabinet";
   id: number;
   cabinetNumber: number;
 }
 
-export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_user {
+export interface managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs_user {
   __typename: "User";
   id: number;
   name: string | null;
@@ -1759,13 +1796,13 @@ export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_user
   birthDay: number;
 }
 
-export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_branch {
+export interface managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs_branch {
   __typename: "Branch";
   id: number;
   name: string;
 }
 
-export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs {
+export interface managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs {
   __typename: "MembershipLog";
   id: number;
   userId: number;
@@ -1775,30 +1812,30 @@ export interface headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs {
   startDatetime: string;
   endDatetime: string;
   cabinetId: number | null;
-  cabinet: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_cabinet | null;
-  user: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_user;
-  branch: headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs_branch;
+  cabinet: managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs_cabinet | null;
+  user: managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs_user;
+  branch: managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs_branch;
 }
 
-export interface headGetMembershipLogs_HeadGetMembershipLogs_branch {
+export interface managerGetMembershipLogs_ManagerGetMembershipLogs_branch {
   __typename: "Branch";
   id: number;
   name: string;
 }
 
-export interface headGetMembershipLogs_HeadGetMembershipLogs {
-  __typename: "HeadGetMembershipLogsResponse";
+export interface managerGetMembershipLogs_ManagerGetMembershipLogs {
+  __typename: "ManagerGetMembershipLogsResponse";
   ok: boolean;
   error: string | null;
-  membershipLogs: (headGetMembershipLogs_HeadGetMembershipLogs_membershipLogs | null)[] | null;
-  branch: headGetMembershipLogs_HeadGetMembershipLogs_branch | null;
+  membershipLogs: (managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs | null)[] | null;
+  branch: managerGetMembershipLogs_ManagerGetMembershipLogs_branch | null;
 }
 
-export interface headGetMembershipLogs {
-  HeadGetMembershipLogs: headGetMembershipLogs_HeadGetMembershipLogs;
+export interface managerGetMembershipLogs {
+  ManagerGetMembershipLogs: managerGetMembershipLogs_ManagerGetMembershipLogs;
 }
 
-export interface headGetMembershipLogsVariables {
+export interface managerGetMembershipLogsVariables {
   branchId?: number | null;
   date: string;
 }
@@ -1807,10 +1844,10 @@ export interface headGetMembershipLogsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: headGetNowUsingUsers
+// GraphQL query operation: managerGetNowUsingUsers
 // ====================================================
 
-export interface headGetNowUsingUsers_HeadGetNowUsingUsers_users {
+export interface managerGetNowUsingUsers_ManagerGetNowUsingUsers_users {
   __typename: "User";
   id: number;
   name: string | null;
@@ -1821,19 +1858,43 @@ export interface headGetNowUsingUsers_HeadGetNowUsingUsers_users {
   phoneNumber: string | null;
 }
 
-export interface headGetNowUsingUsers_HeadGetNowUsingUsers {
-  __typename: "HeadGetNowUsingUsersResponse";
+export interface managerGetNowUsingUsers_ManagerGetNowUsingUsers {
+  __typename: "ManagerGetNowUsingUsersResponse";
   ok: boolean;
   error: string | null;
-  users: (headGetNowUsingUsers_HeadGetNowUsingUsers_users | null)[] | null;
+  users: (managerGetNowUsingUsers_ManagerGetNowUsingUsers_users | null)[] | null;
 }
 
-export interface headGetNowUsingUsers {
-  HeadGetNowUsingUsers: headGetNowUsingUsers_HeadGetNowUsingUsers;
+export interface managerGetNowUsingUsers {
+  ManagerGetNowUsingUsers: managerGetNowUsingUsers_ManagerGetNowUsingUsers;
 }
 
-export interface headGetNowUsingUsersVariables {
+export interface managerGetNowUsingUsersVariables {
   branchId?: number | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: managerGetManagingBranches
+// ====================================================
+
+export interface managerGetManagingBranches_GetManagingBranches_branches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface managerGetManagingBranches_GetManagingBranches {
+  __typename: "GetManagingBranchesResponse";
+  ok: boolean;
+  error: string | null;
+  branches: (managerGetManagingBranches_GetManagingBranches_branches | null)[] | null;
+}
+
+export interface managerGetManagingBranches {
+  GetManagingBranches: managerGetManagingBranches_GetManagingBranches;
 }
 
 /* tslint:disable */
@@ -1919,6 +1980,37 @@ export interface updateBranchVariables {
   impId?: string | null;
   impKey?: string | null;
   impSecret?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: managerUpdateBranch
+// ====================================================
+
+export interface managerUpdateBranch_ManagerUpdateBranch {
+  __typename: "ManagerUpdateBranchResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerUpdateBranch {
+  ManagerUpdateBranch: managerUpdateBranch_ManagerUpdateBranch;
+}
+
+export interface managerUpdateBranchVariables {
+  branchId: number;
+  detailAddress?: string | null;
+  descriptionPosition?: string | null;
+  ips?: (string | null)[] | null;
+  manAcceptable?: boolean | null;
+  womanAcceptable?: boolean | null;
+  boyAcceptable?: boolean | null;
+  girlAcceptable?: boolean | null;
+  maleMax?: number | null;
+  femaleMax?: number | null;
+  available?: boolean | null;
 }
 
 /* tslint:disable */
@@ -2062,7 +2154,7 @@ export interface reqSignUpVariables {
 // GraphQL query operation: headGetBranchForCabinetsSetting
 // ====================================================
 
-export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSets {
+export interface headGetBranchForCabinetsSetting_ManagerGetBranch_branch_cabinetSets {
   __typename: "CabinetSet";
   id: number;
   title: string;
@@ -2075,22 +2167,22 @@ export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSet
   verticalNumber: number;
 }
 
-export interface headGetBranchForCabinetsSetting_HeadGetBranch_branch {
+export interface headGetBranchForCabinetsSetting_ManagerGetBranch_branch {
   __typename: "Branch";
   id: number;
   cabinetLoungeImage: string;
-  cabinetSets: (headGetBranchForCabinetsSetting_HeadGetBranch_branch_cabinetSets | null)[] | null;
+  cabinetSets: (headGetBranchForCabinetsSetting_ManagerGetBranch_branch_cabinetSets | null)[] | null;
 }
 
-export interface headGetBranchForCabinetsSetting_HeadGetBranch {
-  __typename: "HeadGetBranchResponse";
+export interface headGetBranchForCabinetsSetting_ManagerGetBranch {
+  __typename: "ManagerGetBranchResponse";
   ok: boolean;
   error: string | null;
-  branch: headGetBranchForCabinetsSetting_HeadGetBranch_branch | null;
+  branch: headGetBranchForCabinetsSetting_ManagerGetBranch_branch | null;
 }
 
 export interface headGetBranchForCabinetsSetting {
-  HeadGetBranch: headGetBranchForCabinetsSetting_HeadGetBranch;
+  ManagerGetBranch: headGetBranchForCabinetsSetting_ManagerGetBranch;
 }
 
 export interface headGetBranchForCabinetsSettingVariables {
@@ -2465,10 +2557,10 @@ export interface headUpdateDoorVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: headGetBranchEmployee
+// GraphQL query operation: managerGetBranchEmployee
 // ====================================================
 
-export interface headGetBranchEmployee_HeadGetBranchEmployee_branch_managers {
+export interface managerGetBranchEmployee_ManagerGetBranchEmployee_branch_managers {
   __typename: "User";
   id: number;
   name: string | null;
@@ -2477,41 +2569,41 @@ export interface headGetBranchEmployee_HeadGetBranchEmployee_branch_managers {
   isFranchiser: boolean;
 }
 
-export interface headGetBranchEmployee_HeadGetBranchEmployee_branch_cleanStaffs {
+export interface managerGetBranchEmployee_ManagerGetBranchEmployee_branch_cleanStaffs {
   __typename: "User";
   id: number;
   name: string | null;
   phoneNumber: string | null;
 }
 
-export interface headGetBranchEmployee_HeadGetBranchEmployee_branch_managingStaffs {
+export interface managerGetBranchEmployee_ManagerGetBranchEmployee_branch_managingStaffs {
   __typename: "User";
   id: number;
   name: string | null;
   phoneNumber: string | null;
 }
 
-export interface headGetBranchEmployee_HeadGetBranchEmployee_branch {
+export interface managerGetBranchEmployee_ManagerGetBranchEmployee_branch {
   __typename: "Branch";
   id: number;
   name: string;
-  managers: (headGetBranchEmployee_HeadGetBranchEmployee_branch_managers | null)[] | null;
-  cleanStaffs: (headGetBranchEmployee_HeadGetBranchEmployee_branch_cleanStaffs | null)[] | null;
-  managingStaffs: (headGetBranchEmployee_HeadGetBranchEmployee_branch_managingStaffs | null)[] | null;
+  managers: (managerGetBranchEmployee_ManagerGetBranchEmployee_branch_managers | null)[] | null;
+  cleanStaffs: (managerGetBranchEmployee_ManagerGetBranchEmployee_branch_cleanStaffs | null)[] | null;
+  managingStaffs: (managerGetBranchEmployee_ManagerGetBranchEmployee_branch_managingStaffs | null)[] | null;
 }
 
-export interface headGetBranchEmployee_HeadGetBranchEmployee {
-  __typename: "HeadGetBranchEmployeeResponse";
+export interface managerGetBranchEmployee_ManagerGetBranchEmployee {
+  __typename: "ManagerGetBranchEmployeeResponse";
   ok: boolean;
   error: string | null;
-  branch: headGetBranchEmployee_HeadGetBranchEmployee_branch | null;
+  branch: managerGetBranchEmployee_ManagerGetBranchEmployee_branch | null;
 }
 
-export interface headGetBranchEmployee {
-  HeadGetBranchEmployee: headGetBranchEmployee_HeadGetBranchEmployee;
+export interface managerGetBranchEmployee {
+  ManagerGetBranchEmployee: managerGetBranchEmployee_ManagerGetBranchEmployee;
 }
 
-export interface headGetBranchEmployeeVariables {
+export interface managerGetBranchEmployeeVariables {
   branchId: number;
 }
 
@@ -2740,29 +2832,107 @@ export interface headUpdateRoomVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: headGetUserDetail
+// GraphQL mutation operation: managerUpdateRoom
 // ====================================================
 
-export interface headGetUserDetail_HeadGetUserDetail_user_baseBranch {
+export interface managerUpdateRoom_ManagerUpdateRoom {
+  __typename: "ManagerUpdateRoomResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerUpdateRoom {
+  ManagerUpdateRoom: managerUpdateRoom_ManagerUpdateRoom;
+}
+
+export interface managerUpdateRoomVariables {
+  roomId: number;
+  title?: string | null;
+  roomNumber?: number | null;
+  roomType?: roomTypeOptions | null;
+  usable?: boolean | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: managerGetRoom
+// ====================================================
+
+export interface managerGetRoom_ManagerGetRoom_room_seats {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+  usable: boolean;
+  rotate: number;
+  xpos: number;
+  ypos: number;
+  discard: boolean;
+  nowUsing: boolean;
+  endDatetime: string | null;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+  isDoor: boolean;
+  isFlip: boolean;
+}
+
+export interface managerGetRoom_ManagerGetRoom_room {
+  __typename: "Room";
+  id: number;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  title: string;
+  roomNumber: number;
+  roomType: string;
+  usable: boolean;
+  seats: (managerGetRoom_ManagerGetRoom_room_seats | null)[] | null;
+}
+
+export interface managerGetRoom_ManagerGetRoom {
+  __typename: "ManagerGetRoomResponse";
+  ok: boolean;
+  error: string | null;
+  room: managerGetRoom_ManagerGetRoom_room | null;
+}
+
+export interface managerGetRoom {
+  ManagerGetRoom: managerGetRoom_ManagerGetRoom;
+}
+
+export interface managerGetRoomVariables {
+  roomId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: managerGetUserDetail
+// ====================================================
+
+export interface managerGetUserDetail_ManagerGetUserDetail_user_baseBranch {
   __typename: "Branch";
   id: number;
   name: string;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet_lock {
+export interface managerGetUserDetail_ManagerGetUserDetail_user_memberships_cabinet_lock {
   __typename: "CabinetLock";
   id: number;
   password: string;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet {
+export interface managerGetUserDetail_ManagerGetUserDetail_user_memberships_cabinet {
   __typename: "Cabinet";
   id: number;
   cabinetNumber: number;
-  lock: headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet_lock | null;
+  lock: managerGetUserDetail_ManagerGetUserDetail_user_memberships_cabinet_lock | null;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user_memberships {
+export interface managerGetUserDetail_ManagerGetUserDetail_user_memberships {
   __typename: "Membership";
   id: number;
   startDatetime: string;
@@ -2770,33 +2940,33 @@ export interface headGetUserDetail_HeadGetUserDetail_user_memberships {
   status: string;
   usable: boolean;
   cabinetId: number | null;
-  cabinet: headGetUserDetail_HeadGetUserDetail_user_memberships_cabinet | null;
+  cabinet: managerGetUserDetail_ManagerGetUserDetail_user_memberships_cabinet | null;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user_membershipLogs_branch {
+export interface managerGetUserDetail_ManagerGetUserDetail_user_membershipLogs_branch {
   __typename: "Branch";
   id: number;
   name: string;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user_membershipLogs_cabinet {
+export interface managerGetUserDetail_ManagerGetUserDetail_user_membershipLogs_cabinet {
   __typename: "Cabinet";
   id: number;
   cabinetNumber: number;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user_membershipLogs {
+export interface managerGetUserDetail_ManagerGetUserDetail_user_membershipLogs {
   __typename: "MembershipLog";
   id: number;
-  branch: headGetUserDetail_HeadGetUserDetail_user_membershipLogs_branch;
-  cabinet: headGetUserDetail_HeadGetUserDetail_user_membershipLogs_cabinet | null;
+  branch: managerGetUserDetail_ManagerGetUserDetail_user_membershipLogs_branch;
+  cabinet: managerGetUserDetail_ManagerGetUserDetail_user_membershipLogs_cabinet | null;
   status: string;
   startDatetime: string;
   endDatetime: string;
   updatedAt: string;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail_user {
+export interface managerGetUserDetail_ManagerGetUserDetail_user {
   __typename: "User";
   id: number;
   name: string | null;
@@ -2811,23 +2981,23 @@ export interface headGetUserDetail_HeadGetUserDetail_user {
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;
-  baseBranch: headGetUserDetail_HeadGetUserDetail_user_baseBranch;
-  memberships: (headGetUserDetail_HeadGetUserDetail_user_memberships | null)[];
-  membershipLogs: (headGetUserDetail_HeadGetUserDetail_user_membershipLogs | null)[] | null;
+  baseBranch: managerGetUserDetail_ManagerGetUserDetail_user_baseBranch;
+  memberships: (managerGetUserDetail_ManagerGetUserDetail_user_memberships | null)[];
+  membershipLogs: (managerGetUserDetail_ManagerGetUserDetail_user_membershipLogs | null)[] | null;
 }
 
-export interface headGetUserDetail_HeadGetUserDetail {
-  __typename: "HeadGetUserDetailResponse";
+export interface managerGetUserDetail_ManagerGetUserDetail {
+  __typename: "ManagerGetUserDetailResponse";
   ok: boolean;
   error: string | null;
-  user: headGetUserDetail_HeadGetUserDetail_user | null;
+  user: managerGetUserDetail_ManagerGetUserDetail_user | null;
 }
 
-export interface headGetUserDetail {
-  HeadGetUserDetail: headGetUserDetail_HeadGetUserDetail;
+export interface managerGetUserDetail {
+  ManagerGetUserDetail: managerGetUserDetail_ManagerGetUserDetail;
 }
 
-export interface headGetUserDetailVariables {
+export interface managerGetUserDetailVariables {
   userId: number;
 }
 

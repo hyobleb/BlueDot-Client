@@ -7,6 +7,7 @@ import {
   GET_BRANCH_FOR_ERNOLL_CABINET,
   GET_CABINET,
   GET_CABINETS,
+  GET_MANAGING_BRANCHES,
   USER_GET_PRODUCTS
 } from "src/Components/sharedQueries";
 import { CreatePaymentMethodOption } from "src/Components/shareOptions";
@@ -17,6 +18,8 @@ import {
   getCabinets,
   getCabinetsVariables,
   getCabinetVariables,
+  getManaingBranches,
+  getManaingBranches_GetManagingBranches_branches,
   managerEnrollCabinet,
   managerEnrollCabinetVariables,
   managerShiftCabinet,
@@ -51,11 +54,17 @@ interface IState {
   isShifitCabinet: boolean;
   nowMembershipId?: number;
   selProducts: userGetProducts_UserGetBranch_branch_products[];
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
+  managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
 }
 
 interface IProps extends RouteComponentProps<any> {
   backInfo: any;
 }
+
+class GetManagingBranches extends Query<GetManagingBranches> {}
 
 class GetBranchQuery extends Query<userGetProducts, userGetProductsVariables> {}
 class ManangerCreateCabinet extends Mutation<
@@ -109,7 +118,10 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       cabinets: null,
       horizontalNumber: 0,
       isFirstLoaidng: true,
+      isFranchiser: props.location.state.isFranchiser || false,
+      isHead: props.location.state.isHead || false,
       isShifitCabinet,
+      isSupervisor: props.location.state.isSupervisor || false,
       nowMembershipId: props.location.state.nowMembershipId,
       productId: 0,
       productTitle: "",
@@ -141,202 +153,229 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       userIdName,
       userName,
       isShifitCabinet,
-      selProducts
+      selProducts,
+      isFranchiser,
+      isHead,
+      isSupervisor,
+      managingBranches
     } = this.state;
+
     return (
-      <ShiftCabinetMutation
-        mutation={MANAGER_SHIFT_CABINET}
-        onCompleted={data => {
-          const { ManagerShiftCabinetMembership } = data;
-          if (ManagerShiftCabinetMembership.ok) {
-            toast.success("해당 사물함으로 이동했습니다!");
-            this.onBackClick();
-          } else {
-            toast.error(ManagerShiftCabinetMembership.error);
-          }
-        }}
+      <GetManagingBranches
+        query={GET_MANAGING_BRANCHES}
+        onCompleted={this.updateFields}
+        fetchPolicy={"cache-and-network"}
       >
-        {shiftCabinetMutation => {
-          this.shiftCabinetFn = shiftCabinetMutation;
-          return (
-            <GetCabinetQuery
-              query={GET_CABINET}
-              variables={{ cabinetId }}
-              fetchPolicy={"cache-and-network"}
-              onCompleted={data => {
-                if ("UserGetCabinet" in data) {
-                  const {
-                    UserGetCabinet: { cabinet }
-                  } = data;
-
-                  if (cabinet !== null) {
-                    const {
-                      cabinetNumber: findCabinetNumber,
-                      usable,
-                      nowUsing,
-                      status,
-                      reservedDatetime,
-                      endDatetime
-                    } = cabinet;
-
-                    if (!usable) {
-                      toast.error("해당 사물함은 사용할 수 없는 상태입니다");
-                      this.setState({
-                        cabinetId: 0
-                      });
-                    } else if (
-                      nowUsing ||
-                      (endDatetime && moment(endDatetime) > moment())
-                    ) {
-                      toast.error("해당 사물함은 현재 이용중입니다");
-                      this.setState({
-                        cabinetId: 0
-                      });
-                    } else if (
-                      status === "RESERVED" &&
-                      (reservedDatetime && moment(reservedDatetime) > moment())
-                    ) {
-                      toast.error("해당 사물함은 현재 예약 중입니다");
-                      this.setState({
-                        cabinetId: 0
-                      });
-                    } else {
-                      this.setState({
-                        cabinetNumber: findCabinetNumber
-                      });
-                    }
-                  }
-                }
-              }}
-              skip={cabinetId === 0}
-            >
-              {() => (
-                <GetCabinetSetQuery
-                  query={GET_CABINETS}
-                  variables={{ cabinetSetId: setId }}
+        {() => (
+          <ShiftCabinetMutation
+            mutation={MANAGER_SHIFT_CABINET}
+            onCompleted={data => {
+              const { ManagerShiftCabinetMembership } = data;
+              if (ManagerShiftCabinetMembership.ok) {
+                toast.success("해당 사물함으로 이동했습니다!");
+                this.onBackClick();
+              } else {
+                toast.error(ManagerShiftCabinetMembership.error);
+              }
+            }}
+          >
+            {shiftCabinetMutation => {
+              this.shiftCabinetFn = shiftCabinetMutation;
+              return (
+                <GetCabinetQuery
+                  query={GET_CABINET}
+                  variables={{ cabinetId }}
+                  fetchPolicy={"cache-and-network"}
                   onCompleted={data => {
-                    if ("GetCabinetSet" in data) {
+                    if ("UserGetCabinet" in data) {
                       const {
-                        GetCabinetSet: { cabinetSet }
+                        UserGetCabinet: { cabinet }
                       } = data;
 
-                      if (cabinetSet !== null) {
+                      if (cabinet !== null) {
                         const {
-                          cabinets: findCabinets,
-                          horizontalNumber: findHorizontalNumber
-                        } = cabinetSet;
+                          cabinetNumber: findCabinetNumber,
+                          usable,
+                          nowUsing,
+                          status,
+                          reservedDatetime,
+                          endDatetime
+                        } = cabinet;
 
-                        if (findCabinets && findHorizontalNumber) {
+                        if (!usable) {
+                          toast.error(
+                            "해당 사물함은 사용할 수 없는 상태입니다"
+                          );
                           this.setState({
-                            cabinets: findCabinets.sort((a, b) => {
-                              return a!.id - b!.id;
-                            }),
-                            horizontalNumber: findHorizontalNumber
+                            cabinetId: 0
+                          });
+                        } else if (
+                          nowUsing ||
+                          (endDatetime && moment(endDatetime) > moment())
+                        ) {
+                          toast.error("해당 사물함은 현재 이용중입니다");
+                          this.setState({
+                            cabinetId: 0
+                          });
+                        } else if (
+                          status === "RESERVED" &&
+                          (reservedDatetime &&
+                            moment(reservedDatetime) > moment())
+                        ) {
+                          toast.error("해당 사물함은 현재 예약 중입니다");
+                          this.setState({
+                            cabinetId: 0
+                          });
+                        } else {
+                          this.setState({
+                            cabinetNumber: findCabinetNumber
                           });
                         }
                       }
                     }
                   }}
-                  skip={setId === 0}
-                  fetchPolicy={"cache-and-network"}
+                  skip={cabinetId === 0}
                 >
-                  {() => {
-                    return (
-                      // sometimes this part is not excuted, I expected that it was excuted when render
-                      <GetCabinetSetsQuery
-                        query={GET_BRANCH_FOR_ERNOLL_CABINET}
-                        variables={{ branchId: this.state.branchId }}
-                        fetchPolicy={"cache-and-network"}
-                      >
-                        {({
-                          data: cabinetSetDatas,
-                          loading: cabinetSetLoading
-                        }) => {
-                          return (
-                            <ManangerCreateCabinet
-                              mutation={MANAGER_ENROLL_CABINET}
-                            >
-                              {userRequestCabinetFn => {
-                                this.enrollCabinetFn = userRequestCabinetFn;
-                                return (
-                                  <GetBranchQuery
-                                    query={USER_GET_PRODUCTS}
-                                    variables={{ branchId }}
-                                    fetchPolicy={"cache-and-network"}
-                                    onCompleted={data => {
-                                      this.setState({
-                                        productId: 0,
-                                        productTitle: ""
-                                      });
-                                    }}
-                                    skip={branchId === 0}
-                                  >
-                                    {({ data: productDatas }) => (
-                                      <ManagerEnrollCabinetPresenter
-                                        branchId={branchId}
-                                        branchPopUpShow={branchPopUpShow}
-                                        cabinetId={cabinetId}
-                                        productTitle={productTitle}
-                                        startDatetime={startDatetime}
-                                        onSubmit={this.onSubmit}
-                                        productDatas={productDatas}
-                                        onOptionChange={this.onOptionChange}
-                                        setTrueBranchPopUpShow={
-                                          this.setTrueBranchPopUpShow
-                                        }
-                                        setFalseBranchPopUpShow={
-                                          this.setFalseBranchPopUpShow
-                                        }
-                                        onBranchClick={this.onBranchClick}
-                                        onDatetimeChange={this.onDatetimeChange}
-                                        onEnrollClick={this.onEnrollClick}
-                                        cabinetSetDatas={cabinetSetDatas}
-                                        tempSetId={tempSetId}
-                                        onSetHover={this.onSetHover}
-                                        onSetHoverOut={this.onSetHoverOut}
-                                        onSetClick={this.onSetClick}
-                                        setId={setId}
-                                        cabinets={cabinets}
-                                        horizontalNumber={horizontalNumber}
-                                        onCabinetClick={this.onCabinetClick}
-                                        cabinetNumber={cabinetNumber}
-                                        cabinetSetLoading={cabinetSetLoading}
-                                        isFirstLoaidng={isFirstLoaidng}
-                                        selEndDatetime={selEndDatetime}
-                                        onEndDatetimeChange={
-                                          this.onEndDatetimeChange
-                                        }
-                                        onDateTimeAddClick={
-                                          this.onDateTimeAddClick
-                                        }
-                                        userIdName={userIdName}
-                                        userName={userName}
-                                        setDatetimeValueNow={
-                                          this.setDatetimeValueNow
-                                        }
-                                        setEndDatetimeToStart={
-                                          this.setEndDatetimeToStart
-                                        }
-                                        onBackClick={this.onBackClick}
-                                        isShifitCabinet={isShifitCabinet}
-                                        selProducts={selProducts}
-                                      />
-                                    )}
-                                  </GetBranchQuery>
-                                );
-                              }}
-                            </ManangerCreateCabinet>
-                          );
-                        }}
-                      </GetCabinetSetsQuery>
-                    );
-                  }}
-                </GetCabinetSetQuery>
-              )}
-            </GetCabinetQuery>
-          );
-        }}
-      </ShiftCabinetMutation>
+                  {() => (
+                    <GetCabinetSetQuery
+                      query={GET_CABINETS}
+                      variables={{ cabinetSetId: setId }}
+                      onCompleted={data => {
+                        if ("GetCabinetSet" in data) {
+                          const {
+                            GetCabinetSet: { cabinetSet }
+                          } = data;
+
+                          if (cabinetSet !== null) {
+                            const {
+                              cabinets: findCabinets,
+                              horizontalNumber: findHorizontalNumber
+                            } = cabinetSet;
+
+                            if (findCabinets && findHorizontalNumber) {
+                              this.setState({
+                                cabinets: findCabinets.sort((a, b) => {
+                                  return a!.id - b!.id;
+                                }),
+                                horizontalNumber: findHorizontalNumber
+                              });
+                            }
+                          }
+                        }
+                      }}
+                      skip={setId === 0}
+                      fetchPolicy={"cache-and-network"}
+                    >
+                      {() => {
+                        return (
+                          // sometimes this part is not excuted, I expected that it was excuted when render
+                          <GetCabinetSetsQuery
+                            query={GET_BRANCH_FOR_ERNOLL_CABINET}
+                            variables={{ branchId: this.state.branchId }}
+                            fetchPolicy={"cache-and-network"}
+                          >
+                            {({
+                              data: cabinetSetDatas,
+                              loading: cabinetSetLoading
+                            }) => {
+                              return (
+                                <ManangerCreateCabinet
+                                  mutation={MANAGER_ENROLL_CABINET}
+                                >
+                                  {userRequestCabinetFn => {
+                                    this.enrollCabinetFn = userRequestCabinetFn;
+                                    return (
+                                      <GetBranchQuery
+                                        query={USER_GET_PRODUCTS}
+                                        variables={{ branchId }}
+                                        fetchPolicy={"cache-and-network"}
+                                        onCompleted={data => {
+                                          this.setState({
+                                            productId: 0,
+                                            productTitle: ""
+                                          });
+                                        }}
+                                        skip={branchId === 0}
+                                      >
+                                        {({ data: productDatas }) => (
+                                          <ManagerEnrollCabinetPresenter
+                                            branchId={branchId}
+                                            branchPopUpShow={branchPopUpShow}
+                                            cabinetId={cabinetId}
+                                            productTitle={productTitle}
+                                            startDatetime={startDatetime}
+                                            onSubmit={this.onSubmit}
+                                            productDatas={productDatas}
+                                            onOptionChange={this.onOptionChange}
+                                            setTrueBranchPopUpShow={
+                                              this.setTrueBranchPopUpShow
+                                            }
+                                            setFalseBranchPopUpShow={
+                                              this.setFalseBranchPopUpShow
+                                            }
+                                            onBranchClick={this.onBranchClick}
+                                            onDatetimeChange={
+                                              this.onDatetimeChange
+                                            }
+                                            onEnrollClick={this.onEnrollClick}
+                                            cabinetSetDatas={cabinetSetDatas}
+                                            tempSetId={tempSetId}
+                                            onSetHover={this.onSetHover}
+                                            onSetHoverOut={this.onSetHoverOut}
+                                            onSetClick={this.onSetClick}
+                                            setId={setId}
+                                            cabinets={cabinets}
+                                            horizontalNumber={horizontalNumber}
+                                            onCabinetClick={this.onCabinetClick}
+                                            cabinetNumber={cabinetNumber}
+                                            cabinetSetLoading={
+                                              cabinetSetLoading
+                                            }
+                                            isFirstLoaidng={isFirstLoaidng}
+                                            selEndDatetime={selEndDatetime}
+                                            onEndDatetimeChange={
+                                              this.onEndDatetimeChange
+                                            }
+                                            onDateTimeAddClick={
+                                              this.onDateTimeAddClick
+                                            }
+                                            userIdName={userIdName}
+                                            userName={userName}
+                                            setDatetimeValueNow={
+                                              this.setDatetimeValueNow
+                                            }
+                                            setEndDatetimeToStart={
+                                              this.setEndDatetimeToStart
+                                            }
+                                            onBackClick={this.onBackClick}
+                                            isShifitCabinet={isShifitCabinet}
+                                            selProducts={selProducts}
+                                            isFranchiser={isFranchiser}
+                                            isHead={isHead}
+                                            isSupervisor={isSupervisor}
+                                            onBranchBtnClick={
+                                              this.onBranchBtnClick
+                                            }
+                                            managingBranches={managingBranches}
+                                          />
+                                        )}
+                                      </GetBranchQuery>
+                                    );
+                                  }}
+                                </ManangerCreateCabinet>
+                              );
+                            }}
+                          </GetCabinetSetsQuery>
+                        );
+                      }}
+                    </GetCabinetSetQuery>
+                  )}
+                </GetCabinetQuery>
+              );
+            }}
+          </ShiftCabinetMutation>
+        )}
+      </GetManagingBranches>
     );
   }
 
@@ -369,6 +408,12 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
     this.setState({
       branchId,
       branchPopUpShow: false
+    });
+  };
+
+  public onBranchBtnClick = (branchId: number) => {
+    this.setState({
+      branchId
     });
   };
 
@@ -496,15 +541,12 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
   ) => {
     const { selProducts } = this.state;
     selProducts.push(product);
-    this.setState(
-      {
-        selEndDatetime: moment(this.state.selEndDatetime)
-          .add(hours, "h")
-          .format("YYYY-MM-DD HH:mm:ss"),
-        selProducts
-      },
-      () => console.log(this.state.selProducts)
-    );
+    this.setState({
+      selEndDatetime: moment(this.state.selEndDatetime)
+        .add(hours, "h")
+        .format("YYYY-MM-DD HH:mm:ss"),
+      selProducts
+    });
   };
 
   public setDatetimeValueNow = () => {
@@ -517,6 +559,32 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
     this.setState({
       selEndDatetime: this.state.startDatetime
     });
+  };
+
+  public updateFields = (data: {} | getManaingBranches) => {
+    if ("GetManagingBranches" in data) {
+      const {
+        GetManagingBranches: { branches }
+      } = data;
+
+      const { isHead, isSupervisor, isFranchiser } = this.state;
+
+      if (branches !== null) {
+        if (!isHead && (isSupervisor || isFranchiser) && branches !== null) {
+          let oneBranchId = 0;
+          if (branches.length === 1) {
+            if (branches[0] !== null) {
+              oneBranchId = branches[0]!.id;
+            }
+          }
+
+          this.setState({
+            branchId: oneBranchId,
+            managingBranches: branches
+          });
+        }
+      }
+    }
   };
 }
 

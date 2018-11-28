@@ -2,7 +2,7 @@ import { gql } from "apollo-boost";
 
 export const HEAD_GET_BRANCH_FOR_CABINETS_SETTING = gql`
   query headGetBranchForCabinetsSetting($branchId: Int!) {
-    HeadGetBranch(branchId: $branchId) {
+    ManagerGetBranch(branchId: $branchId) {
       ok
       error
       branch {

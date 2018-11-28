@@ -187,11 +187,11 @@ const SettingCabinetSetsPresenter: React.SFC<IProps> = ({
     ) : (
       <>
         {data &&
-          data.HeadGetBranch &&
-          data.HeadGetBranch.branch &&
-          data.HeadGetBranch.branch.cabinetLoungeImage && (
+          data.ManagerGetBranch &&
+          data.ManagerGetBranch.branch &&
+          data.ManagerGetBranch.branch.cabinetLoungeImage && (
             <CabinetSetsContainer
-              imgUrl={data.HeadGetBranch.branch.cabinetLoungeImage}
+              imgUrl={data.ManagerGetBranch.branch.cabinetLoungeImage}
               tempCabinetSetHegiht={height}
               tempCabinetSetWidth={width}
               tempCabinetSetXpos={xpos}
@@ -201,7 +201,7 @@ const SettingCabinetSetsPresenter: React.SFC<IProps> = ({
               onCabinetSetHover={onSetHover}
               tempSelCabinetSetId={tempSetId}
               onCabinetSetHoverOut={onSetHoverOut}
-              cabinetSets={data.HeadGetBranch.branch.cabinetSets}
+              cabinetSets={data.ManagerGetBranch.branch.cabinetSets}
             />
           )}
 
@@ -312,11 +312,11 @@ const SettingCabinetSetsPresenter: React.SFC<IProps> = ({
             />
             <RoomDataBackContainer>
               {data &&
-                data.HeadGetBranch &&
-                data.HeadGetBranch.branch &&
-                data.HeadGetBranch.branch.cabinetSets &&
-                data.HeadGetBranch.branch.cabinetSets.length > 0 &&
-                data.HeadGetBranch.branch.cabinetSets.map(
+                data.ManagerGetBranch &&
+                data.ManagerGetBranch.branch &&
+                data.ManagerGetBranch.branch.cabinetSets &&
+                data.ManagerGetBranch.branch.cabinetSets.length > 0 &&
+                data.ManagerGetBranch.branch.cabinetSets.map(
                   cabinetSet =>
                     cabinetSet && (
                       <RoomDataContainer

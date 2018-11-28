@@ -7,18 +7,18 @@ import styled from "src/typed-components";
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
-const HeadButtonSection = styled(Section)`
-  text-align: center;
-`;
+// const HeadButtonSection = styled(Section)`
+//   text-align: center;
+// `;
 const Button = styled(SmallButton)`
   margin: 0 3px;
 `;
-const SelBranchBtn = styled(Button)`
-  background-color: ${props => props.theme.greenColor};
-`;
-const AllBranchBtn = styled(Button)`
-  background-color: ${props => props.theme.orangeColor};
-`;
+// const SelBranchBtn = styled(Button)`
+//   background-color: ${props => props.theme.greenColor};
+// `;
+// const AllBranchBtn = styled(Button)`
+//   background-color: ${props => props.theme.orangeColor};
+// `;
 
 const ProcessingBtnCon = styled.div`
   text-align: center;
@@ -87,10 +87,10 @@ const ViewReqSignUpPresenter: React.SFC<IProps> = ({
       <Loading />
     ) : (
       <>
-        <HeadButtonSection>
+        {/* <HeadButtonSection>
           <SelBranchBtn value={"지점 선택"} />
           <AllBranchBtn value={"전체"} />
-        </HeadButtonSection>
+        </HeadButtonSection> */}
         <BranchTitleSection>
           {branchName ? branchName : "전체지점"}
         </BranchTitleSection>

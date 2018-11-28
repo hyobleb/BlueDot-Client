@@ -42,8 +42,10 @@ export default class LoginContainer extends React.Component<
                   if (UserIdSignIn.user) {
                     logUserIn({
                       variables: {
+                        isCleanStaff: UserIdSignIn.user.isCleanStaff,
                         isFranchiser: UserIdSignIn.user.isFranchiser,
                         isHead: UserIdSignIn.user.isHead,
+                        isManStaff: UserIdSignIn.user.isManStaff,
                         isSupervisor: UserIdSignIn.user.isSupervisor,
                         token: UserIdSignIn.token
                       }

@@ -45,6 +45,22 @@
             "deprecationReason": null
           },
           {
+            "name": "GetManagingBranches",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "GetManagingBranchesResponse",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "GuestGetBranch",
             "description": "",
             "args": [
@@ -69,68 +85,6 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "GuestGetBranchResponse",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "HeadGetBranch",
-            "description": "",
-            "args": [
-              {
-                "name": "branchId",
-                "description": "",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "HeadGetBranchResponse",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "HeadGetBranchEmployee",
-            "description": "",
-            "args": [
-              {
-                "name": "branchId",
-                "description": "",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Int",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "HeadGetBranchEmployeeResponse",
                 "ofType": null
               }
             },
@@ -193,6 +147,37 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "ManagerGetBranchResponse",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ManagerGetBranchEmployee",
+            "description": "",
+            "args": [
+              {
+                "name": "branchId",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ManagerGetBranchEmployeeResponse",
                 "ofType": null
               }
             },
@@ -562,7 +547,7 @@
             "deprecationReason": null
           },
           {
-            "name": "HeadGetMembershipLogs",
+            "name": "ManagerGetMembershipLogs",
             "description": "",
             "args": [
               {
@@ -595,7 +580,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "HeadGetMembershipLogsResponse",
+                "name": "ManagerGetMembershipLogsResponse",
                 "ofType": null
               }
             },
@@ -603,7 +588,7 @@
             "deprecationReason": null
           },
           {
-            "name": "HeadGetNowUsingUsers",
+            "name": "ManagerGetNowUsingUsers",
             "description": "",
             "args": [
               {
@@ -622,7 +607,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "HeadGetNowUsingUsersResponse",
+                "name": "ManagerGetNowUsingUsersResponse",
                 "ofType": null
               }
             },
@@ -1214,7 +1199,7 @@
             "deprecationReason": null
           },
           {
-            "name": "HeadGetUserDetail",
+            "name": "ManagerGetUserDetail",
             "description": "",
             "args": [
               {
@@ -1237,7 +1222,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "HeadGetUserDetailResponse",
+                "name": "ManagerGetUserDetailResponse",
                 "ofType": null
               }
             },
@@ -2756,6 +2741,38 @@
           },
           {
             "name": "isFranchiser",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isManStaff",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isCleanStaff",
             "description": "",
             "args": [],
             "type": {
@@ -5813,6 +5830,61 @@
       },
       {
         "kind": "OBJECT",
+        "name": "GetManagingBranchesResponse",
+        "description": "",
+        "fields": [
+          {
+            "name": "ok",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "error",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "branches",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Branch",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "GuestGetBranchResponse",
         "description": "",
         "fields": [
@@ -5915,108 +5987,6 @@
       },
       {
         "kind": "OBJECT",
-        "name": "HeadGetBranchResponse",
-        "description": "",
-        "fields": [
-          {
-            "name": "ok",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "error",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "branch",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Branch",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "HeadGetBranchEmployeeResponse",
-        "description": "",
-        "fields": [
-          {
-            "name": "ok",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "error",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "branch",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Branch",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
         "name": "HeadGetCoBranchesResponse",
         "description": "",
         "fields": [
@@ -6073,6 +6043,57 @@
       {
         "kind": "OBJECT",
         "name": "ManagerGetBranchResponse",
+        "description": "",
+        "fields": [
+          {
+            "name": "ok",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "error",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "branch",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Branch",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ManagerGetBranchEmployeeResponse",
         "description": "",
         "fields": [
           {
@@ -6770,7 +6791,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "HeadGetMembershipLogsResponse",
+        "name": "ManagerGetMembershipLogsResponse",
         "description": "",
         "fields": [
           {
@@ -6837,7 +6858,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "HeadGetNowUsingUsersResponse",
+        "name": "ManagerGetNowUsingUsersResponse",
         "description": "",
         "fields": [
           {
@@ -7922,7 +7943,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "HeadGetUserDetailResponse",
+        "name": "ManagerGetUserDetailResponse",
         "description": "",
         "fields": [
           {
@@ -10794,6 +10815,77 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "HeadUpdateRoomResponse",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "ManagerUpdateRoom",
+            "description": "",
+            "args": [
+              {
+                "name": "roomId",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "title",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "roomNumber",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "roomType",
+                "description": "",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "roomTypeOptions",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "usable",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ManagerUpdateRoomResponse",
                 "ofType": null
               }
             },
@@ -13789,6 +13881,45 @@
       {
         "kind": "OBJECT",
         "name": "HeadUpdateRoomResponse",
+        "description": "",
+        "fields": [
+          {
+            "name": "ok",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "error",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ManagerUpdateRoomResponse",
         "description": "",
         "fields": [
           {

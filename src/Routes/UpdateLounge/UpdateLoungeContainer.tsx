@@ -2,22 +2,25 @@ import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  GET_BRANCH_FOR_UPDATE_LOUNGE,
-  HEAD_GET_ROOM
-} from "../../Components/sharedQueries";
+import { GET_BRANCH_FOR_UPDATE_LOUNGE } from "../../Components/sharedQueries";
 import { roomTypeOptions } from "../../Components/shareOptions";
 import {
   getBranchForUpdateLounge,
   getBranchForUpdateLoungeVariables,
-  headGetRoom,
-  headGetRoomVariables,
   headUpdateRoom,
-  headUpdateRoomVariables
+  headUpdateRoomVariables,
+  managerGetRoom,
+  managerGetRoomVariables,
+  managerUpdateRoom,
+  managerUpdateRoomVariables
 } from "../../types/api";
 
 import UpdateLoungePresenter from "./UpdateLoungePresenter";
-import { HEAD_UPDATE_ROOM } from "./UpdateLoungeQueries";
+import {
+  HEAD_UPDATE_ROOM,
+  MANAGER_GET_ROOM,
+  MANAGER_UPDATE_ROOM
+} from "./UpdateLoungeQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -31,6 +34,9 @@ interface IState {
   roomNumber: number;
   usable: boolean;
   roomType: roomTypeOptions;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
 }
 
 class GetBranchQuery extends Query<
@@ -43,10 +49,16 @@ class LoungeUpdateMutation extends Mutation<
   headUpdateRoomVariables
 > {}
 
-class GetRoomQuery extends Query<headGetRoom, headGetRoomVariables> {}
+class ManagerUpdateMutation extends Mutation<
+  managerUpdateRoom,
+  managerUpdateRoomVariables
+> {}
+
+class GetRoomQuery extends Query<managerGetRoom, managerGetRoomVariables> {}
 
 class UpdateLoungeContainer extends React.Component<IProps, IState> {
   public updateRoom;
+  public managerUpdateRoom;
 
   constructor(props: IProps) {
     super(props);
@@ -57,6 +69,9 @@ class UpdateLoungeContainer extends React.Component<IProps, IState> {
     this.state = {
       branchId: props.location.state.branchId,
       height: 0,
+      isFranchiser: props.location.state.isFranchiser || false,
+      isHead: props.location.state.isHead || false,
+      isSupervisor: props.location.state.isSupervisor || false,
       roomId: props.location.state.roomId,
       roomNumber: 0,
       roomType: roomTypeOptions.FOCUS,
@@ -79,128 +94,147 @@ class UpdateLoungeContainer extends React.Component<IProps, IState> {
       width,
       xpos,
       ypos,
-      roomId
+      roomId,
+      isFranchiser,
+      isHead,
+      isSupervisor
     } = this.state;
 
     const { history } = this.props;
     return (
       <GetRoomQuery
-        query={HEAD_GET_ROOM}
+        query={MANAGER_GET_ROOM}
         variables={{ roomId }}
         fetchPolicy={"cache-and-network"}
         onCompleted={this.updateFields}
       >
         {() => (
-          <LoungeUpdateMutation
-            mutation={HEAD_UPDATE_ROOM}
+          <ManagerUpdateMutation
+            mutation={MANAGER_UPDATE_ROOM}
             variables={{
-              height,
               roomId,
               roomNumber,
               roomType,
               title,
-              usable,
-              width,
-              xpos,
-              ypos
+              usable
             }}
             onCompleted={data => {
-              const { HeadUpdateRoom } = data;
-              if (HeadUpdateRoom.ok) {
+              const { ManagerUpdateRoom } = data;
+              if (ManagerUpdateRoom.ok) {
                 toast.success("해당 열람실 수정을 완료했습니다");
                 setTimeout(() => {
                   history.push({
                     pathname: "/lounge-setting",
-                    state: { branchId }
+                    state: { branchId, isFranchiser, isHead, isSupervisor }
                   });
                 }, 500);
-              } else if (HeadUpdateRoom.error) {
-                toast.error(HeadUpdateRoom.error);
+              } else if (ManagerUpdateRoom.error) {
+                toast.error(ManagerUpdateRoom.error);
               }
             }}
             refetchQueries={[
-              { query: GET_BRANCH_FOR_UPDATE_LOUNGE, variables: { branchId } }
+              {
+                query: GET_BRANCH_FOR_UPDATE_LOUNGE,
+                variables: { branchId }
+              }
             ]}
           >
-            {updateRoomFn => {
-              this.updateRoom = updateRoomFn;
+            {managerUpdateRoomFn => {
+              this.managerUpdateRoom = managerUpdateRoomFn;
               return (
-                <GetBranchQuery
-                  query={GET_BRANCH_FOR_UPDATE_LOUNGE}
-                  variables={{ branchId }}
-                >
-                  {({ loading: branchLoading, error, data: branchData }) => {
-                    if (error) {
-                      toast.error(error.message);
-                      history.push("/");
+                <LoungeUpdateMutation
+                  mutation={HEAD_UPDATE_ROOM}
+                  variables={{
+                    height,
+                    roomId,
+                    roomNumber,
+                    roomType,
+                    title,
+                    usable,
+                    width,
+                    xpos,
+                    ypos
+                  }}
+                  onCompleted={data => {
+                    const { HeadUpdateRoom } = data;
+                    if (HeadUpdateRoom.ok) {
+                      toast.success("해당 열람실 수정을 완료했습니다");
+                      setTimeout(() => {
+                        history.push({
+                          pathname: "/lounge-setting",
+                          state: {
+                            branchId,
+                            isFranchiser,
+                            isHead,
+                            isSupervisor
+                          }
+                        });
+                      }, 500);
+                    } else if (HeadUpdateRoom.error) {
+                      toast.error(HeadUpdateRoom.error);
                     }
+                  }}
+                  refetchQueries={[
+                    {
+                      query: GET_BRANCH_FOR_UPDATE_LOUNGE,
+                      variables: { branchId }
+                    }
+                  ]}
+                >
+                  {updateRoomFn => {
+                    this.updateRoom = updateRoomFn;
                     return (
-                      <UpdateLoungePresenter
-                        height={height}
-                        roomNumber={roomNumber}
-                        roomType={roomType}
-                        title={title}
-                        usable={usable}
-                        width={width}
-                        xpos={xpos}
-                        ypos={ypos}
-                        branchLoading={branchLoading}
-                        branchData={branchData}
-                        onUpdateButtonClick={this.onUpdateButtonClick}
-                        onInputChange={this.onInputChange}
-                        onOptionChange={this.onOptionChange}
-                        topArrowClick={this.topArrowClick}
-                        bottomArrowClick={this.bottomArrowClick}
-                        rightArrowClick={this.rightArrowClick}
-                        leftArrowClick={this.leftArrowClick}
-                        toggleUsable={this.toggleUsable}
-                        onConfirmClick={this.onConfirmClick}
-                        onCancleClick={this.onCancleClick}
-                      />
+                      <GetBranchQuery
+                        query={GET_BRANCH_FOR_UPDATE_LOUNGE}
+                        variables={{ branchId }}
+                      >
+                        {({
+                          loading: branchLoading,
+                          error,
+                          data: branchData
+                        }) => {
+                          if (error) {
+                            toast.error(error.message);
+                            history.push("/");
+                          }
+                          return (
+                            <UpdateLoungePresenter
+                              height={height}
+                              roomNumber={roomNumber}
+                              roomType={roomType}
+                              title={title}
+                              usable={usable}
+                              width={width}
+                              xpos={xpos}
+                              ypos={ypos}
+                              branchLoading={branchLoading}
+                              branchData={branchData}
+                              onInputChange={this.onInputChange}
+                              onOptionChange={this.onOptionChange}
+                              topArrowClick={this.topArrowClick}
+                              bottomArrowClick={this.bottomArrowClick}
+                              rightArrowClick={this.rightArrowClick}
+                              leftArrowClick={this.leftArrowClick}
+                              toggleUsable={this.toggleUsable}
+                              onConfirmClick={this.onConfirmClick}
+                              onCancleClick={this.onCancleClick}
+                              isFranchiser={isFranchiser}
+                              isHead={isHead}
+                              isSupervisor={isSupervisor}
+                            />
+                          );
+                        }}
+                      </GetBranchQuery>
                     );
                   }}
-                </GetBranchQuery>
+                </LoungeUpdateMutation>
               );
             }}
-          </LoungeUpdateMutation>
+          </ManagerUpdateMutation>
         )}
       </GetRoomQuery>
     );
   }
-  public onUpdateButtonClick = () => {
-    const {
-      roomId,
-      title,
-      roomNumber,
-      roomType,
-      width,
-      height,
-      xpos,
-      ypos,
-      usable
-    } = this.state;
-
-    if (!roomId) {
-      toast.error("초기 열람실을 불러오지 못했습니다");
-    } else if (!title) {
-      toast.error("열람실 이름이 없습니다");
-    } else if (!roomNumber) {
-      toast.error("열람실 번호가 지정되지 않았습니다");
-    } else if (!roomType) {
-      toast.error("열람실 타입이 지정되지 않았습니다");
-    } else if (!width) {
-      toast.error("열람실 가로 길이가 지정되지 않았습니다");
-    } else if (!height) {
-      toast.error("열람실 세로길이가 지정되지 않았습니다");
-    } else if (!xpos) {
-      toast.error("열람실 가로 위치가 지정되지 않았습니다");
-    } else if (!ypos) {
-      toast.error("열람실 가로 위치가 지정되지 않았습니다");
-    } else {
-      console.log(this.state);
-      console.log(usable);
-    }
-  };
 
   public onInputChange: React.ChangeEventHandler<
     HTMLInputElement | HTMLSelectElement
@@ -255,23 +289,58 @@ class UpdateLoungeContainer extends React.Component<IProps, IState> {
     });
   };
   public onConfirmClick = () => {
-    this.updateRoom();
+    const {
+      roomId,
+      title,
+      roomNumber,
+      roomType,
+      width,
+      height,
+      isHead,
+      isFranchiser,
+      isSupervisor
+    } = this.state;
+
+    if (!roomId) {
+      toast.error("초기 열람실을 불러오지 못했습니다");
+    } else if (!title) {
+      toast.error("열람실 이름이 없습니다");
+    } else if (!roomNumber) {
+      toast.error("열람실 번호가 지정되지 않았습니다");
+    } else if (!roomType) {
+      toast.error("열람실 타입이 지정되지 않았습니다");
+    } else {
+      if (isHead) {
+        if (!width) {
+          toast.error("가로 크기 값이 없습니다");
+        } else if (!height) {
+          toast.error("세로크기 값이 없습니다");
+        } else {
+          this.updateRoom();
+        }
+      } else if (isSupervisor || isFranchiser) {
+        this.managerUpdateRoom();
+      }
+    }
   };
   public onCancleClick = () => {
     const { history } = this.props;
-    const { branchId } = this.state;
+    const { branchId, isFranchiser, isHead, isSupervisor } = this.state;
     history.push({
       pathname: "lounge-setting",
       state: {
-        branchId
+        branchId,
+        isFranchiser,
+        isHead,
+        isSupervisor
       }
     });
   };
 
-  public updateFields = (data: {} | headGetRoom) => {
-    if ("HeadGetRoom" in data) {
+  public updateFields = (data: {} | managerGetRoom) => {
+    if ("ManagerGetRoom" in data) {
       const {
-        HeadGetRoom: { room }
+        ManagerGetRoom: { room }
       } = data;
       if (room !== null) {
         const {

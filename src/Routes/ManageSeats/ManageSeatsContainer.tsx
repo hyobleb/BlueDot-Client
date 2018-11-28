@@ -2,15 +2,22 @@ import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
+import { GET_MANAGING_BRANCHES } from "src/Components/sharedQueries";
 import {
   getBranchForManSeat,
   getBranchForManSeat_GetBranchForManSeat_branch_rooms,
-  getBranchForManSeatVariables
+  getBranchForManSeatVariables,
+  getManaingBranches,
+  getManaingBranches_GetManagingBranches_branches
 } from "src/types/api";
 import ManageSeatsPresenter from "./ManageSeatsPresenter";
 import { GET_BRANCH_FOR_MAN_SEAT } from "./ManageSeatsQueries";
 
-interface IProps extends RouteComponentProps<any> {}
+interface IProps extends RouteComponentProps<any> {
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
+}
 interface IState {
   showBranchSearchPopUp: boolean;
   selBranchId: number;
@@ -19,7 +26,10 @@ interface IState {
   rooms: [getBranchForManSeat_GetBranchForManSeat_branch_rooms] | null;
   branchName: string;
   nowRoomId: number;
+  managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
 }
+
+class GetManagingBranchesQuery extends Query<getManaingBranches> {}
 
 class GetBranchForManSeatQuery extends Query<
   getBranchForManSeat,
@@ -53,36 +63,51 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
       loungeImage,
       minimapImage,
       branchName,
-      nowRoomId
+      nowRoomId,
+      managingBranches
     } = this.state;
 
+    const { isHead, isFranchiser, isSupervisor } = this.props;
+
     return (
-      <GetBranchForManSeatQuery
-        query={GET_BRANCH_FOR_MAN_SEAT}
-        variables={{ branchId: selBranchId }}
-        skip={selBranchId === 0}
-        fetchPolicy={"cache-and-network"}
+      <GetManagingBranchesQuery
+        query={GET_MANAGING_BRANCHES}
         onCompleted={this.updateFields}
+        fetchPolicy={"cache-and-network"}
       >
-        {({ loading: getBranchLoading }) => (
-          <ManageSeatsPresenter
-            showBranchSearchPopUp={showBranchSearchPopUp}
-            toggleSearchBranchPopUpShow={this.toggleSearchBranchPopUpShow}
-            onBranchClick={this.onBranchClick}
-            getBranchLoading={getBranchLoading}
-            selBranchId={selBranchId}
-            rooms={rooms}
-            loungeImage={loungeImage}
-            minimapImage={minimapImage}
-            branchName={branchName}
-            onRoomClick={this.onRoomClick}
-            nowRoomId={nowRoomId}
-            onSeatsPopUpCloseClick={this.onSeatsPopUpCloseClick}
-            onSeatClick={this.onSeatClick}
-            onEntranceClick={this.onEntranceClick}
-          />
+        {() => (
+          <GetBranchForManSeatQuery
+            query={GET_BRANCH_FOR_MAN_SEAT}
+            variables={{ branchId: selBranchId }}
+            fetchPolicy={"cache-and-network"}
+            onCompleted={this.updateFields}
+          >
+            {({ loading: getBranchLoading }) => (
+              <ManageSeatsPresenter
+                showBranchSearchPopUp={showBranchSearchPopUp}
+                toggleSearchBranchPopUpShow={this.toggleSearchBranchPopUpShow}
+                onBranchClick={this.onBranchClick}
+                getBranchLoading={getBranchLoading}
+                selBranchId={selBranchId}
+                rooms={rooms}
+                loungeImage={loungeImage}
+                minimapImage={minimapImage}
+                branchName={branchName}
+                onRoomClick={this.onRoomClick}
+                nowRoomId={nowRoomId}
+                onSeatsPopUpCloseClick={this.onSeatsPopUpCloseClick}
+                onSeatClick={this.onSeatClick}
+                onEntranceClick={this.onEntranceClick}
+                isHead={isHead}
+                isFranchiser={isFranchiser}
+                isSupervisor={isSupervisor}
+                managingBranches={managingBranches}
+                onBranchBtnClick={this.onBranchBtnClick}
+              />
+            )}
+          </GetBranchForManSeatQuery>
         )}
-      </GetBranchForManSeatQuery>
+      </GetManagingBranchesQuery>
     );
   }
 
@@ -101,7 +126,15 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
     );
   };
 
-  public updateFields = (data: {} | getBranchForManSeat) => {
+  public onBranchBtnClick = (branchId: number) => {
+    this.setState({
+      selBranchId: branchId
+    });
+  };
+
+  public updateFields = (
+    data: {} | getBranchForManSeat | getManaingBranches
+  ) => {
     if ("GetBranchForManSeat" in data) {
       const {
         GetBranchForManSeat: { branch }
@@ -115,6 +148,26 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
           minimapImage,
           rooms
         } as any);
+      }
+    } else if ("GetManagingBranches" in data) {
+      const {
+        GetManagingBranches: { branches }
+      } = data;
+
+      const { isHead, isSupervisor, isFranchiser } = this.props;
+
+      if (!isHead && (isSupervisor || isFranchiser) && branches !== null) {
+        let oneBranchId;
+        if (branches.length === 1) {
+          if (branches[0] !== null) {
+            oneBranchId = branches[0]!.id;
+          }
+        }
+
+        this.setState({
+          managingBranches: branches,
+          selBranchId: oneBranchId
+        });
       }
     }
   };

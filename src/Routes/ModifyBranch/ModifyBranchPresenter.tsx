@@ -102,7 +102,7 @@ interface IProps {
   directManage: boolean;
   subtractSnapshot: (e: any) => void;
   toggleSwitch: (event: any) => void;
-  addBranchFn: MutationFn;
+  modifyBranchFn: MutationFn;
   impId: string;
   impKey: string;
   impSecret: string;
@@ -115,6 +115,11 @@ interface IProps {
   isFemaleAvailable: boolean;
   isGirlAvailable: boolean;
   isBoyAvailable: boolean;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
+  cabinetLoungeImgLoading: boolean;
+  cabinetLoungeImg: string;
 }
 
 const ModifyBranchPresenter: React.SFC<IProps> = ({
@@ -140,7 +145,7 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
   directManage,
   subtractSnapshot,
   toggleSwitch,
-  addBranchFn,
+  modifyBranchFn,
   impId,
   impKey,
   impSecret,
@@ -152,7 +157,12 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
   isMaleAvailable,
   isFemaleAvailable,
   isGirlAvailable,
-  isBoyAvailable
+  isBoyAvailable,
+  isFranchiser,
+  isHead,
+  isSupervisor,
+  cabinetLoungeImgLoading,
+  cabinetLoungeImg
 }) => (
   <BackContainer>
     <Helmet>
@@ -160,132 +170,161 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
     </Helmet>
     <BackArrowExtended backTo="/branch-setting" />
     <Form submitFn={onSubmit}>
-      <Row>
-        <InputLabel>
-          <InputTitle>지점명 : </InputTitle>
-          <InputExtended
-            value={branchName}
-            onChange={onInputChange}
-            name={"branchName"}
-          />
-        </InputLabel>
-      </Row>
-      <Row>
-        <InputLabel>
-          <InputTitle>지점 번호 : </InputTitle>
-          <InputExtended
-            value={branchNumber}
-            onChange={onInputChange}
-            name={"branchNumber"}
-          />
-        </InputLabel>
-      </Row>
-      <Row>
-        <InputLabel>
-          <InputTitle>우편 번호 : </InputTitle>
-          <InputExtended value={postCode} name={"postCode"} readonly={true} />
-        </InputLabel>
-        <SmallButtonExtended
-          value={"우편번호 검색"}
-          onClick={toggleShowDaumPostApi}
-        />
-        {showDaumPostApi && <DaumPostCodePopUp onConfirm={handleAddress} />}
-      </Row>
-      <Row>
-        <InputLabel>
-          <InputTitle>주소 : </InputTitle>
-          <InputExtended value={address} readonly={true} />
-        </InputLabel>
-      </Row>
-      <Row>
-        <InputLabel>
-          <InputTitle>상세 주소 : </InputTitle>
-          <InputExtended
-            value={detailAddress}
-            onChange={onInputChange}
-            name={"detailAddress"}
-          />
-        </InputLabel>
-      </Row>
-
-      <Row>
-        <InputLabel>
-          <InputTitle>위치 설명 : </InputTitle>
-          <InputExtended
-            value={descriptionPosition}
-            onChange={onInputChange}
-            name={"descriptionPosition"}
-            placeholder={"ex. 화명 맥도날드 뒤쪽"}
-          />
-        </InputLabel>
-      </Row>
-
-      <Row>
-        <InputLabel>
-          <InputTitle>지점 설명 : </InputTitle>
-          <InputExtended
-            value={branchComment}
-            onChange={onInputChange}
-            name={"branchComment"}
-          />
-        </InputLabel>
-      </Row>
-      <Row>
-        <InputLabel>
-          <InputTitle>지점 이미지 : </InputTitle>
-          <PhotoInput
-            uploading={branchPhotosUploading}
-            onChange={onInputChange}
-            dispalyText={"지점 이미지 올리기"}
-            name={"branchPhotos"}
-          />
-        </InputLabel>
-
-        <SnapShotContainer>
-          {branchPhotos.map(branchPhoto => (
-            <SnapShot
-              onCloseClick={subtractSnapshot}
-              url={branchPhoto}
-              key={branchPhoto}
+      {isHead && (
+        <>
+          <Row>
+            <InputLabel>
+              <InputTitle>지점명 : </InputTitle>
+              <InputExtended
+                value={branchName}
+                onChange={onInputChange}
+                name={"branchName"}
+              />
+            </InputLabel>
+          </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>지점 번호 : </InputTitle>
+              <InputExtended
+                value={branchNumber}
+                onChange={onInputChange}
+                name={"branchNumber"}
+              />
+            </InputLabel>
+          </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>우편 번호 : </InputTitle>
+              <InputExtended
+                value={postCode}
+                name={"postCode"}
+                readonly={true}
+              />
+            </InputLabel>
+            <SmallButtonExtended
+              value={"우편번호 검색"}
+              onClick={toggleShowDaumPostApi}
             />
-          ))}
-        </SnapShotContainer>
-      </Row>
-      <Row>
-        <InputLabel>
-          <InputTitle>라운지 이미지 : </InputTitle>
-          <PhotoInput
-            uploading={loungeImgUploading}
-            onChange={onInputChange}
-            dispalyText={"라운지 이미지 올리기"}
-            name={"loungeImg"}
-          />
-        </InputLabel>
+            {showDaumPostApi && <DaumPostCodePopUp onConfirm={handleAddress} />}
+          </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>주소 : </InputTitle>
+              <InputExtended value={address} readonly={true} />
+            </InputLabel>
+          </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>상세 주소 : </InputTitle>
+              <InputExtended
+                value={detailAddress}
+                onChange={onInputChange}
+                name={"detailAddress"}
+              />
+            </InputLabel>
+          </Row>
 
-        <SnapShotContainer>
-          {loungeImg && (
-            <SnapShot onCloseClick={subtractSnapshot} url={loungeImg} />
-          )}
-        </SnapShotContainer>
-      </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>위치 설명 : </InputTitle>
+              <InputExtended
+                value={descriptionPosition}
+                onChange={onInputChange}
+                name={"descriptionPosition"}
+                placeholder={"ex. 화명 맥도날드 뒤쪽"}
+              />
+            </InputLabel>
+          </Row>
 
-      <Row>
-        <InputLabel>
-          <InputTitle>미니맵 이미지 : </InputTitle>
-          <PhotoInput
-            uploading={minimapImgUploading}
-            onChange={onInputChange}
-            dispalyText={"미니맵 이미지 올리기"}
-            name={"minimapImg"}
-          />
-        </InputLabel>
+          <Row>
+            <InputLabel>
+              <InputTitle>지점 설명 : </InputTitle>
+              <InputExtended
+                value={branchComment}
+                onChange={onInputChange}
+                name={"branchComment"}
+              />
+            </InputLabel>
+          </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>지점 이미지 : </InputTitle>
+              <PhotoInput
+                uploading={branchPhotosUploading}
+                onChange={onInputChange}
+                dispalyText={"지점 이미지 올리기"}
+                name={"branchPhotos"}
+              />
+            </InputLabel>
 
-        <SnapShotContainer>
-          {minimapImg && (
-            <SnapShot onCloseClick={subtractSnapshot} url={minimapImg} />
-          )}
-        </SnapShotContainer>
-      </Row>
+            <SnapShotContainer>
+              {branchPhotos.map(branchPhoto => (
+                <SnapShot
+                  onCloseClick={subtractSnapshot}
+                  url={branchPhoto}
+                  key={branchPhoto}
+                />
+              ))}
+            </SnapShotContainer>
+          </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>라운지 이미지 : </InputTitle>
+              <PhotoInput
+                uploading={loungeImgUploading}
+                onChange={onInputChange}
+                dispalyText={"라운지 이미지 올리기"}
+                name={"loungeImg"}
+              />
+            </InputLabel>
+
+            <SnapShotContainer>
+              {loungeImg && (
+                <SnapShot onCloseClick={subtractSnapshot} url={loungeImg} />
+              )}
+            </SnapShotContainer>
+          </Row>
+
+          <Row>
+            <InputLabel>
+              <InputTitle>사물함 라운지 이미지 : </InputTitle>
+              <PhotoInput
+                uploading={cabinetLoungeImgLoading}
+                onChange={onInputChange}
+                dispalyText={"사물함 라운지 이미지 올리기"}
+                name={"cabinetLoungeImg"}
+              />
+            </InputLabel>
+
+            <SnapShotContainer>
+              {cabinetLoungeImg && (
+                <SnapShot
+                  onCloseClick={subtractSnapshot}
+                  url={cabinetLoungeImg}
+                />
+              )}
+            </SnapShotContainer>
+          </Row>
+
+          <Row>
+            <InputLabel>
+              <InputTitle>미니맵 이미지 : </InputTitle>
+              <PhotoInput
+                uploading={minimapImgUploading}
+                onChange={onInputChange}
+                dispalyText={"미니맵 이미지 올리기"}
+                name={"minimapImg"}
+              />
+            </InputLabel>
+
+            <SnapShotContainer>
+              {minimapImg && (
+                <SnapShot onCloseClick={subtractSnapshot} url={minimapImg} />
+              )}
+            </SnapShotContainer>
+          </Row>
+        </>
+      )}
 
       <Row>
         <InputLabel>
@@ -309,83 +348,90 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
         </InputLabel>
       </Row>
 
-      <Row>
-        <InputLabel>
-          <InputTitle>IP : </InputTitle>
-          <InputExtended
-            value={tempIp}
-            name={"tempIp"}
-            onChange={onInputChange}
-            required={false}
-          />
-        </InputLabel>
-        <SmallButtonExtended value={"IP 추가"} onClick={addIp} />
-        <IpDisplayContainer>
-          {ips &&
-            ips.map(
-              ip =>
-                ip && (
-                  <IpDisplay key={ip}>
-                    {ip}{" "}
-                    {ip && (
-                      <IpDeleteButton
-                        value={"삭제"}
-                        onClick={() => subtractIp(ip)}
-                      />
-                    )}
-                  </IpDisplay>
-                )
-            )}
-        </IpDisplayContainer>
-      </Row>
+      {isHead && (
+        <>
+          <Row>
+            <InputLabel>
+              <InputTitle>IP : </InputTitle>
+              <InputExtended
+                value={tempIp}
+                name={"tempIp"}
+                onChange={onInputChange}
+                required={false}
+              />
+            </InputLabel>
+            <SmallButtonExtended value={"IP 추가"} onClick={addIp} />
+            <IpDisplayContainer>
+              {ips &&
+                ips.map(
+                  ip =>
+                    ip && (
+                      <IpDisplay key={ip}>
+                        {ip}{" "}
+                        {ip && (
+                          <IpDeleteButton
+                            value={"삭제"}
+                            onClick={() => subtractIp(ip)}
+                          />
+                        )}
+                      </IpDisplay>
+                    )
+                )}
+            </IpDisplayContainer>
+          </Row>
 
-      <Row>
-        <InputLabel>
-          <InputTitle>아임포트 가맹점 식별코드: </InputTitle>
-          <InputExtended
-            value={impId}
-            name={"impId"}
-            onChange={onInputChange}
-            required={false}
-          />
-        </InputLabel>
-      </Row>
-      <Row>
-        <InputLabel>
-          <InputTitle>아임포트 API 키 : </InputTitle>
-          <InputExtended
-            value={impKey}
-            name={"impKey"}
-            onChange={onInputChange}
-            required={false}
-          />
-        </InputLabel>
-      </Row>
-      <Row>
-        <InputLabel>
-          <InputTitle>아임포트 API secret : </InputTitle>
-          <InputExtended
-            value={impSecret}
-            name={"impSecret"}
-            onChange={onInputChange}
-            required={false}
-          />
-        </InputLabel>
-      </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>아임포트 가맹점 식별코드: </InputTitle>
+              <InputExtended
+                value={impId}
+                name={"impId"}
+                onChange={onInputChange}
+                required={false}
+              />
+            </InputLabel>
+          </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>아임포트 API 키 : </InputTitle>
+              <InputExtended
+                value={impKey}
+                name={"impKey"}
+                onChange={onInputChange}
+                required={false}
+              />
+            </InputLabel>
+          </Row>
+          <Row>
+            <InputLabel>
+              <InputTitle>아임포트 API secret : </InputTitle>
+              <InputExtended
+                value={impSecret}
+                name={"impSecret"}
+                onChange={onInputChange}
+                required={false}
+              />
+            </InputLabel>
+          </Row>
+        </>
+      )}
 
       <Row>
         <SwitchBox>
-          <SwitchRow>
-            <SwitchTitle>직영매장</SwitchTitle>
-            <SwitchItem>
-              <Switch
-                onClick={() => toggleSwitch("directManage")}
-                on={directManage}
-              >
-                <i className="some-icon" />
-              </Switch>
-            </SwitchItem>
-          </SwitchRow>
+          {isHead && (
+            <SwitchRow>
+              <SwitchTitle>직영매장</SwitchTitle>
+              <SwitchItem>
+                <Switch
+                  onClick={() => toggleSwitch("directManage")}
+                  on={directManage}
+                >
+                  <i className="some-icon" />
+                </Switch>
+              </SwitchItem>
+            </SwitchRow>
+          )}
+
           <SwitchRow>
             <SwitchTitle>남자 성인 등록 가능</SwitchTitle>
             <SwitchItem>

@@ -132,25 +132,114 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         exact={true}
         component={ReqExtendCabinet}
       />
-
-      {isHead && [
+      {(isHead || isFranchiser || isSupervisor) && [
         <Route
           key={1}
           path={"/branch-setting"}
           exact={true}
-          component={BranchSetting}
+          render={props => (
+            <BranchSetting
+              {...props}
+              isHead={isHead}
+              isFranchiser={isFranchiser}
+              isSupervisor={isSupervisor}
+            />
+          )}
         />,
         <Route
-          key={2}
-          path={"/add-branch"}
+          key={5}
+          path={"/branch-modfiy"}
           exact={true}
-          component={AddBranch}
+          component={ModifyBranch}
         />,
+        <Route
+          key={13}
+          path={"/setting-cablock"}
+          exact={true}
+          component={SettingCabLock}
+        />,
+        <Route
+          key={13}
+          path={"/setting-staff"}
+          exact={true}
+          component={SettingStaff}
+        />,
+        <Route
+          key={14}
+          path={"/manage-users"}
+          exact={true}
+          render={props => (
+            <ManageUsers
+              {...props}
+              isHead={isHead}
+              isFranchiser={isFranchiser}
+              isSupervisor={isSupervisor}
+            />
+          )}
+        />,
+        <Route
+          key={21}
+          path={"/view-req-sign-up"}
+          exact={true}
+          component={ViewReqSignUp}
+        />,
+        <Route
+          key={15}
+          path={"/user-detail"}
+          exact={true}
+          component={UserDetail}
+        />,
+        <Route
+          key={23}
+          path={"/manage-seats"}
+          exact={true}
+          render={props => (
+            <ManageSeats
+              {...props}
+              isHead={isHead}
+              isFranchiser={isFranchiser}
+              isSupervisor={isSupervisor}
+            />
+          )}
+        />,
+        <Route
+          key={24}
+          path={"/manage-seat"}
+          exact={true}
+          component={ManageSeat}
+        />,
+        <Route
+          key={16}
+          path={"/manager-enroll-membership"}
+          exact={true}
+          component={ManagerEnrollMembership}
+        />,
+
+        <Route
+          key={17}
+          path={"/manager-enroll-cabinet"}
+          exact={true}
+          component={ManagerEnrollCabinet}
+        />,
+
         <Route
           key={3}
           path={"/lounge-setting"}
           exact={true}
           component={SettingLounge}
+        />,
+
+        <Route
+          key={26}
+          path={"/manage-cabinet"}
+          exact={true}
+          component={ManageCabinet}
+        />,
+        <Route
+          key={19}
+          path={"/manager-extend-cabinet"}
+          exact={true}
+          component={ManagerExtendCabinet}
         />,
         <Route
           key={4}
@@ -159,11 +248,28 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           component={UpdateLounge}
         />,
         <Route
-          key={5}
-          path={"/branch-modfiy"}
+          key={25}
+          path={"/manage-cabinets"}
           exact={true}
-          component={ModifyBranch}
+          render={props => (
+            <ManageCabinets
+              {...props}
+              isHead={isHead}
+              isFranchiser={isFranchiser}
+              isSupervisor={isSupervisor}
+            />
+          )}
+        />
+      ]}
+
+      {isHead && [
+        <Route
+          key={2}
+          path={"/add-branch"}
+          exact={true}
+          component={AddBranch}
         />,
+
         <Route
           key={6}
           path={"/seat-setting"}
@@ -206,90 +312,21 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           exact={true}
           component={ModifyProduct}
         />,
-        <Route
-          key={13}
-          path={"/setting-cablock"}
-          exact={true}
-          component={SettingCabLock}
-        />,
-        <Route
-          key={13}
-          path={"/setting-staff"}
-          exact={true}
-          component={SettingStaff}
-        />,
-        <Route
-          key={14}
-          path={"/manage-users"}
-          exact={true}
-          component={ManageUsers}
-        />,
-        <Route
-          key={15}
-          path={"/user-detail"}
-          exact={true}
-          component={UserDetail}
-        />,
-        <Route
-          key={16}
-          path={"/manager-enroll-membership"}
-          exact={true}
-          component={ManagerEnrollMembership}
-        />,
-        <Route
-          key={17}
-          path={"/manager-enroll-cabinet"}
-          exact={true}
-          component={ManagerEnrollCabinet}
-        />,
+
         <Route
           key={18}
           path={"/manager-extend-membership"}
           exact={true}
           component={ManagerExtendMembership}
         />,
-        <Route
-          key={19}
-          path={"/manager-extend-cabinet"}
-          exact={true}
-          component={ManagerExtendCabinet}
-        />,
+
         <Route key={20} path={"/chart"} exact={true} component={Chart} />,
-        <Route
-          key={21}
-          path={"/view-req-sign-up"}
-          exact={true}
-          component={ViewReqSignUp}
-        />,
+
         <Route
           key={22}
           path={"/setting-cobranch"}
           exact={true}
           component={SettingCoBranch}
-        />,
-        <Route
-          key={23}
-          path={"/manage-seats"}
-          exact={true}
-          component={ManageSeats}
-        />,
-        <Route
-          key={24}
-          path={"/manage-seat"}
-          exact={true}
-          component={ManageSeat}
-        />,
-        <Route
-          key={25}
-          path={"/manage-cabinets"}
-          exact={true}
-          component={ManageCabinets}
-        />,
-        <Route
-          key={26}
-          path={"/manage-cabinet"}
-          exact={true}
-          component={ManageCabinet}
         />
       ]}
 

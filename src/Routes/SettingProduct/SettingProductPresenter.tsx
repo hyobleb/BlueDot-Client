@@ -4,7 +4,7 @@ import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { headGetBranch } from "src/types/api";
+import { managerGetBranch } from "src/types/api";
 import AlertPopUp from "../../Components/AlertPopUp";
 
 const BackContainer = styled.div``;
@@ -80,7 +80,7 @@ const BackArrowExtended = styled(BackArrow)`
 
 interface IProps {
   onAddButtonClick: () => void;
-  branchData?: headGetBranch;
+  branchData?: managerGetBranch;
   branchLoading: boolean;
   onModifyClick: (branchId: number) => void;
   showDeletePopUp: boolean;
@@ -119,11 +119,11 @@ const SettingProductPresenter: React.SFC<IProps> = ({
         <BodySection>
           <ProductContainer>
             {branchData &&
-              branchData.HeadGetBranch &&
-              branchData.HeadGetBranch.branch &&
-              branchData.HeadGetBranch.branch.products &&
-              branchData.HeadGetBranch.branch.products.length > 0 &&
-              branchData.HeadGetBranch.branch.products.map(
+              branchData.ManagerGetBranch &&
+              branchData.ManagerGetBranch.branch &&
+              branchData.ManagerGetBranch.branch.products &&
+              branchData.ManagerGetBranch.branch.products.length > 0 &&
+              branchData.ManagerGetBranch.branch.products.map(
                 product =>
                   product &&
                   !product.discard && (
@@ -142,8 +142,8 @@ const SettingProductPresenter: React.SFC<IProps> = ({
                           {product.target === "MEMBERSHIP"
                             ? "멤버쉽"
                             : product.target === "CABINET"
-                              ? "사물함"
-                              : ""}
+                            ? "사물함"
+                            : ""}
                         </ProductContent>
                       </ProductRow>
                       <ProductRow>

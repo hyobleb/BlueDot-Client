@@ -32,6 +32,9 @@ interface IState {
   usable: boolean;
   roomType: roomTypeOptions;
   tempRoomId: number;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
 }
 
 class GetBranchQuery extends Query<
@@ -57,6 +60,9 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
     this.state = {
       branchId: props.location.state.branchId,
       height: 10,
+      isFranchiser: props.location.state.isFranchiser || false,
+      isHead: props.location.state.isHead || false,
+      isSupervisor: props.location.state.isSupervisor || false,
       roomNumber: 0,
       roomType: roomTypeOptions.SINGLE,
       showTempRoom: false,
@@ -80,9 +86,13 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
       roomNumber,
       usable,
       roomType,
-      tempRoomId
+      tempRoomId,
+      isFranchiser,
+      isHead,
+      isSupervisor
     } = this.state;
     const { history } = this.props;
+
     return (
       <CreateRoomMutation
         mutation={HEAD_CREATE_ROOM}
@@ -117,10 +127,10 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
               query={GET_BRANCH_FOR_UPDATE_LOUNGE}
               variables={{ branchId }}
               onCompleted={data => {
-                if ("HeadGetBranch" in data) {
-                  const { HeadGetBranch } = data;
-                  if (HeadGetBranch.error) {
-                    toast.error(HeadGetBranch.error);
+                if ("ManagerGetBranch" in data) {
+                  const { ManagerGetBranch } = data;
+                  if (ManagerGetBranch.error) {
+                    toast.error(ManagerGetBranch.error);
                   }
                 }
               }}
@@ -158,6 +168,9 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
                     tempRoomId={tempRoomId}
                     onRoomHoverOut={this.onRoomHoverOut}
                     onEditSeatClick={this.onEditSeatClick}
+                    isFranchiser={isFranchiser}
+                    isHead={isHead}
+                    isSupervisor={isSupervisor}
                   />
                 );
               }}
@@ -260,12 +273,15 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
 
   public onRoomClick = (roomId: number) => {
     const { history } = this.props;
-    const { branchId } = this.state;
+    const { branchId, isFranchiser, isHead, isSupervisor } = this.state;
 
     history.push({
       pathname: "/lounge-modify",
       state: {
         branchId,
+        isFranchiser,
+        isHead,
+        isSupervisor,
         roomId
       }
     });

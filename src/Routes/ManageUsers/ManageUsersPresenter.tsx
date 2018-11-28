@@ -8,6 +8,7 @@ import Loading from "src/Components/Loading";
 import SearchUserPopUp from "src/Components/SearchUserPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
+import { managerGetManagingBranches_GetManagingBranches_branches } from "src/types/api";
 
 const BackContainer = styled.div``;
 const Container = styled.div`
@@ -32,6 +33,11 @@ const SearchBranchButton = styled(Button)`
 const TotalBranchButton = styled(Button)`
   background-color: ${props => props.theme.lightBlueColor};
 `;
+
+const BranchButton = styled(Button)`
+  background-color: ${props => props.theme.blueColor};
+`;
+
 const BranchTitleSection = styled(Section)`
   margin-top: 15px;
   margin-bottom: 15px;
@@ -187,6 +193,11 @@ interface IProps {
   branchName?: string;
   onChartBtnClick: () => void;
   onOfflineReqBtnClick: () => void;
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
+  managingBranches?: Array<managerGetManagingBranches_GetManagingBranches_branches | null>;
+  onBranchBtnClick: (branchId: number) => void;
 }
 
 const ManageUsersPresenter: React.SFC<IProps> = ({
@@ -205,7 +216,12 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
   onUserClick,
   branchName,
   onChartBtnClick,
-  onOfflineReqBtnClick
+  onOfflineReqBtnClick,
+  isHead,
+  isFranchiser,
+  isSupervisor,
+  managingBranches,
+  onBranchBtnClick
 }) => (
   <BackContainer>
     <Helmet>
@@ -217,11 +233,37 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
     ) : (
       <Container>
         <HeadButtonSection>
-          <SearchBranchButton
-            value={"지점 검색"}
-            onClick={toggleBranchPopUpShow}
-          />
-          <TotalBranchButton value={"전체 지점"} onClick={onAllBranchClick} />
+          {isHead && (
+            <SearchBranchButton
+              value={"지점 검색"}
+              onClick={toggleBranchPopUpShow}
+            />
+          )}
+
+          {isHead ? (
+            <TotalBranchButton value={"전체 지점"} onClick={onAllBranchClick} />
+          ) : (
+            (isSupervisor || isFranchiser) &&
+            managingBranches &&
+            managingBranches.length >= 2 && (
+              <TotalBranchButton
+                value={"전체 지점"}
+                onClick={onAllBranchClick}
+              />
+            )
+          )}
+
+          {managingBranches &&
+            managingBranches.map(
+              branch =>
+                branch && (
+                  <BranchButton
+                    key={branch.id}
+                    value={`${branch.name}`}
+                    onClick={() => onBranchBtnClick(branch.id)}
+                  />
+                )
+            )}
         </HeadButtonSection>
         <BranchTitleSection>
           <BranchTitle>{branchName ? branchName : "전체 지점"}</BranchTitle>

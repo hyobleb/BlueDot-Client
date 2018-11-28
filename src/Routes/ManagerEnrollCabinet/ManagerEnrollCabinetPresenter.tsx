@@ -13,6 +13,7 @@ import styled from "src/typed-components";
 import {
   getBranchForEnrollCabinet,
   getCabinets_GetCabinetSet_cabinetSet_cabinets,
+  getManaingBranches_GetManagingBranches_branches,
   userGetProducts,
   userGetProducts_UserGetBranch_branch_products
 } from "src/types/api";
@@ -46,7 +47,9 @@ const Title = styled.h1`
   margin-bottom: 20px;
   font-size: 20px;
 `;
-const BranchSection = styled(Section)``;
+const BranchSection = styled(Section)`
+  align-items: center;
+`;
 
 const CabinetSection = styled(Section)`
   display: flex;
@@ -183,6 +186,8 @@ const FieldCardCreateMembershipBtn = styled(Button)`
   background-color: ${props => props.theme.lightBlueColor};
 `;
 
+const BranchBtn = styled(Button)``;
+
 interface IProps {
   branchId: number;
   branchPopUpShow: boolean;
@@ -224,6 +229,11 @@ interface IProps {
   onBackClick: () => void;
   isShifitCabinet: boolean;
   selProducts: userGetProducts_UserGetBranch_branch_products[];
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
+  managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
+  onBranchBtnClick: (branchId: number) => void;
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -260,7 +270,13 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
   setEndDatetimeToStart,
   onBackClick,
   isShifitCabinet,
-  selProducts
+  selProducts,
+  isFranchiser,
+  isHead,
+  isSupervisor,
+  managingBranches,
+  onBranchBtnClick,
+  branchId
 }) => {
   const productOptions = new Array();
   if (
@@ -299,15 +315,30 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
               "지점을 먼저 선택해주세요"}
           </BranchNameCol>
           <BranchButtonCol>
-            <ChangeBranchButton
-              value={`${(productDatas &&
-                productDatas.UserGetBranch &&
-                productDatas.UserGetBranch.branch &&
-                productDatas.UserGetBranch.branch.name &&
-                "지점 변경") ||
-                "지점 선택"}`}
-              onClick={setTrueBranchPopUpShow}
-            />
+            {isHead && (
+              <ChangeBranchButton
+                value={`${(productDatas &&
+                  productDatas.UserGetBranch &&
+                  productDatas.UserGetBranch.branch &&
+                  productDatas.UserGetBranch.branch.name &&
+                  "지점 변경") ||
+                  "지점 선택"}`}
+                onClick={setTrueBranchPopUpShow}
+              />
+            )}
+            {(isFranchiser || isSupervisor) && managingBranches
+              ? managingBranches.length >= 2 &&
+                managingBranches.map(
+                  branch =>
+                    branch && (
+                      <BranchBtn
+                        key={branch.id}
+                        value={branch.name}
+                        onClick={() => onBranchBtnClick(branch.id)}
+                      />
+                    )
+                )
+              : ""}
           </BranchButtonCol>
         </BranchSection>
         <CabinetSection>
@@ -473,8 +504,8 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
               onClick={() => onEnrollClick(CreatePaymentMethodOption.CASH)}
             />
             <ThrowBasketButton
-              value={isShifitCabinet ? "이동하기" : "등록하기"}
-              onClick={onEnrollClick}
+              value={isShifitCabinet ? "이동하기" : "무결제 등록"}
+              onClick={() => onEnrollClick()}
             />
             <CancleButton value={"취소"} onClick={onBackClick} />
           </ButtonContainer>

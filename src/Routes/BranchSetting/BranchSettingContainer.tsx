@@ -1,14 +1,28 @@
 import React from "react";
-import { ApolloConsumer } from "react-apollo";
+import { ApolloConsumer, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
-import { searchBranch } from "src/types/api";
-import { SEARCH_BRANCH } from "../../Components/sharedQueries";
+import {
+  getManaingBranches,
+  getManaingBranches_GetManagingBranches_branches,
+  searchBranch
+} from "src/types/api";
+import {
+  GET_MANAGING_BRANCHES,
+  SEARCH_BRANCH
+} from "../../Components/sharedQueries";
 import BranchSettingPresenter from "./BranchSettingPresenter";
 
-interface IProps extends RouteComponentProps<any> {}
+class GetManagingBranches extends Query<getManaingBranches> {}
+
+interface IProps extends RouteComponentProps<any> {
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
+}
 interface IState {
   branchInput: string;
   data: searchBranch | null;
+  managingBranches: Array<getManaingBranches_GetManagingBranches_branches | null>;
 }
 
 class BranchSettingContainer extends React.Component<IProps, IState> {
@@ -19,7 +33,8 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
       branchInput: props.location.state
         ? props.location.state.addBranchName
         : "",
-      data: null
+      data: null,
+      managingBranches: []
     };
   }
 
@@ -33,6 +48,8 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
   }
 
   public render() {
+    const { isHead, isFranchiser, isSupervisor } = this.props;
+    const { managingBranches } = this.state;
     return (
       <ApolloConsumer>
         {client => {
@@ -45,19 +62,31 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
           };
 
           return (
-            <BranchSettingPresenter
-              onInputChange={this.onInputChange}
-              onSubmit={this.onSubmit}
-              data={this.state.data}
-              branchInput={this.state.branchInput}
-              onBranchModifyClick={this.onBranchModifyClick}
-              onLoungeSettingClick={this.onLoungeSettingClick}
-              onCainbetSettingClick={this.onCainbetSettingClick}
-              onProductSettingClick={this.onProductSettingClick}
-              onCabLockSettingClick={this.onCabLockSettingClick}
-              onStaffSettingClick={this.onStaffSettingClick}
-              onCoBranchSettingClick={this.onCoBranchSettingClick}
-            />
+            <GetManagingBranches
+              query={GET_MANAGING_BRANCHES}
+              onCompleted={this.updateFields}
+              fetchPolicy={"cache-and-network"}
+            >
+              {managingBranchesLoading => (
+                <BranchSettingPresenter
+                  onInputChange={this.onInputChange}
+                  onSubmit={this.onSubmit}
+                  data={this.state.data}
+                  branchInput={this.state.branchInput}
+                  onBranchModifyClick={this.onBranchModifyClick}
+                  onLoungeSettingClick={this.onLoungeSettingClick}
+                  onCainbetSettingClick={this.onCainbetSettingClick}
+                  onProductSettingClick={this.onProductSettingClick}
+                  onCabLockSettingClick={this.onCabLockSettingClick}
+                  onStaffSettingClick={this.onStaffSettingClick}
+                  onCoBranchSettingClick={this.onCoBranchSettingClick}
+                  isHead={isHead}
+                  isFranchiser={isFranchiser}
+                  isSupervisor={isSupervisor}
+                  managingBranches={managingBranches}
+                />
+              )}
+            </GetManagingBranches>
           );
         }}
       </ApolloConsumer>
@@ -85,21 +114,27 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
   };
 
   public onBranchModifyClick = branchId => {
-    const { history } = this.props;
+    const { history, isHead, isFranchiser, isSupervisor } = this.props;
     history.push({
       pathname: "/branch-modfiy",
       state: {
-        branchId
+        branchId,
+        isFranchiser,
+        isHead,
+        isSupervisor
       }
     });
   };
 
   public onLoungeSettingClick = branchId => {
-    const { history } = this.props;
+    const { history, isFranchiser, isHead, isSupervisor } = this.props;
     history.push({
       pathname: "/lounge-setting",
       state: {
-        branchId
+        branchId,
+        isFranchiser,
+        isHead,
+        isSupervisor
       }
     });
   };
@@ -135,11 +170,14 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
   };
 
   public onStaffSettingClick = (branchId: number) => {
-    const { history } = this.props;
+    const { history, isHead, isFranchiser, isSupervisor } = this.props;
     history.push({
       pathname: "/setting-staff",
       state: {
-        branchId
+        branchId,
+        isFranchiser,
+        isHead,
+        isSupervisor
       }
     });
   };
@@ -152,6 +190,19 @@ class BranchSettingContainer extends React.Component<IProps, IState> {
         branchId
       }
     });
+  };
+
+  public updateFields = (data: {} | getManaingBranches) => {
+    if ("GetManagingBranches" in data) {
+      const {
+        GetManagingBranches: { branches }
+      } = data;
+      if (branches) {
+        this.setState({
+          managingBranches: branches
+        });
+      }
+    }
   };
 }
 

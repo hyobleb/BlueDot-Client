@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
-export const HEAD_GET_BRANCH_EMPLOYEE = gql`
-  query headGetBranchEmployee($branchId: Int!) {
-    HeadGetBranchEmployee(branchId: $branchId) {
+export const MANAGER_GET_BRANCH_EMPLOYEE = gql`
+  query managerGetBranchEmployee($branchId: Int!) {
+    ManagerGetBranchEmployee(branchId: $branchId) {
       ok
       error
       branch {

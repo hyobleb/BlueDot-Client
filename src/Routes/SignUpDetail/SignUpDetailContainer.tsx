@@ -336,9 +336,9 @@ export default class SignUpDetailContainer extends React.Component<
 
     if (IMP) {
       // IMP.certification(param, callback) 호출
-      const result = await IMP.init(impId); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
-      console.dir(result);
-      console.log(impId);
+      // const result = await IMP.init(impId); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
+      // console.dir(result);
+      // console.log(impId);
       IMP.certification(
         {
           popup: true
@@ -360,19 +360,16 @@ export default class SignUpDetailContainer extends React.Component<
               data.birthMonth &&
               data.birthDay
             ) {
-              this.setState(
-                {
-                  ...this.state,
-                  birthDay: data.birthDay,
-                  birthMonth: data.birthMonth,
-                  birthYear: data.birthYear,
-                  gender: data.gender,
-                  imp_uid: rsp.imp_uid,
-                  name: data.name,
-                  unique_key: data.unique_key
-                },
-                () => console.log(this.state)
-              );
+              this.setState({
+                ...this.state,
+                birthDay: data.birthDay,
+                birthMonth: data.birthMonth,
+                birthYear: data.birthYear,
+                gender: data.gender,
+                imp_uid: rsp.imp_uid,
+                name: data.name,
+                unique_key: data.unique_key
+              });
             }
 
             // const {

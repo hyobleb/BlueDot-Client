@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
-export const HEAD_GET_MEMBERSHIP_LOGS = gql`
-  query headGetMembershipLogs($branchId: Int, $date: String!) {
-    HeadGetMembershipLogs(branchId: $branchId, date: $date) {
+export const MANAGER_GET_MEMBERSHIP_LOGS = gql`
+  query managerGetMembershipLogs($branchId: Int, $date: String!) {
+    ManagerGetMembershipLogs(branchId: $branchId, date: $date) {
       ok
       error
       membershipLogs {
@@ -40,9 +40,9 @@ export const HEAD_GET_MEMBERSHIP_LOGS = gql`
   }
 `;
 
-export const HEAD_GET_NOW_USING_USERS = gql`
-  query headGetNowUsingUsers($branchId: Int) {
-    HeadGetNowUsingUsers(branchId: $branchId) {
+export const MANAGER_GET_NOW_USING_USERS = gql`
+  query managerGetNowUsingUsers($branchId: Int) {
+    ManagerGetNowUsingUsers(branchId: $branchId) {
       ok
       error
       users {
@@ -53,6 +53,19 @@ export const HEAD_GET_NOW_USING_USERS = gql`
         birthMonth
         birthDay
         phoneNumber
+      }
+    }
+  }
+`;
+
+export const MANAGER_GET_MANAGING_BRANCHES = gql`
+  query managerGetManagingBranches {
+    GetManagingBranches {
+      ok
+      error
+      branches {
+        id
+        name
       }
     }
   }

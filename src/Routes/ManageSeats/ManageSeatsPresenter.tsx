@@ -6,7 +6,10 @@ import LoungeContainer from "src/Components/LoungeContainer";
 import SeatsPopUp from "src/Components/SeatsPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { getBranchForManSeat_GetBranchForManSeat_branch_rooms } from "src/types/api";
+import {
+  getBranchForManSeat_GetBranchForManSeat_branch_rooms,
+  getManaingBranches_GetManagingBranches_branches
+} from "src/types/api";
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
@@ -25,6 +28,7 @@ const LoungeCol = styled.div`
 `;
 const Button = styled(SmallButton)``;
 const BranchSearchBtn = styled(Button)``;
+const BranchBtn = styled(Button)``;
 
 interface IProps {
   showBranchSearchPopUp: boolean;
@@ -41,6 +45,11 @@ interface IProps {
   onSeatsPopUpCloseClick: () => void;
   onSeatClick: (seatId: number) => void;
   onEntranceClick: () => void;
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
+  managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
+  onBranchBtnClick: (branchId: number) => void;
 }
 
 const ManageSeatsPresenter: React.SFC<IProps> = ({
@@ -57,22 +66,45 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
   nowRoomId,
   onSeatsPopUpCloseClick,
   onSeatClick,
-  onEntranceClick
+  onEntranceClick,
+  isHead,
+  isFranchiser,
+  isSupervisor,
+  managingBranches,
+  onBranchBtnClick
 }) => (
   <Back title={"manage-seats"} backUrl={"/"}>
     <HeadSection>
-      <BranchSearchBtn
-        value={"지점 검색"}
-        onClick={toggleSearchBranchPopUpShow}
-      />
+      {(isHead && (
+        <BranchSearchBtn
+          value={"지점 검색"}
+          onClick={toggleSearchBranchPopUpShow}
+        />
+      )) ||
+        ((isSupervisor || isFranchiser) &&
+          managingBranches &&
+          managingBranches.map(
+            branch =>
+              branch && (
+                <BranchBtn
+                  key={branch.id}
+                  value={branch.name}
+                  onClick={() => onBranchBtnClick(branch.id)}
+                />
+              )
+          ))}
     </HeadSection>
-    {getBranchLoading ? (
-      selBranchId ? (
-        <Loading />
-      ) : (
-        <LoungeSection>지점을 검색해주세요</LoungeSection>
-      )
-    ) : (
+
+    {getBranchLoading && <Loading />}
+
+    {(!getBranchLoading &&
+      (!selBranchId &&
+        (isHead && <LoungeSection>지점을 검색해주세요</LoungeSection>))) ||
+      ((isSupervisor || isFranchiser) && !selBranchId && (
+        <LoungeSection>지점을 클릭해주세요</LoungeSection>
+      ))}
+
+    {!getBranchLoading && Boolean(selBranchId) && (
       <LoungeSection>
         <LoungeTitle>
           선택하신 지점은 {branchName}

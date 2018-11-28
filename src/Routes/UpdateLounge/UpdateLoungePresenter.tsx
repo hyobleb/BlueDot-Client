@@ -124,7 +124,6 @@ interface IProps {
   roomType: roomTypeOptions;
   branchLoading: boolean;
   branchData?: getBranchForUpdateLounge;
-  onUpdateButtonClick: () => void;
   onInputChange: (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
@@ -136,6 +135,9 @@ interface IProps {
   toggleUsable: () => void;
   onConfirmClick: () => void;
   onCancleClick: () => void;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
 }
 
 const UpdateLoungePresenter: React.SFC<IProps> = ({
@@ -157,7 +159,10 @@ const UpdateLoungePresenter: React.SFC<IProps> = ({
   onOptionChange,
   toggleUsable,
   onConfirmClick,
-  onCancleClick
+  onCancleClick,
+  isFranchiser,
+  isHead,
+  isSupervisor
 }) => (
   <Container>
     <Helmet>
@@ -169,11 +174,11 @@ const UpdateLoungePresenter: React.SFC<IProps> = ({
     ) : (
       <>
         {branchData &&
-          branchData.HeadGetBranch &&
-          branchData.HeadGetBranch.branch &&
-          branchData.HeadGetBranch.branch.loungeImage && (
+          branchData.ManagerGetBranch &&
+          branchData.ManagerGetBranch.branch &&
+          branchData.ManagerGetBranch.branch.loungeImage && (
             <LoungeContainer
-              imgUrl={branchData.HeadGetBranch.branch.loungeImage}
+              imgUrl={branchData.ManagerGetBranch.branch.loungeImage}
               tempRoomHegiht={height}
               tempRoomWidth={width}
               tempRoomXpos={xpos}
@@ -184,73 +189,76 @@ const UpdateLoungePresenter: React.SFC<IProps> = ({
 
         <ControllerBackContainer>
           <ControlContainer>
-            <TopInputContainer>
-              <InputContainer>
-                <ScaleControlInput>
-                  <InputLabel>
-                    <InputTitle>가로크기 : </InputTitle>
-                    <InputExtended
-                      value={width}
-                      name={"width"}
-                      onChange={onInputChange}
-                      type={"number"}
-                    />
-                  </InputLabel>
-                  <InputLabel>
-                    <InputTitle>세로크기 : </InputTitle>
-                    <InputExtended
-                      value={height}
-                      name={"height"}
-                      onChange={onInputChange}
-                      type={"number"}
-                    />
-                  </InputLabel>
-                </ScaleControlInput>
-              </InputContainer>
+            {isHead && (
+              <TopInputContainer>
+                <InputContainer>
+                  <ScaleControlInput>
+                    <InputLabel>
+                      <InputTitle>가로크기 : </InputTitle>
+                      <InputExtended
+                        value={width}
+                        name={"width"}
+                        onChange={onInputChange}
+                        type={"number"}
+                      />
+                    </InputLabel>
+                    <InputLabel>
+                      <InputTitle>세로크기 : </InputTitle>
+                      <InputExtended
+                        value={height}
+                        name={"height"}
+                        onChange={onInputChange}
+                        type={"number"}
+                      />
+                    </InputLabel>
+                  </ScaleControlInput>
+                </InputContainer>
 
-              <ArrowContainer>
-                <UpArrow onClick={topArrowClick}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 0l8 9h-6v15h-4v-15h-6z" />
-                  </svg>
-                </UpArrow>
-                <DownArrow onClick={bottomArrowClick}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 24l-8-9h6v-15h4v15h6z" />
-                  </svg>
-                </DownArrow>
-                <LeftArrow onClick={leftArrowClick}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M0 12l9-8v6h15v4h-15v6z" />
-                  </svg>
-                </LeftArrow>
-                <RightArrow onClick={rightArrowClick}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M24 12l-9-8v6h-15v4h15v6z" />
-                  </svg>
-                </RightArrow>
-              </ArrowContainer>
-            </TopInputContainer>
+                <ArrowContainer>
+                  <UpArrow onClick={topArrowClick}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 0l8 9h-6v15h-4v-15h-6z" />
+                    </svg>
+                  </UpArrow>
+                  <DownArrow onClick={bottomArrowClick}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 24l-8-9h6v-15h4v15h6z" />
+                    </svg>
+                  </DownArrow>
+                  <LeftArrow onClick={leftArrowClick}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M0 12l9-8v6h15v4h-15v6z" />
+                    </svg>
+                  </LeftArrow>
+                  <RightArrow onClick={rightArrowClick}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M24 12l-9-8v6h-15v4h15v6z" />
+                    </svg>
+                  </RightArrow>
+                </ArrowContainer>
+              </TopInputContainer>
+            )}
+
             <SubInputContainer>
               <InputLabel>
                 <InputTitle>열람실 이름 : </InputTitle>

@@ -4,18 +4,24 @@ import { Mutation, MutationFn, Query } from "react-apollo";
 import { AddressData } from "react-daum-postcode";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { HEAD_GET_BRANCH } from "../../Components/sharedQueries";
+import { MANAGER_GET_BRANCH } from "../../Components/sharedQueries";
 import {
-  headGetBranch,
-  headGetBranchVariables,
+  managerGetBranch,
+  managerGetBranchVariables,
+  managerUpdateBranch,
+  managerUpdateBranchVariables,
   updateBranch,
   updateBranchVariables
 } from "../../types/api";
 import ModifyBranchPresenter from "./ModifyBranchPresenter";
-import { UPDATE_BRANCH } from "./ModifyBranchQueries";
+import { MANAGER_UPDATE_BRANCH, UPDATE_BRANCH } from "./ModifyBranchQueries";
 
+class ManagerModifyBranch extends Mutation<
+  managerUpdateBranch,
+  managerUpdateBranchVariables
+> {}
 class ModifyBranch extends Mutation<updateBranch, updateBranchVariables> {}
-class BranchQuery extends Query<headGetBranch, headGetBranchVariables> {}
+class BranchQuery extends Query<managerGetBranch, managerGetBranchVariables> {}
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -46,10 +52,16 @@ interface IState {
   isFemaleAvailable: boolean;
   isBoyAvailable: boolean;
   isGirlAvailable: boolean;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
+  cabinetLoungeImg: string;
+  cabinetLoungeImgLoading: boolean;
 }
 
-class AddBranchContainer extends React.Component<IProps, IState> {
-  public addBranchMutationFn: MutationFn;
+class ModifyBranchContainer extends React.Component<IProps, IState> {
+  public modifyBranchMutationFn: MutationFn;
+  public managerModifyBranchMutationFn: MutationFn;
 
   constructor(props) {
     super(props);
@@ -66,6 +78,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       branchNumber: 0,
       branchPhotos: new Array(),
       branchPhotosUploading: false,
+      cabinetLoungeImg: "",
+      cabinetLoungeImgLoading: false,
       descriptionPosition: "",
       detailAddress: "",
       directManage: false,
@@ -75,8 +89,11 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       ips: [],
       isBoyAvailable: true,
       isFemaleAvailable: true,
+      isFranchiser: props.location.state.isFranchiser,
       isGirlAvailable: true,
+      isHead: props.location.state.isHead,
       isMaleAvailable: true,
+      isSupervisor: props.location.state.isSupervisor,
       loungeImg: "",
       loungeImgUploading: false,
       manMax: 80,
@@ -117,106 +134,117 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       isMaleAvailable,
       isFemaleAvailable,
       isGirlAvailable,
-      isBoyAvailable
+      isBoyAvailable,
+      isFranchiser,
+      isHead,
+      isSupervisor,
+      cabinetLoungeImg,
+      cabinetLoungeImgLoading
     } = this.state;
 
     const { history } = this.props;
     return (
-      <BranchQuery
-        query={HEAD_GET_BRANCH}
-        variables={{ branchId }}
-        fetchPolicy={"cache-and-network"}
-        onCompleted={this.updateFields}
+      <ManagerModifyBranch
+        mutation={MANAGER_UPDATE_BRANCH}
+        onCompleted={data => {
+          const { ManagerUpdateBranch } = data;
+          if (ManagerUpdateBranch.ok) {
+            toast.success("지점을 수정했습니다!");
+            setTimeout(() => {
+              history.push({
+                pathname: "/branch-setting",
+                state: {
+                  addBranchName: branchName
+                }
+              });
+            }, 1000);
+          } else {
+            toast.error(ManagerUpdateBranch.error);
+          }
+        }}
       >
-        {() => (
-          <ModifyBranch
-            mutation={UPDATE_BRANCH}
-            variables={{
-              address,
-              boyAcceptable: isBoyAvailable,
-              branchComment,
-              branchId,
-              branchName,
-              branchNumber,
-              branchPhotos,
-              descriptionPosition,
-              detailAddress,
-              directManage,
-              girlAcceptable: isGirlAvailable,
-              impId,
-              impKey,
-              impSecret,
-              ips,
-              loungeImg,
-              manAcceptable: isMaleAvailable,
-              manMax,
-              minimapImg,
-              postCode,
-              womanAcceptable: isFemaleAvailable,
-              womanMax
-            }}
-            onCompleted={data => {
-              const { HeadUpdateBranch } = data;
-              if (HeadUpdateBranch.ok) {
-                toast.success("지점을 수정했습니다!");
-                setTimeout(() => {
-                  history.push({
-                    pathname: "/branch-setting",
-                    state: {
-                      addBranchName: branchName
+        {managerUpdateMutation => {
+          this.managerModifyBranchMutationFn = managerUpdateMutation;
+          return (
+            <BranchQuery
+              query={MANAGER_GET_BRANCH}
+              variables={{ branchId }}
+              fetchPolicy={"cache-and-network"}
+              onCompleted={this.updateFields}
+            >
+              {() => (
+                <ModifyBranch
+                  mutation={UPDATE_BRANCH}
+                  onCompleted={data => {
+                    const { HeadUpdateBranch } = data;
+                    if (HeadUpdateBranch.ok) {
+                      toast.success("지점을 수정했습니다!");
+                      setTimeout(() => {
+                        history.push({
+                          pathname: "/branch-setting",
+                          state: {
+                            addBranchName: branchName
+                          }
+                        });
+                      }, 1000);
+                    } else {
+                      toast.error(HeadUpdateBranch.error);
                     }
-                  });
-                }, 2000);
-              } else {
-                toast.error(HeadUpdateBranch.error);
-              }
-            }}
-          >
-            {(addBranchFn, { loading }) => {
-              this.addBranchMutationFn = addBranchFn;
-              return (
-                <ModifyBranchPresenter
-                  onInputChange={this.onInputChange}
-                  branchName={branchName}
-                  branchNumber={branchNumber}
-                  postCode={postCode}
-                  address={address}
-                  detailAddress={detailAddress}
-                  branchComment={branchComment}
-                  branchPhotos={branchPhotos}
-                  loungeImg={loungeImg}
-                  minimapImg={minimapImg}
-                  manMax={manMax}
-                  womanMax={womanMax}
-                  branchPhotosUploading={branchPhotosUploading}
-                  loungeImgUploading={loungeImgUploading}
-                  minimapImgUploading={minimapImgUploading}
-                  handleAddress={this.handleAddress}
-                  showDaumPostApi={showDaumPostApi}
-                  toggleShowDaumPostApi={this.toggleShowDaumPostApi}
-                  descriptionPosition={descriptionPosition}
-                  directManage={directManage}
-                  subtractSnapshot={this.subtractSnapshot}
-                  toggleSwitch={this.toggleSwitch}
-                  addBranchFn={addBranchFn}
-                  impId={impId}
-                  impKey={impKey}
-                  impSecret={impSecret}
-                  onSubmit={this.onSubmit}
-                  ips={ips}
-                  tempIp={tempIp}
-                  addIp={this.addIp}
-                  subtractIp={this.subtractIp}
-                  isMaleAvailable={isMaleAvailable}
-                  isFemaleAvailable={isFemaleAvailable}
-                  isGirlAvailable={isGirlAvailable}
-                  isBoyAvailable={isBoyAvailable}
-                />
-              );
-            }}
-          </ModifyBranch>
-        )}
-      </BranchQuery>
+                  }}
+                >
+                  {(modifyBranchFn, { loading }) => {
+                    this.modifyBranchMutationFn = modifyBranchFn;
+                    return (
+                      <ModifyBranchPresenter
+                        onInputChange={this.onInputChange}
+                        branchName={branchName}
+                        branchNumber={branchNumber}
+                        postCode={postCode}
+                        address={address}
+                        detailAddress={detailAddress}
+                        branchComment={branchComment}
+                        branchPhotos={branchPhotos}
+                        loungeImg={loungeImg}
+                        minimapImg={minimapImg}
+                        manMax={manMax}
+                        womanMax={womanMax}
+                        branchPhotosUploading={branchPhotosUploading}
+                        loungeImgUploading={loungeImgUploading}
+                        minimapImgUploading={minimapImgUploading}
+                        handleAddress={this.handleAddress}
+                        showDaumPostApi={showDaumPostApi}
+                        toggleShowDaumPostApi={this.toggleShowDaumPostApi}
+                        descriptionPosition={descriptionPosition}
+                        directManage={directManage}
+                        subtractSnapshot={this.subtractSnapshot}
+                        toggleSwitch={this.toggleSwitch}
+                        modifyBranchFn={modifyBranchFn}
+                        impId={impId}
+                        impKey={impKey}
+                        impSecret={impSecret}
+                        onSubmit={this.onSubmit}
+                        ips={ips}
+                        tempIp={tempIp}
+                        addIp={this.addIp}
+                        subtractIp={this.subtractIp}
+                        isMaleAvailable={isMaleAvailable}
+                        isFemaleAvailable={isFemaleAvailable}
+                        isGirlAvailable={isGirlAvailable}
+                        isBoyAvailable={isBoyAvailable}
+                        isFranchiser={isFranchiser}
+                        isHead={isHead}
+                        isSupervisor={isSupervisor}
+                        cabinetLoungeImgLoading={cabinetLoungeImgLoading}
+                        cabinetLoungeImg={cabinetLoungeImg}
+                      />
+                    );
+                  }}
+                </ModifyBranch>
+              )}
+            </BranchQuery>
+          );
+        }}
+      </ManagerModifyBranch>
     );
   }
 
@@ -362,23 +390,87 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       loungeImg,
       minimapImg,
       manMax,
-      womanMax
+      womanMax,
+      isFranchiser,
+      isHead,
+      isSupervisor,
+      isBoyAvailable,
+      address,
+      branchComment,
+      branchId,
+      branchPhotos,
+      descriptionPosition,
+      detailAddress,
+      directManage,
+      isGirlAvailable,
+      impId,
+      impKey,
+      impSecret,
+      ips,
+      isMaleAvailable,
+      postCode,
+      isFemaleAvailable,
+      cabinetLoungeImg
     } = this.state;
 
-    if (!branchName) {
-      toast.error("지점이름을 입력해주세요!");
-    } else if (!branchNumber) {
-      toast.error("지점 번호를 입력해주세요!");
-    } else if (!loungeImg) {
-      toast.error("열람실 이미지를 업로드 해주세요");
-    } else if (!minimapImg) {
-      toast.error("미니맵 이미지를 업로드해주세요");
-    } else if (!manMax) {
-      toast.error("남자 최대 수용인원수를 입력해주세요");
-    } else if (!womanMax) {
-      toast.error("여자 최대 수용인원수를 입력해주세요");
-    } else {
-      this.addBranchMutationFn();
+    if (isHead) {
+      const variables = {
+        address,
+        boyAcceptable: isBoyAvailable,
+        branchComment,
+        branchId,
+        branchName,
+        branchNumber,
+        branchPhotos,
+        cabinetLoungeImg,
+        descriptionPosition,
+        detailAddress,
+        directManage,
+        girlAcceptable: isGirlAvailable,
+        impId,
+        impKey,
+        impSecret,
+        ips,
+        loungeImg,
+        manAcceptable: isMaleAvailable,
+        manMax,
+        minimapImg,
+        postCode,
+        womanAcceptable: isFemaleAvailable,
+        womanMax
+      };
+      if (!branchName) {
+        toast.error("지점이름을 입력해주세요!");
+      } else if (!branchNumber) {
+        toast.error("지점 번호를 입력해주세요!");
+      } else if (!loungeImg) {
+        toast.error("열람실 이미지를 업로드 해주세요");
+      } else if (!cabinetLoungeImg) {
+        toast.error("사물함 라운지 이미지를 업로드해주세요");
+      } else if (!minimapImg) {
+        toast.error("미니맵 이미지를 업로드해주세요");
+      } else if (!manMax) {
+        toast.error("남자 최대 수용인원수를 입력해주세요");
+      } else if (!womanMax) {
+        toast.error("여자 최대 수용인원수를 입력해주세요");
+      } else {
+        this.modifyBranchMutationFn({ variables });
+      }
+    } else if (isFranchiser || isSupervisor) {
+      const variables = {
+        boyAcceptable: isBoyAvailable,
+        branchId,
+        girlAcceptable: isGirlAvailable,
+        manAcceptable: isMaleAvailable,
+        manMax,
+        womanAcceptable: isFemaleAvailable,
+        womanMax
+      };
+      if (!womanMax) {
+        toast.error("여자 최대 수용인원수를 입력해주세요");
+      } else {
+        this.managerModifyBranchMutationFn({ variables });
+      }
     }
   };
 
@@ -423,10 +515,10 @@ class AddBranchContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public updateFields = (data: {} | headGetBranch) => {
-    if ("HeadGetBranch" in data) {
+  public updateFields = (data: {} | managerGetBranch) => {
+    if ("ManagerGetBranch" in data) {
       const {
-        HeadGetBranch: { branch }
+        ManagerGetBranch: { branch }
       } = data;
       if (branch !== null) {
         const {
@@ -450,7 +542,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           manAcceptable,
           womanAcceptable,
           boyAcceptable,
-          girlAcceptable
+          girlAcceptable,
+          cabinetLoungeImage
         } = branch;
         this.setState({
           address,
@@ -458,6 +551,7 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           branchName: name,
           branchNumber,
           branchPhotos: branchImage,
+          cabinetLoungeImg: cabinetLoungeImage,
           descriptionPosition,
           detailAddress,
           directManage: directManaged,
@@ -480,4 +574,4 @@ class AddBranchContainer extends React.Component<IProps, IState> {
   };
 }
 
-export default AddBranchContainer;
+export default ModifyBranchContainer;

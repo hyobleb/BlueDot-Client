@@ -47,10 +47,7 @@ const Name = styled.h2`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-const Rating = styled.h5`
-  font-size: 18px;
-  color: white;
-`;
+
 const Text = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -113,7 +110,6 @@ const MenuPresenter: React.SFC<IProps> = ({
               </Link>
               <Text>
                 <Name>{user.name}</Name>
-                <Rating>4.5</Rating>
               </Text>
             </Grid>
           </Header>

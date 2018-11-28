@@ -5,7 +5,6 @@ import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   GET_MEMBERSHIP_FOR_EXTEND,
-  GET_MY_MEMBERSHIPS,
   MANAGER_EXTEND_MEMBERSHIP,
   USER_GET_PRODUCTS
 } from "src/Components/sharedQueries";
@@ -15,7 +14,6 @@ import {
 } from "src/Components/shareOptions";
 import {
   getMembershipForExtend,
-  getMyMemberships,
   managerExtendMembership,
   managerExtendMembershipVariables,
   userGetProducts,
@@ -37,7 +35,6 @@ interface IState {
   selProducts: userGetProducts_UserGetBranch_branch_products[];
 }
 
-class GetMembershipsQuery extends Query<getMyMemberships> {}
 class GetProductsQuery extends Query<
   userGetProducts,
   userGetProductsVariables
@@ -92,7 +89,6 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
   public render() {
     const {
       showMembershipPopUp,
-      exstingMemberships,
       selMembership,
       products,
       totalExtHours,
@@ -135,30 +131,19 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
                   >
                     {() => {
                       return (
-                        <GetMembershipsQuery
-                          query={GET_MY_MEMBERSHIPS}
-                          onCompleted={this.updateFields}
-                          fetchPolicy={"cache-and-network"}
-                        >
-                          {() => {
-                            return (
-                              <ManagerExtendCabinetPresenter
-                                showMembershipPopUp={showMembershipPopUp}
-                                exstingMemberships={exstingMemberships}
-                                selMembership={selMembership}
-                                onMembershipClick={this.onMembershipClick}
-                                products={products}
-                                onExtendConfirmClick={this.onExtendConfirmClick}
-                                totalExtHours={totalExtHours}
-                                onResetClick={this.onResetClick}
-                                onDateTimeAddClick={this.onDateTimeAddClick}
-                                selEndDatetime={selEndDatetime}
-                                onBackClick={this.onBackClick}
-                                selProducts={selProducts}
-                              />
-                            );
-                          }}
-                        </GetMembershipsQuery>
+                        <ManagerExtendCabinetPresenter
+                          showMembershipPopUp={showMembershipPopUp}
+                          selMembership={selMembership}
+                          onMembershipClick={this.onMembershipClick}
+                          products={products}
+                          onExtendConfirmClick={this.onExtendConfirmClick}
+                          totalExtHours={totalExtHours}
+                          onResetClick={this.onResetClick}
+                          onDateTimeAddClick={this.onDateTimeAddClick}
+                          selEndDatetime={selEndDatetime}
+                          onBackClick={this.onBackClick}
+                          selProducts={selProducts}
+                        />
                       );
                     }}
                   </GetProductsQuery>
@@ -177,27 +162,8 @@ class ManagerExtendCabinetContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public updateFields = (data: {} | getMyMemberships | userGetProducts) => {
-    const { history } = this.props;
-    if ("GetMyMemberships" in data) {
-      const {
-        GetMyMemberships: { memberships }
-      } = data;
-
-      if (memberships !== null) {
-        const filteredMemberships = memberships.filter(
-          membership => membership && membership.cabinetId
-        );
-        if (filteredMemberships.length === 0) {
-          toast.error("연장할 멤버쉽이 없습니다");
-          history.push("/basket");
-        } else {
-          this.setState({
-            exstingMemberships: filteredMemberships
-          });
-        }
-      }
-    } else if ("UserGetBranch" in data) {
+  public updateFields = (data: {} | userGetProducts) => {
+    if ("UserGetBranch" in data) {
       const {
         UserGetBranch: { branch }
       } = data;

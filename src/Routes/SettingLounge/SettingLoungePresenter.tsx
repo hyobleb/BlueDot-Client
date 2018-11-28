@@ -206,6 +206,9 @@ interface IProps {
   tempRoomId: number;
   onRoomHoverOut: () => void;
   onEditSeatClick: (roomId: number) => void;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
 }
 
 const AddLoungePresenter: React.SFC<IProps> = ({
@@ -234,7 +237,10 @@ const AddLoungePresenter: React.SFC<IProps> = ({
   onRoomHover,
   tempRoomId,
   onRoomHoverOut,
-  onEditSeatClick
+  onEditSeatClick,
+  isFranchiser,
+  isHead,
+  isSupervisor
 }) => {
   return (
     <Container>
@@ -248,18 +254,18 @@ const AddLoungePresenter: React.SFC<IProps> = ({
       ) : (
         <>
           {data &&
-            data.HeadGetBranch &&
-            data.HeadGetBranch.branch &&
-            data.HeadGetBranch.branch.loungeImage && (
+            data.ManagerGetBranch &&
+            data.ManagerGetBranch.branch &&
+            data.ManagerGetBranch.branch.loungeImage && (
               <LoungeContainer
-                imgUrl={data.HeadGetBranch.branch.loungeImage}
+                imgUrl={data.ManagerGetBranch.branch.loungeImage}
                 tempRoomHegiht={height}
                 tempRoomWidth={width}
                 tempRoomXpos={xpos}
                 tempRoomYpos={ypos}
                 showTempRoom={showTempRoom}
                 onRoomClick={onRoomClick}
-                rooms={data.HeadGetBranch.branch.rooms}
+                rooms={data.ManagerGetBranch.branch.rooms}
                 onRoomHover={onRoomHover}
                 tempSelRoomId={tempRoomId}
                 onRoomHoverOut={onRoomHoverOut}
@@ -386,11 +392,11 @@ const AddLoungePresenter: React.SFC<IProps> = ({
               <AddRoomButton value={"열람실 추가"} onClick={toggleShowRoom} />
               <RoomDataBackContainer>
                 {data &&
-                  data.HeadGetBranch &&
-                  data.HeadGetBranch.branch &&
-                  data.HeadGetBranch.branch.rooms &&
-                  data.HeadGetBranch.branch.rooms.length > 0 &&
-                  data.HeadGetBranch.branch.rooms.map(
+                  data.ManagerGetBranch &&
+                  data.ManagerGetBranch.branch &&
+                  data.ManagerGetBranch.branch.rooms &&
+                  data.ManagerGetBranch.branch.rooms.length > 0 &&
+                  data.ManagerGetBranch.branch.rooms.map(
                     room =>
                       room && (
                         <RoomDataContainer
@@ -423,12 +429,14 @@ const AddLoungePresenter: React.SFC<IProps> = ({
                                     onClick={() => onRoomClick(room.id)}
                                   />
                                 </RoomDataCol>
-                                <RoomDataCol>
-                                  <EditSeatButton
-                                    value={"열람실 좌석"}
-                                    onClick={() => onEditSeatClick(room.id)}
-                                  />
-                                </RoomDataCol>
+                                {isHead && (
+                                  <RoomDataCol>
+                                    <EditSeatButton
+                                      value={"열람실 좌석"}
+                                      onClick={() => onEditSeatClick(room.id)}
+                                    />
+                                  </RoomDataCol>
+                                )}
                               </RoomDataRow>
                             </RoomDataContents>
                           </RoomDataRow>

@@ -7,7 +7,10 @@ import Form from "../../Components/Form";
 import Input from "../../Components/Input";
 import SmallButton from "../../Components/SmallButton";
 import styled from "../../typed-components";
-import { searchBranch } from "../../types/api";
+import {
+  getManaingBranches_GetManagingBranches_branches,
+  searchBranch
+} from "../../types/api";
 
 const InputContainer = styled.div`
   min-width: 150px;
@@ -25,9 +28,8 @@ const ExtendInput = styled(Input)`
 
 const HeadContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
-
 const BranchSearchButton = styled(SmallButton)``;
 
 const ExtendForm = styled(Form)`
@@ -151,6 +153,10 @@ interface IProps {
   onCabLockSettingClick: (branchId: number) => void;
   onStaffSettingClick: (branchid: number) => void;
   onCoBranchSettingClick: (branchId: number) => void;
+  isHead: boolean;
+  isFranchiser: boolean;
+  isSupervisor: boolean;
+  managingBranches: Array<getManaingBranches_GetManagingBranches_branches | null>;
 }
 
 const BranchSettingPresenter: React.SFC<IProps> = ({
@@ -164,28 +170,85 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
   onProductSettingClick,
   onCabLockSettingClick,
   onStaffSettingClick,
-  onCoBranchSettingClick
+  onCoBranchSettingClick,
+  isHead,
+  isFranchiser,
+  isSupervisor,
+  managingBranches
 }) => (
   <BackContainer>
     <Helmet>
       <title>Branch-Setting | BlueDot</title>
     </Helmet>
     <BackArrowExtended backTo="/" />
-    <HeadContainer>
-      <InputContainer>
-        <ExtendForm submitFn={onSubmit}>
-          <ExtendInput
-            placeholder={"지점명 or 주소를 입력해주세요"}
-            value={branchInput}
-            name={"branchInput"}
-            onChange={onInputChange}
-            autoComplete={"off"}
-          />
-          <BranchSearchButton value="찾기" onClick={onSubmit} />
-        </ExtendForm>
-      </InputContainer>
-      <SLink to="/add-branch">지점 추가</SLink>
-    </HeadContainer>
+    {isHead && (
+      <HeadContainer>
+        <InputContainer>
+          <ExtendForm submitFn={onSubmit}>
+            <ExtendInput
+              placeholder={"지점명 or 주소를 입력해주세요"}
+              value={branchInput}
+              name={"branchInput"}
+              onChange={onInputChange}
+            />
+            <BranchSearchButton value="찾기" onClick={onSubmit} />
+          </ExtendForm>
+        </InputContainer>
+        <SLink to="/add-branch">지점 추가</SLink>
+      </HeadContainer>
+    )}
+    {(isSupervisor || isFranchiser) && (
+      <HeadContainer>
+        {managingBranches &&
+          managingBranches.length > 0 &&
+          managingBranches.map(branch => {
+            return (
+              branch && (
+                <BranchContainer key={branch.id}>
+                  <ContentsContainer>
+                    <PhotoContainer>
+                      <Image src={require("src/images/default_profile.png")} />
+                    </PhotoContainer>
+                    <ContextContainer>
+                      <ContextRow>{branch.name}</ContextRow>
+                      <ContextRow>{branch.descriptionPosition}</ContextRow>
+                      <ContextRow>
+                        {branch.address} {branch.detailAddress}
+                      </ContextRow>
+                      <ContextRow>
+                        {branch.alliedBranches &&
+                          branch.alliedBranches.length > 0 &&
+                          `${branch.alliedBranches.map(
+                            alliedBranch => alliedBranch && alliedBranch.name
+                          )} 이용가능`}
+                      </ContextRow>
+                    </ContextContainer>
+                  </ContentsContainer>
+                  <ButtonContainer>
+                    <BranchModifyButton
+                      value="지점 정보 수정"
+                      onClick={() => onBranchModifyClick(branch.id)}
+                    />
+                    <CabLockSettingButton
+                      value={"자물쇠 세팅"}
+                      onClick={() => onCabLockSettingClick(branch.id)}
+                    />
+                    <StaffSettingButton
+                      value={"스탭 세팅"}
+                      onClick={() => onStaffSettingClick(branch.id)}
+                    />
+                    <RoomSettingButton
+                      value="열람실 및 좌석 세팅"
+                      onClick={() => onLoungeSettingClick(branch.id)}
+                    />
+                  </ButtonContainer>
+                </BranchContainer>
+              )
+            );
+          })}
+      </HeadContainer>
+    )}
+
     <BodyContainer>
       {data &&
         data.SearchBranch &&

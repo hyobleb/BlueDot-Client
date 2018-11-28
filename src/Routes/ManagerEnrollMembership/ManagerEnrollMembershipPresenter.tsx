@@ -10,6 +10,7 @@ import { CreatePaymentMethodOption } from "src/Components/shareOptions";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import {
+  getManaingBranches_GetManagingBranches_branches,
   userGetProducts,
   userGetProducts_UserGetBranch_branch_products
 } from "src/types/api";
@@ -153,6 +154,8 @@ const ProductItem = styled.div`
   margin: 3px 0;
 `;
 
+const BranchBtn = styled(Button)``;
+
 interface IProps {
   datetimeValue: string;
   productId: number;
@@ -182,6 +185,11 @@ interface IProps {
   userName: string;
   userIdName: string;
   selProducts: userGetProducts_UserGetBranch_branch_products[];
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
+  managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
+  onBranchBtnClick: (branchId: number) => void;
 }
 
 const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
@@ -207,7 +215,12 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
   setEndDatetimeToStart,
   userName,
   userIdName,
-  selProducts
+  selProducts,
+  isFranchiser,
+  isHead,
+  isSupervisor,
+  managingBranches,
+  onBranchBtnClick
 }) => {
   return (
     <BackContainer>
@@ -228,15 +241,30 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
               "지점을 먼저 선택해주세요"}
           </BranchNameCol>
           <BranchButtonCol>
-            <ChangeBranchButton
-              value={`${(productDatas &&
-                productDatas.UserGetBranch &&
-                productDatas.UserGetBranch.branch &&
-                productDatas.UserGetBranch.branch.name &&
-                "지점 변경") ||
-                "지점 선택"}`}
-              onClick={setTrueBranchPopUpShow}
-            />
+            {isHead && (
+              <ChangeBranchButton
+                value={`${(productDatas &&
+                  productDatas.UserGetBranch &&
+                  productDatas.UserGetBranch.branch &&
+                  productDatas.UserGetBranch.branch.name &&
+                  "지점 변경") ||
+                  "지점 선택"}`}
+                onClick={setTrueBranchPopUpShow}
+              />
+            )}
+            {(isFranchiser || isSupervisor) && managingBranches
+              ? managingBranches.length >= 2 &&
+                managingBranches.map(
+                  branch =>
+                    branch && (
+                      <BranchBtn
+                        key={branch.id}
+                        value={branch.name}
+                        onClick={() => onBranchBtnClick(branch.id)}
+                      />
+                    )
+                )
+              : ""}
           </BranchButtonCol>
         </BranchSection>
         <DatetimeSection>
@@ -321,7 +349,7 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
             />
             <CreateMembershipBtn
               value={"무결제 등록"}
-              onClick={onCreateMembershipClick}
+              onClick={() => onCreateMembershipClick()}
             />
             <CancleButton value={"취소"} onClick={onBackClick} />
           </ButtonContainer>

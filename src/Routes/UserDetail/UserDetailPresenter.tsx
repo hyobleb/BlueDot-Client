@@ -5,7 +5,7 @@ import DefaultBack from "src/Components/DefaultBack";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { headGetUserDetail_HeadGetUserDetail_user } from "src/types/api";
+import { managerGetUserDetail_ManagerGetUserDetail_user } from "src/types/api";
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
@@ -81,7 +81,7 @@ const MembershipContList = styled.div`
 
 interface IProps {
   getUserDetailLoading: boolean;
-  user?: headGetUserDetail_HeadGetUserDetail_user;
+  user?: managerGetUserDetail_ManagerGetUserDetail_user;
   enrollMembershipClick: (userId: number) => void;
   enrollCabinetClick: (userId: number) => void;
   onMembershipExtendClick: (membershipId: number) => void;
@@ -125,6 +125,7 @@ const UserDetailPresenter: React.SFC<IProps> = ({
         moment(membership.endDatetime) > moment()
     );
   }
+
 
   return (
     <Back backFn={onBackClick} title={"user-detail"}>

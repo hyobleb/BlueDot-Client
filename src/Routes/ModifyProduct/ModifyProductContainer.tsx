@@ -2,7 +2,7 @@ import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { HEAD_GET_BRANCH } from "src/Components/sharedQueries";
+import { MANAGER_GET_BRANCH } from "src/Components/sharedQueries";
 import { membershipOptions } from "src/Components/shareOptions";
 import {
   headGetProduct,
@@ -97,7 +97,7 @@ class ModifyProductContainer extends React.Component<IProps, IState> {
               }
             }}
             refetchQueries={[
-              { query: HEAD_GET_BRANCH, variables: { branchId } }
+              { query: MANAGER_GET_BRANCH, variables: { branchId } }
             ]}
           >
             {modifyProductMutationFn => {

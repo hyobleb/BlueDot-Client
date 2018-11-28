@@ -3,17 +3,17 @@ import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  headGetBranchEmployee,
-  headGetBranchEmployeeVariables,
   headSetBranchManager,
   headSetBranchManagerVariables,
+  managerGetBranchEmployee,
+  managerGetBranchEmployeeVariables,
   managerSetBranchStaff,
   managerSetBranchStaffVariables
 } from "src/types/api";
 import SettingStaffPresenter from "./SettingStaffPresenter";
 import {
-  HEAD_GET_BRANCH_EMPLOYEE,
   HEAD_SET_BRANCH_MANGER,
+  MANAGER_GET_BRANCH_EMPLOYEE,
   MANAGER_SET_BRANCH_STAFF
 } from "./SettingStaffQueries";
 
@@ -26,6 +26,9 @@ interface IState {
   branchName: string;
   showUserSearchPopUp: boolean;
   onUserClick: (userId: number) => Promise<void>;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
 }
 
 class SetBranchStaffMutation extends Mutation<
@@ -39,8 +42,8 @@ class SetBranchManagerMutation extends Mutation<
 > {}
 
 class GetBranchEployeeQuery extends Query<
-  headGetBranchEmployee,
-  headGetBranchEmployeeVariables
+  managerGetBranchEmployee,
+  managerGetBranchEmployeeVariables
 > {}
 
 class SettingStaffContainer extends React.Component<IProps, IState> {
@@ -55,6 +58,9 @@ class SettingStaffContainer extends React.Component<IProps, IState> {
     this.state = {
       branchId: props.location.state.branchId,
       branchName: "",
+      isFranchiser: props.location.state.isFranchiser,
+      isHead: props.location.state.isHead,
+      isSupervisor: props.location.state.isSupervisor,
       onUserClick: this.addFranchiser,
       showUserSearchPopUp: false
     };
@@ -67,14 +73,17 @@ class SettingStaffContainer extends React.Component<IProps, IState> {
       onUserClick,
       managers,
       cleanStaffs,
-      managingStaffs
+      managingStaffs,
+      isFranchiser,
+      isHead,
+      isSupervisor
     } = this.state;
     return (
       <SetBranchStaffMutation
         mutation={MANAGER_SET_BRANCH_STAFF}
         refetchQueries={[
           {
-            query: HEAD_GET_BRANCH_EMPLOYEE,
+            query: MANAGER_GET_BRANCH_EMPLOYEE,
             variables: { branchId }
           }
         ]}
@@ -86,7 +95,7 @@ class SettingStaffContainer extends React.Component<IProps, IState> {
               mutation={HEAD_SET_BRANCH_MANGER}
               refetchQueries={[
                 {
-                  query: HEAD_GET_BRANCH_EMPLOYEE,
+                  query: MANAGER_GET_BRANCH_EMPLOYEE,
                   variables: { branchId }
                 }
               ]}
@@ -95,7 +104,7 @@ class SettingStaffContainer extends React.Component<IProps, IState> {
                 this.setBranchManager = setBranchManagerMutation;
                 return (
                   <GetBranchEployeeQuery
-                    query={HEAD_GET_BRANCH_EMPLOYEE}
+                    query={MANAGER_GET_BRANCH_EMPLOYEE}
                     variables={{ branchId }}
                     fetchPolicy={"cache-and-network"}
                     onCompleted={this.updateFields}
@@ -121,6 +130,9 @@ class SettingStaffContainer extends React.Component<IProps, IState> {
                             this.onManagingStaffEnrollClick
                           }
                           delManaingStaff={this.delManaingStaff}
+                          isFranchiser={isFranchiser}
+                          isHead={isHead}
+                          isSupervisor={isSupervisor}
                         />
                       );
                     }}
@@ -134,10 +146,10 @@ class SettingStaffContainer extends React.Component<IProps, IState> {
     );
   }
 
-  public updateFields = (data: {} | headGetBranchEmployee) => {
-    if ("HeadGetBranchEmployee" in data) {
+  public updateFields = (data: {} | managerGetBranchEmployee) => {
+    if ("ManagerGetBranchEmployee" in data) {
       const {
-        HeadGetBranchEmployee: { branch }
+        ManagerGetBranchEmployee: { branch }
       } = data;
 
       if (branch) {
