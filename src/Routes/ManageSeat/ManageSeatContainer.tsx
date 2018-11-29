@@ -236,8 +236,8 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
 
   public onPeriodBtnClick = (days: number) => {
     this.setState({
-      endDatetime: moment().add(days, "d"),
-      startDatetime: moment()
+      endDatetime: moment(),
+      startDatetime: moment().subtract(days, "d")
     });
   };
 

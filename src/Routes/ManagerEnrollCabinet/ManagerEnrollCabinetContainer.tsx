@@ -160,13 +160,15 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       managingBranches
     } = this.state;
 
+    console.log({ managingBranches });
+
     return (
       <GetManagingBranches
         query={GET_MANAGING_BRANCHES}
         onCompleted={this.updateFields}
         fetchPolicy={"cache-and-network"}
       >
-        {() => (
+        {({ loading: managingBranchesLoading }) => (
           <ShiftCabinetMutation
             mutation={MANAGER_SHIFT_CABINET}
             onCompleted={data => {
@@ -266,7 +268,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                       skip={setId === 0}
                       fetchPolicy={"cache-and-network"}
                     >
-                      {() => {
+                      {({ loading: cabinetLoading }) => {
                         return (
                           // sometimes this part is not excuted, I expected that it was excuted when render
                           <GetCabinetSetsQuery
@@ -299,6 +301,10 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                       >
                                         {({ data: productDatas }) => (
                                           <ManagerEnrollCabinetPresenter
+                                            cabinetLoading={cabinetLoading}
+                                            managingBranchesLoading={
+                                              managingBranchesLoading
+                                            }
                                             branchId={branchId}
                                             branchPopUpShow={branchPopUpShow}
                                             cabinetId={cabinetId}

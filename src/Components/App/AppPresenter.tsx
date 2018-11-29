@@ -259,6 +259,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
               isSupervisor={isSupervisor}
             />
           )}
+        />,
+        <Route
+          key={18}
+          path={"/manager-extend-membership"}
+          exact={true}
+          component={ManagerExtendMembership}
         />
       ]}
 
@@ -311,13 +317,6 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/modify-product"}
           exact={true}
           component={ModifyProduct}
-        />,
-
-        <Route
-          key={18}
-          path={"/manager-extend-membership"}
-          exact={true}
-          component={ManagerExtendMembership}
         />,
 
         <Route key={20} path={"/chart"} exact={true} component={Chart} />,

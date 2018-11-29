@@ -154,7 +154,10 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
               history.push({
                 pathname: "/branch-setting",
                 state: {
-                  addBranchName: branchName
+                  addBranchName: branchName,
+                  isFranchiser,
+                  isHead,
+                  isSupervisor
                 }
               });
             }, 1000);
@@ -172,7 +175,7 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
               fetchPolicy={"cache-and-network"}
               onCompleted={this.updateFields}
             >
-              {() => (
+              {({ loading: branchLoading }) => (
                 <ModifyBranch
                   mutation={UPDATE_BRANCH}
                   onCompleted={data => {
@@ -196,6 +199,7 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
                     this.modifyBranchMutationFn = modifyBranchFn;
                     return (
                       <ModifyBranchPresenter
+                        branchLoading={branchLoading}
                         onInputChange={this.onInputChange}
                         branchName={branchName}
                         branchNumber={branchNumber}

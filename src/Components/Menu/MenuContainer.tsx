@@ -13,7 +13,10 @@ class MenuContainer extends React.Component {
       <Mutation mutation={LOG_USER_OUT}>
         {logUserOutMutation => {
           return (
-            <ProfileQuery query={USER_PROFILE}>
+            <ProfileQuery
+              query={USER_PROFILE}
+              fetchPolicy={"cache-and-network"}
+            >
               {({ data, loading }) => (
                 <MenuPresenter
                   data={data}

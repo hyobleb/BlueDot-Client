@@ -95,9 +95,9 @@ const CashCreateMembershipBtn = styled(Button)`
   background-color: ${props => props.theme.lightBlueColor};
 `;
 
-const CreateMembershipBtn = styled(Button)`
-  background-color: ${props => props.theme.lightBlueColor};
-`;
+// const CreateMembershipBtn = styled(Button)`
+//   background-color: ${props => props.theme.lightBlueColor};
+// `;
 
 const CancleButton = styled(Button)`
   background-color: ${props => props.theme.redColor};
@@ -347,10 +347,11 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
                 onCreateMembershipClick(CreatePaymentMethodOption.CASH)
               }
             />
-            <CreateMembershipBtn
+            {/* 무결제 등록 숨김 처리 */}
+            {/* <CreateMembershipBtn
               value={"무결제 등록"}
               onClick={() => onCreateMembershipClick()}
-            />
+            /> */}
             <CancleButton value={"취소"} onClick={onBackClick} />
           </ButtonContainer>
         </ButtonSection>

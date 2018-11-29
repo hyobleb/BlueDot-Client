@@ -234,9 +234,13 @@ interface IProps {
   isSupervisor: boolean;
   managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
   onBranchBtnClick: (branchId: number) => void;
+  managingBranchesLoading: boolean;
+  cabinetLoading: boolean;
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
+  cabinetLoading,
+  managingBranchesLoading,
   startDatetime,
   onSubmit,
   productDatas,
@@ -299,218 +303,249 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
         <title>Enroll Requset Cabinet | BlueDot</title>
       </Helmet>
       <BackArrowExtended backFn={onBackClick} />
-      <FormExtended submitFn={onSubmit}>
-        <TitleSection>
-          <Title>
-            {`${userName}(${userIdName})`}님 사물함{" "}
-            {isShifitCabinet ? "이동" : "등록"}
-          </Title>
-        </TitleSection>
-        <BranchSection>
-          <BranchNameCol>
-            {(productDatas &&
-              productDatas.UserGetBranch &&
-              productDatas.UserGetBranch.branch &&
-              productDatas.UserGetBranch.branch.name) ||
-              "지점을 먼저 선택해주세요"}
-          </BranchNameCol>
-          <BranchButtonCol>
-            {isHead && (
-              <ChangeBranchButton
-                value={`${(productDatas &&
-                  productDatas.UserGetBranch &&
-                  productDatas.UserGetBranch.branch &&
-                  productDatas.UserGetBranch.branch.name &&
-                  "지점 변경") ||
-                  "지점 선택"}`}
-                onClick={setTrueBranchPopUpShow}
-              />
-            )}
-            {(isFranchiser || isSupervisor) && managingBranches
-              ? managingBranches.length >= 2 &&
-                managingBranches.map(
-                  branch =>
-                    branch && (
-                      <BranchBtn
-                        key={branch.id}
-                        value={branch.name}
-                        onClick={() => onBranchBtnClick(branch.id)}
-                      />
-                    )
-                )
-              : ""}
-          </BranchButtonCol>
-        </BranchSection>
-        <CabinetSection>
-          {cabinetSetLoading && !isFirstLoaidng ? <Loading /> : ""}
-          {cabinetSetDatas &&
-            cabinetSetDatas.UserGetBranch &&
-            cabinetSetDatas.UserGetBranch.branch &&
-            cabinetSetDatas.UserGetBranch.branch.cabinetLoungeImage && (
-              <>
-                <CabinetSetsContainer
-                  imgUrl={
-                    cabinetSetDatas.UserGetBranch.branch.cabinetLoungeImage
-                  }
-                  showTempCabinetSet={false}
-                  cabinetSets={cabinetSetDatas.UserGetBranch.branch.cabinetSets}
-                  tempSelCabinetSetId={tempSetId}
-                  onCabinetSetHover={onSetHover}
-                  onCabinetSetHoverOut={onSetHoverOut}
-                  onCabinetSetClick={onSetClick}
-                  selectedCabinetId={setId}
-                />
-                <SetTitleContainer>
-                  {cabinetSetDatas.UserGetBranch.branch.cabinetSets &&
-                    cabinetSetDatas.UserGetBranch.branch.cabinetSets.map(
-                      set =>
-                        set && (
-                          <SetTitleItem
-                            key={set.id}
-                            style={{
-                              backgroundColor:
-                                tempSetId === set.id
-                                  ? "#1abc9c"
-                                  : setId === set.id
-                                  ? "#1abc9c"
-                                  : "",
-                              color:
-                                tempSetId === set.id
-                                  ? "white"
-                                  : setId === set.id
-                                  ? "white"
-                                  : ""
-                            }}
-                            onClick={() => onSetClick(set.id)}
-                            onMouseOver={() => onSetHover(set.id)}
-                            onMouseLeave={onSetHoverOut}
-                          >
-                            {set.title}
-                          </SetTitleItem>
-                        )
-                    )}
-                </SetTitleContainer>
-                {cabinets ? (
-                  <>
-                    <CabinetDisplayTitle>
-                      사물함을 선택해주세요!
-                    </CabinetDisplayTitle>
-                    <CabinetDisplay
-                      cabinets={cabinets}
-                      horizontalNumber={horizontalNumber}
-                      onCabinetClick={onCabinetClick}
-                      selCabinetId={cabinetId}
-                    />
-                  </>
-                ) : (
-                  ""
-                )}
-
-                {!!cabinetId && (
-                  <CabinetDisplayTitle>
-                    {cabinetNumber}번 사물함을 선택했습니다
-                  </CabinetDisplayTitle>
-                )}
-              </>
-            )}
-        </CabinetSection>
-        {isShifitCabinet ? (
-          ""
-        ) : (
-          <>
-            <DatetimeSection>
-              <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
-              <DatetimePicker>
-                <DatetimeExtended
-                  value={moment(startDatetime)}
-                  dateFormat="YYYY MMMM Do"
-                  timeFormat="A hh:mm"
-                  locale="de"
-                  onChange={onDatetimeChange}
-                />
-              </DatetimePicker>
-              <ResetButton
-                value={"현재시각으로 맞추기"}
-                onClick={setDatetimeValueNow}
-              />
-            </DatetimeSection>
-            <DatetimeSection>
-              <DatetimeTitle>이용 종료 일시</DatetimeTitle>
-              <DatetimePicker>
-                <EndDatetime>
-                  {moment(selEndDatetime).format("YYYY MMMM Do a hh:mm")}
-                </EndDatetime>
-              </DatetimePicker>
-              <ResetButton
-                value={"시작일시로 맞추기"}
-                onClick={setEndDatetimeToStart}
-              />
-            </DatetimeSection>
-
-            <AddDatetimeCon>
-              {productDatas &&
+      {managingBranchesLoading ? (
+        <Loading />
+      ) : (
+        <FormExtended submitFn={onSubmit}>
+          <TitleSection>
+            <Title>
+              {`${userName}(${userIdName})`}님 사물함{" "}
+              {isShifitCabinet ? "이동" : "등록"}
+            </Title>
+          </TitleSection>
+          <BranchSection>
+            <BranchNameCol>
+              {(productDatas &&
                 productDatas.UserGetBranch &&
                 productDatas.UserGetBranch.branch &&
-                productDatas.UserGetBranch.branch.products &&
-                productDatas.UserGetBranch.branch.products
-                  .filter(
-                    product =>
-                      product &&
-                      product.target === "MEMBERSHIP" &&
-                      !product.discard
-                  )
-                  .map(
-                    product =>
-                      product && (
-                        <AddDatetimeBtn
-                          key={product.id}
-                          value={`+ ${product.hours}시간 ${
-                            product.hours % 24 === 0
-                              ? `(${product.hours / 24}일)`
-                              : ""
-                          }`}
-                          onClick={() =>
-                            onDateTimeAddClick(product, product.hours)
-                          }
+                productDatas.UserGetBranch.branch.name) ||
+                "지점을 먼저 선택해주세요"}
+            </BranchNameCol>
+            <BranchButtonCol>
+              {isHead && (
+                <ChangeBranchButton
+                  value={`${(productDatas &&
+                    productDatas.UserGetBranch &&
+                    productDatas.UserGetBranch.branch &&
+                    productDatas.UserGetBranch.branch.name &&
+                    "지점 변경") ||
+                    "지점 선택"}`}
+                  onClick={setTrueBranchPopUpShow}
+                />
+              )}
+              {(isFranchiser || isSupervisor) && managingBranches
+                ? managingBranches.length >= 2 &&
+                  managingBranches.map(
+                    branch =>
+                      branch && (
+                        <BranchBtn
+                          key={branch.id}
+                          value={branch.name}
+                          onClick={() => onBranchBtnClick(branch.id)}
                         />
                       )
+                  )
+                : ""}
+            </BranchButtonCol>
+          </BranchSection>
+          <CabinetSection>
+            {cabinetSetLoading && !isFirstLoaidng ? <Loading /> : ""}
+            {cabinetSetDatas &&
+              cabinetSetDatas.UserGetBranch &&
+              cabinetSetDatas.UserGetBranch.branch &&
+              cabinetSetDatas.UserGetBranch.branch.cabinetLoungeImage && (
+                <>
+                  <CabinetSetsContainer
+                    imgUrl={
+                      cabinetSetDatas.UserGetBranch.branch.cabinetLoungeImage
+                    }
+                    showTempCabinetSet={false}
+                    cabinetSets={
+                      cabinetSetDatas.UserGetBranch.branch.cabinetSets
+                    }
+                    tempSelCabinetSetId={tempSetId}
+                    onCabinetSetHover={onSetHover}
+                    onCabinetSetHoverOut={onSetHoverOut}
+                    onCabinetSetClick={onSetClick}
+                    selectedCabinetId={setId}
+                  />
+                  <SetTitleContainer>
+                    {cabinetSetDatas.UserGetBranch.branch.cabinetSets &&
+                      cabinetSetDatas.UserGetBranch.branch.cabinetSets.map(
+                        set =>
+                          set && (
+                            <SetTitleItem
+                              key={set.id}
+                              style={{
+                                backgroundColor:
+                                  tempSetId === set.id
+                                    ? "#1abc9c"
+                                    : setId === set.id
+                                    ? "#1abc9c"
+                                    : "",
+                                color:
+                                  tempSetId === set.id
+                                    ? "white"
+                                    : setId === set.id
+                                    ? "white"
+                                    : ""
+                              }}
+                              onClick={() => onSetClick(set.id)}
+                              onMouseOver={() => onSetHover(set.id)}
+                              onMouseLeave={onSetHoverOut}
+                            >
+                              {set.title}
+                            </SetTitleItem>
+                          )
+                      )}
+                  </SetTitleContainer>
+                  {setId !== 0 ? (
+                    cabinetLoading ? (
+                      <Loading />
+                    ) : cabinets ? (
+                      <>
+                        <CabinetDisplayTitle>
+                          사물함을 선택해주세요!
+                        </CabinetDisplayTitle>
+                        <CabinetDisplay
+                          cabinets={cabinets}
+                          horizontalNumber={horizontalNumber}
+                          onCabinetClick={onCabinetClick}
+                          selCabinetId={cabinetId}
+                        />
+                      </>
+                    ) : (
+                      ""
+                    )
+                  ) : (
+                    ""
                   )}
-            </AddDatetimeCon>
-            <ProductsSection>
-              <ProductsTitle>선택한 멤버쉽 상품</ProductsTitle>
-              <ProductContainer>
-                {selProducts.length > 0
-                  ? selProducts.map((product, index) => (
-                      <ProductItem key={index}>
-                        {product.title} : {product.amount}원
-                      </ProductItem>
-                    ))
-                  : "선택한 이용권이 없습니다"}
-              </ProductContainer>
-            </ProductsSection>
-          </>
-        )}
+                  {/* {cabinets ? (
+                    <>
+                      <CabinetDisplayTitle>
+                        사물함을 선택해주세요!
+                      </CabinetDisplayTitle>
+                      <CabinetDisplay
+                        cabinets={cabinets}
+                        horizontalNumber={horizontalNumber}
+                        onCabinetClick={onCabinetClick}
+                        selCabinetId={cabinetId}
+                      />
+                    </>
+                  ) : (
+                    ""
+                  )} */}
 
-        <ButtonSection>
-          <ButtonContainer>
-            <FieldCardCreateMembershipBtn
-              value={"카드 현장 등록"}
-              onClick={() =>
-                onEnrollClick(CreatePaymentMethodOption.FIELD_CARD)
-              }
-            />
-            <CashCreateMembershipBtn
-              value={"현금 결제 등록"}
-              onClick={() => onEnrollClick(CreatePaymentMethodOption.CASH)}
-            />
-            <ThrowBasketButton
-              value={isShifitCabinet ? "이동하기" : "무결제 등록"}
-              onClick={() => onEnrollClick()}
-            />
-            <CancleButton value={"취소"} onClick={onBackClick} />
-          </ButtonContainer>
-        </ButtonSection>
-      </FormExtended>
+                  {!!cabinetId && (
+                    <CabinetDisplayTitle>
+                      {cabinetNumber}번 사물함을 선택했습니다
+                    </CabinetDisplayTitle>
+                  )}
+                </>
+              )}
+          </CabinetSection>
+          {isShifitCabinet ? (
+            ""
+          ) : (
+            <>
+              <DatetimeSection>
+                <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
+                <DatetimePicker>
+                  <DatetimeExtended
+                    value={moment(startDatetime)}
+                    dateFormat="YYYY MMMM Do"
+                    timeFormat="A hh:mm"
+                    locale="de"
+                    onChange={onDatetimeChange}
+                  />
+                </DatetimePicker>
+                <ResetButton
+                  value={"현재시각으로 맞추기"}
+                  onClick={setDatetimeValueNow}
+                />
+              </DatetimeSection>
+              <DatetimeSection>
+                <DatetimeTitle>이용 종료 일시</DatetimeTitle>
+                <DatetimePicker>
+                  <EndDatetime>
+                    {moment(selEndDatetime).format("YYYY MMMM Do a hh:mm")}
+                  </EndDatetime>
+                </DatetimePicker>
+                <ResetButton
+                  value={"시작일시로 맞추기"}
+                  onClick={setEndDatetimeToStart}
+                />
+              </DatetimeSection>
+
+              <AddDatetimeCon>
+                {productDatas &&
+                  productDatas.UserGetBranch &&
+                  productDatas.UserGetBranch.branch &&
+                  productDatas.UserGetBranch.branch.products &&
+                  productDatas.UserGetBranch.branch.products
+                    .filter(
+                      product =>
+                        product &&
+                        product.target === "MEMBERSHIP" &&
+                        !product.discard
+                    )
+                    .map(
+                      product =>
+                        product && (
+                          <AddDatetimeBtn
+                            key={product.id}
+                            value={`+ ${product.hours}시간 ${
+                              product.hours % 24 === 0
+                                ? `(${product.hours / 24}일)`
+                                : ""
+                            }`}
+                            onClick={() =>
+                              onDateTimeAddClick(product, product.hours)
+                            }
+                          />
+                        )
+                    )}
+              </AddDatetimeCon>
+              <ProductsSection>
+                <ProductsTitle>선택한 멤버쉽 상품</ProductsTitle>
+                <ProductContainer>
+                  {selProducts.length > 0
+                    ? selProducts.map((product, index) => (
+                        <ProductItem key={index}>
+                          {product.title} : {product.amount}원
+                        </ProductItem>
+                      ))
+                    : "선택한 이용권이 없습니다"}
+                </ProductContainer>
+              </ProductsSection>
+            </>
+          )}
+
+          <ButtonSection>
+            <ButtonContainer>
+              <FieldCardCreateMembershipBtn
+                value={"카드 현장 등록"}
+                onClick={() =>
+                  onEnrollClick(CreatePaymentMethodOption.FIELD_CARD)
+                }
+              />
+              <CashCreateMembershipBtn
+                value={"현금 결제 등록"}
+                onClick={() => onEnrollClick(CreatePaymentMethodOption.CASH)}
+              />
+              {/* 무결제 등록 숨김 처리 */}
+              {isShifitCabinet && (
+                <ThrowBasketButton
+                  value={isShifitCabinet ? "이동하기" : "무결제 등록"}
+                  onClick={() => onEnrollClick()}
+                />
+              )}
+
+              <CancleButton value={"취소"} onClick={onBackClick} />
+            </ButtonContainer>
+          </ButtonSection>
+        </FormExtended>
+      )}
 
       {branchPopUpShow ? (
         <BranchSearchPopUp

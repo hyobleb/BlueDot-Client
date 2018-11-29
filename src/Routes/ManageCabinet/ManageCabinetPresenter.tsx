@@ -254,7 +254,7 @@ const ManageCabinetPresenter: React.SFC<IProps> = ({
                       onClick={toggleShowExpireConfirmPopUp}
                     />
                     <SftBtn
-                      value={"이동"}
+                      value={"변경"}
                       onClick={toggleShowBranchSearchPopUp}
                     />
                     {/* <ModBtn value={"수정"} /> */}

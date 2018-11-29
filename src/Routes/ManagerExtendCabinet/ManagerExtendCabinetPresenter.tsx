@@ -203,10 +203,11 @@ const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
               onExtendConfirmClick(CreatePaymentMethodOption.FIELD_CARD)
             }
           />
-          <ExtendConfirmBtn
+          {/* 무결제 등록 숨김 처리 */}
+          {/* <ExtendConfirmBtn
             value={"무결제 연장"}
             onClick={() => onExtendConfirmClick()}
-          />
+          /> */}
         </ButtonSection>
       </Container>
     </BackContainer>

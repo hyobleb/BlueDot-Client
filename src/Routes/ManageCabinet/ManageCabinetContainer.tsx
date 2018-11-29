@@ -125,14 +125,11 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
                     query={MANAGER_GET_CABINET_LOGS}
                     variables={{
                       cabinetId,
-                      endDatetime: moment(endDatetime).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                      ),
-                      startDatetime: moment(startDatetime).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                      )
+                      endDatetime: moment(endDatetime).format("YYYY-MM-DD"),
+                      startDatetime: moment(startDatetime).format("YYYY-MM-DD")
                     }}
                     onCompleted={this.updateFields}
+                    fetchPolicy={"cache-and-network"}
                   >
                     {({ loading: getCabinetLogsLoading }) => (
                       <ManageCabinetPresenter

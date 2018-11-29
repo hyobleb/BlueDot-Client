@@ -250,7 +250,8 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
     )}
 
     <BodyContainer>
-      {data &&
+      {isHead &&
+        data &&
         data.SearchBranch &&
         data.SearchBranch.branches &&
         data.SearchBranch.branches.length > 0 &&

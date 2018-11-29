@@ -2,6 +2,7 @@
 import React from "react";
 // import Datetime from "react-datetime";
 import Helmet from "react-helmet";
+import BackArrow from "src/Components/BackArrow";
 import { CreatePaymentMethodOption } from "src/Components/shareOptions";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
@@ -49,6 +50,7 @@ const ButtonSection = styled(Section)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 `;
 
 const AddDatetimeCon = styled.div`
@@ -107,6 +109,12 @@ const ProductItem = styled.div`
 //     }
 //   }
 // `;
+const BackArrowExtended = styled(BackArrow)`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  cursor: pointer;
+`;
 
 interface IProps {
   selMembership: any;
@@ -124,6 +132,7 @@ interface IProps {
   totalExtHours: number;
   onResetClick: () => void;
   selProducts: userGetProducts_UserGetBranch_branch_products[];
+  onBackClick: () => void;
 
   // onStartDatetimeChange: (datetimeValue: Moment) => void;
   // onEndDatetimeChange: (datetimeValue: Moment) => void;
@@ -139,7 +148,8 @@ const ManagerExtendMembershipPresenter: React.SFC<IProps> = ({
   onDateTimeAddClick,
   totalExtHours,
   onResetClick,
-  selProducts
+  selProducts,
+  onBackClick
   // onStartDatetimeChange,
   // onEndDatetimeChange
 }) => {
@@ -157,6 +167,8 @@ const ManagerExtendMembershipPresenter: React.SFC<IProps> = ({
       <Helmet>
         <title>Extend Membership | BlueDot</title>
       </Helmet>
+      <BackArrowExtended backFn={onBackClick} />
+
       <Container>
         <HeadSection>멤버쉽 연장</HeadSection>
         <MembershipSection>
@@ -237,7 +249,10 @@ const ManagerExtendMembershipPresenter: React.SFC<IProps> = ({
               extendMembership(CreatePaymentMethodOption.FIELD_CARD)
             }
           />
-          <ExtendConfirmBtn value={"연장하기"} onClick={extendMembership} />
+          {/* <ExtendConfirmBtn
+            value={"무결제 연장"}
+            onClick={() => extendMembership()}
+          /> */}
         </ButtonSection>
       </Container>
     </BackContainer>

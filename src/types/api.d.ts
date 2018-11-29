@@ -3158,6 +3158,8 @@ export enum modifyOptions {
 
 export enum roomTypeOptions {
   FOCUS = "FOCUS",
+  FREE = "FREE",
+  MIDDLE = "MIDDLE",
   OPEN = "OPEN",
   SINGLE = "SINGLE",
 }

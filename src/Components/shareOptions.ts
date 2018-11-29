@@ -6,7 +6,9 @@ export enum modifyOptions {
 export enum roomTypeOptions {
   FOCUS = "FOCUS",
   OPEN = "OPEN",
-  SINGLE = "SINGLE"
+  SINGLE = "SINGLE",
+  MIDDLE = "MIDDLE",
+  FREE = "FREE"
 }
 
 export enum targetOptions {
@@ -22,7 +24,9 @@ export enum membershipOptions {
 export const roomTypeDropDownOptions = [
   { value: "OPEN", label: "오픈" },
   { value: "FOCUS", label: "포커스" },
-  { value: "SINGLE", label: "싱글" }
+  { value: "SINGLE", label: "싱글" },
+  { value: "MIDDLE", label: "미들" },
+  { value: "FREE", label: "프리" }
 ];
 
 export const productTypeDropDownOptions = [

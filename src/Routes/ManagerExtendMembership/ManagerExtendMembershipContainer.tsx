@@ -154,6 +154,7 @@ class ManagerExtendMembershipContainer extends React.Component<IProps, IState> {
                                 totalExtHours={totalExtHours}
                                 onResetClick={this.onResetClick}
                                 selProducts={selProducts}
+                                onBackClick={this.onBackClick}
                                 // onStartDatetimeChange={
                                 //   this.onStartDatetimeChange
                                 // }
@@ -234,6 +235,16 @@ class ManagerExtendMembershipContainer extends React.Component<IProps, IState> {
     this.setState({
       selEndDatetime: this.state.selMembership.endDatetime,
       totalExtHours: 0
+    });
+  };
+
+  public onBackClick = () => {
+    const { history } = this.props;
+    const { selMembership } = this.state;
+
+    history.push({
+      pathname: "/user-detail",
+      state: { userId: selMembership.userId }
     });
   };
 
