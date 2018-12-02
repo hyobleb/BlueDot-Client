@@ -2,6 +2,52 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: userGetBranches
+// ====================================================
+
+export interface userGetBranches_UserGetBranches_branches_alliedBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface userGetBranches_UserGetBranches_branches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  address: string;
+  detailAddress: string;
+  descriptionPosition: string;
+  comment: string | null;
+  branchImage: (string | null)[];
+  loungeImage: string;
+  alliedBranches: (userGetBranches_UserGetBranches_branches_alliedBranches | null)[] | null;
+  manAcceptable: boolean | null;
+  womanAcceptable: boolean | null;
+  boyAcceptable: boolean | null;
+  girlAcceptable: boolean | null;
+  maleMax: number;
+  femaleMax: number;
+  available: boolean;
+  lat: number;
+  lng: number;
+}
+
+export interface userGetBranches_UserGetBranches {
+  __typename: "UserGetBranchesResponse";
+  ok: boolean;
+  error: string | null;
+  branches: (userGetBranches_UserGetBranches_branches | null)[] | null;
+}
+
+export interface userGetBranches {
+  UserGetBranches: userGetBranches_UserGetBranches;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: createCabinetLock
 // ====================================================
 
@@ -190,6 +236,8 @@ export interface searchBranch_SearchBranch_branches {
   descriptionPosition: string;
   address: string;
   detailAddress: string;
+  lat: number;
+  lng: number;
   alliedBranches: (searchBranch_SearchBranch_branches_alliedBranches | null)[] | null;
 }
 
@@ -273,6 +321,8 @@ export interface managerGetBranch_ManagerGetBranch_branch {
   womanAcceptable: boolean | null;
   boyAcceptable: boolean | null;
   girlAcceptable: boolean | null;
+  lat: number;
+  lng: number;
   products: (managerGetBranch_ManagerGetBranch_branch_products | null)[] | null;
 }
 
@@ -1029,6 +1079,8 @@ export interface addBranchVariables {
   womanMax: number;
   directManage: boolean;
   ips?: (string | null)[] | null;
+  lat: number;
+  lng: number;
 }
 
 /* tslint:disable */
@@ -1311,6 +1363,60 @@ export interface updateProfileVariables {
   email: string;
   password: string;
   profilePhoto: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: userGetBranch
+// ====================================================
+
+export interface userGetBranch_UserGetBranch_branch_rooms_seats {
+  __typename: "Seat";
+  id: number;
+  xpos: number;
+  ypos: number;
+  discard: boolean;
+  nowUsing: boolean;
+  endDatetime: string | null;
+  usable: boolean;
+  rotate: number;
+}
+
+export interface userGetBranch_UserGetBranch_branch_rooms {
+  __typename: "Room";
+  id: number;
+  width: number;
+  height: number;
+  xpos: number;
+  ypos: number;
+  usable: boolean;
+  seats: (userGetBranch_UserGetBranch_branch_rooms_seats | null)[] | null;
+}
+
+export interface userGetBranch_UserGetBranch_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  loungeImage: string;
+  minimapImage: string;
+  rooms: (userGetBranch_UserGetBranch_branch_rooms | null)[] | null;
+}
+
+export interface userGetBranch_UserGetBranch {
+  __typename: "UserGetBranchResponse";
+  ok: boolean;
+  error: string | null;
+  branch: userGetBranch_UserGetBranch_branch | null;
+}
+
+export interface userGetBranch {
+  UserGetBranch: userGetBranch_UserGetBranch;
+}
+
+export interface userGetBranchVariables {
+  branchId: number;
 }
 
 /* tslint:disable */
@@ -1980,6 +2086,8 @@ export interface updateBranchVariables {
   impId?: string | null;
   impKey?: string | null;
   impSecret?: string | null;
+  lat?: number | null;
+  lng?: number | null;
 }
 
 /* tslint:disable */
@@ -2011,6 +2119,8 @@ export interface managerUpdateBranchVariables {
   maleMax?: number | null;
   femaleMax?: number | null;
   available?: boolean | null;
+  lat?: number | null;
+  lng?: number | null;
 }
 
 /* tslint:disable */

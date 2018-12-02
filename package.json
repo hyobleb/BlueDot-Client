@@ -8,6 +8,7 @@
     "apollo-boost": "^0.1.16",
     "axios": "^0.18.0",
     "dotenv": "^6.0.0",
+    "google-maps-react": "^2.0.2",
     "graphql": "^14.0.2",
     "iamport": "^0.3.4",
     "ip": "^1.1.5",
@@ -43,6 +44,7 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
+    "@types/googlemaps": "^3.30.16",
     "@types/ip": "^0.0.31",
     "@types/jest": "^23.3.2",
     "@types/moment": "^2.13.0",

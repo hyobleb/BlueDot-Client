@@ -37,6 +37,8 @@ export const SEARCH_BRANCH = gql`
         descriptionPosition
         address
         detailAddress
+        lat
+        lng
         alliedBranches {
           name
         }
@@ -83,6 +85,8 @@ export const MANAGER_GET_BRANCH = gql`
         womanAcceptable
         boyAcceptable
         girlAcceptable
+        lat
+        lng
         products {
           id
           title

@@ -4,6 +4,7 @@ import { Mutation, MutationFn, Query } from "react-apollo";
 import { AddressData } from "react-daum-postcode";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
+import { geoCode } from "src/mapHelpers";
 import { MANAGER_GET_BRANCH } from "../../Components/sharedQueries";
 import {
   managerGetBranch,
@@ -386,7 +387,7 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
     }
   };
 
-  public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+  public onSubmit: React.FormEventHandler<HTMLFormElement> = async event => {
     event.preventDefault();
     const {
       branchName,
@@ -416,6 +417,15 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       isFemaleAvailable,
       cabinetLoungeImg
     } = this.state;
+    let lat;
+    let lng;
+    if (address) {
+      const positionInfo = await geoCode(address);
+      if (positionInfo) {
+        lat = positionInfo.lat;
+        lng = positionInfo.lng;
+      }
+    }
 
     if (isHead) {
       const variables = {
@@ -435,6 +445,8 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
         impKey,
         impSecret,
         ips,
+        lat,
+        lng,
         loungeImg,
         manAcceptable: isMaleAvailable,
         manMax,
@@ -443,6 +455,7 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
         womanAcceptable: isFemaleAvailable,
         womanMax
       };
+
       if (!branchName) {
         toast.error("지점이름을 입력해주세요!");
       } else if (!branchNumber) {
@@ -458,7 +471,8 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       } else if (!womanMax) {
         toast.error("여자 최대 수용인원수를 입력해주세요");
       } else {
-        this.modifyBranchMutationFn({ variables });
+        console.log({ variables, lat, lng });
+        this.modifyBranchMutationFn({ variables: { ...variables, lat, lng } });
       }
     } else if (isFranchiser || isSupervisor) {
       const variables = {
@@ -473,7 +487,9 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       if (!womanMax) {
         toast.error("여자 최대 수용인원수를 입력해주세요");
       } else {
-        this.managerModifyBranchMutationFn({ variables });
+        this.managerModifyBranchMutationFn({
+          variables: { ...variables, lat, lng }
+        });
       }
     }
   };

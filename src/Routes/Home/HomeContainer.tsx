@@ -18,6 +18,7 @@ import {
   getUsableMyMemberships_GetMyUsableMemberships_memberships,
   userAssignSeat,
   userAssignSeatVariables,
+  userGetBranch,
   userProfile,
   userProfile_GetMyProfile_user,
   userReturnSeat
@@ -27,6 +28,7 @@ import {
   GET_BRANCH_BY_IP,
   GET_MY_USING_SEAT,
   USER_ASSIGN_SEAT,
+  USER_GET_BRANCH,
   USER_RETURN_SEAT
 } from "./HomeQueries";
 
@@ -47,9 +49,15 @@ interface IState {
   profileFetched: boolean;
   branchFetched: boolean;
   usableMembershipFetched: boolean;
+  transferredBranchId: number;
+  transferredLat?: number;
+  transferredLng?: number;
 }
-interface IProps extends RouteComponentProps<any> {}
+interface IProps extends RouteComponentProps<any> {
+  google: any;
+}
 
+class GetBranchById extends Query<userGetBranch> {}
 class GetMyUsableMemberships extends Query<getUsableMyMemberships> {}
 class GetMyUsingSeatMutation extends Query<getMyUsingSeat> {}
 class ReturnSeatMutation extends Mutation<userReturnSeat> {}
@@ -61,10 +69,14 @@ class GetBranchByIpQuery extends Query<getBranchByIp, getBranchByIpVariables> {}
 class ProfileQuery extends Query<userProfile> {}
 
 class HomeContainer extends React.Component<IProps, IState> {
+  public mapRef: any;
+  public map: google.maps.Map;
+
   public assignSeatFn: MutationFn;
   public returnSeatFn: MutationFn;
   constructor(props) {
     super(props);
+    this.mapRef = React.createRef();
     this.state = {
       assignSeatId: null,
       branchFetched: false,
@@ -79,6 +91,7 @@ class HomeContainer extends React.Component<IProps, IState> {
       nowRoomId: 0,
       profileFetched: false,
       rooms: null,
+      transferredBranchId: 0,
       usableMembershipFetched: false
     };
   }
@@ -94,134 +107,158 @@ class HomeContainer extends React.Component<IProps, IState> {
       nowRoomId,
       assignSeatId,
       branchName,
-      myUsingSeatId
+      myUsingSeatId,
+      nowBranchId,
+      transferredBranchId,
+      transferredLat,
+      transferredLng
     } = this.state;
     return (
-      <GetMyUsableMemberships
-        query={GET_USABLE_MY_MEMBERSHIPS}
+      <GetBranchById
+        query={USER_GET_BRANCH}
+        variables={{ branchId: transferredBranchId }}
+        skip={transferredBranchId === 0}
         onCompleted={this.updateFields}
+        fetchPolicy={"cache-and-network"}
       >
         {() => (
-          <GetMyUsingSeatMutation
-            query={GET_MY_USING_SEAT}
-            onCompleted={data => {
-              if ("GetMyUsingSeat" in data) {
-                const { GetMyUsingSeat } = data;
-                if (GetMyUsingSeat.ok) {
-                  if (GetMyUsingSeat.seat) {
-                    this.setState({ myUsingSeatId: GetMyUsingSeat.seat.id });
-                  } else {
-                    this.setState({ myUsingSeatId: null });
-                  }
-                } else {
-                  toast.error(GetMyUsingSeat.error);
-                }
-              }
-            }}
-            fetchPolicy={"cache-and-network"}
+          <GetMyUsableMemberships
+            query={GET_USABLE_MY_MEMBERSHIPS}
+            onCompleted={this.updateFields}
+            skip={!nowBranchId}
           >
-            {() => {
-              return (
-                <ReturnSeatMutation
-                  mutation={USER_RETURN_SEAT}
-                  refetchQueries={[
-                    { query: GET_BRANCH_BY_IP, variables: { ip: nowIp } },
-                    { query: GET_MY_USING_SEAT }
-                  ]}
-                  onCompleted={data => {
-                    const { UserReturnSeat } = data;
-                    if (UserReturnSeat.ok) {
-                      toast.success("좌석을 반납했습니다!");
+            {() => (
+              <GetMyUsingSeatMutation
+                query={GET_MY_USING_SEAT}
+                onCompleted={data => {
+                  if ("GetMyUsingSeat" in data) {
+                    const { GetMyUsingSeat } = data;
+                    if (GetMyUsingSeat.ok) {
+                      if (GetMyUsingSeat.seat) {
+                        this.setState({
+                          myUsingSeatId: GetMyUsingSeat.seat.id
+                        });
+                      } else {
+                        this.setState({ myUsingSeatId: null });
+                      }
                     } else {
-                      toast.error(UserReturnSeat.error);
+                      toast.error(GetMyUsingSeat.error);
                     }
-                  }}
-                >
-                  {userReturnSeatMutation => {
-                    this.returnSeatFn = userReturnSeatMutation;
-                    return (
-                      <AssignSeatMutation
-                        mutation={USER_ASSIGN_SEAT}
-                        refetchQueries={[
-                          {
-                            query: GET_SEATS,
-                            variables: { roomId: nowRoomId }
-                          },
-                          { query: GET_BRANCH_BY_IP, variables: { ip: nowIp } },
-                          { query: GET_MY_USING_SEAT }
-                        ]}
-                        onCompleted={data => {
-                          const { UserAssignSeat } = data;
-                          if (UserAssignSeat.ok) {
-                            toast.success("좌석을 배정했습니다!");
-                            this.setState({
-                              assignSeatId: null
-                            });
-                          } else {
-                            toast.error(UserAssignSeat.error);
-                          }
-                        }}
-                        onError={err => {
-                          if (err.graphQLErrors[0].message) {
-                            toast.error(err.graphQLErrors[0].message);
-                          }
-                        }}
-                      >
-                        {(
-                          assignSeatMutation,
-                          { loading: assignSeatLoading }
-                        ) => {
-                          this.assignSeatFn = assignSeatMutation;
-                          return (
-                            <GetBranchByIpQuery
-                              query={GET_BRANCH_BY_IP}
-                              variables={{ ip: nowIp }}
-                              onCompleted={this.updateFields}
-                              fetchPolicy={"cache-and-network"}
-                            >
-                              {({ loading: branchLoading }) => (
-                                <ProfileQuery
-                                  query={USER_PROFILE}
+                  }
+                }}
+                fetchPolicy={"cache-and-network"}
+              >
+                {() => {
+                  return (
+                    <ReturnSeatMutation
+                      mutation={USER_RETURN_SEAT}
+                      refetchQueries={[
+                        { query: GET_BRANCH_BY_IP, variables: { ip: nowIp } },
+                        { query: GET_MY_USING_SEAT }
+                      ]}
+                      onCompleted={data => {
+                        const { UserReturnSeat } = data;
+                        if (UserReturnSeat.ok) {
+                          toast.success("좌석을 반납했습니다!");
+                        } else {
+                          toast.error(UserReturnSeat.error);
+                        }
+                      }}
+                    >
+                      {userReturnSeatMutation => {
+                        this.returnSeatFn = userReturnSeatMutation;
+                        return (
+                          <AssignSeatMutation
+                            mutation={USER_ASSIGN_SEAT}
+                            refetchQueries={[
+                              {
+                                query: GET_SEATS,
+                                variables: { roomId: nowRoomId }
+                              },
+                              {
+                                query: GET_BRANCH_BY_IP,
+                                variables: { ip: nowIp }
+                              },
+                              { query: GET_MY_USING_SEAT }
+                            ]}
+                            onCompleted={data => {
+                              const { UserAssignSeat } = data;
+                              if (UserAssignSeat.ok) {
+                                toast.success("좌석을 배정했습니다!");
+                                this.setState({
+                                  assignSeatId: null
+                                });
+                              } else {
+                                toast.error(UserAssignSeat.error);
+                              }
+                            }}
+                            onError={err => {
+                              if (err.graphQLErrors[0].message) {
+                                toast.error(err.graphQLErrors[0].message);
+                              }
+                            }}
+                          >
+                            {(
+                              assignSeatMutation,
+                              { loading: assignSeatLoading }
+                            ) => {
+                              this.assignSeatFn = assignSeatMutation;
+                              return (
+                                <GetBranchByIpQuery
+                                  query={GET_BRANCH_BY_IP}
+                                  variables={{ ip: nowIp }}
                                   onCompleted={this.updateFields}
+                                  fetchPolicy={"cache-and-network"}
                                 >
-                                  {({ loading: profileLoading }) => (
-                                    <HomePresenter
-                                      profileLoading={profileLoading}
-                                      branchLoading={branchLoading}
-                                      isMenuOpen={isMenuOpen}
-                                      toggleMenu={this.toggleMenu}
-                                      branchLoaded={branchLoaded}
-                                      loungeImage={loungeImage}
-                                      minimapImage={minimapImage}
-                                      rooms={rooms}
-                                      onRoomClick={this.onRoomClick}
-                                      nowRoomId={nowRoomId}
-                                      onSeatsPopUpCloseClick={
-                                        this.onSeatsPopUpCloseClick
-                                      }
-                                      onSeatClick={this.onSeatClick}
-                                      assignSeatId={assignSeatId}
-                                      assignSeatLoading={assignSeatLoading}
-                                      onEntranceClick={this.onEntranceClick}
-                                      onReturnClick={this.onReturnClick}
-                                      branchName={branchName}
-                                      myUsingSeatId={myUsingSeatId}
-                                    />
+                                  {({ loading: branchLoading }) => (
+                                    <ProfileQuery
+                                      query={USER_PROFILE}
+                                      onCompleted={this.updateFields}
+                                    >
+                                      {({ loading: profileLoading }) => (
+                                        <HomePresenter
+                                          profileLoading={profileLoading}
+                                          branchLoading={branchLoading}
+                                          isMenuOpen={isMenuOpen}
+                                          toggleMenu={this.toggleMenu}
+                                          branchLoaded={branchLoaded}
+                                          loungeImage={loungeImage}
+                                          minimapImage={minimapImage}
+                                          rooms={rooms}
+                                          onRoomClick={this.onRoomClick}
+                                          nowRoomId={nowRoomId}
+                                          onSeatsPopUpCloseClick={
+                                            this.onSeatsPopUpCloseClick
+                                          }
+                                          onSeatClick={this.onSeatClick}
+                                          assignSeatId={assignSeatId}
+                                          assignSeatLoading={assignSeatLoading}
+                                          onEntranceClick={this.onEntranceClick}
+                                          onReturnClick={this.onReturnClick}
+                                          branchName={branchName}
+                                          myUsingSeatId={myUsingSeatId}
+                                          onBranchClick={this.onBranchClick}
+                                          onBackClick={this.onBackClick}
+                                          transferredLat={transferredLat}
+                                          transferredLng={transferredLng}
+                                        />
+                                      )}
+                                    </ProfileQuery>
                                   )}
-                                </ProfileQuery>
-                              )}
-                            </GetBranchByIpQuery>
-                          );
-                        }}
-                      </AssignSeatMutation>
-                    );
-                  }}
-                </ReturnSeatMutation>
-              );
-            }}
-          </GetMyUsingSeatMutation>
+                                </GetBranchByIpQuery>
+                              );
+                            }}
+                          </AssignSeatMutation>
+                        );
+                      }}
+                    </ReturnSeatMutation>
+                  );
+                }}
+              </GetMyUsingSeatMutation>
+            )}
+          </GetMyUsableMemberships>
         )}
-      </GetMyUsableMemberships>
+      </GetBranchById>
     );
   }
   // 자동으로 실행되는 query를 skip하고 싶으면 query 속성에 skip을 추가해주면 됨
@@ -234,7 +271,12 @@ class HomeContainer extends React.Component<IProps, IState> {
   };
 
   public updateFields = (
-    data: {} | getBranchByIp | getUsableMyMemberships | userProfile
+    data:
+      | {}
+      | getBranchByIp
+      | getUsableMyMemberships
+      | userProfile
+      | userGetBranch
   ) => {
     if ("UserGetBranchByIP" in data) {
       const {
@@ -242,13 +284,30 @@ class HomeContainer extends React.Component<IProps, IState> {
       } = data;
 
       if (branch !== null) {
-        const { loungeImage, minimapImage, rooms, name } = branch;
+        const { loungeImage, minimapImage, rooms, name, id } = branch;
         this.setState({
           branchFetched: true,
           branchLoaded: true,
           branchName: name,
           loungeImage,
           minimapImage,
+          nowBranchId: id,
+          rooms
+        } as any);
+      }
+    } else if ("UserGetBranch" in data) {
+      const {
+        UserGetBranch: { branch }
+      } = data;
+      if (branch !== null) {
+        const { loungeImage, minimapImage, rooms, name, id } = branch;
+        this.setState({
+          branchFetched: true,
+          branchLoaded: true,
+          branchName: name,
+          loungeImage,
+          minimapImage,
+          nowBranchId: id,
           rooms
         } as any);
       }
@@ -439,6 +498,29 @@ class HomeContainer extends React.Component<IProps, IState> {
 
   public onReturnClick = async () => {
     await this.returnSeatFn();
+  };
+
+  public onBranchClick = (
+    branchId: number,
+    transferredLat: number,
+    transferredLng: number
+  ) => {
+    console.log("!");
+    this.setState(
+      {
+        transferredBranchId: branchId,
+        transferredLat,
+        transferredLng
+      },
+      () => console.log(this.state)
+    );
+  };
+
+  public onBackClick = () => {
+    this.setState({
+      branchLoaded: false,
+      transferredBranchId: 0
+    });
   };
 }
 export default HomeContainer;

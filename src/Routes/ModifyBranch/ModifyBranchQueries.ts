@@ -23,6 +23,8 @@ export const UPDATE_BRANCH = gql`
     $impId: String
     $impKey: String
     $impSecret: String
+    $lat: Float
+    $lng: Float
   ) {
     HeadUpdateBranch(
       branchId: $branchId
@@ -47,6 +49,8 @@ export const UPDATE_BRANCH = gql`
       impId: $impId
       impKey: $impKey
       impSecret: $impSecret
+      lat: $lat
+      lng: $lng
     ) {
       ok
       error
@@ -67,6 +71,8 @@ export const MANAGER_UPDATE_BRANCH = gql`
     $maleMax: Int
     $femaleMax: Int
     $available: Boolean
+    $lat: Float
+    $lng: Float
   ) {
     ManagerUpdateBranch(
       branchId: $branchId
@@ -80,6 +86,8 @@ export const MANAGER_UPDATE_BRANCH = gql`
       maleMax: $maleMax
       femaleMax: $femaleMax
       available: $available
+      lat: $lat
+      lng: $lng
     ) {
       ok
       error

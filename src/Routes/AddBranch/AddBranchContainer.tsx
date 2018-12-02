@@ -36,6 +36,8 @@ interface IState {
   impSecret: string;
   tempIp: string;
   ips: string[];
+  lat: number;
+  lng: number;
 }
 
 class AddBranchContainer extends React.Component<IProps, IState> {
@@ -56,6 +58,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
     impKey: "",
     impSecret: "",
     ips: [""],
+    lat: 0,
+    lng: 0,
     loungeImg: "",
     loungeImgUploading: false,
     manMax: 80,
@@ -92,7 +96,9 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       ips,
       tempIp,
       cabinetLoungeImg,
-      cabinetLoungeImgLoading
+      cabinetLoungeImgLoading,
+      lat,
+      lng
     } = this.state;
     const { history } = this.props;
     return (
@@ -109,6 +115,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           detailAddress,
           directManage,
           ips,
+          lat,
+          lng,
           loungeImg,
           manMax,
           minimapImg,

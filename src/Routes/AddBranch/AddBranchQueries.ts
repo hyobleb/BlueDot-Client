@@ -16,6 +16,8 @@ export const ADD_BRANCH = gql`
     $womanMax: Int!
     $directManage: Boolean!
     $ips: [String]
+    $lat: Float!
+    $lng: Float!
   ) {
     HeadCreateBranch(
       name: $branchName
@@ -33,6 +35,8 @@ export const ADD_BRANCH = gql`
       directManaged: $directManage
       ips: $ips
       cabinetLoungeImage: $cabinetLoungeImg
+      lat: $lat
+      lng: $lng
     ) {
       ok
       error

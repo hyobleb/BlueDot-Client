@@ -4,6 +4,7 @@ import styled from "../../typed-components";
 
 const Container = styled.div`
   transform: scale(0.8);
+  z-index: 2;
 `;
 
 interface IProps {

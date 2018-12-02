@@ -1,5 +1,38 @@
 import { gql } from "apollo-boost";
 
+export const USER_GET_BRANCH = gql`
+  query userGetBranch($branchId: Int!) {
+    UserGetBranch(branchId: $branchId) {
+      ok
+      error
+      branch {
+        id
+        name
+        loungeImage
+        minimapImage
+        rooms {
+          id
+          width
+          height
+          xpos
+          ypos
+          usable
+          seats {
+            id
+            xpos
+            ypos
+            discard
+            nowUsing
+            endDatetime
+            usable
+            rotate
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_BRANCH_BY_IP = gql`
   query getBranchByIp($ip: String!) {
     UserGetBranchByIP(ip: $ip) {

@@ -1,9 +1,11 @@
 import React from "react";
 import Helmet from "react-helmet";
 import Sidebar from "react-sidebar";
+import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
 import LoungeContainer from "src/Components/LoungeContainer";
 import { getBranchByIp_UserGetBranchByIP_branch_rooms } from "src/types/api";
+import BranchesMap from "../../Components/BranchesMap";
 import Menu from "../../Components/Menu";
 import SeatsPopUp from "../../Components/SeatsPopUp";
 import styled from "../../typed-components";
@@ -43,6 +45,13 @@ const LoungeCol = styled.div`
   width: 100%;
 `;
 
+const BackArrowExtended = styled(BackArrow)`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  cursor: pointer;
+`;
+
 interface IProps {
   isMenuOpen: boolean;
   branchLoading: boolean;
@@ -62,83 +71,106 @@ interface IProps {
   onReturnClick: () => Promise<void>;
   branchName: string;
   myUsingSeatId: number | null;
+  onBranchClick: (
+    branchId: number,
+    transferredLat: number,
+    transferredLng: number
+  ) => void;
+  onBackClick: () => void;
+  transferredLat?: number;
+  transferredLng?: number;
 }
 
-const HomePresenter: React.SFC<IProps> = ({
-  isMenuOpen,
-  toggleMenu,
-  profileLoading,
-  branchLoading,
-  branchLoaded,
-  loungeImage,
-  minimapImage,
-  rooms,
-  onRoomClick,
-  nowRoomId,
-  onSeatsPopUpCloseClick,
-  onSeatClick,
-  assignSeatId,
-  assignSeatLoading,
-  onEntranceClick,
-  branchName,
-  myUsingSeatId,
-  onReturnClick
-}) =>
-  profileLoading || branchLoading ? (
-    <Loading />
-  ) : (
-    <BackContainer>
-      <Sidebar
-        sidebar={<Menu />}
-        open={isMenuOpen}
-        onSetOpen={toggleMenu}
-        pullRight={true}
-        styles={{
-          sidebar: {
-            backgroundColor: "white",
-            width: "80%",
-            zIndex: "10"
-          }
-        }}
-      >
-        {!profileLoading && <MenuButton onClick={toggleMenu}>|||</MenuButton>}
-      </Sidebar>
-      <Helmet>
-        <title>Home | BlueDot</title>
-      </Helmet>
-      {branchLoaded ? (
-        <Container>
-          <HeadSection>
-            현재 있는 곳은 {branchName}
-            입니다
-          </HeadSection>
-          <LoungeSection>
-            <LoungeCol>
-              <LoungeContainer
-                imgUrl={loungeImage}
-                showTempRoom={false}
-                rooms={rooms}
-                minimapImg={minimapImage}
-                onRoomClick={onRoomClick}
+class HomePresenter extends React.Component<IProps> {
+  public render() {
+    const {
+      isMenuOpen,
+      toggleMenu,
+      profileLoading,
+      branchLoading,
+      branchLoaded,
+      loungeImage,
+      minimapImage,
+      rooms,
+      onRoomClick,
+      nowRoomId,
+      onSeatsPopUpCloseClick,
+      onSeatClick,
+      assignSeatId,
+      assignSeatLoading,
+      onEntranceClick,
+      branchName,
+      myUsingSeatId,
+      onReturnClick,
+      onBranchClick,
+      onBackClick,
+      transferredLat,
+      transferredLng
+    } = this.props;
+    return profileLoading || branchLoading ? (
+      <Loading />
+    ) : (
+      <BackContainer>
+        {branchLoaded ? <BackArrowExtended backFn={onBackClick} /> : ""}
+
+        <Sidebar
+          sidebar={<Menu />}
+          open={isMenuOpen}
+          onSetOpen={toggleMenu}
+          pullRight={true}
+          styles={{
+            sidebar: {
+              backgroundColor: "white",
+              width: "80%",
+              zIndex: "10"
+            }
+          }}
+        >
+          {!profileLoading && <MenuButton onClick={toggleMenu}>|||</MenuButton>}
+        </Sidebar>
+        <Helmet>
+          <title>Home | BlueDot</title>
+        </Helmet>
+        {branchLoaded ? (
+          <Container>
+            <HeadSection>
+              현재 있는 곳은 {branchName}
+              입니다
+            </HeadSection>
+            <LoungeSection>
+              <LoungeCol>
+                <LoungeContainer
+                  imgUrl={loungeImage}
+                  showTempRoom={false}
+                  rooms={rooms}
+                  minimapImg={minimapImage}
+                  onRoomClick={onRoomClick}
+                />
+              </LoungeCol>
+            </LoungeSection>
+            {nowRoomId > 0 && (
+              <SeatsPopUp
+                closeFunc={onSeatsPopUpCloseClick}
+                roomId={nowRoomId}
+                onSeatClick={onSeatClick}
+                assignSeatId={assignSeatId}
+                assignSeatLoading={assignSeatLoading}
+                onEntranceClick={onEntranceClick}
+                canReturn={myUsingSeatId ? true : false}
+                returnFn={onReturnClick}
               />
-            </LoungeCol>
-          </LoungeSection>
-          {nowRoomId > 0 && (
-            <SeatsPopUp
-              closeFunc={onSeatsPopUpCloseClick}
-              roomId={nowRoomId}
-              onSeatClick={onSeatClick}
-              assignSeatId={assignSeatId}
-              assignSeatLoading={assignSeatLoading}
-              onEntranceClick={onEntranceClick}
-              canReturn={myUsingSeatId ? true : false}
-              returnFn={onReturnClick}
-            />
-          )}
-        </Container>
-      ) : (
-        "블루닷라운지 지점 내의 인터넷(와이파이) 사용 안하고 있음"
-      )}
-    </BackContainer>
-  );
+            )}
+          </Container>
+        ) : (
+          <BranchesMap
+            onBranchClick={onBranchClick}
+            transferredLat={transferredLat}
+            transferredLng={transferredLng}
+          />
+        )}
+      </BackContainer>
+    );
+  }
+}
+
 export default HomePresenter;
