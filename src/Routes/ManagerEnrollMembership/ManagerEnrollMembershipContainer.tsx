@@ -48,6 +48,8 @@ interface IState {
   isFranchiser: boolean;
   isHead: boolean;
   isSupervisor: boolean;
+  isCleanStaff: boolean;
+  isManStaff: boolean;
 }
 
 class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
@@ -73,8 +75,10 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
       branchPopUpShow: false,
       datetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
       endDatetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
+      isCleanStaff: props.location.state.isCleanStaff || false,
       isFranchiser: props.location.state.isFranchiser || false,
       isHead: props.location.state.isHead || false,
+      isManStaff: props.location.state.isManStaff || false,
       isSupervisor: props.location.state.isSupervisor || false,
       productId: 0,
       productTitle: "",
@@ -100,7 +104,9 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
       isFranchiser,
       isHead,
       isSupervisor,
-      managingBranches
+      managingBranches,
+      isCleanStaff,
+      isManStaff
     } = this.state;
 
     return (
@@ -156,6 +162,8 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
                       isSupervisor={isSupervisor}
                       managingBranches={managingBranches}
                       onBranchBtnClick={this.onBranchBtnClick}
+                      isCleanStaff={isCleanStaff}
+                      isManStaff={isManStaff}
                     />
                   )}
                 </GetBranchQuery>

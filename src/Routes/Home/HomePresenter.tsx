@@ -112,7 +112,6 @@ class HomePresenter extends React.Component<IProps> {
     ) : (
       <BackContainer>
         {branchLoaded ? <BackArrowExtended backFn={onBackClick} /> : ""}
-
         <Sidebar
           sidebar={<Menu />}
           open={isMenuOpen}

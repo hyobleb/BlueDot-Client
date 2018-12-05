@@ -76,6 +76,8 @@ interface IProps {
   isFranchiser: boolean;
   isSupervisor: boolean;
   managingBranches?: Array<managerGetManagingBranches_GetManagingBranches_branches | null>;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 
 const ManageCabinetsPresenter: React.SFC<IProps> = ({
@@ -97,7 +99,9 @@ const ManageCabinetsPresenter: React.SFC<IProps> = ({
   isHead,
   isFranchiser,
   isSupervisor,
-  managingBranches
+  managingBranches,
+  isManStaff,
+  isCleanStaff
 }) => (
   <Back title={"manage-cabinets"} backUrl={"/"}>
     <HeadSection>
@@ -107,7 +111,7 @@ const ManageCabinetsPresenter: React.SFC<IProps> = ({
           onClick={toggleSearchBranchPopUpShow}
         />
       )}
-      {(isSupervisor || isFranchiser) &&
+      {(isSupervisor || isFranchiser || isManStaff) &&
         managingBranches &&
         managingBranches.map(
           managingBanch =>
@@ -116,7 +120,6 @@ const ManageCabinetsPresenter: React.SFC<IProps> = ({
             )
         )}
     </HeadSection>
-
     {getBranchLoading ? (
       selBranchId ? (
         <Loading />

@@ -125,6 +125,7 @@ class AddBranchContainer extends React.Component<IProps, IState> {
         }}
         onCompleted={data => {
           const { HeadCreateBranch } = data;
+
           if (HeadCreateBranch.ok) {
             toast.success("지점을 추가했습니다!");
             setTimeout(() => {

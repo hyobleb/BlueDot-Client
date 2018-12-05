@@ -232,6 +232,10 @@ class BasketContainer extends React.Component<IProps, IState> {
   };
 
   public onPaymentClick = async (baseBranchId: number, payMethod: string) => {
+    if (payMethod === "CARD") {
+      toast.info("카드 결제는 현재 준비중입니다!");
+      return;
+    }
     this.setState(
       {
         baseBranchId
@@ -287,22 +291,19 @@ class BasketContainer extends React.Component<IProps, IState> {
       const paymentResult: getPayment = await this.getPaymentFn(paymentId);
       let payMethod;
 
-      if (paymentResult.UserGetPayment.ok) {
-        if (paymentResult.UserGetPayment.payment) {
-          if (paymentResult.UserGetPayment.payment.payMethod === "CARD") {
+      if (paymentResult.GetPayment.ok) {
+        if (paymentResult.GetPayment.payment) {
+          if (paymentResult.GetPayment.payment.payMethod === "CARD") {
             payMethod = "card";
-          } else if (
-            paymentResult.UserGetPayment.payment.payMethod === "PHONE"
-          ) {
+          } else if (paymentResult.GetPayment.payment.payMethod === "PHONE") {
             payMethod = "phone";
           }
           // TODO: 다른 결제 로직도 추가
 
-          const amount = paymentResult.UserGetPayment.payment.amount;
-          const name = paymentResult.UserGetPayment.payment.user.name;
-          const buyerTel =
-            paymentResult.UserGetPayment.payment.user.phoneNumber;
-          const merchantUid = paymentResult.UserGetPayment.payment.merchant_uid;
+          const amount = paymentResult.GetPayment.payment.amount;
+          const name = paymentResult.GetPayment.payment.user.name;
+          const buyerTel = paymentResult.GetPayment.payment.user.phoneNumber;
+          const merchantUid = paymentResult.GetPayment.payment.merchant_uid;
 
           await IMP.request_pay(
             {

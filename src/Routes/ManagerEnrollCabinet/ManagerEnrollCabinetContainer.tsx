@@ -58,6 +58,8 @@ interface IState {
   isHead: boolean;
   isSupervisor: boolean;
   managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 
 interface IProps extends RouteComponentProps<any> {
@@ -117,9 +119,11 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       cabinetNumber: 0,
       cabinets: null,
       horizontalNumber: 0,
+      isCleanStaff: props.location.state.isCleanStaff,
       isFirstLoaidng: true,
       isFranchiser: props.location.state.isFranchiser || false,
       isHead: props.location.state.isHead || false,
+      isManStaff: props.location.state.isManStaff,
       isShifitCabinet,
       isSupervisor: props.location.state.isSupervisor || false,
       nowMembershipId: props.location.state.nowMembershipId,
@@ -157,10 +161,10 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       isFranchiser,
       isHead,
       isSupervisor,
-      managingBranches
+      managingBranches,
+      isCleanStaff,
+      isManStaff
     } = this.state;
-
-    console.log({ managingBranches });
 
     return (
       <GetManagingBranches
@@ -363,6 +367,8 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                               this.onBranchBtnClick
                                             }
                                             managingBranches={managingBranches}
+                                            isCleanStaff={isCleanStaff}
+                                            isManStaff={isManStaff}
                                           />
                                         )}
                                       </GetBranchQuery>

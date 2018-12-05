@@ -64,6 +64,8 @@ interface IToggleProps {
   isHead: boolean;
   isFrenchiser: boolean;
   isSupervisor: boolean;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 const ToggleAuthor = styled<IToggleProps, any>("button")`
   -webkit-appearance: none;
@@ -73,6 +75,10 @@ const ToggleAuthor = styled<IToggleProps, any>("button")`
       : props.isSupervisor
       ? props.theme.orangeColor
       : props.isHead
+      ? props.theme.blueColor
+      : props.isManStaff
+      ? props.theme.pinkColor
+      : props.isCleanStaff
       ? props.theme.greenColor
       : ""};
   width: 100%;
@@ -117,22 +123,49 @@ const MenuPresenter: React.SFC<IProps> = ({
           <SLink to="/basket">장바구니</SLink>
           <MenuItem onClick={() => logUserOutMutation()}>로그아웃</MenuItem>
 
-          {user.isFranchiser || user.isSupervisor || user.isHead ? (
+          {user.isFranchiser ||
+          user.isSupervisor ||
+          user.isHead ||
+          user.isManStaff ||
+          user.isCleanStaff ? (
             <>
               <ToggleAuthor
                 isHead={user.isHead}
                 isFrenchiser={user.isFranchiser}
+                isManStaff={user.isManStaff}
+                isCleanStaff={user.isCleanStaff}
               >
                 {user.isFranchiser
                   ? "관리자"
                   : user.isHead
                   ? "슈퍼 관리자"
+                  : user.isManStaff
+                  ? "관리 스탭"
+                  : user.isCleanStaff
+                  ? "환경 스탭"
                   : ""}
               </ToggleAuthor>
-              <SLink to="/branch-setting">지점 관리</SLink>
-              <SLink to="/manage-users">회원 관리</SLink>
-              <SLink to="/manage-seats">좌석 관리</SLink>
-              <SLink to="/manage-cabinets">사물함 관리</SLink>
+              {(user.isFranchiser || user.isHead || user.isSupervisor) && (
+                <>
+                  <SLink to="/branch-setting">지점 관리</SLink>
+                </>
+              )}
+              {(user.isFranchiser ||
+                user.isHead ||
+                user.isSupervisor ||
+                user.isManStaff) && (
+                <>
+                  <SLink to="/manage-users">회원 관리</SLink>
+                  <SLink to="/manage-cabinets">사물함 관리</SLink>
+                </>
+              )}
+              {(user.isFranchiser ||
+                user.isHead ||
+                user.isSupervisor ||
+                user.isManStaff ||
+                user.isCleanStaff) && (
+                <SLink to="/manage-seats">좌석 관리</SLink>
+              )}
             </>
           ) : (
             ""

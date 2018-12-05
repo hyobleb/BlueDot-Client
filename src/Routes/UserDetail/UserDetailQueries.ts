@@ -59,3 +59,34 @@ export const MANAGER_GET_USER_DETAIL = gql`
     }
   }
 `;
+
+export const GET_MEMBERSHIP_LOGS_BY_ID = gql`
+  query getMembershipLogsById($userId: Int!) {
+    GetMembershipLogsById(userId: $userId) {
+      ok
+      error
+      membershipLogs {
+        id
+        startDatetime
+        actualStartDatetime
+        endDatetime
+        status
+        target
+        hours
+        updatedAt
+        paymentId
+        cabinet {
+          id
+          cabinetNumber
+        }
+        branch {
+          id
+          name
+        }
+        payment {
+          id
+        }
+      }
+    }
+  }
+`;

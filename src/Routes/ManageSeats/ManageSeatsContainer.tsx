@@ -17,6 +17,8 @@ interface IProps extends RouteComponentProps<any> {
   isHead: boolean;
   isFranchiser: boolean;
   isSupervisor: boolean;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 interface IState {
   showBranchSearchPopUp: boolean;
@@ -67,7 +69,13 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
       managingBranches
     } = this.state;
 
-    const { isHead, isFranchiser, isSupervisor } = this.props;
+    const {
+      isHead,
+      isFranchiser,
+      isSupervisor,
+      isManStaff,
+      isCleanStaff
+    } = this.props;
 
     return (
       <GetManagingBranchesQuery
@@ -103,6 +111,8 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
                 isSupervisor={isSupervisor}
                 managingBranches={managingBranches}
                 onBranchBtnClick={this.onBranchBtnClick}
+                isManStaff={isManStaff}
+                isCleanStaff={isCleanStaff}
               />
             )}
           </GetBranchForManSeatQuery>
@@ -154,9 +164,19 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
         GetManagingBranches: { branches }
       } = data;
 
-      const { isHead, isSupervisor, isFranchiser } = this.props;
+      const {
+        isHead,
+        isSupervisor,
+        isFranchiser,
+        isManStaff,
+        isCleanStaff
+      } = this.props;
 
-      if (!isHead && (isSupervisor || isFranchiser) && branches !== null) {
+      if (
+        !isHead &&
+        (isSupervisor || isFranchiser || isManStaff || isCleanStaff) &&
+        branches !== null
+      ) {
         let oneBranchId;
         if (branches.length === 1) {
           if (branches[0] !== null) {

@@ -56,3 +56,15 @@ export const MANAGER_GET_CABINET_LOGS = gql`
     }
   }
 `;
+
+export const MANAGER_GET_CABINET_MEMBERSHIP = gql`
+  query managerGetCabinetMembership($cabinetId: Int!) {
+    ManagerGetCabinetMembership(cabinetId: $cabinetId) {
+      ok
+      error
+      membership {
+        id
+      }
+    }
+  }
+`;

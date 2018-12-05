@@ -96,6 +96,31 @@ export interface modifyCabinetLockVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: managerRefund
+// ====================================================
+
+export interface managerRefund_ManagerRefund {
+  __typename: "ManagerRefundResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface managerRefund {
+  ManagerRefund: managerRefund_ManagerRefund;
+}
+
+export interface managerRefundVariables {
+  paymentId: number;
+  refundAmount?: number | null;
+  refundBank?: string | null;
+  refundHolder?: string | null;
+  refundAccount?: string | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: getSeats
 // ====================================================
 
@@ -201,9 +226,11 @@ export interface userProfile_GetMyProfile_user {
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;
-  managingBranches: (userProfile_GetMyProfile_user_managingBranches | null)[] | null;
-  cleaningBranches: (userProfile_GetMyProfile_user_cleaningBranches | null)[] | null;
-  staffManangingBranches: (userProfile_GetMyProfile_user_staffManangingBranches | null)[] | null;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
+  managingBranches: (userProfile_GetMyProfile_user_managingBranches | null)[];
+  cleaningBranches: (userProfile_GetMyProfile_user_cleaningBranches | null)[];
+  staffManangingBranches: (userProfile_GetMyProfile_user_staffManangingBranches | null)[];
 }
 
 export interface userProfile_GetMyProfile {
@@ -862,7 +889,7 @@ export interface getMembershipForExtend_GetMembership_membership {
   __typename: "Membership";
   id: number;
   branch: getMembershipForExtend_GetMembership_membership_branch;
-  userId: number;
+  userId: number | null;
   startDatetime: string;
   endDatetime: string;
   status: string;
@@ -1044,6 +1071,74 @@ export interface getManaingBranches_GetManagingBranches {
 
 export interface getManaingBranches {
   GetManagingBranches: getManaingBranches_GetManagingBranches;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getPaymentInfo
+// ====================================================
+
+export interface getPaymentInfo_GetPayment_payment_user {
+  __typename: "User";
+  id: number;
+  userId: string | null;
+  name: string | null;
+}
+
+export interface getPaymentInfo_GetPayment_payment_membershipLogs_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getPaymentInfo_GetPayment_payment_membershipLogs_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface getPaymentInfo_GetPayment_payment_membershipLogs {
+  __typename: "MembershipLog";
+  id: number;
+  hours: number;
+  actualStartDatetime: string;
+  endDatetime: string;
+  status: string;
+  updatedAt: string;
+  target: string;
+  branch: getPaymentInfo_GetPayment_payment_membershipLogs_branch;
+  cabinet: getPaymentInfo_GetPayment_payment_membershipLogs_cabinet | null;
+}
+
+export interface getPaymentInfo_GetPayment_payment {
+  __typename: "Payment";
+  id: number;
+  status: string;
+  payMethod: string | null;
+  refunded: boolean;
+  amount: number;
+  merchant_uid: string;
+  impUid: string | null;
+  updatedAt: string | null;
+  user: getPaymentInfo_GetPayment_payment_user;
+  membershipLogs: (getPaymentInfo_GetPayment_payment_membershipLogs | null)[] | null;
+}
+
+export interface getPaymentInfo_GetPayment {
+  __typename: "GetPaymentResponse";
+  ok: boolean;
+  error: string | null;
+  payment: getPaymentInfo_GetPayment_payment | null;
+}
+
+export interface getPaymentInfo {
+  GetPayment: getPaymentInfo_GetPayment;
+}
+
+export interface getPaymentInfoVariables {
+  paymentId: number;
 }
 
 /* tslint:disable */
@@ -1246,30 +1341,30 @@ export interface getBranchForImpVariables {
 // GraphQL query operation: getPayment
 // ====================================================
 
-export interface getPayment_UserGetPayment_payment_user {
+export interface getPayment_GetPayment_payment_user {
   __typename: "User";
   name: string | null;
   phoneNumber: string | null;
 }
 
-export interface getPayment_UserGetPayment_payment {
+export interface getPayment_GetPayment_payment {
   __typename: "Payment";
   id: number;
-  user: getPayment_UserGetPayment_payment_user;
+  user: getPayment_GetPayment_payment_user;
   payMethod: string | null;
   merchant_uid: string;
   amount: number;
 }
 
-export interface getPayment_UserGetPayment {
-  __typename: "UserGetPaymentResponse";
+export interface getPayment_GetPayment {
+  __typename: "GetPaymentResponse";
   ok: boolean;
   error: string | null;
-  payment: getPayment_UserGetPayment_payment | null;
+  payment: getPayment_GetPayment_payment | null;
 }
 
 export interface getPayment {
-  UserGetPayment: getPayment_UserGetPayment;
+  GetPayment: getPayment_GetPayment;
 }
 
 export interface getPaymentVariables {
@@ -1649,6 +1744,33 @@ export interface managerGetCabinetLogsVariables {
   cabinetId: number;
   startDatetime: string;
   endDatetime: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: managerGetCabinetMembership
+// ====================================================
+
+export interface managerGetCabinetMembership_ManagerGetCabinetMembership_membership {
+  __typename: "Membership";
+  id: number;
+}
+
+export interface managerGetCabinetMembership_ManagerGetCabinetMembership {
+  __typename: "ManagerGetCabinetMembershipResponse";
+  ok: boolean;
+  error: string | null;
+  membership: managerGetCabinetMembership_ManagerGetCabinetMembership_membership | null;
+}
+
+export interface managerGetCabinetMembership {
+  ManagerGetCabinetMembership: managerGetCabinetMembership_ManagerGetCabinetMembership;
+}
+
+export interface managerGetCabinetMembershipVariables {
+  cabinetId: number;
 }
 
 /* tslint:disable */
@@ -3109,6 +3231,129 @@ export interface managerGetUserDetail {
 
 export interface managerGetUserDetailVariables {
   userId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getMembershipLogsById
+// ====================================================
+
+export interface getMembershipLogsById_GetMembershipLogsById_membershipLogs_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface getMembershipLogsById_GetMembershipLogsById_membershipLogs_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getMembershipLogsById_GetMembershipLogsById_membershipLogs_payment {
+  __typename: "Payment";
+  id: number;
+}
+
+export interface getMembershipLogsById_GetMembershipLogsById_membershipLogs {
+  __typename: "MembershipLog";
+  id: number;
+  startDatetime: string;
+  actualStartDatetime: string;
+  endDatetime: string;
+  status: string;
+  target: string;
+  hours: number;
+  updatedAt: string;
+  paymentId: number | null;
+  cabinet: getMembershipLogsById_GetMembershipLogsById_membershipLogs_cabinet | null;
+  branch: getMembershipLogsById_GetMembershipLogsById_membershipLogs_branch;
+  payment: getMembershipLogsById_GetMembershipLogsById_membershipLogs_payment | null;
+}
+
+export interface getMembershipLogsById_GetMembershipLogsById {
+  __typename: "GetMembershipLogsByIdResponse";
+  ok: boolean;
+  error: string | null;
+  membershipLogs: (getMembershipLogsById_GetMembershipLogsById_membershipLogs | null)[] | null;
+}
+
+export interface getMembershipLogsById {
+  GetMembershipLogsById: getMembershipLogsById_GetMembershipLogsById;
+}
+
+export interface getMembershipLogsByIdVariables {
+  userId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getPaymentsByImpUid
+// ====================================================
+
+export interface getPaymentsByImpUid_GetPaymentByImpUid_payments_user {
+  __typename: "User";
+  id: number;
+  userId: string | null;
+  name: string | null;
+}
+
+export interface getPaymentsByImpUid_GetPaymentByImpUid_payments_membershipLogs_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getPaymentsByImpUid_GetPaymentByImpUid_payments_membershipLogs_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface getPaymentsByImpUid_GetPaymentByImpUid_payments_membershipLogs {
+  __typename: "MembershipLog";
+  id: number;
+  hours: number;
+  actualStartDatetime: string;
+  endDatetime: string;
+  status: string;
+  updatedAt: string;
+  target: string;
+  branch: getPaymentsByImpUid_GetPaymentByImpUid_payments_membershipLogs_branch;
+  cabinet: getPaymentsByImpUid_GetPaymentByImpUid_payments_membershipLogs_cabinet | null;
+}
+
+export interface getPaymentsByImpUid_GetPaymentByImpUid_payments {
+  __typename: "Payment";
+  id: number;
+  status: string;
+  payMethod: string | null;
+  refunded: boolean;
+  amount: number;
+  merchant_uid: string;
+  impUid: string | null;
+  updatedAt: string | null;
+  user: getPaymentsByImpUid_GetPaymentByImpUid_payments_user;
+  membershipLogs: (getPaymentsByImpUid_GetPaymentByImpUid_payments_membershipLogs | null)[] | null;
+}
+
+export interface getPaymentsByImpUid_GetPaymentByImpUid {
+  __typename: "GetPaymentByImpUidResponse";
+  ok: boolean;
+  error: string | null;
+  payments: (getPaymentsByImpUid_GetPaymentByImpUid_payments | null)[] | null;
+}
+
+export interface getPaymentsByImpUid {
+  GetPaymentByImpUid: getPaymentsByImpUid_GetPaymentByImpUid;
+}
+
+export interface getPaymentsByImpUidVariables {
+  impUid: string;
 }
 
 /* tslint:disable */

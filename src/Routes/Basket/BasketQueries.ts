@@ -66,7 +66,7 @@ export const GET_BRANCH_FOR_IMP = gql`
 
 export const GET_PAYMENT = gql`
   query getPayment($paymentId: Int!) {
-    UserGetPayment(paymentId: $paymentId) {
+    GetPayment(paymentId: $paymentId) {
       ok
       error
       payment {

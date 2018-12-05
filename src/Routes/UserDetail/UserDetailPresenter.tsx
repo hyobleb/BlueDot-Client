@@ -1,11 +1,15 @@
-import moment from "moment";
+import moment, { Moment } from "moment";
 import React from "react";
+import Datetime from "react-datetime";
 import AlertPopUp from "src/Components/AlertPopUp";
 import DefaultBack from "src/Components/DefaultBack";
 import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { managerGetUserDetail_ManagerGetUserDetail_user } from "src/types/api";
+import {
+  getMembershipLogsById_GetMembershipLogsById_membershipLogs,
+  managerGetUserDetail_ManagerGetUserDetail_user
+} from "src/types/api";
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
@@ -44,6 +48,10 @@ const ButtonContainer = styled.div`
 const Button = styled(SmallButton)`
   margin: 0 5px;
 `;
+
+const ViewPayBtn = styled(Button)`
+  background-color: ${props => props.theme.lightBlueColor};
+`;
 const EnrollMembershipBtn = styled(Button)``;
 const EnrollCabinetBtn = styled(Button)``;
 const ExtendBtn = styled(Button)`
@@ -79,6 +87,111 @@ const MembershipContList = styled.div`
   margin-bottom: 20px;
 `;
 
+const DatetimeExtended = styled(Datetime)`
+  input {
+    width: 100px;
+    height: 30px;
+    text-align: center;
+    &:hover {
+      cursor: pointer;
+      background-color: ${props => props.theme.blueColor};
+      color: white;
+    }
+  }
+`;
+
+const MembershipLogSection = styled(Section)``;
+
+const ContentsSec = styled(Section)``;
+const ContentRow = styled.div`
+  justify-content: center;
+  display: flex;
+  font-size: 13px;
+`;
+const ContentCon = styled.div``;
+const ContentRowCon = styled(ContentCon)`
+  max-height: 200px;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+`;
+
+const ContentDataRow = styled(ContentRow)`
+  border: 1px solid #dedede;
+  padding: 20px;
+  flex-direction: column;
+`;
+
+const ContentValue = styled.div`
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+`;
+
+const ButtonContentValue = styled.div`
+  margin: 10px 0;
+  text-align: center;
+`;
+
+const ContentStatus = styled<
+  {
+    status: string;
+  },
+  "div"
+>("div")`
+  background-color: ${props =>
+    props.status === "REGIST"
+      ? props.theme.blueColor
+      : props.status === "EXTENDED"
+      ? props.theme.greenColor
+      : props.status === "EXPIRED"
+      ? props.theme.redColor
+      : ""};
+  color: white;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
+const ButtonSec = styled(Section)`
+  text-align: center;
+  margin-bottom: 10px;
+`;
+
+const PeriodButton = styled(Button)`
+  width: 60px;
+  font-size: 14px;
+  margin-left: 4px;
+  margin-right: 4px;
+`;
+
+const PeriodSec = styled(Section)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+`;
+
+const MembershipLogTitle = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 20px;
+`;
+
+const NoContentTitle = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+`;
+
+const NoPayment = styled.div`
+  color: ${props => props.theme.lightBlueColor};
+`;
+
 interface IProps {
   getUserDetailLoading: boolean;
   user?: managerGetUserDetail_ManagerGetUserDetail_user;
@@ -92,6 +205,13 @@ interface IProps {
   onExpireConfirmClick: () => Promise<void>;
   onExtendCabinetClick: (membershipId: number) => void;
   onBackClick: () => void;
+  startDatetime: Moment;
+  endDatetime: Moment;
+  onPeriodBtnClick: (hours: number) => void;
+  onStartDatetimeChange: (startDatetimeValue: Moment) => void;
+  onEndDatetimeChange: (endDatetimeValue: Moment) => void;
+  membershipLogs?: Array<getMembershipLogsById_GetMembershipLogsById_membershipLogs | null>;
+  onPayViewBtnClick: (paymentId: number) => void;
 }
 
 const UserDetailPresenter: React.SFC<IProps> = ({
@@ -105,9 +225,17 @@ const UserDetailPresenter: React.SFC<IProps> = ({
   onMembershipExpireClick,
   onExpireConfirmClick,
   onExtendCabinetClick,
-  onBackClick
+  onBackClick,
+  startDatetime,
+  endDatetime,
+  onPeriodBtnClick,
+  onStartDatetimeChange,
+  onEndDatetimeChange,
+  membershipLogs,
+  onPayViewBtnClick
 }) => {
   let memberships;
+  let filteredMembershipLogs;
   let cabinetMemberships;
   if (user) {
     memberships = user.memberships.filter(
@@ -126,6 +254,30 @@ const UserDetailPresenter: React.SFC<IProps> = ({
     );
   }
 
+  if (membershipLogs) {
+    filteredMembershipLogs = membershipLogs
+      .filter(log => {
+        if (log) {
+          const updateAtMoment = moment(new Date(log.updatedAt).toUTCString());
+          if (
+            updateAtMoment >= moment(startDatetime).subtract(1, "d") &&
+            updateAtMoment < moment(endDatetime)
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        return false;
+      })
+      .sort((a, b) => {
+        if (a && b) {
+          return b.id - a.id;
+        } else {
+          return 0;
+        }
+      });
+  }
 
   return (
     <Back backFn={onBackClick} title={"user-detail"}>
@@ -314,6 +466,113 @@ const UserDetailPresenter: React.SFC<IProps> = ({
               </MembershipContent>
             </CabinetContianer>
           </MembershipSection>
+          <MembershipLogSection>
+            <MembershipLogTitle>멤버십 기록</MembershipLogTitle>
+            <ButtonSec>
+              <PeriodButton
+                value={"오늘"}
+                onClick={() => onPeriodBtnClick(0)}
+              />
+              <PeriodButton
+                value={"일주일"}
+                onClick={() => onPeriodBtnClick(7 * 24)}
+              />
+              <PeriodButton
+                value={"1개월"}
+                onClick={() => onPeriodBtnClick(30 * 24)}
+              />
+              <PeriodButton
+                value={"3개월"}
+                onClick={() => onPeriodBtnClick(90 * 24)}
+              />
+            </ButtonSec>
+            <PeriodSec>
+              <DatetimeExtended
+                value={startDatetime}
+                dateFormat="YYYY MMMM Do"
+                timeFormat={false}
+                locale="de"
+                onChange={onStartDatetimeChange}
+                closeOnSelect={true}
+              />
+              -
+              <DatetimeExtended
+                value={endDatetime}
+                dateFormat="YYYY MMMM Do"
+                timeFormat={false}
+                locale="de"
+                onChange={onEndDatetimeChange}
+                closeOnSelect={true}
+              />
+            </PeriodSec>
+
+            <ContentsSec>
+              <ContentRowCon>
+                {membershipLogs && filteredMembershipLogs.length > 0 ? (
+                  filteredMembershipLogs.map(
+                    log =>
+                      log && (
+                        <ContentDataRow key={log.id}>
+                          {log.status === "REGIST" ? (
+                            <ContentStatus status="REGIST">등록</ContentStatus>
+                          ) : log.status === "EXTENDED" ? (
+                            <ContentStatus status="EXTENDED">
+                              연장
+                            </ContentStatus>
+                          ) : log.status === "EXPIRED" ? (
+                            <ContentStatus status="EXPIRED">만료</ContentStatus>
+                          ) : (
+                            ""
+                          )}
+                          <ContentValue>
+                            등록일자 :{" "}
+                            {moment(
+                              new Date(log.updatedAt).toUTCString()
+                            ).format("YYYY-MM-DD HH:mm:ss")}
+                          </ContentValue>
+
+                          <ContentValue>
+                            {log.branch.name}{" "}
+                            {log.target === "MEMBERSHIP"
+                              ? "멤버쉽"
+                              : log.target === "CABINET"
+                              ? `${log.cabinet &&
+                                  log.cabinet.cabinetNumber}번 사물함`
+                              : ""}
+                          </ContentValue>
+
+                          <ContentValue>
+                            {log.hours % 24 === 0
+                              ? `${log.hours / 24}일`
+                              : `${log.hours}시간`}
+                          </ContentValue>
+                          <ContentValue>
+                            {`이용시작 : ${log.startDatetime}`}
+                          </ContentValue>
+                          <ContentValue>
+                            {`이용만료 : ${log.endDatetime}`}
+                          </ContentValue>
+                          <ButtonContentValue>
+                            {log.paymentId ? (
+                              <ViewPayBtn
+                                value={"결제기록"}
+                                onClick={() => onPayViewBtnClick(log.paymentId)}
+                              />
+                            ) : (
+                              <NoPayment> * 무결제</NoPayment>
+                            )}
+                          </ButtonContentValue>
+                        </ContentDataRow>
+                      )
+                  )
+                ) : (
+                  <ContentDataRow>
+                    <NoContentTitle>기록이 없습니다</NoContentTitle>
+                  </ContentDataRow>
+                )}
+              </ContentRowCon>
+            </ContentsSec>
+          </MembershipLogSection>
         </>
       )}
 

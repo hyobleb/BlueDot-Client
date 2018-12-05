@@ -15,6 +15,8 @@ const AppContainer = ({ data }) => {
           isHead={data.auth.isHead}
           isSupervisor={data.auth.isSupervisor}
           isFranchiser={data.auth.isFranchiser}
+          isCleanStaff={data.auth.isCleanStaff}
+          isManStaff={data.auth.isManStaff}
         />
       </ThemeProvider>
       <ToastContainer

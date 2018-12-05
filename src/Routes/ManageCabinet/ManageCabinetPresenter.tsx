@@ -102,12 +102,6 @@ const DatetimeExtended = styled(Datetime)`
   }
 `;
 
-const InqueryBtn = styled(Button)`
-  margin-left: 10px;
-  font-size: 12px;
-  width: 20px;
-`;
-
 const NoContentTitle = styled.div`
   margin-top: 20px;
   margin-bottom: 20px;
@@ -309,7 +303,6 @@ const ManageCabinetPresenter: React.SFC<IProps> = ({
               onChange={onEndDatetimeChange}
               closeOnSelect={true}
             />
-            <InqueryBtn value={"조회"} />
           </PeriodSec>
           <ContentsSec>
             <TopRowCon>

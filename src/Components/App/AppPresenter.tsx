@@ -43,6 +43,7 @@ import SocialLogin from "../../Routes/SocialLogin";
 import UpdateCabinetSet from "../../Routes/UpdateCabinetSet";
 import UpdateLounge from "../../Routes/UpdateLounge";
 import UserDetail from "../../Routes/UserDetail";
+import ViewPayInfo from "../../Routes/ViewPayInfo";
 import ViewReqSignUp from "../../Routes/ViewReqSignUp";
 
 interface IProps {
@@ -50,18 +51,24 @@ interface IProps {
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;
+  isCleanStaff: boolean;
+  isManStaff: boolean;
 }
 
 interface ILoginRouteProps {
   isHead: boolean;
   isSupervisor: boolean;
   isFranchiser: boolean;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 
 const AppPresenter: React.SFC<IProps> = ({
   isLoggedIn,
   isHead,
+  isCleanStaff,
   isSupervisor,
+  isManStaff,
   isFranchiser
 }) => {
   return (
@@ -71,6 +78,8 @@ const AppPresenter: React.SFC<IProps> = ({
           isHead={isHead}
           isSupervisor={isSupervisor}
           isFranchiser={isFranchiser}
+          isManStaff={isManStaff}
+          isCleanStaff={isCleanStaff}
         />
       ) : (
         <LoggedOutRoute />
@@ -100,7 +109,9 @@ const LoggedOutRoute: React.SFC = () => (
 const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
   isHead,
   isSupervisor,
-  isFranchiser
+  isFranchiser,
+  isManStaff,
+  isCleanStaff
 }) => {
   return (
     <Switch>
@@ -132,6 +143,109 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         exact={true}
         component={ReqExtendCabinet}
       />
+      {(isHead ||
+        isFranchiser ||
+        isSupervisor ||
+        isManStaff ||
+        isCleanStaff) && [
+        <Route
+          key={23}
+          path={"/manage-seats"}
+          exact={true}
+          render={props => (
+            <ManageSeats
+              {...props}
+              isHead={isHead}
+              isFranchiser={isFranchiser}
+              isSupervisor={isSupervisor}
+              isManStaff={isManStaff}
+              isCleanStaff={isCleanStaff}
+            />
+          )}
+        />,
+        <Route
+          key={24}
+          path={"/manage-seat"}
+          exact={true}
+          component={ManageSeat}
+        />
+      ]}
+
+      {(isHead || isFranchiser || isSupervisor || isManStaff) && [
+        <Route
+          key={14}
+          path={"/manage-users"}
+          exact={true}
+          render={props => (
+            <ManageUsers
+              {...props}
+              isHead={isHead}
+              isFranchiser={isFranchiser}
+              isSupervisor={isSupervisor}
+              isManStaff={isManStaff}
+              isCleanStaff={isCleanStaff}
+            />
+          )}
+        />,
+        <Route
+          key={15}
+          path={"/user-detail"}
+          exact={true}
+          component={UserDetail}
+        />,
+        <Route
+          key={16}
+          path={"/manager-enroll-membership"}
+          exact={true}
+          component={ManagerEnrollMembership}
+        />,
+        <Route
+          key={17}
+          path={"/manager-enroll-cabinet"}
+          exact={true}
+          component={ManagerEnrollCabinet}
+        />,
+        <Route
+          key={18}
+          path={"/manager-extend-membership"}
+          exact={true}
+          component={ManagerExtendMembership}
+        />,
+        <Route
+          key={19}
+          path={"/manager-extend-cabinet"}
+          exact={true}
+          component={ManagerExtendCabinet}
+        />,
+        <Route
+          key={21}
+          path={"/view-req-sign-up"}
+          exact={true}
+          component={ViewReqSignUp}
+        />,
+
+        <Route
+          key={25}
+          path={"/manage-cabinets"}
+          exact={true}
+          render={props => (
+            <ManageCabinets
+              {...props}
+              isHead={isHead}
+              isFranchiser={isFranchiser}
+              isSupervisor={isSupervisor}
+              isManStaff={isManStaff}
+              isCleanStaff={isCleanStaff}
+            />
+          )}
+        />,
+        <Route
+          key={26}
+          path={"/manage-cabinet"}
+          exact={true}
+          component={ManageCabinet}
+        />
+      ]}
       {(isHead || isFranchiser || isSupervisor) && [
         <Route
           key={1}
@@ -164,63 +278,6 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           exact={true}
           component={SettingStaff}
         />,
-        <Route
-          key={14}
-          path={"/manage-users"}
-          exact={true}
-          render={props => (
-            <ManageUsers
-              {...props}
-              isHead={isHead}
-              isFranchiser={isFranchiser}
-              isSupervisor={isSupervisor}
-            />
-          )}
-        />,
-        <Route
-          key={21}
-          path={"/view-req-sign-up"}
-          exact={true}
-          component={ViewReqSignUp}
-        />,
-        <Route
-          key={15}
-          path={"/user-detail"}
-          exact={true}
-          component={UserDetail}
-        />,
-        <Route
-          key={23}
-          path={"/manage-seats"}
-          exact={true}
-          render={props => (
-            <ManageSeats
-              {...props}
-              isHead={isHead}
-              isFranchiser={isFranchiser}
-              isSupervisor={isSupervisor}
-            />
-          )}
-        />,
-        <Route
-          key={24}
-          path={"/manage-seat"}
-          exact={true}
-          component={ManageSeat}
-        />,
-        <Route
-          key={16}
-          path={"/manager-enroll-membership"}
-          exact={true}
-          component={ManagerEnrollMembership}
-        />,
-
-        <Route
-          key={17}
-          path={"/manager-enroll-cabinet"}
-          exact={true}
-          component={ManagerEnrollCabinet}
-        />,
 
         <Route
           key={3}
@@ -230,41 +287,10 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         />,
 
         <Route
-          key={26}
-          path={"/manage-cabinet"}
-          exact={true}
-          component={ManageCabinet}
-        />,
-        <Route
-          key={19}
-          path={"/manager-extend-cabinet"}
-          exact={true}
-          component={ManagerExtendCabinet}
-        />,
-        <Route
           key={4}
           path={"/lounge-modify"}
           exact={true}
           component={UpdateLounge}
-        />,
-        <Route
-          key={25}
-          path={"/manage-cabinets"}
-          exact={true}
-          render={props => (
-            <ManageCabinets
-              {...props}
-              isHead={isHead}
-              isFranchiser={isFranchiser}
-              isSupervisor={isSupervisor}
-            />
-          )}
-        />,
-        <Route
-          key={18}
-          path={"/manager-extend-membership"}
-          exact={true}
-          component={ManagerExtendMembership}
         />
       ]}
 
@@ -326,6 +352,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/setting-cobranch"}
           exact={true}
           component={SettingCoBranch}
+        />,
+        <Route
+          key={23}
+          path={"/view-payinfo"}
+          exact={true}
+          component={ViewPayInfo}
         />
       ]}
 

@@ -69,8 +69,6 @@ class BranchesMapContainer extends React.Component<IProps, IState> {
       longitude = position.coords.longitude;
     }
 
-    console.log({ latitude, longitude });
-
     const { branches } = this.state;
 
     const closestBranch = this.getClosestBranch(branches, {
@@ -280,8 +278,6 @@ class BranchesMapContainer extends React.Component<IProps, IState> {
       const distance =
         (branch.lat - lat) * (branch.lat - lat) +
         (branch.lng - lng) * (branch.lng - lng);
-
-      console.log({ branch, distance });
 
       if (beforeDistance === undefined) {
         beforeDistance = distance;

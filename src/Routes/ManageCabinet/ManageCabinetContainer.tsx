@@ -9,11 +9,16 @@ import {
   managerExpireMembershipVariables,
   managerGetCabinetLogs,
   managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet,
-  managerGetCabinetLogsVariables
+  managerGetCabinetLogsVariables,
+  managerGetCabinetMembership,
+  managerGetCabinetMembershipVariables
 } from "src/types/api";
 import { MANAGER_GET_USER_DETAIL } from "../UserDetail/UserDetailQueries";
 import ManageCabinetPresenter from "./ManageCabinetPresenter";
-import { MANAGER_GET_CABINET_LOGS } from "./ManageCabinetQueries";
+import {
+  MANAGER_GET_CABINET_LOGS,
+  MANAGER_GET_CABINET_MEMBERSHIP
+} from "./ManageCabinetQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -33,6 +38,11 @@ interface IState {
   isFranchiser: boolean;
   isSupervisor: boolean;
 }
+
+class GetCabinetMembershipQuery extends Query<
+  managerGetCabinetMembership,
+  managerGetCabinetMembershipVariables
+> {}
 
 class GetCabinetLogsQuery extends Query<
   managerGetCabinetLogs,
@@ -121,47 +131,57 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
               {expireMembershipMutationFn => {
                 this.expireCabinetFn = expireMembershipMutationFn;
                 return (
-                  <GetCabinetLogsQuery
-                    query={MANAGER_GET_CABINET_LOGS}
-                    variables={{
-                      cabinetId,
-                      endDatetime: moment(endDatetime).format("YYYY-MM-DD"),
-                      startDatetime: moment(startDatetime).format("YYYY-MM-DD")
-                    }}
+                  <GetCabinetMembershipQuery
+                    query={MANAGER_GET_CABINET_MEMBERSHIP}
+                    variables={{ cabinetId }}
                     onCompleted={this.updateFields}
-                    fetchPolicy={"cache-and-network"}
                   >
-                    {({ loading: getCabinetLogsLoading }) => (
-                      <ManageCabinetPresenter
-                        endDatetime={endDatetime}
-                        startDatetime={startDatetime}
-                        onStartDatetimeChange={this.onStartDatetimeChange}
-                        onEndDatetimeChange={this.onEndDatetimeChange}
-                        onBackClick={this.onBackClick}
-                        cabinetLogs={cabinetLogs}
-                        getCabinetLogsLoading={getCabinetLogsLoading}
-                        branchName={branchName}
-                        onPeriodBtnClick={this.onPeriodBtnClick}
-                        cabinet={cabinet}
-                        showUserSearchPopUp={showUserSearchPopUp}
-                        toggleShowUserSearchPopUp={
-                          this.toggleShowUserSearchPopUp
-                        }
-                        onUserClick={this.onUserClick}
-                        onExtendBtnClick={this.onExtendBtnClick}
-                        showExpireConfirmPopUp={showExpireConfirmPopUp}
-                        toggleShowExpireConfirmPopUp={
-                          this.toggleShowExpireConfirmPopUp
-                        }
-                        expireCabinet={this.expireCabinet}
-                        toggleShowBranchSearchPopUp={
-                          this.toggleShowBranchSearchPopUp
-                        }
-                        showBranchSearchPopUp={showBranchSearchPopUp}
-                        onBranchClick={this.onBranchClick}
-                      />
+                    {() => (
+                      <GetCabinetLogsQuery
+                        query={MANAGER_GET_CABINET_LOGS}
+                        variables={{
+                          cabinetId,
+                          endDatetime: moment(endDatetime).format("YYYY-MM-DD"),
+                          startDatetime: moment(startDatetime).format(
+                            "YYYY-MM-DD"
+                          )
+                        }}
+                        onCompleted={this.updateFields}
+                        fetchPolicy={"cache-and-network"}
+                      >
+                        {({ loading: getCabinetLogsLoading }) => (
+                          <ManageCabinetPresenter
+                            endDatetime={endDatetime}
+                            startDatetime={startDatetime}
+                            onStartDatetimeChange={this.onStartDatetimeChange}
+                            onEndDatetimeChange={this.onEndDatetimeChange}
+                            onBackClick={this.onBackClick}
+                            cabinetLogs={cabinetLogs}
+                            getCabinetLogsLoading={getCabinetLogsLoading}
+                            branchName={branchName}
+                            onPeriodBtnClick={this.onPeriodBtnClick}
+                            cabinet={cabinet}
+                            showUserSearchPopUp={showUserSearchPopUp}
+                            toggleShowUserSearchPopUp={
+                              this.toggleShowUserSearchPopUp
+                            }
+                            onUserClick={this.onUserClick}
+                            onExtendBtnClick={this.onExtendBtnClick}
+                            showExpireConfirmPopUp={showExpireConfirmPopUp}
+                            toggleShowExpireConfirmPopUp={
+                              this.toggleShowExpireConfirmPopUp
+                            }
+                            expireCabinet={this.expireCabinet}
+                            toggleShowBranchSearchPopUp={
+                              this.toggleShowBranchSearchPopUp
+                            }
+                            showBranchSearchPopUp={showBranchSearchPopUp}
+                            onBranchClick={this.onBranchClick}
+                          />
+                        )}
+                      </GetCabinetLogsQuery>
                     )}
-                  </GetCabinetLogsQuery>
+                  </GetCabinetMembershipQuery>
                 );
               }}
             </ExpireCabinetMutation>
@@ -207,7 +227,9 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public updateFields = (data: {} | managerGetCabinetLogs) => {
+  public updateFields = (
+    data: {} | managerGetCabinetLogs | managerGetCabinetMembership
+  ) => {
     if ("ManagerGetCabinetLogs" in data) {
       const {
         ManagerGetCabinetLogs: { cabinetLogs, cabinet }
@@ -216,14 +238,16 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       if (cabinetLogs && cabinet) {
         this.setState({
           cabinet,
-          cabinetLogs,
-          nowMembershipId:
-            (cabinetLogs &&
-              cabinetLogs.length > 0 &&
-              cabinetLogs[0] &&
-              moment(cabinetLogs[0]!.endDatetime) > moment() &&
-              cabinetLogs[0]!.membershipId) ||
-            undefined
+          cabinetLogs
+        });
+      }
+    } else if ("ManagerGetCabinetMembership" in data) {
+      const {
+        ManagerGetCabinetMembership: { membership }
+      } = data;
+      if (membership) {
+        this.setState({
+          nowMembershipId: membership.id
         });
       }
     }
@@ -360,6 +384,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
               selSetId
             }
           },
+          branchId: selBranchId,
           isShifitCabinet: true,
           nowMembershipId,
           userId: cabinet.user.userId,

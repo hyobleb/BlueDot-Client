@@ -22,6 +22,8 @@ interface IProps extends RouteComponentProps<any> {
   isHead: boolean;
   isFranchiser: boolean;
   isSupervisor: boolean;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 interface IState {
   showBranchSearchPopUp: boolean;
@@ -81,7 +83,14 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       managingBranches
     } = this.state;
 
-    const { isHead, isFranchiser, isSupervisor } = this.props;
+    const {
+      isHead,
+      isFranchiser,
+      isSupervisor,
+      isManStaff,
+      isCleanStaff
+    } = this.props;
+    console.log({ managingBranches });
     return (
       <GetManagingBranchesQuery
         query={MANAGER_GET_MANAGING_BRANCHES}
@@ -127,6 +136,8 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
                     isFranchiser={isFranchiser}
                     isSupervisor={isSupervisor}
                     managingBranches={managingBranches}
+                    isManStaff={isManStaff}
+                    isCleanStaff={isCleanStaff}
                   />
                 )}
               </GetBranchQuery>
@@ -151,6 +162,7 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       | getCabinet
       | managerGetManagingBranches
   ) => {
+    console.log({ data });
     if ("UserGetBranch" in data) {
       const {
         UserGetBranch: { branch }
@@ -192,10 +204,14 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       const {
         GetManagingBranches: { branches }
       } = data;
-      const { isHead, isSupervisor, isFranchiser } = this.props;
+      const { isHead, isSupervisor, isFranchiser, isManStaff } = this.props;
 
       if (branches !== null) {
-        if (!isHead && (isSupervisor || isFranchiser) && branches !== null) {
+        if (
+          !isHead &&
+          (isSupervisor || isFranchiser || isManStaff) &&
+          branches !== null
+        ) {
           let oneBranchId = 0;
           if (branches.length === 1) {
             if (branches[0] !== null) {

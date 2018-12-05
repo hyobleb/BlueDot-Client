@@ -50,6 +50,8 @@ interface IProps {
   isSupervisor: boolean;
   managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
   onBranchBtnClick: (branchId: number) => void;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 
 const ManageSeatsPresenter: React.SFC<IProps> = ({
@@ -71,7 +73,9 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
   isFranchiser,
   isSupervisor,
   managingBranches,
-  onBranchBtnClick
+  onBranchBtnClick,
+  isManStaff,
+  isCleanStaff
 }) => (
   <Back title={"manage-seats"} backUrl={"/"}>
     <HeadSection>
@@ -81,7 +85,7 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
           onClick={toggleSearchBranchPopUpShow}
         />
       )) ||
-        ((isSupervisor || isFranchiser) &&
+        ((isSupervisor || isFranchiser || isManStaff || isCleanStaff) &&
           managingBranches &&
           managingBranches.map(
             branch =>
@@ -100,7 +104,7 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
     {(!getBranchLoading &&
       (!selBranchId &&
         (isHead && <LoungeSection>지점을 검색해주세요</LoungeSection>))) ||
-      ((isSupervisor || isFranchiser) && !selBranchId && (
+      ((isSupervisor || isFranchiser || isManStaff) && !selBranchId && (
         <LoungeSection>지점을 클릭해주세요</LoungeSection>
       ))}
 

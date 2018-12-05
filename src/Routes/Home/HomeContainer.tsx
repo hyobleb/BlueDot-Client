@@ -505,15 +505,11 @@ class HomeContainer extends React.Component<IProps, IState> {
     transferredLat: number,
     transferredLng: number
   ) => {
-    console.log("!");
-    this.setState(
-      {
-        transferredBranchId: branchId,
-        transferredLat,
-        transferredLng
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      transferredBranchId: branchId,
+      transferredLat,
+      transferredLng
+    });
   };
 
   public onBackClick = () => {

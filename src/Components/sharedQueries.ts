@@ -12,6 +12,8 @@ export const USER_PROFILE = gql`
         isHead
         isSupervisor
         isFranchiser
+        isManStaff
+        isCleanStaff
         managingBranches {
           id
         }
@@ -521,6 +523,47 @@ export const GET_MANAGING_BRANCHES = gql`
         alliedBranches {
           id
           name
+        }
+      }
+    }
+  }
+`;
+
+export const GET_PAYMENT_INFO = gql`
+  query getPaymentInfo($paymentId: Int!) {
+    GetPayment(paymentId: $paymentId) {
+      ok
+      error
+      payment {
+        id
+        status
+        payMethod
+        refunded
+        amount
+        merchant_uid
+        impUid
+        updatedAt
+        user {
+          id
+          userId
+          name
+        }
+        membershipLogs {
+          id
+          hours
+          actualStartDatetime
+          endDatetime
+          status
+          updatedAt
+          target
+          branch {
+            id
+            name
+          }
+          cabinet {
+            id
+            cabinetNumber
+          }
         }
       }
     }

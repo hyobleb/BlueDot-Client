@@ -6,6 +6,8 @@ export const IS_LOGGED_IN = gql`
       isHead @client
       isSupervisor @client
       isFranchiser @client
+      isManStaff @client
+      isCleanStaff @client
     }
   }
 `;

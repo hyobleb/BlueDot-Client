@@ -21,6 +21,8 @@ interface IProps extends RouteComponentProps<any> {
   isHead: boolean;
   isFranchiser: boolean;
   isSupervisor: boolean;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 interface IState {
   selDate: Moment;
@@ -61,7 +63,13 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
     };
   }
   public render() {
-    const { isHead, isFranchiser, isSupervisor } = this.props;
+    const {
+      isHead,
+      isFranchiser,
+      isSupervisor,
+      isManStaff,
+      isCleanStaff
+    } = this.props;
 
     const {
       selDate,
@@ -126,6 +134,8 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
                         isSupervisor={isSupervisor}
                         managingBranches={managingBranches}
                         onBranchBtnClick={this.onBranchBtnClick}
+                        isManStaff={isManStaff}
+                        isCleanStaff={isCleanStaff}
                       />
                     );
                   }}
@@ -155,6 +165,7 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
       const {
         ManagerGetMembershipLogs: { membershipLogs, branch }
       } = data;
+
       if (membershipLogs !== null) {
         this.setState({
           branchName: branch ? branch.name : undefined,
@@ -175,6 +186,8 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
       const {
         GetManagingBranches: { branches }
       } = data;
+
+      console.log({ branches });
 
       if (branches !== null) {
         this.setState({
@@ -217,13 +230,21 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
 
   public onUserClick = async (userId: number) => {
     const { history } = this.props;
-    const { isHead, isFranchiser, isSupervisor } = this.props;
+    const {
+      isHead,
+      isFranchiser,
+      isSupervisor,
+      isManStaff,
+      isCleanStaff
+    } = this.props;
 
     history.push({
       pathname: "/user-detail",
       state: {
+        isCleanStaff,
         isFranchiser,
         isHead,
+        isManStaff,
         isSupervisor,
         userId
       }

@@ -198,6 +198,8 @@ interface IProps {
   isSupervisor: boolean;
   managingBranches?: Array<managerGetManagingBranches_GetManagingBranches_branches | null>;
   onBranchBtnClick: (branchId: number) => void;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
 }
 
 const ManageUsersPresenter: React.SFC<IProps> = ({
@@ -221,7 +223,9 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
   isFranchiser,
   isSupervisor,
   managingBranches,
-  onBranchBtnClick
+  onBranchBtnClick,
+  isManStaff,
+isCleanStaff
 }) => (
   <BackContainer>
     <Helmet>

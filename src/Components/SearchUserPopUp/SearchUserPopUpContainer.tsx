@@ -38,6 +38,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
         query={SEARCH_USERS}
         variables={{ text: searchText, searchType }}
         skip={!Boolean(searchText)}
+        onCompleted={data => console.log({ getData: data })}
       >
         {({ data }) => (
           <SearchUserPopUpPresenter
@@ -68,10 +69,13 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
   };
 
   public setSearchText = () => {
-    this.setState({
-      ...this.state,
-      searchText: this.state.inputValue
-    });
+    this.setState(
+      {
+        ...this.state,
+        searchText: this.state.inputValue
+      },
+      () => console.log(this.state)
+    );
   };
 
   public onSerachTypeChange = (arg: Option) => {

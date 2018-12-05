@@ -59,6 +59,7 @@ const client = new ApolloClient({
           if (isCleanStaff) {
             localStorage.setItem("isCleanStaff", token);
           }
+
           cache.writeData({
             data: {
               auth: {

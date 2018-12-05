@@ -1,9 +1,13 @@
+import moment, { Moment } from "moment";
 import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
 import { MANAGER_EXPIRE_MEMBERSHIP } from "src/Components/sharedQueries";
 import {
+  getMembershipLogsById,
+  getMembershipLogsById_GetMembershipLogsById_membershipLogs,
+  getMembershipLogsByIdVariables,
   managerExpireMembership,
   managerExpireMembershipVariables,
   managerGetUserDetail,
@@ -11,7 +15,10 @@ import {
   managerGetUserDetailVariables
 } from "src/types/api";
 import UserDetailPresenter from "./UserDetailPresenter";
-import { MANAGER_GET_USER_DETAIL } from "./UserDetailQueries";
+import {
+  GET_MEMBERSHIP_LOGS_BY_ID,
+  MANAGER_GET_USER_DETAIL
+} from "./UserDetailQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
@@ -24,7 +31,17 @@ interface IState {
   isHead: boolean;
   isFranchiser: boolean;
   isSupervisor: boolean;
+  isManStaff: boolean;
+  isCleanStaff: boolean;
+  startDatetime: Moment;
+  endDatetime: Moment;
+  membershipLogs?: Array<getMembershipLogsById_GetMembershipLogsById_membershipLogs | null>;
 }
+
+class GetMembershipLogsByIdQuery extends Query<
+  getMembershipLogsById,
+  getMembershipLogsByIdVariables
+> {}
 
 class ExpireMembershipMutation extends Mutation<
   managerExpireMembership,
@@ -51,70 +68,104 @@ class UserDetailContainer extends React.Component<IProps, IState> {
           }
         : undefined,
       backUrl: props.location.state.backUrl || "/manage-users",
+      endDatetime: props.location.state.endDatetime
+        ? moment(props.location.state.endDatetime)
+        : moment(),
+      isCleanStaff: props.location.state.isCleanStaff || false,
       isFranchiser: props.location.state.isFranchiser || false,
       isHead: props.location.state.isHead || false,
+      isManStaff: props.location.state.isManStaff || false,
       isSupervisor: props.location.state.isSupervisor || false,
       showExpirePopUp: false,
+      startDatetime: props.location.state.startDatetime
+        ? moment(props.location.state.startDatetime)
+        : moment(),
       userId: props.location.state.userId
     };
   }
   public render() {
-    const { userId, user, showExpirePopUp, tempSelMembershipId } = this.state;
+    const {
+      userId,
+      user,
+      showExpirePopUp,
+      tempSelMembershipId,
+      startDatetime,
+      endDatetime,
+      membershipLogs
+    } = this.state;
     return (
-      <ExpireMembershipMutation
-        mutation={MANAGER_EXPIRE_MEMBERSHIP}
-        onCompleted={data => {
-          const { ManagerExpireMembership } = data;
-          if (ManagerExpireMembership.ok) {
-            toast.success("해당 멤버쉽이 만료되었습니다");
-            this.setState({
-              showExpirePopUp: !this.state.showExpirePopUp
-            });
-          } else {
-            toast.error(ManagerExpireMembership.error);
-          }
-        }}
-        refetchQueries={[
-          { query: MANAGER_GET_USER_DETAIL, variables: { userId } }
-        ]}
+      <GetMembershipLogsByIdQuery
+        query={GET_MEMBERSHIP_LOGS_BY_ID}
+        variables={{ userId }}
+        onCompleted={this.updateFields}
+        fetchPolicy={"cache-and-network"}
       >
-        {expireMembershipMutationFn => {
-          this.expireMembershipFn = expireMembershipMutationFn;
-          return (
-            <GetUserDetailQuery
-              query={MANAGER_GET_USER_DETAIL}
-              variables={{ userId }}
-              onCompleted={this.updateFields}
-              onError={err => toast.error(err)}
-              fetchPolicy={"cache-and-network"}
-              skip={!userId}
-            >
-              {({ loading: getUserDetailLoading }) => {
-                return (
-                  <UserDetailPresenter
-                    getUserDetailLoading={getUserDetailLoading}
-                    user={user}
-                    enrollMembershipClick={this.enrollMembershipClick}
-                    enrollCabinetClick={this.enrollCabinetClick}
-                    onMembershipExtendClick={this.onMembershipExtendClick}
-                    showExpirePopUp={showExpirePopUp}
-                    showExpirePopUpToggle={this.showExpirePopUpToggle}
-                    tempSelMembershipId={tempSelMembershipId}
-                    onMembershipExpireClick={this.onMembershipExpireClick}
-                    onExpireConfirmClick={this.onExpireConfirmClick}
-                    onExtendCabinetClick={this.onExtendCabinetClick}
-                    onBackClick={this.onBackClick}
-                  />
-                );
-              }}
-            </GetUserDetailQuery>
-          );
-        }}
-      </ExpireMembershipMutation>
+        {() => (
+          <ExpireMembershipMutation
+            mutation={MANAGER_EXPIRE_MEMBERSHIP}
+            onCompleted={data => {
+              const { ManagerExpireMembership } = data;
+              if (ManagerExpireMembership.ok) {
+                toast.success("해당 멤버쉽이 만료되었습니다");
+                this.setState({
+                  showExpirePopUp: !this.state.showExpirePopUp
+                });
+              } else {
+                toast.error(ManagerExpireMembership.error);
+              }
+            }}
+            refetchQueries={[
+              { query: MANAGER_GET_USER_DETAIL, variables: { userId } }
+            ]}
+          >
+            {expireMembershipMutationFn => {
+              this.expireMembershipFn = expireMembershipMutationFn;
+              return (
+                <GetUserDetailQuery
+                  query={MANAGER_GET_USER_DETAIL}
+                  variables={{ userId }}
+                  onCompleted={this.updateFields}
+                  onError={err => toast.error(err)}
+                  fetchPolicy={"cache-and-network"}
+                  skip={!userId}
+                >
+                  {({ loading: getUserDetailLoading }) => {
+                    return (
+                      <UserDetailPresenter
+                        getUserDetailLoading={getUserDetailLoading}
+                        user={user}
+                        enrollMembershipClick={this.enrollMembershipClick}
+                        enrollCabinetClick={this.enrollCabinetClick}
+                        onMembershipExtendClick={this.onMembershipExtendClick}
+                        showExpirePopUp={showExpirePopUp}
+                        showExpirePopUpToggle={this.showExpirePopUpToggle}
+                        tempSelMembershipId={tempSelMembershipId}
+                        onMembershipExpireClick={this.onMembershipExpireClick}
+                        onExpireConfirmClick={this.onExpireConfirmClick}
+                        onExtendCabinetClick={this.onExtendCabinetClick}
+                        onBackClick={this.onBackClick}
+                        startDatetime={startDatetime}
+                        endDatetime={endDatetime}
+                        onPeriodBtnClick={this.onPeriodBtnClick}
+                        onStartDatetimeChange={this.onStartDatetimeChange}
+                        onEndDatetimeChange={this.onEndDatetimeChange}
+                        membershipLogs={membershipLogs}
+                        onPayViewBtnClick={this.onPayViewBtnClick}
+                      />
+                    );
+                  }}
+                </GetUserDetailQuery>
+              );
+            }}
+          </ExpireMembershipMutation>
+        )}
+      </GetMembershipLogsByIdQuery>
     );
   }
 
-  public updateFields = (data: {} | managerGetUserDetail) => {
+  public updateFields = (
+    data: {} | managerGetUserDetail | getMembershipLogsById
+  ) => {
     if ("ManagerGetUserDetail" in data) {
       const {
         ManagerGetUserDetail: { user }
@@ -125,19 +176,38 @@ class UserDetailContainer extends React.Component<IProps, IState> {
           user
         });
       }
+    } else if ("GetMembershipLogsById" in data) {
+      const {
+        GetMembershipLogsById: { membershipLogs }
+      } = data;
+
+      if (membershipLogs !== null) {
+        this.setState({
+          membershipLogs
+        });
+      }
     }
   };
 
   public enrollMembershipClick = (userId: number) => {
     const { history } = this.props;
-    const { user, isHead, isFranchiser, isSupervisor } = this.state;
+    const {
+      user,
+      isHead,
+      isFranchiser,
+      isSupervisor,
+      isManStaff,
+      isCleanStaff
+    } = this.state;
 
     history.push({
       pathname: "/manager-enroll-membership",
       state: {
         backUrl: "/user-detail",
+        isCleanStaff,
         isFranchiser,
         isHead,
+        isManStaff,
         isSupervisor,
         userId,
         userIdName: user && user.userId,
@@ -147,14 +217,23 @@ class UserDetailContainer extends React.Component<IProps, IState> {
   };
   public enrollCabinetClick = (userId: number) => {
     const { history } = this.props;
-    const { user, isHead, isFranchiser, isSupervisor } = this.state;
+    const {
+      user,
+      isHead,
+      isFranchiser,
+      isSupervisor,
+      isManStaff,
+      isCleanStaff
+    } = this.state;
 
     history.push({
       pathname: "/manager-enroll-cabinet",
       state: {
         backUrl: "/user-detail",
+        isCleanStaff,
         isFranchiser,
         isHead,
+        isManStaff,
         isSupervisor,
         userId,
         userIdName: user && user.userId,
@@ -212,6 +291,70 @@ class UserDetailContainer extends React.Component<IProps, IState> {
       pathname: backUrl,
       state: {
         ...backInfo
+      }
+    });
+  };
+
+  public onPeriodBtnClick = (hours: number) => {
+    this.setState({
+      endDatetime: moment(),
+      startDatetime: moment().subtract(hours, "h")
+    });
+  };
+  public onStartDatetimeChange = (startDatetimeValue: Moment) => {
+    const { endDatetime } = this.state;
+    if (endDatetime < startDatetimeValue) {
+      toast.warn("기간설정이 잘 못 되었습니다");
+    } else {
+      this.setState({
+        startDatetime: startDatetimeValue
+      });
+    }
+  };
+
+  public onEndDatetimeChange = (endDatetimeValue: Moment) => {
+    const { startDatetime } = this.state;
+    if (endDatetimeValue < startDatetime) {
+      toast.warn("기간설정이 잘 못 되었습니다");
+    } else {
+      this.setState({
+        endDatetime: endDatetimeValue
+      });
+    }
+  };
+  public onPayViewBtnClick = (paymentId: number) => {
+    const { history } = this.props;
+    const {
+      backInfo,
+      backUrl,
+      isCleanStaff,
+      isFranchiser,
+      isHead,
+      isManStaff,
+      isSupervisor,
+      userId,
+      startDatetime,
+      endDatetime
+    } = this.state;
+    history.push({
+      pathname: "/view-payinfo",
+      state: {
+        backInfo: {
+          backUrl: "/user-detail",
+          content: {
+            backInfo,
+            backUrl,
+            endDatetime: endDatetime.format("YYYY-MM-DD HH:mm:ss"),
+            isCleanStaff,
+            isFranchiser,
+            isHead,
+            isManStaff,
+            isSupervisor,
+            startDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss"),
+            userId
+          }
+        },
+        paymentId
       }
     });
   };

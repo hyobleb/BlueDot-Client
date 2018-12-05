@@ -236,6 +236,8 @@ interface IProps {
   onBranchBtnClick: (branchId: number) => void;
   managingBranchesLoading: boolean;
   cabinetLoading: boolean;
+  isCleanStaff: boolean;
+  isManStaff: boolean;
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -280,7 +282,9 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
   isSupervisor,
   managingBranches,
   onBranchBtnClick,
-  branchId
+  branchId,
+  isCleanStaff,
+  isManStaff
 }) => {
   const productOptions = new Array();
   if (
@@ -322,7 +326,7 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
                 "지점을 먼저 선택해주세요"}
             </BranchNameCol>
             <BranchButtonCol>
-              {isHead && (
+              {(isHead || isFranchiser || isManStaff) && (
                 <ChangeBranchButton
                   value={`${(productDatas &&
                     productDatas.UserGetBranch &&
@@ -523,16 +527,23 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
 
           <ButtonSection>
             <ButtonContainer>
-              <FieldCardCreateMembershipBtn
-                value={"카드 현장 등록"}
-                onClick={() =>
-                  onEnrollClick(CreatePaymentMethodOption.FIELD_CARD)
-                }
-              />
-              <CashCreateMembershipBtn
-                value={"현금 결제 등록"}
-                onClick={() => onEnrollClick(CreatePaymentMethodOption.CASH)}
-              />
+              {!isShifitCabinet && (
+                <>
+                  <FieldCardCreateMembershipBtn
+                    value={"카드 현장 등록"}
+                    onClick={() =>
+                      onEnrollClick(CreatePaymentMethodOption.FIELD_CARD)
+                    }
+                  />
+                  <CashCreateMembershipBtn
+                    value={"현금 결제 등록"}
+                    onClick={() =>
+                      onEnrollClick(CreatePaymentMethodOption.CASH)
+                    }
+                  />
+                </>
+              )}
+
               {/* 무결제 등록 숨김 처리 */}
               {isShifitCabinet && (
                 <ThrowBasketButton

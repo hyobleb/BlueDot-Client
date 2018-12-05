@@ -190,6 +190,8 @@ interface IProps {
   isSupervisor: boolean;
   managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
   onBranchBtnClick: (branchId: number) => void;
+  isCleanStaff: boolean;
+  isManStaff: boolean;
 }
 
 const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
@@ -220,7 +222,9 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
   isHead,
   isSupervisor,
   managingBranches,
-  onBranchBtnClick
+  onBranchBtnClick,
+  isCleanStaff,
+  isManStaff
 }) => {
   return (
     <BackContainer>
@@ -241,7 +245,7 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
               "지점을 먼저 선택해주세요"}
           </BranchNameCol>
           <BranchButtonCol>
-            {isHead && (
+            {(isHead || isFranchiser || isManStaff) && (
               <ChangeBranchButton
                 value={`${(productDatas &&
                   productDatas.UserGetBranch &&
