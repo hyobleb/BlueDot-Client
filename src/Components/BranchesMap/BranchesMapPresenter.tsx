@@ -69,7 +69,7 @@ class BranchesMapPresenter extends React.Component<IProps> {
         <Map innerRef={mapRef} />
         {closestBranch ? (
           <ExtendedBtn
-            value={`${closestBranch.name} 라운지로 이동`}
+            value={`${closestBranch.name}으로 이동`}
             onClick={() => onBranchClick(closestBranch.id)}
           />
         ) : (

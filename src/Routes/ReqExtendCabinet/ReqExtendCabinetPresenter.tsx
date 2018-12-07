@@ -1,12 +1,19 @@
 import React from "react";
 import Dropdown, { Option } from "react-dropdown";
 import Helmet from "react-helmet";
+import BackArrow from "src/Components/BackArrow";
 import SelMembershipPopUp from "src/Components/SelMembershipPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 
 const BackContainer = styled.div`
   margin-top: 30px;
+`;
+
+const BackArrowExtended = styled(BackArrow)`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
 `;
 const Container = styled.div`
   width: 90%;
@@ -86,6 +93,8 @@ const ReqExtendCabinetPresenter: React.SFC<IProps> = ({
       <Helmet>
         <title>Extend Requset Membership | BlueDot</title>
       </Helmet>
+      <BackArrowExtended backTo="/membership" />
+
       <Container>
         <HeadSection>사물함 연장</HeadSection>
         <MembershipSection>
@@ -94,21 +103,20 @@ const ReqExtendCabinetPresenter: React.SFC<IProps> = ({
               value={"멤버쉽 선택"}
               onClick={toggleShowMembershipPopUp}
             />
-            {(selMembership &&
-              selMembership.cabinetId && (
-                <>
-                  <MembershipDataRow>
-                    {selMembership.branch.name}{" "}
-                    {selMembership.cabinet.cabinetNumber}번 사물함
-                  </MembershipDataRow>
-                  <MembershipDataRow>
-                    이용 시작 : {selMembership.startDatetime}
-                  </MembershipDataRow>
-                  <MembershipDataRow>
-                    이용 만료 : {selMembership.endDatetime}
-                  </MembershipDataRow>
-                </>
-              )) || (
+            {(selMembership && selMembership.cabinetId && (
+              <>
+                <MembershipDataRow>
+                  {selMembership.branch.name}{" "}
+                  {selMembership.cabinet.cabinetNumber}번 사물함
+                </MembershipDataRow>
+                <MembershipDataRow>
+                  이용 시작 : {selMembership.startDatetime}
+                </MembershipDataRow>
+                <MembershipDataRow>
+                  이용 만료 : {selMembership.endDatetime}
+                </MembershipDataRow>
+              </>
+            )) || (
               <MembershipDataRow>
                 연장할 사물함을 선택해주세요!
               </MembershipDataRow>

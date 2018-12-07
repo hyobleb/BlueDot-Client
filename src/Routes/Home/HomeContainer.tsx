@@ -5,6 +5,8 @@ import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GET_SEATS } from "src/Components/Room/RoomQueries";
+import SmallButton from "src/Components/SmallButton";
+import styled from "src/typed-components";
 import {
   GET_USABLE_MY_MEMBERSHIPS,
   USER_PROFILE
@@ -32,6 +34,11 @@ import {
   USER_RETURN_SEAT
 } from "./HomeQueries";
 
+const Button = styled(SmallButton)`
+  color: black;
+  width: 140px;
+`;
+
 interface IState {
   isMenuOpen: boolean;
   nowIp: string;
@@ -52,9 +59,109 @@ interface IState {
   transferredBranchId: number;
   transferredLat?: number;
   transferredLng?: number;
+  usableCabinetMembership?: getUsableMyMemberships_GetMyUsableMemberships_memberships;
 }
 interface IProps extends RouteComponentProps<any> {
   google: any;
+}
+
+interface IMessageProps {
+  branchName: string;
+  message: string;
+  branchId?: number;
+  history: any;
+  extendMembershipId?: number;
+  extendCabinetMembershipId?: number;
+}
+
+class NewMessageNotification extends React.Component<IMessageProps> {
+  public moveToEnrollMembership = (branchId: number) => {
+    // remove all notifications
+    toast.dismiss();
+
+    const { history } = this.props;
+    history.push({
+      pathname: "/request-membership",
+      state: {
+        branchId
+      }
+    });
+    // 지점등록창으로 이동
+  };
+
+  public moveToExtendMembership = (membershipId: number) => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/extend-req-membership",
+      state: {
+        selMembershipId: membershipId
+      }
+    });
+  };
+
+  public moveToExtendCabinetMembership = (
+    extendCabinetMembershipId: number
+  ) => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/extend-req-cabinet",
+      state: {
+        selMembershipId: extendCabinetMembershipId
+      }
+    });
+  };
+
+  // public onBtnClick = () => {
+  //   const {
+  //     extendMembershipId,
+  //     extendCabinetMembershipId,
+  //     branchId
+  //   } = this.props;
+
+  //   if (extendMembershipId) {
+  //     this.moveToExtendMembership(extendMembershipId);
+  //   } else if (branchId) {
+  //     this.moveToEnrollMembership(branchId);
+  //   } else if (extendCabinetMembershipId) {
+  //     this.moveToExtendCabinetMembership(extendCabinetMembershipId);
+  //   }
+  // };
+
+  public render() {
+    const {
+      message,
+      branchId,
+      branchName,
+      extendMembershipId,
+      extendCabinetMembershipId
+    } = this.props;
+    return (
+      <div style={{ textAlign: "center" }}>
+        {message}
+        <br />
+        {branchId ? (
+          <Button
+            value={`${branchName} 등록하기`}
+            onClick={() => this.moveToEnrollMembership(branchId)}
+          />
+        ) : extendMembershipId ? (
+          <Button
+            value={`현재 멤버쉽 연장하기`}
+            onClick={() => this.moveToExtendMembership(extendMembershipId)}
+          />
+        ) : extendCabinetMembershipId ? (
+          <Button
+            value={`현재 사물함 연장하기`}
+            onClick={() =>
+              this.moveToExtendCabinetMembership(extendCabinetMembershipId)
+            }
+          />
+        ) : (
+          ""
+        )}
+      </div>
+    );
+  }
 }
 
 class GetBranchById extends Query<userGetBranch> {}
@@ -315,6 +422,7 @@ class HomeContainer extends React.Component<IProps, IState> {
       const {
         GetMyUsableMemberships: { memberships }
       } = data;
+      // const { branchName, nowBranchId } = this.state;
 
       let findMembership;
       if (memberships) {
@@ -350,16 +458,22 @@ class HomeContainer extends React.Component<IProps, IState> {
           }
         });
 
-        if (usableMembership) {
-          this.setState({
-            usableMembership,
-            usableMembershipFetched: true
-          });
-        }
+        const usableCabinetMembership = memberships.find(membership => {
+          if (membership && membership.cabinetId) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+        this.setState({
+          usableCabinetMembership: usableCabinetMembership
+            ? usableCabinetMembership
+            : undefined,
+          usableMembership: usableMembership ? usableMembership : undefined,
+          usableMembershipFetched: true
+        });
 
-        // if (!usableMembership) {
-        //   toast.info("블루닷라운지 이용을 위해 멤버쉽에 가입해주세요");
-        // }
+        this.membershipCheck();
       }
 
       if (findMembership) {
@@ -386,7 +500,9 @@ class HomeContainer extends React.Component<IProps, IState> {
       branchFetched,
       profileFetched,
       usableMembershipFetched,
-      nowBranchId
+      nowBranchId,
+      branchName,
+      usableCabinetMembership
     } = this.state;
 
     if (branchFetched && profileFetched && usableMembershipFetched) {
@@ -410,8 +526,15 @@ class HomeContainer extends React.Component<IProps, IState> {
                     return false;
                   }
                 });
-                if (!findBranch) {
-                  toast.info("블루닷라운지 이용을 위해 멤버쉽에 가입해주세요");
+                if (!findBranch && nowBranchId) {
+                  toast.info(
+                    <NewMessageNotification
+                      history={this.props.history}
+                      branchName={branchName}
+                      message={`${branchName} 블루닷라운지 이용을 위해 멤버쉽에 가입해주세요`}
+                      branchId={nowBranchId}
+                    />
+                  );
                 }
               }
             } else {
@@ -440,23 +563,69 @@ class HomeContainer extends React.Component<IProps, IState> {
                       }
                     );
 
-                    if (!matchedStaffManagingBranch) {
+                    if (!matchedStaffManagingBranch && nowBranchId) {
                       toast.info(
-                        "블루닷라운지 이용을 위해 멤버쉽에 가입해주세요"
+                        <NewMessageNotification
+                          history={this.props.history}
+                          branchName={branchName}
+                          message={`${branchName} 블루닷라운지 이용을 위해 멤버쉽에 가입해주세요`}
+                          branchId={nowBranchId}
+                        />
                       );
                     }
                   } else {
-                    toast.info(
-                      "블루닷라운지 이용을 위해 멤버쉽에 가입해주세요"
-                    );
+                    if (nowBranchId) {
+                      toast.info(
+                        <NewMessageNotification
+                          history={this.props.history}
+                          branchName={branchName}
+                          message={`${branchName} 블루닷라운지 이용을 위해 멤버쉽에 가입해주세요`}
+                          branchId={nowBranchId}
+                        />
+                      );
+                    }
                   }
                 }
               }
             }
           } else {
-            toast.info("블루닷라운지 이용을 위해 멤버쉽에 가입해주세요");
+            if (nowBranchId) {
+              toast.info(
+                <NewMessageNotification
+                  history={this.props.history}
+                  branchName={branchName}
+                  message={`${branchName} 블루닷라운지 이용을 위해 멤버쉽에 가입해주세요`}
+                  branchId={nowBranchId}
+                />
+              );
+            }
           }
         }
+      } else {
+        if (moment(usableMembership.endDatetime) < moment().add(16, "h")) {
+          toast.info(
+            <NewMessageNotification
+              history={this.props.history}
+              branchName={branchName}
+              message={`${branchName} 멤버쉽기간이 얼마 남지 않았습니다`}
+              extendMembershipId={usableMembership.id}
+            />
+          );
+        }
+      }
+    }
+
+    // 사물함 체크
+    if (usableCabinetMembership) {
+      if (moment(usableCabinetMembership.endDatetime) <= moment().add(3, "d")) {
+        toast.info(
+          <NewMessageNotification
+            history={this.props.history}
+            branchName={branchName}
+            message={`${branchName} 사물함기간이 얼마 남지 않았습니다`}
+            extendCabinetMembershipId={usableCabinetMembership.id}
+          />
+        );
       }
     }
   };

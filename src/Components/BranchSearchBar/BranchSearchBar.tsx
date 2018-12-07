@@ -33,7 +33,7 @@ const BranchSearchBar: React.SFC<IProps> = ({
     value={value}
     onBlur={onBlur}
     onChange={onChange}
-    placeholder={"지저명 혹은 주소를 입력해주세요"}
+    placeholder={"저점명 혹은 주소를 입력해주세요"}
     name={name}
   />
 );
