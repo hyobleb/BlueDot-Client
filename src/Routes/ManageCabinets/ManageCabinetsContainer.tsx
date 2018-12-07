@@ -90,7 +90,6 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       isManStaff,
       isCleanStaff
     } = this.props;
-    console.log({ managingBranches });
     return (
       <GetManagingBranchesQuery
         query={MANAGER_GET_MANAGING_BRANCHES}
@@ -104,6 +103,7 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
             variables={{ cabinetSetId: selSetId }}
             onCompleted={this.updateFields}
             fetchPolicy={"cache-and-network"}
+            skip={selSetId === 0}
           >
             {() => (
               <GetBranchQuery
@@ -204,12 +204,18 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       const {
         GetManagingBranches: { branches }
       } = data;
-      const { isHead, isSupervisor, isFranchiser, isManStaff } = this.props;
+      const {
+        isHead,
+        isSupervisor,
+        isFranchiser,
+        isManStaff,
+        isCleanStaff
+      } = this.props;
 
       if (branches !== null) {
         if (
           !isHead &&
-          (isSupervisor || isFranchiser || isManStaff) &&
+          (isSupervisor || isFranchiser || isManStaff || isCleanStaff) &&
           branches !== null
         ) {
           let oneBranchId = 0;

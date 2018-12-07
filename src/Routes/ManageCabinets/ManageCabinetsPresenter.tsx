@@ -111,7 +111,7 @@ const ManageCabinetsPresenter: React.SFC<IProps> = ({
           onClick={toggleSearchBranchPopUpShow}
         />
       )}
-      {(isSupervisor || isFranchiser || isManStaff) &&
+      {(isSupervisor || isFranchiser || isManStaff || isCleanStaff) &&
         managingBranches &&
         managingBranches.map(
           managingBanch =>

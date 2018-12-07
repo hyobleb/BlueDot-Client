@@ -156,7 +156,6 @@ const MenuPresenter: React.SFC<IProps> = ({
                 user.isManStaff) && (
                 <>
                   <SLink to="/manage-users">회원 관리</SLink>
-                  <SLink to="/manage-cabinets">사물함 관리</SLink>
                 </>
               )}
               {(user.isFranchiser ||
@@ -164,7 +163,10 @@ const MenuPresenter: React.SFC<IProps> = ({
                 user.isSupervisor ||
                 user.isManStaff ||
                 user.isCleanStaff) && (
-                <SLink to="/manage-seats">좌석 관리</SLink>
+                <>
+                  <SLink to="/manage-cabinets">사물함 관리</SLink>
+                  <SLink to="/manage-seats">좌석 관리</SLink>
+                </>
               )}
             </>
           ) : (

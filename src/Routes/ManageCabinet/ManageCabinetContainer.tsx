@@ -135,6 +135,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
                     query={MANAGER_GET_CABINET_MEMBERSHIP}
                     variables={{ cabinetId }}
                     onCompleted={this.updateFields}
+                    fetchPolicy={"cache-and-network"}
                   >
                     {() => (
                       <GetCabinetLogsQuery
@@ -245,6 +246,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       const {
         ManagerGetCabinetMembership: { membership }
       } = data;
+      console.log({ membership });
       if (membership) {
         this.setState({
           nowMembershipId: membership.id
@@ -260,9 +262,14 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
   };
 
   public toggleShowUserSearchPopUp = () => {
-    this.setState({
-      showUserSearchPopUp: !this.state.showUserSearchPopUp
-    });
+    const { isHead, isFranchiser, isSupervisor } = this.state;
+    if (isHead || isFranchiser || isSupervisor) {
+      this.setState({
+        showUserSearchPopUp: !this.state.showUserSearchPopUp
+      });
+    } else {
+      toast.error("권한이 없습니다");
+    }
   };
 
   public onUserClick = async (userId: number) => {
@@ -317,24 +324,32 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       branchName,
       cabinetId,
       selBranchId,
-      selSetId
+      selSetId,
+      isHead,
+      isFranchiser,
+      isSupervisor
     } = this.state;
-    if (nowMembershipId) {
-      history.push({
-        pathname: "/manager-extend-cabinet",
-        state: {
-          backInfo: {
-            backUrl: "/manage-cabinet",
-            content: {
-              branchName,
-              cabinetId,
-              selBranchId,
-              selSetId
-            }
-          },
-          selMembershipId: nowMembershipId
-        }
-      });
+
+    if (isHead || isFranchiser || isSupervisor) {
+      if (nowMembershipId) {
+        history.push({
+          pathname: "/manager-extend-cabinet",
+          state: {
+            backInfo: {
+              backUrl: "/manage-cabinet",
+              content: {
+                branchName,
+                cabinetId,
+                selBranchId,
+                selSetId
+              }
+            },
+            selMembershipId: nowMembershipId
+          }
+        });
+      }
+    } else {
+      toast.error("권한이 없습니다");
     }
   };
 
@@ -356,9 +371,15 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
   };
 
   public toggleShowBranchSearchPopUp = () => {
-    this.setState({
-      showBranchSearchPopUp: !this.state.showBranchSearchPopUp
-    });
+    const { isHead, isFranchiser, isSupervisor } = this.state;
+
+    if (isHead || isFranchiser || isSupervisor) {
+      this.setState({
+        showBranchSearchPopUp: !this.state.showBranchSearchPopUp
+      });
+    } else {
+      toast.error("권한이 없습니다");
+    }
   };
 
   public onBranchClick = (branchId: number) => {

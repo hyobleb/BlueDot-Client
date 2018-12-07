@@ -168,6 +168,27 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/manage-seat"}
           exact={true}
           component={ManageSeat}
+        />,
+        <Route
+          key={25}
+          path={"/manage-cabinets"}
+          exact={true}
+          render={props => (
+            <ManageCabinets
+              {...props}
+              isHead={isHead}
+              isFranchiser={isFranchiser}
+              isSupervisor={isSupervisor}
+              isManStaff={isManStaff}
+              isCleanStaff={isCleanStaff}
+            />
+          )}
+        />,
+        <Route
+          key={26}
+          path={"/manage-cabinet"}
+          exact={true}
+          component={ManageCabinet}
         />
       ]}
 
@@ -222,28 +243,6 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           path={"/view-req-sign-up"}
           exact={true}
           component={ViewReqSignUp}
-        />,
-
-        <Route
-          key={25}
-          path={"/manage-cabinets"}
-          exact={true}
-          render={props => (
-            <ManageCabinets
-              {...props}
-              isHead={isHead}
-              isFranchiser={isFranchiser}
-              isSupervisor={isSupervisor}
-              isManStaff={isManStaff}
-              isCleanStaff={isCleanStaff}
-            />
-          )}
-        />,
-        <Route
-          key={26}
-          path={"/manage-cabinet"}
-          exact={true}
-          component={ManageCabinet}
         />
       ]}
       {(isHead || isFranchiser || isSupervisor) && [
