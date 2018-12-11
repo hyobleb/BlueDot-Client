@@ -6,6 +6,11 @@ const BackContainer = styled.div`
   display: flex;
   justify-content: center;
 `;
+const CabinetDisplayContaienr = styled.div`
+  height: 90vh;
+  display: flex;
+  align-items: center;
+`;
 
 interface IProps {
   cabinets: any;
@@ -17,13 +22,14 @@ const SettingCabinetsPresenter: React.SFC<IProps> = ({
   horizontalNumber
 }) => (
   <BackContainer>
-    {cabinets &&
-      cabinets.length > 0 && (
+    {cabinets && cabinets.length > 0 && (
+      <CabinetDisplayContaienr>
         <CabinetDisplay
           cabinets={cabinets}
           horizontalNumber={horizontalNumber}
         />
-      )}
+      </CabinetDisplayContaienr>
+    )}
   </BackContainer>
 );
 

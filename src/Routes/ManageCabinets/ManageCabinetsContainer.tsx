@@ -90,6 +90,7 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       isManStaff,
       isCleanStaff
     } = this.props;
+    console.log({ manageCabinets: cabinets });
     return (
       <GetManagingBranchesQuery
         query={MANAGER_GET_MANAGING_BRANCHES}

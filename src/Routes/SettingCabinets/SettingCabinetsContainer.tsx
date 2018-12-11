@@ -31,6 +31,7 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
 
   public render() {
     const { setId, cabinets, horizontalNumber } = this.state;
+    console.log({ settingCabinets: cabinets });
     return (
       <GetCabinetSetQuery
         query={GET_CABINETS}
@@ -55,10 +56,15 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
 
       if (cabinetSet !== null) {
         const { cabinets } = cabinetSet;
-        this.setState({
-          cabinets,
-          horizontalNumber: cabinetSet.horizontalNumber
-        });
+
+        if (cabinets) {
+          this.setState({
+            cabinets: cabinets.sort((a, b) => {
+              return a!.id - b!.id;
+            }),
+            horizontalNumber: cabinetSet.horizontalNumber
+          });
+        }
       }
     }
   };
