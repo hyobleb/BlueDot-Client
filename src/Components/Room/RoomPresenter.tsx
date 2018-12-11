@@ -74,7 +74,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 500px;
   min-width: 247px;
-  height: 250px;
+  height: 350px;
   position: relative;
   border: 1px solid #dedede;
   border-radius: 10px;

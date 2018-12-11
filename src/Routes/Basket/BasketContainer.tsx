@@ -1,3 +1,4 @@
+// import axios from "axios";
 import React from "react";
 import { ApolloConsumer, Mutation, MutationFn, Query } from "react-apollo";
 import Script from "react-load-script";
@@ -7,6 +8,8 @@ import {
   GET_MY_MEMBERSHIPS,
   GET_USABLE_MY_MEMBERSHIPS
 } from "src/Components/sharedQueries";
+// import { KAKAO_JAVASCRIPT_KEY } from "src/keys";
+// import { KAKAO_ADMIN_KEY } from "src/keys";
 import {
   completePayment,
   completePaymentVariables,
@@ -35,6 +38,7 @@ interface IState {
   importLoad: boolean;
   impId: string;
   baseBranchId: number;
+  kakaoLoad: boolean;
 }
 
 class CreatePaymentMutation extends Mutation<
@@ -66,12 +70,14 @@ class BasketContainer extends React.Component<IProps, IState> {
       baseBranchId: 0,
       impId: "",
       importLoad: false,
-      jqueryLoad: false
+      jqueryLoad: false,
+      kakaoLoad: false
     };
   }
 
   public render() {
-    const { importLoad, jqueryLoad, baseBranchId } = this.state;
+    this.sendKakaoMessage();
+    const { importLoad, jqueryLoad, baseBranchId, kakaoLoad } = this.state;
     return (
       <>
         <Script
@@ -88,6 +94,15 @@ class BasketContainer extends React.Component<IProps, IState> {
           }}
           onCreate={this.setImportLoad}
         />
+
+        <Script
+          url="https://developers.kakao.com/sdk/js/kakao.min.js"
+          onLoad={() => {
+            this.setKakaoLoad();
+          }}
+          onCreate={this.setKakaoLoad}
+        />
+
         <ApolloConsumer>
           {client => {
             this.getUsableMembershipFn = async () => {
@@ -164,6 +179,7 @@ class BasketContainer extends React.Component<IProps, IState> {
                                       onPaymentClick={this.onPaymentClick}
                                       importLoad={importLoad}
                                       jqueryLoad={jqueryLoad}
+                                      kakaoLoad={kakaoLoad}
                                     />
                                   )}
                                 </GetRequestMembershipsQuery>
@@ -278,6 +294,29 @@ class BasketContainer extends React.Component<IProps, IState> {
     });
   };
 
+  public setKakaoLoad = () => {
+    this.setState({
+      kakaoLoad: true
+    });
+  };
+
+  public sendKakaoMessage = async () => {
+    // const result = await axios({
+    //   headers: {
+    //     Authorization: "KakaoAK " + KAKAO_ADMIN_KEY
+    //     // "Content-Type": "application/json"
+    //   }, // 인증 토큰 Authorization header에 추가
+    //   method: "get", // POST method
+    //   url: "http://kapi.kakao.com//v1/push/register"
+    // });
+    // console.log({ result });
+    // const Kakao = (window as any).Kakao;
+    // Kakao.init(KAKAO_JAVASCRIPT_KEY);
+    // Kakao.PlusFriend.chat({
+    //   plusFriendId: "_xmXxiru" // 플러스친구 홈 URL에 명시된 id로 설정합니다.
+    // });
+  };
+
   public processingPayment = async (impId: string, paymentId: number) => {
     const { history } = this.props;
     if (!this.state.baseBranchId) {
@@ -333,6 +372,9 @@ class BasketContainer extends React.Component<IProps, IState> {
                     if (payMethod === "card" || payMethod === "phone") {
                       toast.success("결제 및 등록이 완료되었습니다 :)");
                       history.push("/home");
+
+                      // KAKAO MESSAGE 전송
+                      this.sendKakaoMessage();
                     }
                     // TODO: 무통장 결제 로직 추가
                   }

@@ -6,11 +6,11 @@ import ApolloClient, { Operation } from "apollo-boost";
 // * request : 클라이언트가 request할 때마다 생기게 함
 // * uri : 서버의 graphqlAPI를 가지고 있음을 보여줌
 
-// const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV === "development";
 
-// const httpLink = isDev
-//   ? "http://localhost:4000/graphql"
-//   : "https://bluedotserver.now.sh/graphql";
+const httpLink = isDev
+  ? "http://localhost:4000/graphql"
+  : "https://bluedot-server.now.sh/graphql";
 
 const client = new ApolloClient({
   clientState: {
@@ -111,8 +111,8 @@ const client = new ApolloClient({
   // 채어 갈수도 수정도 가능
   // 지금은 operation의 context를 세팅
   // operation이라고 함은 mutation, subscription, query를 말함
-  // uri: httpLink
-  uri: "http://localhost:4000/graphql"
+  uri: httpLink
+  // uri: "http://localhost:4000/graphql"
 });
 
 export default client;
