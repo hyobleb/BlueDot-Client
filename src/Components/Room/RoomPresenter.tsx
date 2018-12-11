@@ -71,9 +71,10 @@ const BackContainer = styled.div`
   margin-top: 50px;
 `;
 const Container = styled.div`
-  width: 100%;
+  /* width: 100%;
   max-width: 500px;
-  min-width: 247px;
+  min-width: 247px; */
+  width: 320px;
   height: 500px;
   position: relative;
   border: 1px solid #dedede;

@@ -302,10 +302,14 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
 
   public onEditSeatClick = (roomId: number) => {
     const { history } = this.props;
+    const { isFranchiser, isHead, isSupervisor } = this.state;
     history.push({
       pathname: "/seat-setting",
       state: {
         branchId: this.state.branchId,
+        isFranchiser,
+        isHead,
+        isSupervisor,
         roomId
       }
     });

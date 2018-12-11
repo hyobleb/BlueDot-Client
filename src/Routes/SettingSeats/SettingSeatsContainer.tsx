@@ -55,6 +55,9 @@ interface IState {
   isAddDoorMode: boolean;
   isFlip: boolean;
   doorEditMode: boolean;
+  isFranchiser: boolean;
+  isHead: boolean;
+  isSupervisor: boolean;
 }
 
 class UpdateDoorMutation extends Mutation<
@@ -98,6 +101,9 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
       femaleUsable: true,
       isAddDoorMode: false,
       isFlip: false,
+      isFranchiser: props.location.state.isFranchiser || false,
+      isHead: props.location.state.isHead || false,
+      isSupervisor: props.location.state.isSupervisor || false,
       maleUsable: true,
       roomId: props.location.state.roomId,
       rotate: 0,
@@ -513,11 +519,14 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
 
   public onCancelButtonClick = () => {
     const { history } = this.props;
-    const { branchId } = this.state;
+    const { branchId, isFranchiser, isHead, isSupervisor } = this.state;
     history.push({
       pathname: "/lounge-setting",
       state: {
-        branchId
+        branchId,
+        isFranchiser,
+        isHead,
+        isSupervisor
       }
     });
   };
