@@ -74,10 +74,11 @@ const Container = styled.div`
   width: 100%;
   max-width: 500px;
   min-width: 247px;
-  height: 350px;
+  height: 500px;
   position: relative;
   border: 1px solid #dedede;
   border-radius: 10px;
+  overflow: scroll;
 `;
 const Room = styled.div`
   background-color: "#dedede";
@@ -92,8 +93,8 @@ const Item = styled<
   },
   "div"
 >("div")`
-  width: 6%;
-  min-width: 20px;
+  width: 10%;
+  height: 10%;
   position: absolute;
   left: ${props => props.left}%;
   top: ${props => props.top}%;

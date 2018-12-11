@@ -27,7 +27,7 @@ const Container = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  width: 90%;
+  width: 320px;
   height: 80%;
   z-index: 9;
   padding: 20px;
