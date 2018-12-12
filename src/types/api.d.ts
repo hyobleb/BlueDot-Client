@@ -1554,7 +1554,7 @@ export interface getBranchByIp_UserGetBranchByIP_branch {
 }
 
 export interface getBranchByIp_UserGetBranchByIP {
-  __typename: "UserGetBranchByIPResponse";
+  __typename: "UserGetBranchByIpResponse";
   ok: boolean;
   error: string | null;
   branch: getBranchByIp_UserGetBranchByIP_branch | null;

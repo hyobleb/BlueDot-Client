@@ -1,5 +1,5 @@
-import ip from "ip";
 import moment from "moment";
+import publicIp from "public-ip";
 import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
@@ -127,6 +127,13 @@ class NewMessageNotification extends React.Component<IMessageProps> {
   //   }
   // };
 
+  public async componentDidMount() {
+    const publicIpAddress = await publicIp.v4().then(publicIpAd => publicIp);
+    this.setState({
+      ip: publicIpAddress
+    });
+  }
+
   public render() {
     const {
       message,
@@ -194,7 +201,7 @@ class HomeContainer extends React.Component<IProps, IState> {
       minimapImage: "",
       myUsingSeatId: null,
       nowBranchId: null,
-      nowIp: ip.address(),
+      nowIp: "",
       nowRoomId: 0,
       profileFetched: false,
       rooms: null,
@@ -220,6 +227,7 @@ class HomeContainer extends React.Component<IProps, IState> {
       transferredLat,
       transferredLng
     } = this.state;
+
     return (
       <GetBranchById
         query={USER_GET_BRANCH}

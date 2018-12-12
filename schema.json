@@ -270,7 +270,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "UserGetBranchByIPResponse",
+                "name": "UserGetBranchByIpResponse",
                 "ofType": null
               }
             },
@@ -6435,7 +6435,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "UserGetBranchByIPResponse",
+        "name": "UserGetBranchByIpResponse",
         "description": "",
         "fields": [
           {
