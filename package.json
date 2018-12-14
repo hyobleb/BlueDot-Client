@@ -42,7 +42,8 @@
     "precodegen": "apollo schema:download --endpoint=http://localhost:4000/graphql",
     "codegen": "apollo codegen:generate src/types/api.d.ts --queries='src/**/!(*.local).ts' --addTypename --schema schema.json --target typescript --outputFlat",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "aws s3 sync ./build s3://bluedot-client-s3 --profile=bluedot-client-s3",
+    "invalidate": "aws cloudfront create-invalidation --profile=bluedot-client-s3 --distribution-id E1C2Q845O5NVOC --paths / /index.html /error.html /service-worker.js /manifest.json /favicon.ico"
   },
   "devDependencies": {
     "@types/googlemaps": "^3.30.16",
@@ -54,8 +55,6 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-sidebar": "^3.0.0",
     "@types/recharts": "^1.1.1",
-    "gh-pages": "^2.0.1",
     "typescript": "^3.0.3"
-  },
-  "homepage": "https://yoojat.github.io/BlueDot-Client/"
+  }
 }

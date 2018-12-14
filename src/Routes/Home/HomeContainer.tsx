@@ -127,13 +127,6 @@ class NewMessageNotification extends React.Component<IMessageProps> {
   //   }
   // };
 
-  public async componentDidMount() {
-    const publicIpAddress = await publicIp.v4().then(publicIpAd => publicIp);
-    this.setState({
-      ip: publicIpAddress
-    });
-  }
-
   public render() {
     const {
       message,
@@ -188,8 +181,10 @@ class HomeContainer extends React.Component<IProps, IState> {
 
   public assignSeatFn: MutationFn;
   public returnSeatFn: MutationFn;
+
   constructor(props) {
     super(props);
+
     this.mapRef = React.createRef();
     this.state = {
       assignSeatId: null,
@@ -208,6 +203,15 @@ class HomeContainer extends React.Component<IProps, IState> {
       transferredBranchId: 0,
       usableMembershipFetched: false
     };
+  }
+
+  public async componentDidMount() {
+    const publicIpAddress = await publicIp.v4();
+    this.setState(
+      {
+        nowIp: publicIpAddress
+      }
+    );
   }
 
   public render() {

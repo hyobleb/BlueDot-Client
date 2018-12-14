@@ -260,8 +260,46 @@ const BasketPresenter: React.SFC<IProps> = ({
                       }
                     }}
                   />
-
                   <PayButton
+                    value={"실시간 계좌이체"}
+                    onClick={() => {
+                      const baseRequestMembership =
+                        reqMembershipDatas.UserGetRequest.requestMemberships &&
+                        reqMembershipDatas.UserGetRequest.requestMemberships
+                          .length &&
+                        reqMembershipDatas.UserGetRequest.requestMemberships[0];
+
+                      if (baseRequestMembership) {
+                        onPaymentClick(
+                          baseRequestMembership.branch.id,
+                          CreatePaymentMethodOption.TRANS
+                        );
+                      } else {
+                        toast.error("결제 모듈을 불러올 수 없습니다");
+                      }
+                    }}
+                  />
+                  <PayButton
+                    value={"가상계좌 이체"}
+                    onClick={() => {
+                      const baseRequestMembership =
+                        reqMembershipDatas.UserGetRequest.requestMemberships &&
+                        reqMembershipDatas.UserGetRequest.requestMemberships
+                          .length &&
+                        reqMembershipDatas.UserGetRequest.requestMemberships[0];
+
+                      if (baseRequestMembership) {
+                        onPaymentClick(
+                          baseRequestMembership.branch.id,
+                          CreatePaymentMethodOption.VBANK
+                        );
+                      } else {
+                        toast.error("결제 모듈을 불러올 수 없습니다");
+                      }
+                    }}
+                  />
+
+                  {/* <PayButton
                     value={"휴대폰 소액결제"}
                     onClick={() => {
                       const baseRequestMembership =
@@ -279,7 +317,7 @@ const BasketPresenter: React.SFC<IProps> = ({
                         toast.error("결제 모듈을 불러올 수 없습니다");
                       }
                     }}
-                  />
+                  /> */}
                 </>
               )}
         </BottomSection>

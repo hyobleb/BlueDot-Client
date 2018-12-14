@@ -336,6 +336,10 @@ class BasketContainer extends React.Component<IProps, IState> {
             payMethod = "card";
           } else if (paymentResult.GetPayment.payment.payMethod === "PHONE") {
             payMethod = "phone";
+          } else if (paymentResult.GetPayment.payment.payMethod === "VBANK") {
+            payMethod = "vbank";
+          } else if (paymentResult.GetPayment.payment.payMethod === "TRANS") {
+            payMethod = "trans";
           }
           // TODO: 다른 결제 로직도 추가
 
@@ -369,14 +373,25 @@ class BasketContainer extends React.Component<IProps, IState> {
 
                 if (paymentCompleteResult) {
                   if (paymentCompleteResult.data.CompletePayment.ok) {
-                    if (payMethod === "card" || payMethod === "phone") {
+                    if (
+                      payMethod === "card" ||
+                      payMethod === "phone" ||
+                      payMethod === "trans"
+                    ) {
                       toast.success("결제 및 등록이 완료되었습니다 :)");
                       history.push("/home");
 
                       // KAKAO MESSAGE 전송
                       this.sendKakaoMessage();
+                    } else if (payMethod === "vbank") {
+                      console.log("가상 결제 진행");
+                      // TODO: 무통장 결제 로직 추가
+                      // rsp 속성 이용처리 :
+                      // vbank_num : string 가상계좌 입금계좌번호	PG사로부터 전달된 정보 그대로 제공하므로 숫자 외 dash(-)또는 기타 기호가 포함되어 있을 수 있음
+                      // vbank_name : string 가상계좌 은행명
+                      // vbank_holder : string 가상계좌 예금주 계약된 사업자명으로 항상 일정함. 단, 일부 PG사의 경우 null반환하므로 자체 처리 필요
+                      // vbank_date : number 가상계좌 입금기한	UNIX timestamp
                     }
-                    // TODO: 무통장 결제 로직 추가
                   }
                 }
               } else {

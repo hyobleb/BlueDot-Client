@@ -86,8 +86,9 @@ class BranchesMapContainer extends React.Component<IProps, IState> {
     // this.reverseGeocodeAddress(latitude, longitude);
   };
 
-  public handeGeoError = () => {
+  public handeGeoError = err => {
     console.log("No location");
+    console.log({ err });
 
     return;
   };
