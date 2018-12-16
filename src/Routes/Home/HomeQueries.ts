@@ -67,8 +67,8 @@ export const GET_BRANCH_BY_IP = gql`
 `;
 
 export const USER_ASSIGN_SEAT = gql`
-  mutation userAssignSeat($seatId: Int!) {
-    UserAssignSeat(seatId: $seatId) {
+  mutation userAssignSeat($seatId: Int!, $endDatetime: String!) {
+    UserAssignSeat(seatId: $seatId, endDatetime: $endDatetime) {
       ok
       error
     }

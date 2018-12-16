@@ -207,11 +207,9 @@ class HomeContainer extends React.Component<IProps, IState> {
 
   public async componentDidMount() {
     const publicIpAddress = await publicIp.v4();
-    this.setState(
-      {
-        nowIp: publicIpAddress
-      }
-    );
+    this.setState({
+      nowIp: publicIpAddress
+    });
   }
 
   public render() {
@@ -408,15 +406,18 @@ class HomeContainer extends React.Component<IProps, IState> {
 
       if (branch !== null) {
         const { loungeImage, minimapImage, rooms, name, id } = branch;
-        this.setState({
-          branchFetched: true,
-          branchLoaded: true,
-          branchName: name,
-          loungeImage,
-          minimapImage,
-          nowBranchId: id,
-          rooms
-        } as any, ()=>console.log(this.state));
+        this.setState(
+          {
+            branchFetched: true,
+            branchLoaded: true,
+            branchName: name,
+            loungeImage,
+            minimapImage,
+            nowBranchId: id,
+            rooms
+          } as any,
+          () => console.log(this.state)
+        );
       }
     } else if ("UserGetBranch" in data) {
       const {
@@ -669,12 +670,30 @@ class HomeContainer extends React.Component<IProps, IState> {
   };
 
   public onSeatClick = (seatId: number) => {
-    this.setState(
-      {
-        assignSeatId: seatId
-      },
-      () => this.assignSeatFn({ variables: { seatId } })
-    );
+    const { usableMembership: membership } = this.state;
+    if (!membership) {
+      toast.error("현재 멤버쉽이 없습니다");
+    } else {
+      const membershipEndDatetime = membership.endDatetime;
+      const resultEndDatetime =
+        moment(membershipEndDatetime) >= moment().add(24, "h")
+          ? moment()
+              .add(24, "h")
+              .format("YYYY-MM-DD HH:mm:ss")
+          : moment(membershipEndDatetime).format("YYYY-MM-DD HH:mm:ss");
+
+      console.log({ resultEndDatetime });
+
+      this.setState(
+        {
+          assignSeatId: seatId
+        },
+        () =>
+          this.assignSeatFn({
+            variables: { seatId, endDatetime: resultEndDatetime }
+          })
+      );
+    }
   };
 
   public onEntranceClick = () => {

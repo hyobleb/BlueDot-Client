@@ -1587,6 +1587,7 @@ export interface userAssignSeat {
 
 export interface userAssignSeatVariables {
   seatId: number;
+  endDatetime: string;
 }
 
 /* tslint:disable */
