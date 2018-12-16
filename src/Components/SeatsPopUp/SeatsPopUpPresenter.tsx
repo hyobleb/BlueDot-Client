@@ -13,6 +13,7 @@ interface IProps {
   canReturn?: boolean;
   returnFn?: () => void;
   title?: string;
+  returnSeatLoading?: boolean;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -69,7 +70,8 @@ const SeatsPopUpPresenter: React.SFC<IProps> = ({
   onEntranceClick,
   canReturn,
   returnFn,
-  title = "좌석을 배정/반납해주세요!"
+  title = "좌석을 배정/반납해주세요!",
+  returnSeatLoading
 }) => {
   return (
     <Container>
@@ -83,7 +85,12 @@ const SeatsPopUpPresenter: React.SFC<IProps> = ({
           onEntranceClick={onEntranceClick}
         />
         <ButtonContainer>
-          {canReturn && <ReturnButton value={"반납"} onClick={returnFn} />}
+          {canReturn && (
+            <ReturnButton
+              value={returnSeatLoading ? "반납중..." : "반납"}
+              onClick={returnFn}
+            />
+          )}
         </ButtonContainer>
       </BodyContainer>
       <CloseButton onClick={closeFunc}>

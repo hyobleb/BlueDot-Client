@@ -11,6 +11,7 @@ interface IProps {
   canReturn?: boolean;
   returnFn?: () => void;
   title?: string;
+  returnSeatLoading?: boolean;
 }
 
 class SeatsPopUpContainer extends React.Component<IProps> {
@@ -28,7 +29,8 @@ class SeatsPopUpContainer extends React.Component<IProps> {
       onEntranceClick,
       canReturn,
       returnFn,
-      title
+      title,
+      returnSeatLoading
     } = this.props;
     return (
       <SeatsPopUpPresenter
@@ -41,6 +43,7 @@ class SeatsPopUpContainer extends React.Component<IProps> {
         canReturn={canReturn}
         returnFn={returnFn}
         title={title}
+        returnSeatLoading={returnSeatLoading}
       />
     );
   }

@@ -79,6 +79,7 @@ interface IProps {
   onBackClick: () => void;
   transferredLat?: number;
   transferredLng?: number;
+  returnSeatLoading: boolean;
 }
 
 class HomePresenter extends React.Component<IProps> {
@@ -105,7 +106,8 @@ class HomePresenter extends React.Component<IProps> {
       onBranchClick,
       onBackClick,
       transferredLat,
-      transferredLng
+      transferredLng,
+      returnSeatLoading
     } = this.props;
     return profileLoading || branchLoading ? (
       <Loading />
@@ -157,6 +159,7 @@ class HomePresenter extends React.Component<IProps> {
                 onEntranceClick={onEntranceClick}
                 canReturn={myUsingSeatId ? true : false}
                 returnFn={onReturnClick}
+                returnSeatLoading={returnSeatLoading}
               />
             )}
           </Container>

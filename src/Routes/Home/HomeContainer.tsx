@@ -60,6 +60,7 @@ interface IState {
   transferredLat?: number;
   transferredLng?: number;
   usableCabinetMembership?: getUsableMyMemberships_GetMyUsableMemberships_memberships;
+  returnSeatLoading: boolean;
 }
 interface IProps extends RouteComponentProps<any> {
   google: any;
@@ -199,6 +200,7 @@ class HomeContainer extends React.Component<IProps, IState> {
       nowIp: "",
       nowRoomId: 0,
       profileFetched: false,
+      returnSeatLoading: false,
       rooms: null,
       transferredBranchId: 0,
       usableMembershipFetched: false
@@ -227,7 +229,8 @@ class HomeContainer extends React.Component<IProps, IState> {
       nowBranchId,
       transferredBranchId,
       transferredLat,
-      transferredLng
+      transferredLng,
+      returnSeatLoading
     } = this.state;
 
     return (
@@ -307,7 +310,8 @@ class HomeContainer extends React.Component<IProps, IState> {
                               if (UserAssignSeat.ok) {
                                 toast.success("좌석을 배정했습니다!");
                                 this.setState({
-                                  assignSeatId: null
+                                  assignSeatId: null,
+                                  returnSeatLoading: false
                                 });
                               } else {
                                 toast.error(UserAssignSeat.error);
@@ -362,6 +366,7 @@ class HomeContainer extends React.Component<IProps, IState> {
                                           onBackClick={this.onBackClick}
                                           transferredLat={transferredLat}
                                           transferredLng={transferredLng}
+                                          returnSeatLoading={returnSeatLoading}
                                         />
                                       )}
                                     </ProfileQuery>
@@ -701,7 +706,14 @@ class HomeContainer extends React.Component<IProps, IState> {
   };
 
   public onReturnClick = async () => {
-    await this.returnSeatFn();
+    this.setState(
+      {
+        returnSeatLoading: true
+      },
+      async () => {
+        await this.returnSeatFn();
+      }
+    );
   };
 
   public onBranchClick = (
