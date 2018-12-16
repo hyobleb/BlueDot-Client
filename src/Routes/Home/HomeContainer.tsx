@@ -272,6 +272,10 @@ class HomeContainer extends React.Component<IProps, IState> {
                     <ReturnSeatMutation
                       mutation={USER_RETURN_SEAT}
                       refetchQueries={[
+                        {
+                          query: GET_SEATS,
+                          variables: { roomId: nowRoomId }
+                        },
                         { query: GET_BRANCH_BY_IP, variables: { ip: nowIp } },
                         { query: GET_MY_USING_SEAT }
                       ]}
@@ -412,7 +416,7 @@ class HomeContainer extends React.Component<IProps, IState> {
           minimapImage,
           nowBranchId: id,
           rooms
-        } as any);
+        } as any, ()=>console.log(this.state));
       }
     } else if ("UserGetBranch" in data) {
       const {
