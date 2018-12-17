@@ -286,10 +286,13 @@ class UserDetailContainer extends React.Component<IProps, IState> {
 
   public onBackClick = () => {
     const { history } = this.props;
-    const { backUrl, backInfo } = this.state;
+    const { backUrl, backInfo, isHead, isManStaff, isSupervisor } = this.state;
     history.push({
       pathname: backUrl,
       state: {
+        isHead,
+        isManStaff,
+        isSupervisor,
         ...backInfo
       }
     });

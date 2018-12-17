@@ -530,19 +530,38 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
   public onBackClick = () => {
     const { history, location } = this.props;
     const { userId } = this.state;
-    const { backInfo } = location.state;
+    const {
+      backInfo,
+      isFranchiser,
+      isHead,
+      isSupervisor,
+      isManStaff,
+      isCleanStaff
+    } = location.state;
 
     if (backInfo) {
       history.push({
         pathname: backInfo.backUrl,
         state: {
+          isCleanStaff,
+          isFranchiser,
+          isHead,
+          isManStaff,
+          isSupervisor,
           ...backInfo.content
         }
       });
     } else {
       history.push({
         pathname: "/user-detail",
-        state: { userId }
+        state: {
+          isCleanStaff,
+          isFranchiser,
+          isHead,
+          isManStaff,
+          isSupervisor,
+          userId
+        }
       });
     }
   };

@@ -677,7 +677,7 @@ class HomeContainer extends React.Component<IProps, IState> {
   public onSeatClick = (seatId: number) => {
     const { usableMembership: membership } = this.state;
     if (!membership) {
-      toast.error("현재 멤버쉽이 없습니다");
+      toast.error("현재 멤버쉽이 없습니다!");
     } else {
       const membershipEndDatetime = membership.endDatetime;
       const resultEndDatetime =

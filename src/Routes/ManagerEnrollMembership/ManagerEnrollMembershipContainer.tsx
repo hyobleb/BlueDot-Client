@@ -298,11 +298,25 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
 
   public onBackClick = () => {
     const { history } = this.props;
-    const { userId } = this.state;
+    const {
+      userId,
+      isFranchiser,
+      isHead,
+      isSupervisor,
+      isCleanStaff,
+      isManStaff
+    } = this.state;
 
     history.push({
       pathname: "/user-detail",
-      state: { userId }
+      state: {
+        isCleanStaff,
+        isFranchiser,
+        isHead,
+        isManStaff,
+        isSupervisor,
+        userId
+      }
     });
   };
   public setDatetimeValueNow = () => {
