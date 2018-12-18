@@ -246,6 +246,7 @@ class HomeContainer extends React.Component<IProps, IState> {
             query={GET_USABLE_MY_MEMBERSHIPS}
             onCompleted={this.updateFields}
             skip={!nowBranchId}
+            fetchPolicy={"cache-and-network"}
           >
             {() => (
               <GetMyUsingSeatMutation
@@ -411,18 +412,15 @@ class HomeContainer extends React.Component<IProps, IState> {
 
       if (branch !== null) {
         const { loungeImage, minimapImage, rooms, name, id } = branch;
-        this.setState(
-          {
-            branchFetched: true,
-            branchLoaded: true,
-            branchName: name,
-            loungeImage,
-            minimapImage,
-            nowBranchId: id,
-            rooms
-          } as any,
-          () => console.log(this.state)
-        );
+        this.setState({
+          branchFetched: true,
+          branchLoaded: true,
+          branchName: name,
+          loungeImage,
+          minimapImage,
+          nowBranchId: id,
+          rooms
+        } as any);
       }
     } else if ("UserGetBranch" in data) {
       const {
@@ -445,7 +443,6 @@ class HomeContainer extends React.Component<IProps, IState> {
         GetMyUsableMemberships: { memberships }
       } = data;
       // const { branchName, nowBranchId } = this.state;
-
       let findMembership;
       if (memberships) {
         findMembership = memberships.find(membership => {
@@ -487,13 +484,15 @@ class HomeContainer extends React.Component<IProps, IState> {
             return false;
           }
         });
-        this.setState({
-          usableCabinetMembership: usableCabinetMembership
-            ? usableCabinetMembership
-            : undefined,
-          usableMembership: usableMembership ? usableMembership : undefined,
-          usableMembershipFetched: true
-        });
+        this.setState(
+          {
+            usableCabinetMembership: usableCabinetMembership
+              ? usableCabinetMembership
+              : undefined,
+            usableMembership: usableMembership ? usableMembership : undefined,
+            usableMembershipFetched: true
+          }
+        );
 
         this.membershipCheck();
       }
@@ -687,7 +686,6 @@ class HomeContainer extends React.Component<IProps, IState> {
               .format("YYYY-MM-DD HH:mm:ss")
           : moment(membershipEndDatetime).format("YYYY-MM-DD HH:mm:ss");
 
-      console.log({ resultEndDatetime });
 
       this.setState(
         {

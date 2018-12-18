@@ -490,7 +490,7 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
                     .filter(
                       product =>
                         product &&
-                        product.target === "MEMBERSHIP" &&
+                        product.target === "CABINET" &&
                         !product.discard
                     )
                     .map(
