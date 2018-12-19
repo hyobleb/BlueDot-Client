@@ -42,6 +42,7 @@ const Button = styled(SmallButton)`
 interface IState {
   isMenuOpen: boolean;
   nowIp: string;
+  branchIdByIp: number;
   nowBranchId: number | null;
   loungeImage: string;
   minimapImage: string;
@@ -190,6 +191,7 @@ class HomeContainer extends React.Component<IProps, IState> {
     this.state = {
       assignSeatId: null,
       branchFetched: false,
+      branchIdByIp: 0,
       branchLoaded: false,
       branchName: "",
       isMenuOpen: false,
@@ -414,6 +416,7 @@ class HomeContainer extends React.Component<IProps, IState> {
         const { loungeImage, minimapImage, rooms, name, id } = branch;
         this.setState({
           branchFetched: true,
+          branchIdByIp: id,
           branchLoaded: true,
           branchName: name,
           loungeImage,
@@ -484,15 +487,13 @@ class HomeContainer extends React.Component<IProps, IState> {
             return false;
           }
         });
-        this.setState(
-          {
-            usableCabinetMembership: usableCabinetMembership
-              ? usableCabinetMembership
-              : undefined,
-            usableMembership: usableMembership ? usableMembership : undefined,
-            usableMembershipFetched: true
-          }
-        );
+        this.setState({
+          usableCabinetMembership: usableCabinetMembership
+            ? usableCabinetMembership
+            : undefined,
+          usableMembership: usableMembership ? usableMembership : undefined,
+          usableMembershipFetched: true
+        });
 
         this.membershipCheck();
       }
@@ -674,9 +675,12 @@ class HomeContainer extends React.Component<IProps, IState> {
   };
 
   public onSeatClick = (seatId: number) => {
+    const { branchIdByIp, nowBranchId } = this.state;
     const { usableMembership: membership } = this.state;
     if (!membership) {
       toast.error("현재 멤버쉽이 없습니다!");
+    } else if (branchIdByIp !== nowBranchId) {
+      toast.error("좌석 배정은 해당 지점내의 인터넷(와이파이)를 이용해주세요");
     } else {
       const membershipEndDatetime = membership.endDatetime;
       const resultEndDatetime =
@@ -685,7 +689,6 @@ class HomeContainer extends React.Component<IProps, IState> {
               .add(24, "h")
               .format("YYYY-MM-DD HH:mm:ss")
           : moment(membershipEndDatetime).format("YYYY-MM-DD HH:mm:ss");
-
 
       this.setState(
         {
