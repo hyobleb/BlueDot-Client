@@ -6,6 +6,7 @@ import Loading from "src/Components/Loading";
 import LoungeContainer from "src/Components/LoungeContainer";
 import { getBranchByIp_UserGetBranchByIP_branch_rooms } from "src/types/api";
 import BranchesMap from "../../Components/BranchesMap";
+import Footer from "../../Components/Footer";
 import Menu from "../../Components/Menu";
 import SeatsPopUp from "../../Components/SeatsPopUp";
 import styled from "../../typed-components";
@@ -170,6 +171,7 @@ class HomePresenter extends React.Component<IProps> {
             transferredLng={transferredLng}
           />
         )}
+        <Footer />
       </BackContainer>
     );
   }

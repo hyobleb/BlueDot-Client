@@ -33,6 +33,7 @@ const Button = styled(SmallButton)`
 
 const ExtendedBtn = styled(Button)`
   max-width: 200px;
+  bottom: 50px;
 `;
 
 interface IProps {
