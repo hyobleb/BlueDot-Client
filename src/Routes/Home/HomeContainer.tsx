@@ -675,20 +675,31 @@ class HomeContainer extends React.Component<IProps, IState> {
   };
 
   public onSeatClick = (seatId: number) => {
-    const { branchIdByIp, nowBranchId } = this.state;
+    const { branchIdByIp, nowBranchId, user } = this.state;
     const { usableMembership: membership } = this.state;
-    if (!membership) {
+    if (
+      !membership &&
+      (user &&
+        !user.isHead &&
+        !user.isCleanStaff &&
+        !user.isManStaff &&
+        !user.isFranchiser &&
+        !user.isSupervisor)
+    ) {
       toast.error("현재 멤버쉽이 없습니다!");
     } else if (branchIdByIp !== nowBranchId) {
       toast.error("좌석 배정은 해당 지점내의 인터넷(와이파이)를 이용해주세요");
     } else {
-      const membershipEndDatetime = membership.endDatetime;
-      const resultEndDatetime =
-        moment(membershipEndDatetime) >= moment().add(24, "h")
+      const membershipEndDatetime = membership && membership.endDatetime;
+      const resultEndDatetime = membershipEndDatetime
+        ? moment(membershipEndDatetime) >= moment().add(24, "h")
           ? moment()
               .add(24, "h")
               .format("YYYY-MM-DD HH:mm:ss")
-          : moment(membershipEndDatetime).format("YYYY-MM-DD HH:mm:ss");
+          : moment(membershipEndDatetime).format("YYYY-MM-DD HH:mm:ss")
+        : moment()
+            .add(24, "h")
+            .format("YYYY-MM-DD HH:mm:ss");
 
       this.setState(
         {

@@ -330,6 +330,8 @@ class BasketContainer extends React.Component<IProps, IState> {
       const paymentResult: getPayment = await this.getPaymentFn(paymentId);
       let payMethod;
 
+      // console.log({ paymentResult });
+
       if (paymentResult.GetPayment.ok) {
         if (paymentResult.GetPayment.payment) {
           if (paymentResult.GetPayment.payment.payMethod === "CARD") {
