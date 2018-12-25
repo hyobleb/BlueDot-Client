@@ -4,3 +4,4 @@ export const PRIMARY_COLOR = "#3498db";
 export const SUCCESS_COLOR = "#2ecc71";
 export const SECONDARY_COLOR = "#95a5a6";
 export const INFO_COLOR = "#2980b9";
+export const SEMI_DANGER_COLOR = "#e84393";

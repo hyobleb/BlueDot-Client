@@ -5,6 +5,8 @@ import { RouteComponentProps } from "react-router";
 import { toast } from "react-toastify";
 import { MANAGER_EXPIRE_MEMBERSHIP } from "src/Components/sharedQueries";
 import {
+  clearCabinet,
+  clearCabinetVariables,
   managerExpireMembership,
   managerExpireMembershipVariables,
   managerGetCabinetLogs,
@@ -16,6 +18,7 @@ import {
 import { MANAGER_GET_USER_DETAIL } from "../UserDetail/UserDetailQueries";
 import ManageCabinetPresenter from "./ManageCabinetPresenter";
 import {
+  CLEAR_CABINET,
   MANAGER_GET_CABINET_LOGS,
   MANAGER_GET_CABINET_MEMBERSHIP
 } from "./ManageCabinetQueries";
@@ -34,6 +37,7 @@ interface IState {
   nowMembershipId?: number;
   showExpireConfirmPopUp: boolean;
   showBranchSearchPopUp: boolean;
+  showClearConfirmPopUp: boolean;
   isHead: boolean;
   isFranchiser: boolean;
   isSupervisor: boolean;
@@ -54,9 +58,16 @@ class ExpireCabinetMutation extends Mutation<
   managerExpireMembershipVariables
 > {}
 
+class CleantCabinetMutation extends Mutation<
+  clearCabinet,
+  clearCabinetVariables
+> {}
+
 class ManageCabinetContainer extends React.Component<IProps, IState> {
   public apolloClient;
   public expireCabinetFn: MutationFn;
+  public clearCabinetFn: MutationFn;
+
   constructor(props) {
     super(props);
 
@@ -79,6 +90,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       selBranchId,
       selSetId,
       showBranchSearchPopUp: false,
+      showClearConfirmPopUp: false,
       showExpireConfirmPopUp: false,
       showUserSearchPopUp: false,
       startDatetime: moment()
@@ -94,10 +106,9 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       cabinet,
       showUserSearchPopUp,
       showExpireConfirmPopUp,
-      showBranchSearchPopUp
+      showBranchSearchPopUp,
+      showClearConfirmPopUp
     } = this.state;
-
-    console.log({ cabinet });
 
     return (
       <ApolloConsumer>
@@ -153,34 +164,75 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
                         fetchPolicy={"cache-and-network"}
                       >
                         {({ loading: getCabinetLogsLoading }) => (
-                          <ManageCabinetPresenter
-                            endDatetime={endDatetime}
-                            startDatetime={startDatetime}
-                            onStartDatetimeChange={this.onStartDatetimeChange}
-                            onEndDatetimeChange={this.onEndDatetimeChange}
-                            onBackClick={this.onBackClick}
-                            cabinetLogs={cabinetLogs}
-                            getCabinetLogsLoading={getCabinetLogsLoading}
-                            branchName={branchName}
-                            onPeriodBtnClick={this.onPeriodBtnClick}
-                            cabinet={cabinet}
-                            showUserSearchPopUp={showUserSearchPopUp}
-                            toggleShowUserSearchPopUp={
-                              this.toggleShowUserSearchPopUp
-                            }
-                            onUserClick={this.onUserClick}
-                            onExtendBtnClick={this.onExtendBtnClick}
-                            showExpireConfirmPopUp={showExpireConfirmPopUp}
-                            toggleShowExpireConfirmPopUp={
-                              this.toggleShowExpireConfirmPopUp
-                            }
-                            expireCabinet={this.expireCabinet}
-                            toggleShowBranchSearchPopUp={
-                              this.toggleShowBranchSearchPopUp
-                            }
-                            showBranchSearchPopUp={showBranchSearchPopUp}
-                            onBranchClick={this.onBranchClick}
-                          />
+                          <CleantCabinetMutation
+                            mutation={CLEAR_CABINET}
+                            onCompleted={data => {
+                              const { ClearCabinet } = data;
+                              if (ClearCabinet.ok) {
+                                toast.success("해당 사물함을 정리하였습니다");
+                                this.toggleShowClearConfirmPopUp();
+                              } else {
+                                toast.error(ClearCabinet.error);
+                              }
+                            }}
+                            refetchQueries={[
+                              {
+                                query: MANAGER_GET_CABINET_LOGS,
+                                variables: {
+                                  cabinetId,
+                                  endDatetime: moment(endDatetime).format(
+                                    "YYYY-MM-DD HH:mm:ss"
+                                  ),
+                                  startDatetime: moment(startDatetime).format(
+                                    "YYYY-MM-DD HH:mm:ss"
+                                  )
+                                }
+                              }
+                            ]}
+                          >
+                            {clearCabinetMutationFn => {
+                              this.clearCabinetFn = clearCabinetMutationFn;
+                              return (
+                                <ManageCabinetPresenter
+                                  endDatetime={endDatetime}
+                                  startDatetime={startDatetime}
+                                  onStartDatetimeChange={
+                                    this.onStartDatetimeChange
+                                  }
+                                  onEndDatetimeChange={this.onEndDatetimeChange}
+                                  onBackClick={this.onBackClick}
+                                  cabinetLogs={cabinetLogs}
+                                  getCabinetLogsLoading={getCabinetLogsLoading}
+                                  branchName={branchName}
+                                  onPeriodBtnClick={this.onPeriodBtnClick}
+                                  cabinet={cabinet}
+                                  showUserSearchPopUp={showUserSearchPopUp}
+                                  toggleShowUserSearchPopUp={
+                                    this.toggleShowUserSearchPopUp
+                                  }
+                                  onUserClick={this.onUserClick}
+                                  onExtendBtnClick={this.onExtendBtnClick}
+                                  showExpireConfirmPopUp={
+                                    showExpireConfirmPopUp
+                                  }
+                                  toggleShowExpireConfirmPopUp={
+                                    this.toggleShowExpireConfirmPopUp
+                                  }
+                                  expireCabinet={this.expireCabinet}
+                                  toggleShowBranchSearchPopUp={
+                                    this.toggleShowBranchSearchPopUp
+                                  }
+                                  showBranchSearchPopUp={showBranchSearchPopUp}
+                                  onBranchClick={this.onBranchClick}
+                                  showClearConfirmPopUp={showClearConfirmPopUp}
+                                  toggleShowClearConfirmPopUp={
+                                    this.toggleShowClearConfirmPopUp
+                                  }
+                                  onClearCabinetClick={this.onClearCabinetClick}
+                                />
+                              );
+                            }}
+                          </CleantCabinetMutation>
                         )}
                       </GetCabinetLogsQuery>
                     )}
@@ -355,6 +407,12 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
     }
   };
 
+  public toggleShowClearConfirmPopUp = () => {
+    this.setState({
+      showClearConfirmPopUp: !this.state.showClearConfirmPopUp
+    });
+  };
+
   public toggleShowExpireConfirmPopUp = () => {
     this.setState({
       showExpireConfirmPopUp: !this.state.showExpireConfirmPopUp
@@ -370,6 +428,13 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
         variables: { membershipId: nowMembershipId }
       });
     }
+  };
+
+  public onClearCabinetClick = async () => {
+    const { cabinetId } = this.state;
+    await this.clearCabinetFn({
+      variables: { cabinetId }
+    });
   };
 
   public toggleShowBranchSearchPopUp = () => {

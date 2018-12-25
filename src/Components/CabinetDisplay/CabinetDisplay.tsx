@@ -5,6 +5,7 @@ import {
   DANGER_COLOR,
   PRIMARY_COLOR,
   SECONDARY_COLOR,
+  SEMI_DANGER_COLOR,
   SUCCESS_COLOR,
   WARNING_COLOR
 } from "src/keys/colors";
@@ -62,15 +63,17 @@ const ColorIndexContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 320px;
+  flex-wrap: wrap;
 `;
 const ColorIndex = styled.div`
   padding: 5px;
   color: white;
-  width: 60px;
+  width: 65px;
   font-size: 10px;
   text-align: center;
   margin-left: 3px;
   margin-right: 3px;
+  margin-top: 5px;
 `;
 
 const CabinetDisplay: React.SFC<IProps> = ({
@@ -101,9 +104,14 @@ const CabinetDisplay: React.SFC<IProps> = ({
           선택한 사물함
         </ColorIndex>
         {isMan ? (
-          <ColorIndex style={{ backgroundColor: SECONDARY_COLOR }}>
-            예약한 사물함
-          </ColorIndex>
+          <>
+            <ColorIndex style={{ backgroundColor: SEMI_DANGER_COLOR }}>
+              만료된 사물함
+            </ColorIndex>
+            <ColorIndex style={{ backgroundColor: SECONDARY_COLOR }}>
+              예약한 사물함
+            </ColorIndex>
+          </>
         ) : (
           ""
         )}
@@ -114,8 +122,12 @@ const CabinetDisplay: React.SFC<IProps> = ({
             let backgroundColor =
               !cabinet.usable || !cabinet.lockId
                 ? DANGER_COLOR
-                : cabinet.nowUsing || moment(cabinet.endDatetime) > moment()
+                : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
                 ? WARNING_COLOR
+                : isMan &&
+                  cabinet.nowUsing &&
+                  moment(cabinet.endDatetime) < moment()
+                ? SEMI_DANGER_COLOR
                 : cabinet.status === "RESERVED" &&
                   moment(cabinet.reservedDatetime) > moment()
                 ? WARNING_COLOR

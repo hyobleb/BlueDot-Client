@@ -1778,6 +1778,27 @@ export interface managerGetCabinetMembershipVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: clearCabinet
+// ====================================================
+
+export interface clearCabinet_ClearCabinet {
+  __typename: "ClearCabinetResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface clearCabinet {
+  ClearCabinet: clearCabinet_ClearCabinet;
+}
+
+export interface clearCabinetVariables {
+  cabinetId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: managerEnrollCabinet
 // ====================================================
 
@@ -3199,6 +3220,12 @@ export interface managerGetUserDetail_ManagerGetUserDetail_user_membershipLogs {
   updatedAt: string;
 }
 
+export interface managerGetUserDetail_ManagerGetUserDetail_user_seat {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+}
+
 export interface managerGetUserDetail_ManagerGetUserDetail_user {
   __typename: "User";
   id: number;
@@ -3217,6 +3244,7 @@ export interface managerGetUserDetail_ManagerGetUserDetail_user {
   baseBranch: managerGetUserDetail_ManagerGetUserDetail_user_baseBranch;
   memberships: (managerGetUserDetail_ManagerGetUserDetail_user_memberships | null)[];
   membershipLogs: (managerGetUserDetail_ManagerGetUserDetail_user_membershipLogs | null)[] | null;
+  seat: managerGetUserDetail_ManagerGetUserDetail_user_seat | null;
 }
 
 export interface managerGetUserDetail_ManagerGetUserDetail {

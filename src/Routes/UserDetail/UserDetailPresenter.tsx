@@ -192,6 +192,16 @@ const NoPayment = styled.div`
   color: ${props => props.theme.lightBlueColor};
 `;
 
+const NowSeatSection = styled.div``;
+const NowSeatContainer = styled.div``;
+const NowSeatTitle = styled.div`
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+  background-color: ${props => props.theme.lightBlueColor};
+  color: white;
+`;
+
 interface IProps {
   getUserDetailLoading: boolean;
   user?: managerGetUserDetail_ManagerGetUserDetail_user;
@@ -331,6 +341,18 @@ const UserDetailPresenter: React.SFC<IProps> = ({
               )}
             </ProfileContentContainer>
           </PersonalInfoSection>
+          {user.seat ? (
+            <NowSeatSection>
+              <NowSeatContainer>
+                <NowSeatTitle>
+                  {user.seat.seatNumber}번 좌석 이용중입니다
+                </NowSeatTitle>
+              </NowSeatContainer>
+            </NowSeatSection>
+          ) : (
+            ""
+          )}
+
           <ButtonSection>
             <ButtonContainer>
               <EnrollMembershipBtn
@@ -343,6 +365,7 @@ const UserDetailPresenter: React.SFC<IProps> = ({
               />
             </ButtonContainer>
           </ButtonSection>
+
           <MembershipSection>
             <MembershipContainer>
               <MembershipTitle>이용중인 멤버쉽</MembershipTitle>

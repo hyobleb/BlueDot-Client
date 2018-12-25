@@ -154,6 +154,10 @@ const ExpBtn = styled(CabButton)`
 const SftBtn = styled(CabButton)`
   background-color: ${props => props.theme.orangeColor};
 `;
+
+const ClrBtn = styled(CabButton)`
+  background-color: ${props => props.theme.lightBlueColor};
+`;
 // const ModBtn = styled(CabButton)`
 //   background-color: ${props => props.theme.lightBlueColor};
 // `;
@@ -179,6 +183,9 @@ interface IProps {
   toggleShowBranchSearchPopUp: () => void;
   showBranchSearchPopUp: boolean;
   onBranchClick: (branchId: number) => void;
+  showClearConfirmPopUp: boolean;
+  toggleShowClearConfirmPopUp: () => void;
+  onClearCabinetClick: () => Promise<void>;
 }
 
 const ManageCabinetPresenter: React.SFC<IProps> = ({
@@ -201,7 +208,10 @@ const ManageCabinetPresenter: React.SFC<IProps> = ({
   expireCabinet,
   toggleShowBranchSearchPopUp,
   showBranchSearchPopUp,
-  onBranchClick
+  onBranchClick,
+  showClearConfirmPopUp,
+  toggleShowClearConfirmPopUp,
+  onClearCabinetClick
 }) => (
   <Back title={"manage-cabinet"} backFn={onBackClick}>
     {getCabinetLogsLoading ? (
@@ -240,10 +250,19 @@ const ManageCabinetPresenter: React.SFC<IProps> = ({
                 </NowUserContent>
                 <NowUserBtnCon>
                   <ExtBtn value={"연장"} onClick={onExtendBtnClick} />
-                  <ExpBtn
-                    value={"만료"}
-                    onClick={toggleShowExpireConfirmPopUp}
-                  />
+                  {moment(cabinet.endDatetime) >= moment() && (
+                    <ExpBtn
+                      value={"만료"}
+                      onClick={toggleShowExpireConfirmPopUp}
+                    />
+                  )}
+                  {moment(cabinet.endDatetime) < moment() && (
+                    <ClrBtn
+                      value={"정리"}
+                      onClick={toggleShowClearConfirmPopUp}
+                    />
+                  )}
+
                   <SftBtn
                     value={"변경"}
                     onClick={toggleShowBranchSearchPopUp}
@@ -365,6 +384,16 @@ const ManageCabinetPresenter: React.SFC<IProps> = ({
         closeFunc={toggleShowBranchSearchPopUp}
         onBranchClick={onBranchClick}
         title={"이동할 지점 선택하기"}
+      />
+    ) : (
+      ""
+    )}
+
+    {showClearConfirmPopUp ? (
+      <AlertPopUp
+        closeFunc={toggleShowClearConfirmPopUp}
+        message={"해당 사물함을 정리하겠습니까?"}
+        onOkClick={onClearCabinetClick}
       />
     ) : (
       ""

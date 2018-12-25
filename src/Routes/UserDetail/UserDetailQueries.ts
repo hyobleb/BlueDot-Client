@@ -55,6 +55,10 @@ export const MANAGER_GET_USER_DETAIL = gql`
           endDatetime
           updatedAt
         }
+        seat {
+          id
+          seatNumber
+        }
       }
     }
   }

@@ -68,3 +68,12 @@ export const MANAGER_GET_CABINET_MEMBERSHIP = gql`
     }
   }
 `;
+
+export const CLEAR_CABINET = gql`
+  mutation clearCabinet($cabinetId: Int!) {
+    ClearCabinet(cabinetId: $cabinetId) {
+      ok
+      error
+    }
+  }
+`;
