@@ -612,14 +612,22 @@ class HomeContainer extends React.Component<IProps, IState> {
             }
           } else {
             if (nowBranchId) {
-              toast.info(
-                <NewMessageNotification
-                  history={this.props.history}
-                  branchName={branchName}
-                  message={`${branchName} 블루닷라운지 이용을 위해 멤버쉽에 가입해주세요`}
-                  branchId={nowBranchId}
-                />
-              );
+              const { isCleanStaff, isManStaff, name } = user;
+
+              if (isCleanStaff || isManStaff) {
+                toast.info(
+                  `${name} 스탭님! 오늘도 저희 블루닷라운지 잘 부탁드려요🙏`
+                );
+              } else {
+                toast.info(
+                  <NewMessageNotification
+                    history={this.props.history}
+                    branchName={branchName}
+                    message={`${branchName} 블루닷라운지 이용을 위해 멤버쉽에 가입해주세요!`}
+                    branchId={nowBranchId}
+                  />
+                );
+              }
             }
           }
         }

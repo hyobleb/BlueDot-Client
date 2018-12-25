@@ -213,48 +213,45 @@ const ManageCabinetPresenter: React.SFC<IProps> = ({
             {branchName} {cabinet.cabinetNumber}번 사물함
           </TitleSec>
           <NowUserSec>
-            {(cabinet.endDatetime &&
-              moment(cabinet.endDatetime) > moment() &&
-              cabinet.nowUsing &&
-              cabinet.user && (
-                <NowUserCon>
-                  <NowUserTitle>현재 이용자 정보</NowUserTitle>
-                  <NowUserContent>
-                    <NowUserRow>
-                      <NowUserRowTitle>이용자 이름</NowUserRowTitle>
-                      <NowUserRowVal>{cabinet.user.name}</NowUserRowVal>
-                    </NowUserRow>
-                    <NowUserRow>
-                      <NowUserRowTitle>등록일시</NowUserRowTitle>
-                      <NowUserRowVal>
-                        {moment(
-                          new Date(cabinet.updatedAt).toUTCString()
-                        ).format("YYYY-MM-DD HH:mm:ss")}
-                      </NowUserRowVal>
-                    </NowUserRow>
-                    <NowUserRow>
-                      <NowUserRowTitle>시작일시</NowUserRowTitle>
-                      <NowUserRowVal>{cabinet.startDatetime}</NowUserRowVal>
-                    </NowUserRow>
-                    <NowUserRow>
-                      <NowUserRowTitle>종료일시</NowUserRowTitle>
-                      <NowUserRowVal>{cabinet.endDatetime}</NowUserRowVal>
-                    </NowUserRow>
-                  </NowUserContent>
-                  <NowUserBtnCon>
-                    <ExtBtn value={"연장"} onClick={onExtendBtnClick} />
-                    <ExpBtn
-                      value={"만료"}
-                      onClick={toggleShowExpireConfirmPopUp}
-                    />
-                    <SftBtn
-                      value={"변경"}
-                      onClick={toggleShowBranchSearchPopUp}
-                    />
-                    {/* <ModBtn value={"수정"} /> */}
-                  </NowUserBtnCon>
-                </NowUserCon>
-              )) ||
+            {(cabinet.endDatetime && cabinet.nowUsing && cabinet.user && (
+              <NowUserCon>
+                <NowUserTitle>현재 이용자 정보</NowUserTitle>
+                <NowUserContent>
+                  <NowUserRow>
+                    <NowUserRowTitle>이용자 이름</NowUserRowTitle>
+                    <NowUserRowVal>{cabinet.user.name}</NowUserRowVal>
+                  </NowUserRow>
+                  <NowUserRow>
+                    <NowUserRowTitle>등록일시</NowUserRowTitle>
+                    <NowUserRowVal>
+                      {moment(new Date(cabinet.updatedAt).toUTCString()).format(
+                        "YYYY-MM-DD HH:mm:ss"
+                      )}
+                    </NowUserRowVal>
+                  </NowUserRow>
+                  <NowUserRow>
+                    <NowUserRowTitle>시작일시</NowUserRowTitle>
+                    <NowUserRowVal>{cabinet.startDatetime}</NowUserRowVal>
+                  </NowUserRow>
+                  <NowUserRow>
+                    <NowUserRowTitle>종료일시</NowUserRowTitle>
+                    <NowUserRowVal>{cabinet.endDatetime}</NowUserRowVal>
+                  </NowUserRow>
+                </NowUserContent>
+                <NowUserBtnCon>
+                  <ExtBtn value={"연장"} onClick={onExtendBtnClick} />
+                  <ExpBtn
+                    value={"만료"}
+                    onClick={toggleShowExpireConfirmPopUp}
+                  />
+                  <SftBtn
+                    value={"변경"}
+                    onClick={toggleShowBranchSearchPopUp}
+                  />
+                  {/* <ModBtn value={"수정"} /> */}
+                </NowUserBtnCon>
+              </NowUserCon>
+            )) ||
               (cabinet.reservedDatetime &&
                 moment(cabinet.reservedDatetime) > moment() &&
                 cabinet.nowUsing &&

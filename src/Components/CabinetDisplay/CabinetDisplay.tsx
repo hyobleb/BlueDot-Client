@@ -20,6 +20,8 @@ interface IProps {
 }
 
 const Container = styled.div`
+  margin-left: auto;
+  margin-right: auto;
   width: 90%;
   max-width: 600px;
   display: flex;

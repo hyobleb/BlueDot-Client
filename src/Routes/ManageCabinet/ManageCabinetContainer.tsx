@@ -97,6 +97,8 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       showBranchSearchPopUp
     } = this.state;
 
+    console.log({ cabinet });
+
     return (
       <ApolloConsumer>
         {client => {

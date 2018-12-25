@@ -1,4 +1,5 @@
 // import axios from "axios";
+import moment = require("moment");
 import React from "react";
 import { ApolloConsumer, Mutation, MutationFn, Query } from "react-apollo";
 import Script from "react-load-script";
@@ -359,7 +360,13 @@ class BasketContainer extends React.Component<IProps, IState> {
               merchant_uid: merchantUid,
               name: "블루닷라운지 멤버쉽 결제",
               pay_method: payMethod,
-              pg: "html5_inicis"
+              pg: "html5_inicis",
+              vbank_due:
+                payMethod === "vbank"
+                  ? moment()
+                      .add(1, "d")
+                      .format("YYYYMMDDhhmm")
+                  : undefined
             },
             async rsp => {
               // callback
