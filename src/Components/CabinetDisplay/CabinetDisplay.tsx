@@ -122,6 +122,9 @@ const CabinetDisplay: React.SFC<IProps> = ({
             let backgroundColor =
               !cabinet.usable || !cabinet.lockId
                 ? DANGER_COLOR
+                : !isMan &&
+                  (cabinet.nowUsing || moment(cabinet.endDatetime) > moment())
+                ? WARNING_COLOR
                 : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
                 ? WARNING_COLOR
                 : isMan &&
