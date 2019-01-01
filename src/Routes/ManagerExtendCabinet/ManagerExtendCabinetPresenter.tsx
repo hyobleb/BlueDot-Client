@@ -163,7 +163,7 @@ const ManagerExtendCabinetPresenter: React.SFC<IProps> = ({
             products
               .filter(
                 product =>
-                  product && product.target === "MEMBERSHIP" && !product.discard
+                  product && product.target === "CABINET" && !product.discard
               )
               .map(
                 product =>

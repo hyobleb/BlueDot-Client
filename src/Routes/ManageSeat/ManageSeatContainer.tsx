@@ -74,6 +74,8 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
       seat,
       showSearchUserPopUp
     } = this.state;
+    console.log({ seatLogs });
+
     return (
       <ManagerReturnSeatMutation
         mutation={MANAGER_RETURN_SEAT}

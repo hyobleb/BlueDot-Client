@@ -207,8 +207,8 @@ const ManageSeatPresenter: React.SFC<IProps> = ({
         </LogsSection>
         <ActionBtnSection>
           {seatLogs.length > 0 &&
-          seatLogs[0].status === "ASSIGN" &&
-          moment(seatLogs[0].endDatetime) > moment() ? (
+          (seatLogs[0].status === "ASSIGN" &&
+            moment(seatLogs[0].endDatetime) > moment()) ? (
             <ReturnBtn value={"반납"} onClick={onReturnClick} />
           ) : (
             <AssignBtn value={"배정"} onClick={toggleShowSearchUserPopUp} />
