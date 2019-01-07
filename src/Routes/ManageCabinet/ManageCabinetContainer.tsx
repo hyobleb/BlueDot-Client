@@ -270,12 +270,22 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
 
   public onBackClick = () => {
     const { history } = this.props;
-    const { cabinetId, selBranchId, selSetId } = this.state;
+    const {
+      cabinetId,
+      selBranchId,
+      selSetId,
+      isFranchiser,
+      isSupervisor,
+      isHead
+    } = this.state;
 
     history.push({
       pathname: "/manage-cabinets",
       state: {
         cabinetId,
+        isFranchiser,
+        isHead,
+        isSupervisor,
         selBranchId,
         selSetId
       }
@@ -322,7 +332,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
         showUserSearchPopUp: !this.state.showUserSearchPopUp
       });
     } else {
-      toast.error("권한이 없습니다");
+      toast.error("권한이 없습니다!");
     }
   };
 
@@ -333,7 +343,10 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       branchName,
       cabinetId,
       selBranchId,
-      selSetId
+      selSetId,
+      isFranchiser,
+      isSupervisor,
+      isHead
     } = this.state;
 
     const { data } = await this.apolloClient.query({
@@ -361,6 +374,9 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
             },
             branchId: selBranchId,
             cabinetId,
+            isFranchiser,
+            isHead,
+            isSupervisor,
             setId: selSetId,
             userId,
             userIdName: user.userId,

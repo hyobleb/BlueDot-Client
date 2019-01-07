@@ -369,6 +369,9 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                             managingBranches={managingBranches}
                                             isCleanStaff={isCleanStaff}
                                             isManStaff={isManStaff}
+                                            selProductReset={
+                                              this.selProductReset
+                                            }
                                           />
                                         )}
                                       </GetBranchQuery>
@@ -431,6 +434,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
 
   public onDatetimeChange = (startDatetime: Moment) => {
     this.setState({
+      selEndDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss"),
       startDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss")
     });
   };
@@ -530,14 +534,23 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
   public onBackClick = () => {
     const { history, location } = this.props;
     const { userId } = this.state;
+    // const {
+    //   backInfo,
+    //   isFranchiser,
+    //   isHead,
+    //   isSupervisor,
+    //   isManStaff,
+    //   isCleanStaff
+    // } = location.state;
+
+    const { backInfo } = location.state;
     const {
-      backInfo,
       isFranchiser,
       isHead,
       isSupervisor,
       isManStaff,
       isCleanStaff
-    } = location.state;
+    } = this.state;
 
     if (backInfo) {
       history.push({
@@ -582,6 +595,8 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
 
   public setDatetimeValueNow = () => {
     this.setState({
+      selEndDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+      selProducts: [],
       startDatetime: moment().format("YYYY-MM-DD HH:mm:ss")
     });
   };
@@ -616,6 +631,14 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
         }
       }
     }
+  };
+
+  public selProductReset = () => {
+    this.setState({
+      selEndDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+      selProducts: [],
+      startDatetime: moment().format("YYYY-MM-DD HH:mm:ss")
+    });
   };
 }
 

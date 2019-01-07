@@ -238,6 +238,7 @@ interface IProps {
   cabinetLoading: boolean;
   isCleanStaff: boolean;
   isManStaff: boolean;
+  selProductReset: () => void;
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -284,7 +285,8 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
   onBranchBtnClick,
   branchId,
   isCleanStaff,
-  isManStaff
+  isManStaff,
+  selProductReset
 }) => {
   const productOptions = new Array();
   if (
@@ -512,6 +514,9 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
               </AddDatetimeCon>
               <ProductsSection>
                 <ProductsTitle>선택한 멤버쉽 상품</ProductsTitle>
+                {selProducts.length > 0 && (
+                  <ResetButton value={"리셋"} onClick={selProductReset} />
+                )}
                 <ProductContainer>
                   {selProducts.length > 0
                     ? selProducts.map((product, index) => (
