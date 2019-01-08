@@ -187,8 +187,6 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
         GetManagingBranches: { branches }
       } = data;
 
-      console.log({ branches });
-
       if (branches !== null) {
         this.setState({
           managingBranches: branches

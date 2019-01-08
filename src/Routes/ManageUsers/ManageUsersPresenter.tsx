@@ -225,7 +225,7 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
   managingBranches,
   onBranchBtnClick,
   isManStaff,
-isCleanStaff
+  isCleanStaff
 }) => (
   <BackContainer>
     <Helmet>
@@ -391,7 +391,9 @@ isCleanStaff
           </DateMembersRow>
         </DateMemberSection>
         <TotalMembersSection>
-          <TotalMembersHead>전체 회원</TotalMembersHead>
+          <TotalMembersHead>
+            전체 회원(현재 회원수 : {nowUsingUsers.length})
+          </TotalMembersHead>
           <TotalMembersBody>
             <TotalMembersContainer>
               {nowUsingUsers.length
