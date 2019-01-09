@@ -64,7 +64,8 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
             cabinets: cabinets.sort((a, b) => {
               return a!.id - b!.id;
             }),
-            horizontalNumber: cabinetSet.horizontalNumber
+            horizontalNumber: cabinetSet.horizontalNumber,
+            verticalNumber: cabinetSet.verticalNumber
           });
         }
       }

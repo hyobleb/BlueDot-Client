@@ -86,12 +86,10 @@ const CabinetDisplay: React.SFC<IProps> = ({
   isMan
 }) => {
   const verticalCabients = new Array();
-  console.log({ verticalNumber });
   for (let hIndex = 1; hIndex <= verticalNumber; hIndex++) {
     const rowCabinets = cabinets.filter(cabinet => cabinet.ypos === hIndex);
     verticalCabients.push(rowCabinets);
   }
-  console.log({ verticalCabients });
 
   return (
     <Container>
