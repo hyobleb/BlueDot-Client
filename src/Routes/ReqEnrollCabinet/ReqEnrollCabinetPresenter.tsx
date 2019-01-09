@@ -188,6 +188,7 @@ interface IProps {
   cabinetNumber: number;
   cabinetSetLoading: boolean;
   isFirstLoaidng: boolean;
+  verticalNumber: number;
 }
 
 const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -215,7 +216,8 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
   cabinetId,
   cabinetNumber,
   cabinetSetLoading,
-  isFirstLoaidng
+  isFirstLoaidng,
+  verticalNumber
 }) => {
   const productOptions = new Array();
   if (
@@ -231,7 +233,6 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
       }
     });
   }
-
 
   return (
     <BackContainer>
@@ -294,14 +295,14 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
                                 tempSetId === set.id
                                   ? "#1abc9c"
                                   : setId === set.id
-                                    ? "#1abc9c"
-                                    : "",
+                                  ? "#1abc9c"
+                                  : "",
                               color:
                                 tempSetId === set.id
                                   ? "white"
                                   : setId === set.id
-                                    ? "white"
-                                    : ""
+                                  ? "white"
+                                  : ""
                             }}
                             onClick={() => onSetClick(set.id)}
                             onMouseOver={() => onSetHover(set.id)}
@@ -319,7 +320,7 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
                     </CabinetDisplayTitle>
                     <CabinetDisplay
                       cabinets={cabinets}
-                      horizontalNumber={horizontalNumber}
+                      verticalNumber={verticalNumber}
                       onCabinetClick={onCabinetClick}
                       selCabinetId={cabinetId}
                     />

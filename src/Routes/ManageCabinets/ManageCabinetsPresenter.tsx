@@ -78,6 +78,7 @@ interface IProps {
   managingBranches?: Array<managerGetManagingBranches_GetManagingBranches_branches | null>;
   isManStaff: boolean;
   isCleanStaff: boolean;
+  verticalNumber: number;
 }
 
 const ManageCabinetsPresenter: React.SFC<IProps> = ({
@@ -101,7 +102,8 @@ const ManageCabinetsPresenter: React.SFC<IProps> = ({
   isSupervisor,
   managingBranches,
   isManStaff,
-  isCleanStaff
+  isCleanStaff,
+  verticalNumber
 }) => (
   <Back title={"manage-cabinets"} backUrl={"/"}>
     <HeadSection>
@@ -181,7 +183,7 @@ const ManageCabinetsPresenter: React.SFC<IProps> = ({
                   </CabinetDisplayTitle>
                   <CabinetDisplay
                     cabinets={cabinets}
-                    horizontalNumber={horizontalNumber}
+                    verticalNumber={verticalNumber}
                     onCabinetClick={onCabinetClick}
                     isMan={true}
                   />

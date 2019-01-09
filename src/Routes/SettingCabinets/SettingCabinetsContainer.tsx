@@ -10,6 +10,7 @@ interface IState {
   setId: number;
   cabinets: any;
   horizontalNumber: number;
+  verticalNumber: number;
 }
 
 class GetCabinetSetQuery extends Query<getCabinets, getCabinetsVariables> {}
@@ -25,13 +26,13 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
     this.state = {
       cabinets: null,
       horizontalNumber: 0,
-      setId: props.location.state.setId
+      setId: props.location.state.setId,
+      verticalNumber: 0
     };
   }
 
   public render() {
-    const { setId, cabinets, horizontalNumber } = this.state;
-    console.log({ settingCabinets: cabinets });
+    const { setId, cabinets, horizontalNumber, verticalNumber } = this.state;
     return (
       <GetCabinetSetQuery
         query={GET_CABINETS}
@@ -43,6 +44,7 @@ class SettingCabinetsContainer extends React.Component<IProps, IState> {
           <SettingCabinetsPresenter
             cabinets={cabinets}
             horizontalNumber={horizontalNumber}
+            verticalNumber={verticalNumber}
           />
         )}
       </GetCabinetSetQuery>

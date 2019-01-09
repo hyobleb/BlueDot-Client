@@ -14,7 +14,7 @@ import { getCabinets_GetCabinetSet_cabinetSet_cabinets } from "src/types/api";
 
 interface IProps {
   cabinets: [getCabinets_GetCabinetSet_cabinetSet_cabinets];
-  horizontalNumber: number;
+  verticalNumber: number;
   onCabinetClick?: (cabinetId: number) => void;
   selCabinetId?: number;
   isMan?: boolean;
@@ -78,7 +78,7 @@ const ColorIndex = styled.div`
 
 const CabinetDisplay: React.SFC<IProps> = ({
   cabinets,
-  horizontalNumber,
+  verticalNumber,
   onCabinetClick = () => {
     return;
   },
@@ -86,10 +86,12 @@ const CabinetDisplay: React.SFC<IProps> = ({
   isMan
 }) => {
   const verticalCabients = new Array();
-  for (let hIndex = 1; hIndex <= horizontalNumber; hIndex++) {
+  console.log({ verticalNumber });
+  for (let hIndex = 1; hIndex <= verticalNumber; hIndex++) {
     const rowCabinets = cabinets.filter(cabinet => cabinet.ypos === hIndex);
     verticalCabients.push(rowCabinets);
   }
+  console.log({ verticalCabients });
 
   return (
     <Container>

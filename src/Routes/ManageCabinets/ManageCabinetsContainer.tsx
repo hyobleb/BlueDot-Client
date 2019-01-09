@@ -33,6 +33,7 @@ interface IState {
   selSetId: number;
   cabinets: any;
   horizontalNumber: number;
+  verticalNumber: number;
   cabinetNumber: number;
   managingBranches?: Array<managerGetManagingBranches_GetManagingBranches_branches | null>;
 }
@@ -66,7 +67,8 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       selBranchId,
       selSetId,
       showBranchSearchPopUp: false,
-      tempSetId: 0
+      tempSetId: 0,
+      verticalNumber: 0
     };
   }
 
@@ -80,7 +82,8 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       cabinets,
       horizontalNumber,
       cabinetNumber,
-      managingBranches
+      managingBranches,
+      verticalNumber
     } = this.state;
 
     const {
@@ -90,7 +93,6 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       isManStaff,
       isCleanStaff
     } = this.props;
-    console.log({ manageCabinets: cabinets });
     return (
       <GetManagingBranchesQuery
         query={MANAGER_GET_MANAGING_BRANCHES}
@@ -131,6 +133,7 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
                     onSetClick={this.onSetClick}
                     cabinets={cabinets}
                     horizontalNumber={horizontalNumber}
+                    verticalNumber={verticalNumber}
                     onCabinetClick={this.onCabinetClick}
                     cabinetNumber={cabinetNumber}
                     isHead={isHead}
@@ -185,7 +188,8 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
             cabinets: cabinetSet.cabinets.sort((a, b) => {
               return a!.id - b!.id;
             }),
-            horizontalNumber: cabinetSet.horizontalNumber
+            horizontalNumber: cabinetSet.horizontalNumber,
+            verticalNumber: cabinetSet.verticalNumber
           });
         }
       }

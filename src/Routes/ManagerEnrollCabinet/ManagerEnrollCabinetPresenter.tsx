@@ -239,6 +239,7 @@ interface IProps {
   isCleanStaff: boolean;
   isManStaff: boolean;
   selProductReset: () => void;
+  verticalNumber: number;
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -286,7 +287,8 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
   branchId,
   isCleanStaff,
   isManStaff,
-  selProductReset
+  selProductReset,
+  verticalNumber
 }) => {
   const productOptions = new Array();
   if (
@@ -415,7 +417,7 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
                         </CabinetDisplayTitle>
                         <CabinetDisplay
                           cabinets={cabinets}
-                          horizontalNumber={horizontalNumber}
+                          verticalNumber={verticalNumber}
                           onCabinetClick={onCabinetClick}
                           selCabinetId={cabinetId}
                         />

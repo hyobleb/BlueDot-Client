@@ -37,6 +37,7 @@ interface IState {
   cabinets: any;
   horizontalNumber: number;
   isFirstLoaidng: boolean;
+  verticalNumber: number;
 }
 
 interface IProps extends RouteComponentProps<any> {}
@@ -75,7 +76,8 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       productTitle: "",
       setId: 0,
       startDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
-      tempSetId: 0
+      tempSetId: 0,
+      verticalNumber: 0
     };
   }
 
@@ -92,7 +94,8 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       cabinets,
       horizontalNumber,
       cabinetNumber,
-      isFirstLoaidng
+      isFirstLoaidng,
+      verticalNumber
     } = this.state;
     return (
       <GetCabinetQuery
@@ -244,6 +247,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                                   cabinetNumber={cabinetNumber}
                                   cabinetSetLoading={cabinetSetLoading}
                                   isFirstLoaidng={isFirstLoaidng}
+                                  verticalNumber={verticalNumber}
                                 />
                               )}
                             </GetBranchQuery>

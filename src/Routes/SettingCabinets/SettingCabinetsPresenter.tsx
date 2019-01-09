@@ -15,19 +15,18 @@ const CabinetDisplayContaienr = styled.div`
 interface IProps {
   cabinets: any;
   horizontalNumber: number;
+  verticalNumber: number;
 }
 
 const SettingCabinetsPresenter: React.SFC<IProps> = ({
   cabinets,
-  horizontalNumber
+  horizontalNumber,
+  verticalNumber
 }) => (
   <BackContainer>
     {cabinets && cabinets.length > 0 && (
       <CabinetDisplayContaienr>
-        <CabinetDisplay
-          cabinets={cabinets}
-          horizontalNumber={horizontalNumber}
-        />
+        <CabinetDisplay cabinets={cabinets} verticalNumber={verticalNumber} />
       </CabinetDisplayContaienr>
     )}
   </BackContainer>

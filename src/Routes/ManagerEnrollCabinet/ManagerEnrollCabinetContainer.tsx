@@ -60,6 +60,7 @@ interface IState {
   managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
   isManStaff: boolean;
   isCleanStaff: boolean;
+  verticalNumber: number;
 }
 
 interface IProps extends RouteComponentProps<any> {
@@ -136,7 +137,8 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       tempSetId: 0,
       userId: props.location.state.userId,
       userIdName: props.location.state.userIdName,
-      userName: props.location.state.userName
+      userName: props.location.state.userName,
+      verticalNumber: 0
     };
   }
 
@@ -163,7 +165,8 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       isSupervisor,
       managingBranches,
       isCleanStaff,
-      isManStaff
+      isManStaff,
+      verticalNumber
     } = this.state;
 
     return (
@@ -372,6 +375,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                             selProductReset={
                                               this.selProductReset
                                             }
+                                            verticalNumber={verticalNumber}
                                           />
                                         )}
                                       </GetBranchQuery>
