@@ -392,7 +392,109 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
         </DateMemberSection>
         <TotalMembersSection>
           <TotalMembersHead>
-            전체 회원(현재 회원수 : {nowUsingUsers.length})
+            전체 회원(현재 회원수 : {nowUsingUsers.length}(남 :{" "}
+            {nowUsingUsers.filter(user => user.gender === "MALE").length}(
+            {
+              nowUsingUsers
+                .filter(user => user.gender === "MALE")
+                .filter(user => {
+                  const { memberships } = user;
+                  const nowMembership = memberships.find(
+                    membership =>
+                      moment(membership.startDatetime) <= moment() &&
+                      moment(membership.endDatetime) >= moment()
+                  );
+
+                  const nowMembershipPeriod = moment.duration(
+                    moment(nowMembership.endDatetime).diff(
+                      nowMembership.startDatetime
+                    )
+                  );
+                  const dayPeriod = nowMembershipPeriod.asDays();
+                  if (dayPeriod > 1) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }).length
+            }
+            /
+            {
+              nowUsingUsers
+                .filter(user => user.gender === "MALE")
+                .filter(user => {
+                  const { memberships } = user;
+                  const nowMembership = memberships.find(
+                    membership =>
+                      moment(membership.startDatetime) <= moment() &&
+                      moment(membership.endDatetime) >= moment()
+                  );
+
+                  const nowMembershipPeriod = moment.duration(
+                    moment(nowMembership.endDatetime).diff(
+                      nowMembership.startDatetime
+                    )
+                  );
+                  const dayPeriod = nowMembershipPeriod.asDays();
+                  if (dayPeriod <= 1) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }).length
+            }
+            ), 여 :{" "}
+            {nowUsingUsers.filter(user => user.gender === "FEMALE").length}(
+            {
+              nowUsingUsers
+                .filter(user => user.gender === "FEMALE")
+                .filter(user => {
+                  const { memberships } = user;
+                  const nowMembership = memberships.find(
+                    membership =>
+                      moment(membership.startDatetime) <= moment() &&
+                      moment(membership.endDatetime) >= moment()
+                  );
+
+                  const nowMembershipPeriod = moment.duration(
+                    moment(nowMembership.endDatetime).diff(
+                      nowMembership.startDatetime
+                    )
+                  );
+                  const dayPeriod = nowMembershipPeriod.asDays();
+                  if (dayPeriod > 1) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }).length
+            }
+            /
+            {
+              nowUsingUsers
+                .filter(user => user.gender === "FEMALE")
+                .filter(user => {
+                  const { memberships } = user;
+                  const nowMembership = memberships.find(
+                    membership =>
+                      moment(membership.startDatetime) <= moment() &&
+                      moment(membership.endDatetime) >= moment()
+                  );
+
+                  const nowMembershipPeriod = moment.duration(
+                    moment(nowMembership.endDatetime).diff(
+                      nowMembership.startDatetime
+                    )
+                  );
+                  const dayPeriod = nowMembershipPeriod.asDays();
+                  if (dayPeriod <= 1) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }).length
+            }
+            ))
           </TotalMembersHead>
           <TotalMembersBody>
             <TotalMembersContainer>

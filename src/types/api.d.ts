@@ -2097,6 +2097,16 @@ export interface managerGetMembershipLogsVariables {
 // GraphQL query operation: managerGetNowUsingUsers
 // ====================================================
 
+export interface managerGetNowUsingUsers_ManagerGetNowUsingUsers_users_memberships {
+  __typename: "Membership";
+  id: number;
+  startDatetime: string;
+  endDatetime: string;
+  status: string;
+  usable: boolean;
+  target: string;
+}
+
 export interface managerGetNowUsingUsers_ManagerGetNowUsingUsers_users {
   __typename: "User";
   id: number;
@@ -2106,6 +2116,8 @@ export interface managerGetNowUsingUsers_ManagerGetNowUsingUsers_users {
   birthMonth: number;
   birthDay: number;
   phoneNumber: string | null;
+  gender: string | null;
+  memberships: (managerGetNowUsingUsers_ManagerGetNowUsingUsers_users_memberships | null)[];
 }
 
 export interface managerGetNowUsingUsers_ManagerGetNowUsingUsers {

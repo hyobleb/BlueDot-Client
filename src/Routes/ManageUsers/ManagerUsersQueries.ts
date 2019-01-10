@@ -53,6 +53,15 @@ export const MANAGER_GET_NOW_USING_USERS = gql`
         birthMonth
         birthDay
         phoneNumber
+        gender
+        memberships {
+          id
+          startDatetime
+          endDatetime
+          status
+          usable
+          target
+        }
       }
     }
   }
