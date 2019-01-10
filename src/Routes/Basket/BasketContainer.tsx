@@ -23,7 +23,7 @@ import {
   getRequestMemberships,
   getUsableMyMemberships
 } from "src/types/api";
-import { SERVER_HOST } from "../../keys";
+import { SERVER_HOME_HOST } from "../../keys";
 import BasketPresenter from "./BasketPresenter";
 import {
   COMPLETE_PAYMENT,
@@ -369,7 +369,7 @@ class BasketContainer extends React.Component<IProps, IState> {
                       .format("YYYYMMDDhhmm")
                   : undefined,
 
-              m_redirect_url: `${SERVER_HOST}/payments/complete/mobile`
+              m_redirect_url: `${SERVER_HOME_HOST}/payments/complete/mobile`
             },
             async rsp => {
               // callback

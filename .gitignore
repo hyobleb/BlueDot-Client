@@ -65,4 +65,7 @@ typings/
 src/keys.*
 
 # build
-build/
+build/*.**
+
+.firebase/*
+

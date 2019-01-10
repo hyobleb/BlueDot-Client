@@ -143,7 +143,6 @@ class SettingCabLockContainer extends React.Component<IProps, IState> {
 
   public onModifyClick = async (lockId: number) => {
     const data = await this.getCabinetLockFn(lockId);
-    console.log({ data });
     if (data.ManagerGetCabinetLock.ok) {
       this.setState(
         {
