@@ -266,7 +266,8 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                 cabinets: findCabinets.sort((a, b) => {
                                   return a!.id - b!.id;
                                 }),
-                                horizontalNumber: findHorizontalNumber
+                                horizontalNumber: findHorizontalNumber,
+                                verticalNumber: cabinetSet.verticalNumber
                               });
                             }
                           }
