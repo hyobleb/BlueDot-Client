@@ -265,6 +265,7 @@ class BasketContainer extends React.Component<IProps, IState> {
         if (result && result.data && result.data.CreatePayment) {
           if (result.data.CreatePayment.ok) {
             const branchResult: getBranchForImp = await this.getBranchForImpFn();
+
             if (
               branchResult.GuestGetBranch &&
               branchResult.GuestGetBranch.branch &&
@@ -321,6 +322,7 @@ class BasketContainer extends React.Component<IProps, IState> {
 
   public processingPayment = async (impId: string, paymentId: number) => {
     const { history } = this.props;
+
     if (!this.state.baseBranchId) {
       toast.error("지점을 먼저 설정하셔야 됩니다");
       return;
@@ -396,7 +398,6 @@ class BasketContainer extends React.Component<IProps, IState> {
                       // KAKAO MESSAGE 전송
                       this.sendKakaoMessage();
                     } else if (payMethod === "vbank") {
-                      console.log("가상 결제 진행");
                       // TODO: 무통장 결제 로직 추가
                       // rsp 속성 이용처리 :
                       // vbank_num : string 가상계좌 입금계좌번호	PG사로부터 전달된 정보 그대로 제공하므로 숫자 외 dash(-)또는 기타 기호가 포함되어 있을 수 있음
