@@ -463,15 +463,18 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                       moment(membership.startDatetime) <= moment() &&
                       moment(membership.endDatetime) >= moment()
                   );
-
-                  const nowMembershipPeriod = moment.duration(
-                    moment(nowMembership.endDatetime).diff(
-                      nowMembership.startDatetime
-                    )
-                  );
-                  const dayPeriod = nowMembershipPeriod.asDays();
-                  if (dayPeriod > 1) {
-                    return true;
+                  if (nowMembership) {
+                    const nowMembershipPeriod = moment.duration(
+                      moment(nowMembership.endDatetime).diff(
+                        nowMembership.startDatetime
+                      )
+                    );
+                    const dayPeriod = nowMembershipPeriod.asDays();
+                    if (dayPeriod > 1) {
+                      return true;
+                    } else {
+                      return false;
+                    }
                   } else {
                     return false;
                   }
@@ -489,14 +492,18 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                       moment(membership.endDatetime) >= moment()
                   );
 
-                  const nowMembershipPeriod = moment.duration(
-                    moment(nowMembership.endDatetime).diff(
-                      nowMembership.startDatetime
-                    )
-                  );
-                  const dayPeriod = nowMembershipPeriod.asDays();
-                  if (dayPeriod <= 1) {
-                    return true;
+                  if (nowMembership) {
+                    const nowMembershipPeriod = moment.duration(
+                      moment(nowMembership.endDatetime).diff(
+                        nowMembership.startDatetime
+                      )
+                    );
+                    const dayPeriod = nowMembershipPeriod.asDays();
+                    if (dayPeriod <= 1) {
+                      return true;
+                    } else {
+                      return false;
+                    }
                   } else {
                     return false;
                   }
