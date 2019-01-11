@@ -162,7 +162,8 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                 if (cabinetSet !== null) {
                   const {
                     cabinets: findCabinets,
-                    horizontalNumber: findHorizontalNumber
+                    horizontalNumber: findHorizontalNumber,
+                    verticalNumber: findVerticalNumber
                   } = cabinetSet;
 
                   if (findCabinets && findHorizontalNumber) {
@@ -170,7 +171,8 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                       cabinets: findCabinets.sort((a, b) => {
                         return a!.id - b!.id;
                       }),
-                      horizontalNumber: findHorizontalNumber
+                      horizontalNumber: findHorizontalNumber,
+                      verticalNumber: findVerticalNumber
                     });
                   }
                 }
