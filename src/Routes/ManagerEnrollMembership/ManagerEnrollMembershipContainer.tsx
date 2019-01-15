@@ -222,14 +222,10 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
   };
 
   public onDatetimeChange = (datetimeValue: Moment) => {
-    if (datetimeValue < moment()) {
-      toast.error("이미 지난 일시입니다");
-    } else {
-      this.setState({
-        datetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss"),
-        endDatetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss")
-      });
-    }
+    this.setState({
+      datetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss"),
+      endDatetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss")
+    });
   };
 
   public onEndDatetimeChange = (datetimeValue: Moment) => {
