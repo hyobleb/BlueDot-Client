@@ -401,8 +401,8 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                   const { memberships } = user;
                   const nowMembership = memberships.find(
                     membership =>
-                      moment(membership.startDatetime) <= moment() &&
-                      moment(membership.endDatetime) >= moment()
+                      moment(membership.endDatetime) >= moment() &&
+                      membership.target === "MEMBERSHIP"
                   );
 
                   if (nowMembership) {
@@ -430,8 +430,8 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                   const { memberships } = user;
                   const nowMembership = memberships.find(
                     membership =>
-                      moment(membership.startDatetime) <= moment() &&
-                      moment(membership.endDatetime) >= moment()
+                      moment(membership.endDatetime) >= moment() &&
+                      membership.target === "MEMBERSHIP"
                   );
 
                   if (nowMembership) {
@@ -459,9 +459,7 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                 .filter(user => {
                   const { memberships } = user;
                   const nowMembership = memberships.find(
-                    membership =>
-                      moment(membership.startDatetime) <= moment() &&
-                      moment(membership.endDatetime) >= moment()
+                    membership => moment(membership.endDatetime) >= moment()
                   );
                   if (nowMembership) {
                     const nowMembershipPeriod = moment.duration(
@@ -487,9 +485,7 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                 .filter(user => {
                   const { memberships } = user;
                   const nowMembership = memberships.find(
-                    membership =>
-                      moment(membership.startDatetime) <= moment() &&
-                      moment(membership.endDatetime) >= moment()
+                    membership => moment(membership.endDatetime) >= moment()
                   );
 
                   if (nowMembership) {

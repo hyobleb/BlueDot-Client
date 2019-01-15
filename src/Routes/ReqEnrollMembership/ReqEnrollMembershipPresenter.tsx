@@ -243,7 +243,7 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
           </ButtonContainer>
         </ButtonSection>
       </FormExtended>
-      }
+
       {branchPopUpShow ? (
         <BranchSearchPopUp
           closeFunc={setFalseBranchPopUpShow}

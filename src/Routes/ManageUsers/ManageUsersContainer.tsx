@@ -81,7 +81,6 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
       branchName,
       managingBranches
     } = this.state;
-    console.log({ nowUsingUsers });
     return (
       <GetManagingBranchesQuery
         query={MANAGER_GET_MANAGING_BRANCHES}
