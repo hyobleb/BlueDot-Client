@@ -59,7 +59,7 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
         mutation={USER_REQUEST_MEMBERSHIP}
         variables={{ branchId, startDatetime: datetimeValue, productId }}
       >
-        {userReqMembershipMutationFn => {
+        {(userReqMembershipMutationFn, { loading: reqMembershipLoading }) => {
           this.reqMembershipFn = userReqMembershipMutationFn;
           return (
             <GetBranchQuery
@@ -90,6 +90,7 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
                   onDatetimeChange={this.onDatetimeChange}
                   onThrowBasketButtonClick={this.onThrowBasketButtonClick}
                   onCancelClick={this.onCancelClick}
+                  reqMembershipLoading={reqMembershipLoading}
                 />
               )}
             </GetBranchQuery>

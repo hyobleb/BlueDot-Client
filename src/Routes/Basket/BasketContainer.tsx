@@ -138,7 +138,10 @@ class BasketContainer extends React.Component<IProps, IState> {
                   this.completePaymentFn = completePaymentMutationFn;
                   return (
                     <CreatePaymentMutation mutation={CREATE_PAYMENT}>
-                      {createPaymentMutationFn => {
+                      {(
+                        createPaymentMutationFn,
+                        { loading: createPaymentLoading }
+                      ) => {
                         this.createPaymentFn = createPaymentMutationFn;
                         return (
                           <DeleteRequestMembershipMutation
@@ -182,6 +185,9 @@ class BasketContainer extends React.Component<IProps, IState> {
                                       importLoad={importLoad}
                                       jqueryLoad={jqueryLoad}
                                       kakaoLoad={kakaoLoad}
+                                      createPaymentLoading={
+                                        createPaymentLoading
+                                      }
                                     />
                                   )}
                                 </GetRequestMembershipsQuery>

@@ -182,23 +182,34 @@ const ManageSeatPresenter: React.SFC<IProps> = ({
             </LogsTitleRowCon>
             <LogsBodyRowCon>
               {seatLogs.length > 0 ? (
-                seatLogs.map(log => (
-                  <LogsRow key={log.id} onClick={() => onLogClick(log.user.id)}>
-                    <DatetimeCol>
-                      {moment(new Date(log.updatedAt).toUTCString()).format(
-                        "YYYY-MM-DD HH:mm:ss"
-                      )}
-                    </DatetimeCol>
-                    <NameCol>{log.user.name}</NameCol>
-                    <ActionCol>
-                      {log.status === "ASSIGN"
-                        ? "배정"
-                        : log.status === "RETURN"
-                        ? "반납"
-                        : ""}
-                    </ActionCol>
-                  </LogsRow>
-                ))
+                seatLogs.map(log => {
+                  const timestamp = new Date(log.updatedAt).getTime();
+                  console.log(
+                    moment(new Date(timestamp).toUTCString()).format(
+                      "YYYY-MM-DD HH:mm:ss"
+                    )
+                  );
+                  return (
+                    <LogsRow
+                      key={log.id}
+                      onClick={() => onLogClick(log.user.id)}
+                    >
+                      <DatetimeCol>
+                        {moment(new Date(log.updatedAt).toUTCString()).format(
+                          "YYYY-MM-DD HH:mm:ss"
+                        )}
+                      </DatetimeCol>
+                      <NameCol>{log.user.name}</NameCol>
+                      <ActionCol>
+                        {log.status === "ASSIGN"
+                          ? "배정"
+                          : log.status === "RETURN"
+                          ? "반납"
+                          : ""}
+                      </ActionCol>
+                    </LogsRow>
+                  );
+                })
               ) : (
                 <NoDataText>좌석 이용 기록이 없습니다</NoDataText>
               )}

@@ -102,6 +102,7 @@ interface IProps {
   importLoad: boolean;
   jqueryLoad: boolean;
   kakaoLoad: boolean;
+  createPaymentLoading: boolean;
 }
 
 const BasketPresenter: React.SFC<IProps> = ({
@@ -115,7 +116,8 @@ const BasketPresenter: React.SFC<IProps> = ({
   onPaymentClick,
   importLoad,
   jqueryLoad,
-  kakaoLoad
+  kakaoLoad,
+  createPaymentLoading
 }) =>
   reqMembershipsLoading || !importLoad || !jqueryLoad || !kakaoLoad ? (
     <Loading />
@@ -238,8 +240,10 @@ const BasketPresenter: React.SFC<IProps> = ({
             : reqMembershipDatas &&
               reqMembershipDatas.UserGetRequest &&
               reqMembershipDatas.UserGetRequest.requestMemberships &&
-              reqMembershipDatas.UserGetRequest.requestMemberships.length >
-                0 && (
+              reqMembershipDatas.UserGetRequest.requestMemberships.length > 0 &&
+              (createPaymentLoading ? (
+                <Loading />
+              ) : (
                 <>
                   <PayButton
                     value={"카드 결제"}
@@ -319,7 +323,7 @@ const BasketPresenter: React.SFC<IProps> = ({
                     }}
                   /> */}
                 </>
-              )}
+              ))}
         </BottomSection>
       </Container>
     </BackContainer>

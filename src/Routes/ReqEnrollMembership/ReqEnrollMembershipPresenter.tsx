@@ -138,6 +138,7 @@ interface IProps {
   onDatetimeChange: (datetimeValue: moment.Moment) => void;
   onThrowBasketButtonClick: () => Promise<void>;
   onCancelClick: () => void;
+  reqMembershipLoading: boolean;
 }
 
 const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
@@ -154,7 +155,8 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
   onBranchClick,
   onDatetimeChange,
   onThrowBasketButtonClick,
-  onCancelClick
+  onCancelClick,
+  reqMembershipLoading
 }) => {
   const productOptions = new Array();
   if (
@@ -236,7 +238,7 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
         <ButtonSection>
           <ButtonContainer>
             <ThrowBasketButton
-              value={"장바구니 담기"}
+              value={reqMembershipLoading ? "장바구니 담는중" : "장바구니 담기"}
               onClick={onThrowBasketButtonClick}
             />
             <CancleButton value={"취소"} onClick={onCancelClick} />

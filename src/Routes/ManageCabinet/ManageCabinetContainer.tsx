@@ -310,7 +310,6 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       const {
         ManagerGetCabinetMembership: { membership }
       } = data;
-      console.log({ membership });
       if (membership) {
         this.setState({
           nowMembershipId: membership.id
@@ -475,6 +474,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       cabinet,
       nowMembershipId
     } = this.state;
+
     if (cabinet && cabinet.user) {
       history.push({
         pathname: "/manager-enroll-cabinet",

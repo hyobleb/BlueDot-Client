@@ -182,6 +182,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
               const { ManagerShiftCabinetMembership } = data;
               if (ManagerShiftCabinetMembership.ok) {
                 toast.success("해당 사물함으로 이동했습니다!");
+
                 this.onBackClick();
               } else {
                 toast.error(ManagerShiftCabinetMembership.error);
