@@ -1,4 +1,6 @@
-import moment, { Moment } from "moment";
+import moment from "moment-timezone";
+import { Moment } from "moment-timezone";
+// import moment, { Moment } from "moment";
 import React from "react";
 import Datetime from "react-datetime";
 import DefaultBack from "src/Components/DefaultBack";
@@ -183,21 +185,26 @@ const ManageSeatPresenter: React.SFC<IProps> = ({
             <LogsBodyRowCon>
               {seatLogs.length > 0 ? (
                 seatLogs.map(log => {
-                  const timestamp = new Date(log.updatedAt).getTime();
-                  console.log(
-                    moment(new Date(timestamp).toUTCString()).format(
-                      "YYYY-MM-DD HH:mm:ss"
-                    )
-                  );
+                  const updatedAt = log.updatedAt;
+                  console.log({ updatedAt });
+                  const updatedDate = new Date(updatedAt);
+                  console.log({ updatedDate });
+                  const utcString = updatedDate.toUTCString();
+                  console.log({ utcString });
+
+                  const momentVal = moment(utcString)
+                    .tz("Asia/Seoul")
+                    .format("YYYY-MM-DD HH:mm:ss");
                   return (
                     <LogsRow
                       key={log.id}
                       onClick={() => onLogClick(log.user.id)}
                     >
                       <DatetimeCol>
-                        {moment(new Date(log.updatedAt).toUTCString()).format(
+                        {/* {moment(new Date(log.updatedAt).toUTCString()).format(
                           "YYYY-MM-DD HH:mm:ss"
-                        )}
+                        )} */}
+                        {momentVal}
                       </DatetimeCol>
                       <NameCol>{log.user.name}</NameCol>
                       <ActionCol>

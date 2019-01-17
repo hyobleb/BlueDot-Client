@@ -15,7 +15,8 @@ const Back = styled(DefaultBack)``;
 const Section = styled.section``;
 const HeadSection = styled(Section)``;
 const LoungeTitle = styled.div`
-  margin-top: 10px 0;
+  margin-top: 10px;
+  margin-bottom: 20px;
 `;
 const LoungeSection = styled(Section)`
   margin-top: 20px;

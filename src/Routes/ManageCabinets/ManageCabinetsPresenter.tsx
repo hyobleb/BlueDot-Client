@@ -29,7 +29,9 @@ const LoungeCol = styled.div`
   margin-right: auto;
 `;
 const Button = styled(SmallButton)``;
-const BranchSearchBtn = styled(Button)``;
+const BranchSearchBtn = styled(Button)`
+  width: 150px;
+`;
 
 const SetTitleContainer = styled.div`
   display: flex;
@@ -54,7 +56,12 @@ const CabinetDisplayTitle = styled.div`
   margin-top: 30px;
   margin-bottom: 10px;
 `;
-const BranchBtn = styled(Button)``;
+const BranchBtn = styled(Button)`
+  font-size: 13px;
+  width: 140px;
+  margin-left: 3px;
+  margin-right: 3px;
+`;
 
 interface IProps {
   showBranchSearchPopUp: boolean;
@@ -118,7 +125,13 @@ const ManageCabinetsPresenter: React.SFC<IProps> = ({
         managingBranches.map(
           managingBanch =>
             managingBanch && (
-              <BranchBtn key={managingBanch.id} value={managingBanch.name} />
+              <BranchBtn
+                key={managingBanch.id}
+                value={managingBanch.name}
+                onClick={() => {
+                  onBranchClick(managingBanch.id);
+                }}
+              />
             )
         )}
     </HeadSection>

@@ -41,6 +41,7 @@ interface IState {
   isHead: boolean;
   isFranchiser: boolean;
   isSupervisor: boolean;
+  isManStaff: boolean;
 }
 
 class GetCabinetMembershipQuery extends Query<
@@ -86,6 +87,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       endDatetime: moment(),
       isFranchiser: props.location.state.isFranchiser,
       isHead: props.location.state.isHead,
+      isManStaff: props.location.state.isManStaff,
       isSupervisor: props.location.state.isSupervisor,
       selBranchId,
       selSetId,
@@ -325,8 +327,8 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
   };
 
   public toggleShowUserSearchPopUp = () => {
-    const { isHead, isFranchiser, isSupervisor } = this.state;
-    if (isHead || isFranchiser || isSupervisor) {
+    const { isHead, isFranchiser, isSupervisor, isManStaff } = this.state;
+    if (isHead || isFranchiser || isSupervisor || isManStaff) {
       this.setState({
         showUserSearchPopUp: !this.state.showUserSearchPopUp
       });

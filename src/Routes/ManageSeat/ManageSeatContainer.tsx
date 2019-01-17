@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment, { Moment } from "moment-timezone";
 import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";

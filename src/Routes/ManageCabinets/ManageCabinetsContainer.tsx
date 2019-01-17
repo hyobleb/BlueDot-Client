@@ -166,7 +166,6 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
       | getCabinet
       | managerGetManagingBranches
   ) => {
-    console.log({ data });
     if ("UserGetBranch" in data) {
       const {
         UserGetBranch: { branch }
@@ -270,7 +269,7 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
   public onCabinetClick = (cabinetId: number) => {
     const { history } = this.props;
     const { selBranchId, selSetId, branch } = this.state;
-    const { isHead, isFranchiser, isSupervisor } = this.props;
+    const { isHead, isFranchiser, isSupervisor, isManStaff } = this.props;
     history.push({
       pathname: "/manage-cabinet",
       state: {
@@ -278,6 +277,7 @@ class ManageCabinetsContainer extends React.Component<IProps, IState> {
         cabinetId,
         isFranchiser,
         isHead,
+        isManStaff,
         isSupervisor,
         selBranchId,
         selSetId
