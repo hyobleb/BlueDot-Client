@@ -471,7 +471,6 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       } else if (!womanMax) {
         toast.error("여자 최대 수용인원수를 입력해주세요");
       } else {
-        console.log({ variables, lat, lng });
         this.modifyBranchMutationFn({ variables: { ...variables, lat, lng } });
       }
     } else if (isFranchiser || isSupervisor) {

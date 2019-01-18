@@ -195,7 +195,6 @@ const Seat: React.SFC<ISProps> = ({
   const numberRotate =
     (rotate >= 180 && rotate < 270) || rotate <= -180 ? true : false;
 
-  console.log(seatNumber, discard, usable, nowUsing, endDatetime, gender);
   return (
     <SeatItem left={left} top={top} rotate={rotate}>
       {!discard ? (

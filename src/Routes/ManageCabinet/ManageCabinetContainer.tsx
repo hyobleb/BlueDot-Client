@@ -455,9 +455,9 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
   };
 
   public toggleShowBranchSearchPopUp = () => {
-    const { isHead, isFranchiser, isSupervisor } = this.state;
+    const { isHead, isFranchiser, isSupervisor, isManStaff } = this.state;
 
-    if (isHead || isFranchiser || isSupervisor) {
+    if (isHead || isFranchiser || isSupervisor || isManStaff) {
       this.setState({
         showBranchSearchPopUp: !this.state.showBranchSearchPopUp
       });

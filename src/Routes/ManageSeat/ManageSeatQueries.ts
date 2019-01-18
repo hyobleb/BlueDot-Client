@@ -26,6 +26,8 @@ export const MANAGER_GET_SEAT_LOGS = gql`
       seat {
         id
         seatNumber
+        nowUsing
+        endDatetime
         branch {
           id
           name

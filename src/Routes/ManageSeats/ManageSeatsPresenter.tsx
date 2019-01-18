@@ -13,7 +13,9 @@ import {
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
-const HeadSection = styled(Section)``;
+const HeadSection = styled(Section)`
+  text-align: center;
+`;
 const LoungeTitle = styled.div`
   margin-top: 10px;
   margin-bottom: 20px;
@@ -23,13 +25,17 @@ const LoungeSection = styled(Section)`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
 `;
 const LoungeCol = styled.div`
   width: 100%;
 `;
 const Button = styled(SmallButton)``;
 const BranchSearchBtn = styled(Button)``;
-const BranchBtn = styled(Button)``;
+const BranchBtn = styled(Button)`
+  margin-left: 3px;
+  margin-right: 3px;
+`;
 
 interface IProps {
   showBranchSearchPopUp: boolean;
@@ -100,7 +106,7 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
           ))}
     </HeadSection>
 
-    {getBranchLoading && <Loading />}
+    {Boolean(selBranchId) && getBranchLoading && <Loading />}
 
     {(!getBranchLoading &&
       (!selBranchId &&

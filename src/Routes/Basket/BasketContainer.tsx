@@ -404,6 +404,8 @@ class BasketContainer extends React.Component<IProps, IState> {
                       // KAKAO MESSAGE 전송
                       this.sendKakaoMessage();
                     } else if (payMethod === "vbank") {
+                      toast.success("계좌번호를 확인하고 입금해주세요!");
+                      history.push("/vbank-list");
                       // TODO: 무통장 결제 로직 추가
                       // rsp 속성 이용처리 :
                       // vbank_num : string 가상계좌 입금계좌번호	PG사로부터 전달된 정보 그대로 제공하므로 숫자 외 dash(-)또는 기타 기호가 포함되어 있을 수 있음

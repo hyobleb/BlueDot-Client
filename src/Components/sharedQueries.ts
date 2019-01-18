@@ -569,3 +569,34 @@ export const GET_PAYMENT_INFO = gql`
     }
   }
 `;
+
+export const GET_VBNAK_PAYMENTS = gql`
+  query getVbankPayments {
+    GetVbankPayments {
+      ok
+      error
+      payments {
+        id
+        amount
+        vbankNum
+        vbankDate
+        vbankName
+        createdAt
+        requestMemberships {
+          id
+          startDatetime
+          product {
+            id
+            title
+            hours
+            amount
+          }
+          branch {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;

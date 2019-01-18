@@ -89,6 +89,7 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
             variables={{ branchId: selBranchId }}
             fetchPolicy={"cache-and-network"}
             onCompleted={this.updateFields}
+            skip={!Boolean(selBranchId)}
           >
             {({ loading: getBranchLoading }) => (
               <ManageSeatsPresenter

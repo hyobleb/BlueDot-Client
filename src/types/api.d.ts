@@ -96,6 +96,24 @@ export interface modifyCabinetLockVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: checkVbankPayment
+// ====================================================
+
+export interface checkVbankPayment_CheckVbankPayment {
+  __typename: "CheckVbankPaymentResponse";
+  ok: boolean;
+  error: string | null;
+  haveVbank: boolean | null;
+}
+
+export interface checkVbankPayment {
+  CheckVbankPayment: checkVbankPayment_CheckVbankPayment;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: managerRefund
 // ====================================================
 
@@ -1145,6 +1163,57 @@ export interface getPaymentInfoVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getVbankPayments
+// ====================================================
+
+export interface getVbankPayments_GetVbankPayments_payments_requestMemberships_product {
+  __typename: "Product";
+  id: number;
+  title: string;
+  hours: number;
+  amount: number;
+}
+
+export interface getVbankPayments_GetVbankPayments_payments_requestMemberships_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getVbankPayments_GetVbankPayments_payments_requestMemberships {
+  __typename: "RequestMembership";
+  id: number;
+  startDatetime: string | null;
+  product: getVbankPayments_GetVbankPayments_payments_requestMemberships_product;
+  branch: getVbankPayments_GetVbankPayments_payments_requestMemberships_branch;
+}
+
+export interface getVbankPayments_GetVbankPayments_payments {
+  __typename: "Payment";
+  id: number;
+  amount: number;
+  vbankNum: string | null;
+  vbankDate: string | null;
+  vbankName: string | null;
+  createdAt: string;
+  requestMemberships: (getVbankPayments_GetVbankPayments_payments_requestMemberships | null)[] | null;
+}
+
+export interface getVbankPayments_GetVbankPayments {
+  __typename: "GetVbankPaymentsResponse";
+  ok: boolean;
+  error: string | null;
+  payments: (getVbankPayments_GetVbankPayments_payments | null)[] | null;
+}
+
+export interface getVbankPayments {
+  GetVbankPayments: getVbankPayments_GetVbankPayments;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -1902,6 +1971,8 @@ export interface managerGetSeatLogs_ManagerGetSeatLogs_seat {
   __typename: "Seat";
   id: number;
   seatNumber: number;
+  nowUsing: boolean;
+  endDatetime: string | null;
   branch: managerGetSeatLogs_ManagerGetSeatLogs_seat_branch;
 }
 

@@ -186,11 +186,8 @@ const ManageSeatPresenter: React.SFC<IProps> = ({
               {seatLogs.length > 0 ? (
                 seatLogs.map(log => {
                   const updatedAt = log.updatedAt;
-                  console.log({ updatedAt });
                   const updatedDate = new Date(updatedAt);
-                  console.log({ updatedDate });
                   const utcString = updatedDate.toUTCString();
-                  console.log({ utcString });
 
                   const momentVal = moment(utcString)
                     .tz("Asia/Seoul")
@@ -224,13 +221,18 @@ const ManageSeatPresenter: React.SFC<IProps> = ({
           </LogsContainer>
         </LogsSection>
         <ActionBtnSection>
-          {seatLogs.length > 0 &&
+          {seat && (seat.endDatetime && moment(seat.endDatetime) > moment()) ? (
+            <ReturnBtn value={"반납"} onClick={onReturnClick} />
+          ) : (
+            <AssignBtn value={"배정"} onClick={toggleShowSearchUserPopUp} />
+          )}
+          {/* {seatLogs.length > 0 &&
           (seatLogs[0].status === "ASSIGN" &&
             moment(seatLogs[0].endDatetime) > moment()) ? (
             <ReturnBtn value={"반납"} onClick={onReturnClick} />
           ) : (
             <AssignBtn value={"배정"} onClick={toggleShowSearchUserPopUp} />
-          )}
+          )} */}
         </ActionBtnSection>
       </>
     )}

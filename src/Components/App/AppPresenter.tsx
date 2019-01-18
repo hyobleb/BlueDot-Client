@@ -43,6 +43,7 @@ import SocialLogin from "../../Routes/SocialLogin";
 import UpdateCabinetSet from "../../Routes/UpdateCabinetSet";
 import UpdateLounge from "../../Routes/UpdateLounge";
 import UserDetail from "../../Routes/UserDetail";
+import VbankList from "../../Routes/VbankList";
 import ViewPayInfo from "../../Routes/ViewPayInfo";
 import ViewReqSignUp from "../../Routes/ViewReqSignUp";
 
@@ -143,6 +144,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         exact={true}
         component={ReqExtendCabinet}
       />
+      <Route path={"/vbank-list"} exact={true} component={VbankList} />
       {(isHead ||
         isFranchiser ||
         isSupervisor ||

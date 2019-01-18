@@ -2,7 +2,7 @@ import React from "react";
 import { MutationFn } from "react-apollo";
 import { Link } from "react-router-dom";
 import styled from "../../typed-components";
-import { userProfile } from "../../types/api";
+import { checkVbankPayment, userProfile } from "../../types/api";
 const Container = styled.div`
   height: 100%;
 `;
@@ -93,12 +93,15 @@ interface IProps {
   data?: userProfile;
   loading: boolean;
   logUserOutMutation: MutationFn;
+  getVbankDataLoading: boolean;
+  checkVbankData?: checkVbankPayment;
 }
 
 const MenuPresenter: React.SFC<IProps> = ({
   data: { GetMyProfile: { user = null } = {} } = {},
   loading,
-  logUserOutMutation
+  logUserOutMutation,
+  checkVbankData
 }) => {
   return (
     <Container>
@@ -121,6 +124,11 @@ const MenuPresenter: React.SFC<IProps> = ({
           </Header>
           <SLink to="/membership">멤버쉽 정보</SLink>
           <SLink to="/basket">장바구니</SLink>
+          {checkVbankData &&
+            checkVbankData.CheckVbankPayment &&
+            checkVbankData.CheckVbankPayment.haveVbank && (
+              <SLink to="/vbank-list">무통장 결제</SLink>
+            )}
           <MenuItem onClick={() => logUserOutMutation()}>로그아웃</MenuItem>
 
           {user.isFranchiser ||
