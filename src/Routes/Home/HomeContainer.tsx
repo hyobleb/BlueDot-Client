@@ -36,7 +36,7 @@ import {
 
 const Button = styled(SmallButton)`
   color: black;
-  width: 140px;
+  width: 180px;
 `;
 
 interface IState {
@@ -143,7 +143,7 @@ class NewMessageNotification extends React.Component<IMessageProps> {
         <br />
         {branchId ? (
           <Button
-            value={`${branchName} 등록하기`}
+            value={`${branchName} 등록 & 결제`}
             onClick={() => this.moveToEnrollMembership(branchId)}
           />
         ) : extendMembershipId ? (
@@ -342,6 +342,7 @@ class HomeContainer extends React.Component<IProps, IState> {
                                     <ProfileQuery
                                       query={USER_PROFILE}
                                       onCompleted={this.updateFields}
+                                      fetchPolicy={"cache-and-network"}
                                     >
                                       {({ loading: profileLoading }) => (
                                         <HomePresenter
@@ -527,6 +528,8 @@ class HomeContainer extends React.Component<IProps, IState> {
       usableCabinetMembership
     } = this.state;
 
+    console.log({ branchFetched, profileFetched, usableMembershipFetched });
+
     if (branchFetched && profileFetched && usableMembershipFetched) {
       if (!usableMembership) {
         if (user) {
@@ -538,6 +541,7 @@ class HomeContainer extends React.Component<IProps, IState> {
             cleaningBranches,
             staffManangingBranches
           } = user;
+
           if (!isHead && (isSupervisor || isFranchiser)) {
             if (isSupervisor || isFranchiser) {
               if (managingBranches) {
