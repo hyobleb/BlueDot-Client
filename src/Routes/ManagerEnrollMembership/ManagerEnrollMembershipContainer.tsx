@@ -117,7 +117,7 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
       >
         {() => (
           <CreateMembershipMutation mutation={MANAGER_CREATE_MEMBERSHIP}>
-            {userReqMembershipMutationFn => {
+            {(userReqMembershipMutationFn, { loading: userReqMemLoading }) => {
               this.createMembershipFn = userReqMembershipMutationFn;
               return (
                 <GetBranchQuery
@@ -164,6 +164,8 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
                       onBranchBtnClick={this.onBranchBtnClick}
                       isCleanStaff={isCleanStaff}
                       isManStaff={isManStaff}
+                      branchId={branchId}
+                      userReqMemLoading={userReqMemLoading}
                     />
                   )}
                 </GetBranchQuery>

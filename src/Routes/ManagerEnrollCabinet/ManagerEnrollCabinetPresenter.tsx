@@ -148,9 +148,14 @@ const CabinetDisplayTitle = styled.div`
   margin-bottom: 10px;
 `;
 
-const AddDatetimeCon = styled.div``;
+const AddDatetimeCon = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
 const AddDatetimeBtn = styled(Button)`
   font-size: 12px;
+  width: 120px;
 `;
 
 const ResetButton = styled(Button)`
@@ -240,6 +245,8 @@ interface IProps {
   isManStaff: boolean;
   selProductReset: () => void;
   verticalNumber: number;
+  productLoading: boolean;
+  enrollCabLoading: boolean;
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -288,7 +295,9 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
   isCleanStaff,
   isManStaff,
   selProductReset,
-  verticalNumber
+  verticalNumber,
+  productLoading,
+  enrollCabLoading
 }) => {
   const productOptions = new Array();
   if (
@@ -486,6 +495,7 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
               </DatetimeSection>
 
               <AddDatetimeCon>
+                {productLoading && branchId && <Loading />}
                 {productDatas &&
                   productDatas.UserGetBranch &&
                   productDatas.UserGetBranch.branch &&
@@ -534,27 +544,28 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
 
           <ButtonSection>
             <ButtonContainer>
-              {!isShifitCabinet && (
-                <>
-                  <FieldCardCreateMembershipBtn
-                    value={"카드 현장 등록"}
-                    onClick={() =>
-                      onEnrollClick(CreatePaymentMethodOption.FIELD_CARD)
-                    }
-                  />
-                  <CashCreateMembershipBtn
-                    value={"현금 결제 등록"}
-                    onClick={() =>
-                      onEnrollClick(CreatePaymentMethodOption.CASH)
-                    }
-                  />
-                </>
-              )}
+              {!isShifitCabinet &&
+                ((enrollCabLoading && <Loading />) || (
+                  <>
+                    <FieldCardCreateMembershipBtn
+                      value={"카드 현장 등록"}
+                      onClick={() =>
+                        onEnrollClick(CreatePaymentMethodOption.FIELD_CARD)
+                      }
+                    />
+                    <CashCreateMembershipBtn
+                      value={"현금 결제 등록"}
+                      onClick={() =>
+                        onEnrollClick(CreatePaymentMethodOption.CASH)
+                      }
+                    />
+                  </>
+                ))}
 
               {/* 무결제 등록 숨김 처리 */}
               {isShifitCabinet && (
                 <ThrowBasketButton
-                  value={isShifitCabinet ? "이동하기" : "무결제 등록"}
+                  value={"이동하기"}
                   onClick={() => onEnrollClick()}
                 />
               )}

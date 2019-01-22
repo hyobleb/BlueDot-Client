@@ -293,7 +293,10 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                 <ManangerCreateCabinet
                                   mutation={MANAGER_ENROLL_CABINET}
                                 >
-                                  {userRequestCabinetFn => {
+                                  {(
+                                    userRequestCabinetFn,
+                                    { loading: enrollCabLoading }
+                                  ) => {
                                     this.enrollCabinetFn = userRequestCabinetFn;
                                     return (
                                       <GetBranchQuery
@@ -308,7 +311,10 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                         }}
                                         skip={branchId === 0}
                                       >
-                                        {({ data: productDatas }) => (
+                                        {({
+                                          data: productDatas,
+                                          loading: productLoading
+                                        }) => (
                                           <ManagerEnrollCabinetPresenter
                                             cabinetLoading={cabinetLoading}
                                             managingBranchesLoading={
@@ -378,6 +384,8 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                               this.selProductReset
                                             }
                                             verticalNumber={verticalNumber}
+                                            productLoading={productLoading}
+                                            enrollCabLoading={enrollCabLoading}
                                           />
                                         )}
                                       </GetBranchQuery>

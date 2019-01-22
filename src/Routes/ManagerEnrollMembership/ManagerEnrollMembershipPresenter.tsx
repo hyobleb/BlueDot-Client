@@ -14,6 +14,7 @@ import {
   userGetProducts,
   userGetProducts_UserGetBranch_branch_products
 } from "src/types/api";
+import Loading from "../../Components/Loading";
 
 const FormExtended = styled(Form)`
   width: 95%;
@@ -192,6 +193,8 @@ interface IProps {
   onBranchBtnClick: (branchId: number) => void;
   isCleanStaff: boolean;
   isManStaff: boolean;
+  branchId: number;
+  userReqMemLoading: boolean;
 }
 
 const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
@@ -224,7 +227,9 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
   managingBranches,
   onBranchBtnClick,
   isCleanStaff,
-  isManStaff
+  isManStaff,
+  branchId,
+  userReqMemLoading
 }) => {
   return (
     <BackContainer>
@@ -300,29 +305,34 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
           />
         </DatetimeSection>
         <AddDatetimeCon>
-          {productDatas &&
-            productDatas.UserGetBranch &&
-            productDatas.UserGetBranch.branch &&
-            productDatas.UserGetBranch.branch.products &&
-            productDatas.UserGetBranch.branch.products
-              .filter(
-                product =>
-                  product && product.target === "MEMBERSHIP" && !product.discard
-              )
-              .map(
-                product =>
-                  product && (
-                    <AddDatetimeBtn
-                      key={product.id}
-                      value={`+ ${product.hours}시간 ${
-                        product.hours % 24 === 0
-                          ? `(${product.hours / 24}일)`
-                          : ""
-                      }`}
-                      onClick={() => onDateTimeAddClick(product, product.hours)}
-                    />
-                  )
-              )}
+          {(productsLoading && branchId !== 0 && <Loading />) ||
+            (productDatas &&
+              productDatas.UserGetBranch &&
+              productDatas.UserGetBranch.branch &&
+              productDatas.UserGetBranch.branch.products &&
+              productDatas.UserGetBranch.branch.products
+                .filter(
+                  product =>
+                    product &&
+                    product.target === "MEMBERSHIP" &&
+                    !product.discard
+                )
+                .map(
+                  product =>
+                    product && (
+                      <AddDatetimeBtn
+                        key={product.id}
+                        value={`+ ${product.hours}시간 ${
+                          product.hours % 24 === 0
+                            ? `(${product.hours / 24}일)`
+                            : ""
+                        }`}
+                        onClick={() =>
+                          onDateTimeAddClick(product, product.hours)
+                        }
+                      />
+                    )
+                ))}
         </AddDatetimeCon>
         <ProductsSection>
           <ProductsTitle>선택한 멤버쉽 상품</ProductsTitle>
@@ -339,24 +349,32 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
 
         <ButtonSection>
           <ButtonContainer>
-            <FieldCardCreateMembershipBtn
-              value={"카드 현장 등록"}
-              onClick={() =>
-                onCreateMembershipClick(CreatePaymentMethodOption.FIELD_CARD)
-              }
-            />
-            <CashCreateMembershipBtn
-              value={"현금 결제 등록"}
-              onClick={() =>
-                onCreateMembershipClick(CreatePaymentMethodOption.CASH)
-              }
-            />
-            {/* 무결제 등록 숨김 처리 */}
-            {/* <CreateMembershipBtn
+            {userReqMemLoading ? (
+              <Loading />
+            ) : (
+              <>
+                <FieldCardCreateMembershipBtn
+                  value={"카드 현장 등록"}
+                  onClick={() =>
+                    onCreateMembershipClick(
+                      CreatePaymentMethodOption.FIELD_CARD
+                    )
+                  }
+                />
+                <CashCreateMembershipBtn
+                  value={"현금 결제 등록"}
+                  onClick={() =>
+                    onCreateMembershipClick(CreatePaymentMethodOption.CASH)
+                  }
+                />
+                {/* 무결제 등록 숨김 처리 */}
+                {/* <CreateMembershipBtn
               value={"무결제 등록"}
               onClick={() => onCreateMembershipClick()}
             /> */}
-            <CancleButton value={"취소"} onClick={onBackClick} />
+                <CancleButton value={"취소"} onClick={onBackClick} />
+              </>
+            )}
           </ButtonContainer>
         </ButtonSection>
       </FormExtended>
