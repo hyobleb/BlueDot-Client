@@ -528,8 +528,6 @@ class HomeContainer extends React.Component<IProps, IState> {
       usableCabinetMembership
     } = this.state;
 
-    console.log({ branchFetched, profileFetched, usableMembershipFetched });
-
     if (branchFetched && profileFetched && usableMembershipFetched) {
       if (!usableMembership) {
         if (user) {
@@ -617,8 +615,9 @@ class HomeContainer extends React.Component<IProps, IState> {
           } else {
             if (nowBranchId) {
               const { isCleanStaff, isManStaff, name } = user;
-
-              if (isCleanStaff || isManStaff) {
+              if (isHead || isSupervisor || isFranchiser) {
+                toast.info("관리자 모드로 로그인 되었습니다🤓");
+              } else if (isCleanStaff || isManStaff) {
                 toast.info(
                   `${name} 스탭님! 오늘도 저희 블루닷라운지 잘 부탁드려요🙏`
                 );

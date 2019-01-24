@@ -340,8 +340,6 @@ class BasketContainer extends React.Component<IProps, IState> {
       const paymentResult: getPayment = await this.getPaymentFn(paymentId);
       let payMethod;
 
-      // console.log({ paymentResult });
-
       if (paymentResult.GetPayment.ok) {
         if (paymentResult.GetPayment.payment) {
           if (paymentResult.GetPayment.payment.payMethod === "CARD") {
@@ -353,19 +351,21 @@ class BasketContainer extends React.Component<IProps, IState> {
           } else if (paymentResult.GetPayment.payment.payMethod === "TRANS") {
             payMethod = "trans";
           }
-          // TODO: 다른 결제 로직도 추가
 
-          const amount = paymentResult.GetPayment.payment.amount;
-          const name = paymentResult.GetPayment.payment.user.name;
-          const buyerTel = paymentResult.GetPayment.payment.user.phoneNumber;
-          const merchantUid = paymentResult.GetPayment.payment.merchant_uid;
+          const {
+            amount,
+            merchant_uid: merchantUid,
+            user: { name, phoneNumber: buyerTel, email }
+          } = paymentResult.GetPayment.payment;
 
           await IMP.request_pay(
             {
               // param
               amount,
+              buyer_email: email,
               buyer_name: name,
               buyer_tel: buyerTel,
+              m_redirect_url: `${SERVER_HOME_HOST}/payments/complete/mobile`,
               merchant_uid: merchantUid,
               name: "블루닷라운지 멤버쉽 결제",
               pay_method: payMethod,
@@ -375,9 +375,7 @@ class BasketContainer extends React.Component<IProps, IState> {
                   ? moment()
                       .add(1, "d")
                       .format("YYYYMMDDhhmm")
-                  : undefined,
-
-              m_redirect_url: `${SERVER_HOME_HOST}/payments/complete/mobile`
+                  : undefined
             },
             async rsp => {
               // callback

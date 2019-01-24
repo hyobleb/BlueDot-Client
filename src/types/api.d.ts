@@ -1134,7 +1134,7 @@ export interface getPaymentInfo_GetPayment_payment {
   __typename: "Payment";
   id: number;
   status: string;
-  payMethod: string | null;
+  payMethod: string;
   refunded: boolean;
   amount: number;
   merchant_uid: string;
@@ -1414,13 +1414,14 @@ export interface getPayment_GetPayment_payment_user {
   __typename: "User";
   name: string | null;
   phoneNumber: string | null;
+  email: string;
 }
 
 export interface getPayment_GetPayment_payment {
   __typename: "Payment";
   id: number;
   user: getPayment_GetPayment_payment_user;
-  payMethod: string | null;
+  payMethod: string;
   merchant_uid: string;
   amount: number;
 }
@@ -3443,7 +3444,7 @@ export interface getPaymentsByImpUid_GetPaymentByImpUid_payments {
   __typename: "Payment";
   id: number;
   status: string;
-  payMethod: string | null;
+  payMethod: string;
   refunded: boolean;
   amount: number;
   merchant_uid: string;

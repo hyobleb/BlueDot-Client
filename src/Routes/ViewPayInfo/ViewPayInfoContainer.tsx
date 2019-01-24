@@ -62,6 +62,7 @@ class ViewPayInfoContainer extends React.Component<IProps, IState> {
       paymentsByImpUid,
       selPaymentId
     } = this.state;
+
     return (
       <GetPaymentsByImpUid
         query={GET_PAYMENTS_BY_IMPUID}

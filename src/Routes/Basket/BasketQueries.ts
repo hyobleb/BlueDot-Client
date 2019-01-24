@@ -74,6 +74,7 @@ export const GET_PAYMENT = gql`
         user {
           name
           phoneNumber
+          email
         }
         payMethod
         merchant_uid

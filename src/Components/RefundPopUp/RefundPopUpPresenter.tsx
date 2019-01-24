@@ -18,6 +18,7 @@ interface IProps {
   ) => void;
   onOptionChange: (arg: any) => void;
   onBankClick: () => void;
+  paymentMethod: string;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -114,7 +115,8 @@ const RefundPopUpPresenter: React.SFC<IProps> = ({
   refundAmount,
   onInputChange,
   onOptionChange,
-  onBankClick
+  onBankClick,
+  paymentMethod
 }) => {
   return (
     <Container>
@@ -124,42 +126,51 @@ const RefundPopUpPresenter: React.SFC<IProps> = ({
           <Form submitFn={onSubmit}>
             <ExtendInput
               placeholder={"환불금액을 입력해주세요"}
-              value={refundAmount === 0 ? undefined : refundAmount}
+              value={refundAmount}
               name={"refundAmount"}
               onChange={onInputChange}
               autoFocus={true}
+              type={"number"}
             />
-
-            <InputLabel>
-              <InputTitle>은행을 선택해주세요 (가상계좌 환불시) </InputTitle>
-              <DropdonwContainer>
-                <Dropdown
-                  options={bankDropDownOptions}
-                  onChange={onOptionChange}
-                  placeholder={"은행선택"}
-                  value={refundBank}
+            {paymentMethod === "VBANK" && (
+              <>
+                <InputLabel>
+                  <InputTitle>
+                    은행을 선택해주세요 (가상계좌 환불시){" "}
+                  </InputTitle>
+                  <DropdonwContainer>
+                    <Dropdown
+                      options={bankDropDownOptions}
+                      onChange={onOptionChange}
+                      placeholder={"은행선택"}
+                      value={refundBank}
+                    />
+                  </DropdonwContainer>
+                </InputLabel>
+                {refundBank ? (
+                  <CancelBankBtn value={"선택취소"} onClick={onBankClick} />
+                ) : (
+                  ""
+                )}
+                <ExtendInput
+                  placeholder={"계좌번호를 입력해주세요(가상계좌 환불시)"}
+                  value={refundAccount ? refundAccount : ""}
+                  name={"refundAccount"}
+                  onChange={onInputChange}
+                  required={false}
+                  type={"text"}
                 />
-              </DropdonwContainer>
-            </InputLabel>
-            {refundBank ? (
-              <CancelBankBtn value={"선택취소"} onClick={onBankClick} />
-            ) : (
-              ""
+                <ExtendInput
+                  placeholder={"예금주를 입력해주세요(가상계좌 환불시)"}
+                  value={refundHolder ? refundHolder : ""}
+                  name={"refundHolder"}
+                  onChange={onInputChange}
+                  required={false}
+                  type={"text"}
+                />
+              </>
             )}
-            <ExtendInput
-              placeholder={"계좌번호를 입력해주세요(가상계좌 환불시)"}
-              value={refundAccount}
-              name={"refundAccount"}
-              onChange={onInputChange}
-              required={false}
-            />
-            <ExtendInput
-              placeholder={"예금주를 입력해주세요(가상계좌 환불시)"}
-              value={refundHolder}
-              name={"refundHolder"}
-              onChange={onInputChange}
-              required={false}
-            />
+
             <ButtonContainer>
               <Button value={"환불하기"} onClick={onSubmit} />
             </ButtonContainer>

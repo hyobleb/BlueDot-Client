@@ -150,7 +150,10 @@ const ViewPayInfoPresenter: React.SFC<IProps> = ({
             <Refunded>환불처리된 결제 내역입니다.</Refunded>
           ) : (
             <>
-              <Button value={"환불"} onClick={() => toggleShowRefundPopUp()} />
+              <Button
+                value={"환불"}
+                onClick={() => toggleShowRefundPopUp(selPaymentId)}
+              />
             </>
           )}
         </BtnContainer>
@@ -158,7 +161,6 @@ const ViewPayInfoPresenter: React.SFC<IProps> = ({
     ) : (
       ""
     )}
-
     {paymentsByImpUid &&
       paymentsByImpUid.length >= 2 &&
       paymentsByImpUid
@@ -251,12 +253,14 @@ const ViewPayInfoPresenter: React.SFC<IProps> = ({
               </Fragment>
             )
         )}
-    {showRefundPopUp && payment && payment.impUid && (
+    {showRefundPopUp && payment && (
       <RefundPopUp
         closeFunc={toggleShowRefundPopUp}
         paymentId={payment.id}
         selPaymentId={selPaymentId}
-        impUid={payment.impUid}
+        paymentAmount={payment.amount}
+        paymentMethod={payment.payMethod}
+        // impUid={payment.impUid}
       />
     )}
   </Back>

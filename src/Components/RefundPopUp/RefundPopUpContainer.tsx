@@ -1,7 +1,7 @@
 import React from "react";
 import { Mutation, MutationFn } from "react-apollo";
 import { toast } from "react-toastify";
-import { GET_PAYMENTS_BY_IMPUID } from "src/Routes/ViewPayInfo/ViewPayInfoQueries";
+// import { GET_PAYMENTS_BY_IMPUID } from "src/Routes/ViewPayInfo/ViewPayInfoQueries";
 import { managerRefund, managerRefundVariables } from "src/types/api";
 import { GET_PAYMENT_INFO } from "../sharedQueries";
 import RefundPopUpPresenter from "./RefundPopUpPresenter";
@@ -11,7 +11,8 @@ interface IProps {
   closeFunc: any;
   paymentId: number;
   selPaymentId?: number;
-  impUid: string;
+  paymentAmount: number;
+  paymentMethod: string;
 }
 
 interface IState {
@@ -36,7 +37,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { closeFunc, paymentId, impUid } = this.props;
+    const { closeFunc, paymentId, paymentMethod } = this.props;
     const {
       refundBank,
       refundHolder,
@@ -57,8 +58,8 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
           }
         }}
         refetchQueries={[
-          { query: GET_PAYMENT_INFO, variables: { paymentId } },
-          { query: GET_PAYMENTS_BY_IMPUID, variables: { impUid } }
+          { query: GET_PAYMENT_INFO, variables: { paymentId } }
+          // { query: GET_PAYMENTS_BY_IMPUID, variables: { impUid } }
         ]}
       >
         {managerRefundMutation => {
@@ -74,6 +75,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
               onInputChange={this.onInputChange}
               onOptionChange={this.onOptionChange}
               onBankClick={this.onBankClick}
+              paymentMethod={paymentMethod}
             />
           );
         }}
@@ -120,6 +122,12 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
       target: { name, value }
     } = event;
 
+    const { paymentAmount } = this.props;
+
+    if (name === "refundAmount" && paymentAmount < parseInt(value, 10)) {
+      toast.error("환불금액이 결제금액보다 큽니다");
+      return;
+    }
     this.setState({
       [name]: value
     } as any);
