@@ -1,7 +1,5 @@
-import { ApolloError } from "apollo-boost";
 import React from "react";
 import styled from "../../typed-components";
-import { searchBranch } from "../../types/api";
 import Button from "../Button";
 import Form from "../Form";
 import Input from "../Input";
@@ -10,12 +8,14 @@ interface IProps {
   inputBranch: string;
   onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   closeFunc: any;
-  data: searchBranch | undefined;
-  error: ApolloError | undefined;
-  loading: boolean;
   setSearchText: () => void;
   onBranchClick: (id: number) => void;
   title?: string;
+  localInfos: any[];
+  districtInfos: any[];
+  onCityBtnClick: (city: string) => void;
+  onDistrictBtnClick: (district: string) => void;
+  searchedBranches: any[];
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -136,16 +136,41 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
+const LocalSelBtnCon = styled.div`
+  padding: 10px;
+`;
+const LocalSelBtn = styled(Button)`
+  width: 60px;
+  height: 20px;
+  padding: 0;
+  font-size: 11px;
+  margin-top: 0;
+`;
+
+const CityBtnCon = styled.div``;
+const CityBtn = styled(LocalSelBtn)`
+  background-color: ${props => props.theme.lightBlueColor};
+`;
+
+const DistrictBtnCon = styled.div`
+  margin-top: 5px;
+`;
+const DistrictBtn = styled(LocalSelBtn)`
+  margin-right: 3px;
+`;
+
 const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   inputBranch,
   closeFunc,
   onInputChange,
-  data,
-  error,
-  loading,
   setSearchText,
   onBranchClick,
-  title
+  title,
+  localInfos,
+  districtInfos,
+  onCityBtnClick,
+  onDistrictBtnClick,
+  searchedBranches
 }) => {
   return (
     <Container>
@@ -168,8 +193,61 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
           </ExtendForm>
         </InputContainer>
       </HeadContainer>
+
+      <LocalSelBtnCon>
+        <CityBtnCon>
+          {localInfos.map(localInfo => (
+            <CityBtn
+              key={localInfo.city}
+              value={localInfo.city}
+              onClick={() => onCityBtnClick(localInfo.city)}
+            />
+          ))}
+        </CityBtnCon>
+        <DistrictBtnCon>
+          {districtInfos.length > 0 &&
+            districtInfos.map(districtInfo => (
+              <DistrictBtn
+                key={districtInfo}
+                value={districtInfo}
+                onClick={() => onDistrictBtnClick(districtInfo)}
+              />
+            ))}
+        </DistrictBtnCon>
+      </LocalSelBtnCon>
+
       <BodyContainer>
-        {data &&
+        {searchedBranches.length > 0 &&
+          searchedBranches.map(
+            branch =>
+              branch && (
+                <BranchContainer
+                  key={branch.id}
+                  onClick={() => onBranchClick(branch.id)}
+                >
+                  <ContentsContainer>
+                    <PhotoContainer>
+                      <Image src={require("src/images/default_profile.png")} />
+                    </PhotoContainer>
+                    <ContextContainer>
+                      <ContextRow>{branch.name}</ContextRow>
+                      <ContextRow>{branch.descriptionPosition}</ContextRow>
+                      <ContextRow>
+                        {branch.address} {branch.detailAddress}
+                      </ContextRow>
+                      <ContextRow>
+                        {branch.alliedBranches &&
+                          branch.alliedBranches.length > 0 &&
+                          `${branch.alliedBranches.map(
+                            alliedBranch => alliedBranch && alliedBranch.name
+                          )} 이용 가능`}
+                      </ContextRow>
+                    </ContextContainer>
+                  </ContentsContainer>
+                </BranchContainer>
+              )
+          )}
+        {/* {data &&
           data.SearchBranch &&
           data.SearchBranch.branches &&
           data.SearchBranch.branches.length > 0 &&
@@ -202,7 +280,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
                 </BranchContainer>
               )
             );
-          })}
+          })} */}
       </BodyContainer>
       <CloseButton onClick={closeFunc}>
         <svg

@@ -103,6 +103,7 @@ interface IProps {
   jqueryLoad: boolean;
   kakaoLoad: boolean;
   createPaymentLoading: boolean;
+  delReqMemLoading: boolean;
 }
 
 const BasketPresenter: React.SFC<IProps> = ({
@@ -117,7 +118,8 @@ const BasketPresenter: React.SFC<IProps> = ({
   importLoad,
   jqueryLoad,
   kakaoLoad,
-  createPaymentLoading
+  createPaymentLoading,
+  delReqMemLoading
 }) =>
   reqMembershipsLoading || !importLoad || !jqueryLoad || !kakaoLoad ? (
     <Loading />
@@ -179,10 +181,14 @@ const BasketPresenter: React.SFC<IProps> = ({
                     </ReqRow>
                     <ReqRow>가격 : {reqMembership.product.amount}원</ReqRow>
                     <ReqDelRow>
-                      <DeleteButton
-                        value={"삭제"}
-                        onClick={() => deleteReqMembership(reqMembership.id)}
-                      />
+                      {delReqMemLoading ? (
+                        <Loading />
+                      ) : (
+                        <DeleteButton
+                          value={delReqMemLoading ? "삭제중" : "삭제"}
+                          onClick={() => deleteReqMembership(reqMembership.id)}
+                        />
+                      )}
                     </ReqDelRow>
                   </ReqItem>
                 ) : reqMembership && reqMembership.status === "EXTENDED" ? (

@@ -197,6 +197,7 @@ const BranchSettingPresenter: React.SFC<IProps> = ({
         <SLink to="/add-branch">지점 추가</SLink>
       </HeadContainer>
     )}
+
     {(isSupervisor || isFranchiser) && (
       <HeadContainer>
         {managingBranches &&

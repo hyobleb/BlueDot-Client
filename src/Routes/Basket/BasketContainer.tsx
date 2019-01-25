@@ -150,7 +150,10 @@ class BasketContainer extends React.Component<IProps, IState> {
                               { query: GET_REQUEST_MEMBERSHIPS }
                             ]}
                           >
-                            {deleteRequestMembershipFn => {
+                            {(
+                              deleteRequestMembershipFn,
+                              { loading: delReqMemLoading }
+                            ) => {
                               this.deleteReqMembershipFn = deleteRequestMembershipFn;
                               return (
                                 <GetRequestMembershipsQuery
@@ -188,6 +191,7 @@ class BasketContainer extends React.Component<IProps, IState> {
                                       createPaymentLoading={
                                         createPaymentLoading
                                       }
+                                      delReqMemLoading={delReqMemLoading}
                                     />
                                   )}
                                 </GetRequestMembershipsQuery>

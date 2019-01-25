@@ -600,3 +600,19 @@ export const GET_VBNAK_PAYMENTS = gql`
     }
   }
 `;
+
+export const GET_ALL_BRANCHES = gql`
+  query getAllBranches {
+    GetAllBranches {
+      ok
+      error
+      branches {
+        id
+        name
+        address
+        city
+        district
+      }
+    }
+  }
+`;

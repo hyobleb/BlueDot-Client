@@ -4,6 +4,11 @@ import { Mutation, MutationFn } from "react-apollo";
 import { AddressData } from "react-daum-postcode";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
+import {
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_UPLOAD_PRESET,
+  CLOUDINARY_UPLOAD_URL
+} from "../../keys";
 import { addBranch, addBranchVariables } from "../../types/api";
 import AddBranchPresenter from "./AddBranchPresenter";
 import { ADD_BRANCH } from "./AddBranchQueries";
@@ -198,15 +203,12 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       } as any);
       const formData = new FormData();
       formData.append("file", files[0]);
-      formData.append("api_key", "913659325659299");
-      formData.append("upload_preset", "ob3ddvn5");
+      formData.append("api_key", CLOUDINARY_API_KEY);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
       formData.append("timestamp", String(Date.now() / 1000));
       const {
         data: { secure_url }
-      } = await axios.post(
-        "https://api.cloudinary.com/v1_1/drijcu8ak/image/upload/",
-        formData
-      );
+      } = await axios.post(CLOUDINARY_UPLOAD_URL, formData);
       if (secure_url) {
         if (name === "branchPhotos") {
           this.setState({

@@ -110,6 +110,8 @@ class HomePresenter extends React.Component<IProps> {
       transferredLng,
       returnSeatLoading
     } = this.props;
+
+    console.log({ profileLoading, branchLoading });
     return profileLoading || branchLoading ? (
       <Loading />
     ) : (

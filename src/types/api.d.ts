@@ -48,6 +48,45 @@ export interface userGetBranches {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getBranchesByDistrict
+// ====================================================
+
+export interface getBranchesByDistrict_GetBranchesByDistrict_branches_alliedBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
+export interface getBranchesByDistrict_GetBranchesByDistrict_branches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  address: string;
+  detailAddress: string;
+  descriptionPosition: string;
+  alliedBranches: (getBranchesByDistrict_GetBranchesByDistrict_branches_alliedBranches | null)[] | null;
+}
+
+export interface getBranchesByDistrict_GetBranchesByDistrict {
+  __typename: "GetBranchesByDistrictResponse";
+  ok: boolean;
+  error: string | null;
+  branches: (getBranchesByDistrict_GetBranchesByDistrict_branches | null)[] | null;
+}
+
+export interface getBranchesByDistrict {
+  GetBranchesByDistrict: getBranchesByDistrict_GetBranchesByDistrict;
+}
+
+export interface getBranchesByDistrictVariables {
+  city: string;
+  district: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: createCabinetLock
 // ====================================================
 
@@ -1208,6 +1247,33 @@ export interface getVbankPayments_GetVbankPayments {
 
 export interface getVbankPayments {
   GetVbankPayments: getVbankPayments_GetVbankPayments;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getAllBranches
+// ====================================================
+
+export interface getAllBranches_GetAllBranches_branches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+  address: string;
+  city: string;
+  district: string;
+}
+
+export interface getAllBranches_GetAllBranches {
+  __typename: "GetAllBranchesResponse";
+  ok: boolean;
+  error: string | null;
+  branches: (getAllBranches_GetAllBranches_branches | null)[] | null;
+}
+
+export interface getAllBranches {
+  GetAllBranches: getAllBranches_GetAllBranches;
 }
 
 /* tslint:disable */
