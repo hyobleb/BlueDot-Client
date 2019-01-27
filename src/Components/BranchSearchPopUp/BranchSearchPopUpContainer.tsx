@@ -75,7 +75,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
                 onCompleted={this.updateFields}
                 fetchPolicy={"cache-and-network"}
               >
-                {() => (
+                {({ loading: branchesByDistrictLoading }) => (
                   <BranchSearchPopUpPresenter
                     inputBranch={inputBranch}
                     onInputChange={this.onInputChange}
@@ -88,6 +88,8 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
                     onCityBtnClick={this.onCityBtnClick}
                     onDistrictBtnClick={this.onDistrictBtnClick}
                     searchedBranches={searchedBranches}
+                    branchesByDistrictLoading={branchesByDistrictLoading}
+                    selDistrict={selDistrict}
                   />
                 )}
               </GetBranchesByDistrict>

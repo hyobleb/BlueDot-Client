@@ -3,6 +3,7 @@ import styled from "../../typed-components";
 import Button from "../Button";
 import Form from "../Form";
 import Input from "../Input";
+import Loading from "../Loading";
 
 interface IProps {
   inputBranch: string;
@@ -16,6 +17,8 @@ interface IProps {
   onCityBtnClick: (city: string) => void;
   onDistrictBtnClick: (district: string) => void;
   searchedBranches: any[];
+  branchesByDistrictLoading: boolean;
+  selDistrict: string;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -170,7 +173,9 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   districtInfos,
   onCityBtnClick,
   onDistrictBtnClick,
-  searchedBranches
+  searchedBranches,
+  branchesByDistrictLoading,
+  selDistrict
 }) => {
   return (
     <Container>
@@ -217,6 +222,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
       </LocalSelBtnCon>
 
       <BodyContainer>
+        {branchesByDistrictLoading && selDistrict && <Loading />}
         {searchedBranches.length > 0 &&
           searchedBranches.map(
             branch =>
@@ -247,40 +253,6 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
                 </BranchContainer>
               )
           )}
-        {/* {data &&
-          data.SearchBranch &&
-          data.SearchBranch.branches &&
-          data.SearchBranch.branches.length > 0 &&
-          data.SearchBranch.branches.map(branch => {
-            return (
-              branch && (
-                <BranchContainer
-                  key={branch.id}
-                  onClick={() => onBranchClick(branch.id)}
-                >
-                  <ContentsContainer>
-                    <PhotoContainer>
-                      <Image src={require("src/images/default_profile.png")} />
-                    </PhotoContainer>
-                    <ContextContainer>
-                      <ContextRow>{branch.name}</ContextRow>
-                      <ContextRow>{branch.descriptionPosition}</ContextRow>
-                      <ContextRow>
-                        {branch.address} {branch.detailAddress}
-                      </ContextRow>
-                      <ContextRow>
-                        {branch.alliedBranches &&
-                          branch.alliedBranches.length > 0 &&
-                          `${branch.alliedBranches.map(
-                            alliedBranch => alliedBranch && alliedBranch.name
-                          )} 이용 가능`}
-                      </ContextRow>
-                    </ContextContainer>
-                  </ContentsContainer>
-                </BranchContainer>
-              )
-            );
-          })} */}
       </BodyContainer>
       <CloseButton onClick={closeFunc}>
         <svg

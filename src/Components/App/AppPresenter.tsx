@@ -6,6 +6,7 @@ import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
 import Basket from "../../Routes/Basket";
 import Chart from "../../Routes/Chart";
+import EditProfile from "../../Routes/EditProfile";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
@@ -144,6 +145,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         exact={true}
         component={ReqExtendCabinet}
       />
+      <Route path={"/edit-profile"} exact={true} component={EditProfile} />
       <Route path={"/vbank-list"} exact={true} component={VbankList} />
       {(isHead ||
         isFranchiser ||
