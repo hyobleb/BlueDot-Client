@@ -7,11 +7,16 @@ import { USER_PROFILE } from "../sharedQueries";
 import MenuPresenter from "./MenuPresenter";
 import { CHECK_VBANK_PAYMENT } from "./MenuQueries";
 
+interface IProps {
+  toggleMenu: () => void;
+}
+
 class ProfileQuery extends Query<userProfile> {}
 class CheckVBankQuery extends Query<checkVbankPayment> {}
 
-class MenuContainer extends React.Component {
+class MenuContainer extends React.Component<IProps> {
   public render() {
+    const { toggleMenu } = this.props;
     return (
       <CheckVBankQuery
         query={CHECK_VBANK_PAYMENT}
@@ -33,6 +38,7 @@ class MenuContainer extends React.Component {
                       logUserOutMutation={logUserOutMutation}
                       getVbankDataLoading={getVbankDataLoading}
                       checkVbankData={checkVbankData}
+                      toggleMenu={toggleMenu}
                     />
                   )}
                 </ProfileQuery>
@@ -53,6 +59,11 @@ class MenuContainer extends React.Component {
         toast.info("메뉴의 무통장 결제를 진행해주세요!");
       }
     }
+  };
+
+  public onMenuClick = () => {
+    const { toggleMenu } = this.props;
+    toggleMenu();
   };
 }
 

@@ -1,31 +1,31 @@
 import React from "react";
 import Helmet from "react-helmet";
-import Sidebar from "react-sidebar";
+// import Sidebar from "react-sidebar";
 import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
 import LoungeContainer from "src/Components/LoungeContainer";
 import { getBranchByIp_UserGetBranchByIP_branch_rooms } from "src/types/api";
 import BranchesMap from "../../Components/BranchesMap";
 import Footer from "../../Components/Footer";
-import Menu from "../../Components/Menu";
+// import Menu from "../../Components/Menu";
 import SeatsPopUp from "../../Components/SeatsPopUp";
 import styled from "../../typed-components";
 
-const MenuButton = styled.button`
-  appearance: none;
-  padding: 10px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  text-align: center;
-  font-weight: 800;
-  border: 0;
-  cursor: pointer;
-  font-size: 20px;
-  transform: rotate(90deg);
-  z-index: 2;
-  background-color: transparent;
-`;
+// const MenuButton = styled.button`
+//   appearance: none;
+//   padding: 10px;
+//   position: absolute;
+//   top: 10px;
+//   right: 10px;
+//   text-align: center;
+//   font-weight: 800;
+//   border: 0;
+//   cursor: pointer;
+//   font-size: 20px;
+//   transform: rotate(90deg);
+//   z-index: 2;
+//   background-color: transparent;
+// `;
 
 const BackContainer = styled.div`
   margin-top: 15vh;
@@ -54,10 +54,10 @@ const BackArrowExtended = styled(BackArrow)`
 `;
 
 interface IProps {
-  isMenuOpen: boolean;
+  // isMenuOpen: boolean;
   branchLoading: boolean;
   profileLoading: boolean;
-  toggleMenu: () => void;
+  // toggleMenu: () => void;
   branchLoaded: boolean;
   loungeImage: string;
   minimapImage: string;
@@ -86,8 +86,8 @@ interface IProps {
 class HomePresenter extends React.Component<IProps> {
   public render() {
     const {
-      isMenuOpen,
-      toggleMenu,
+      // isMenuOpen,
+      // toggleMenu,
       profileLoading,
       branchLoading,
       branchLoaded,
@@ -116,7 +116,7 @@ class HomePresenter extends React.Component<IProps> {
     ) : (
       <BackContainer>
         {branchLoaded ? <BackArrowExtended backFn={onBackClick} /> : ""}
-        <Sidebar
+        {/* <Sidebar
           sidebar={<Menu />}
           open={isMenuOpen}
           onSetOpen={toggleMenu}
@@ -130,7 +130,7 @@ class HomePresenter extends React.Component<IProps> {
           }}
         >
           {!profileLoading && <MenuButton onClick={toggleMenu}>|||</MenuButton>}
-        </Sidebar>
+        </Sidebar> */}
         <Helmet>
           <title>Home | BlueDot</title>
         </Helmet>

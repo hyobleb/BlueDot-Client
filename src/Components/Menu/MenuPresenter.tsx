@@ -95,13 +95,15 @@ interface IProps {
   logUserOutMutation: MutationFn;
   getVbankDataLoading: boolean;
   checkVbankData?: checkVbankPayment;
+  toggleMenu: () => void;
 }
 
 const MenuPresenter: React.SFC<IProps> = ({
   data: { GetMyProfile: { user = null } = {} } = {},
   loading,
   logUserOutMutation,
-  checkVbankData
+  checkVbankData,
+  toggleMenu
 }) => {
   return (
     <Container>
@@ -109,7 +111,7 @@ const MenuPresenter: React.SFC<IProps> = ({
         <React.Fragment>
           <Header>
             <Grid>
-              <Link to={"/edit-account"}>
+              <Link to={"/edit-account"} onClick={toggleMenu}>
                 <Image
                   src={
                     user.profilePhoto ||
@@ -122,14 +124,27 @@ const MenuPresenter: React.SFC<IProps> = ({
               </Text>
             </Grid>
           </Header>
-          <SLink to="/membership">멤버쉽 정보</SLink>
-          <SLink to="/basket">장바구니</SLink>
+          <SLink to="/membership" onClick={toggleMenu}>
+            멤버쉽 정보
+          </SLink>
+          <SLink to="/basket" onClick={toggleMenu}>
+            장바구니
+          </SLink>
           {checkVbankData &&
             checkVbankData.CheckVbankPayment &&
             checkVbankData.CheckVbankPayment.haveVbank && (
-              <SLink to="/vbank-list">무통장 결제</SLink>
+              <SLink to="/vbank-list" onClick={toggleMenu}>
+                무통장 결제
+              </SLink>
             )}
-          <MenuItem onClick={() => logUserOutMutation()}>로그아웃</MenuItem>
+          <MenuItem
+            onClick={() => {
+              logUserOutMutation();
+              toggleMenu();
+            }}
+          >
+            로그아웃
+          </MenuItem>
 
           {user.isFranchiser ||
           user.isSupervisor ||
@@ -155,7 +170,9 @@ const MenuPresenter: React.SFC<IProps> = ({
               </ToggleAuthor>
               {(user.isFranchiser || user.isHead || user.isSupervisor) && (
                 <>
-                  <SLink to="/branch-setting">지점 관리</SLink>
+                  <SLink to="/branch-setting" onClick={toggleMenu}>
+                    지점 관리
+                  </SLink>
                 </>
               )}
               {(user.isFranchiser ||
@@ -163,7 +180,9 @@ const MenuPresenter: React.SFC<IProps> = ({
                 user.isSupervisor ||
                 user.isManStaff) && (
                 <>
-                  <SLink to="/manage-users">회원 관리</SLink>
+                  <SLink to="/manage-users" onClick={toggleMenu}>
+                    회원 관리
+                  </SLink>
                 </>
               )}
               {(user.isFranchiser ||
@@ -172,8 +191,12 @@ const MenuPresenter: React.SFC<IProps> = ({
                 user.isManStaff ||
                 user.isCleanStaff) && (
                 <>
-                  <SLink to="/manage-cabinets">사물함 관리</SLink>
-                  <SLink to="/manage-seats">좌석 관리</SLink>
+                  <SLink to="/manage-cabinets" onClick={toggleMenu}>
+                    사물함 관리
+                  </SLink>
+                  <SLink to="/manage-seats" onClick={toggleMenu}>
+                    좌석 관리
+                  </SLink>
                 </>
               )}
             </>
