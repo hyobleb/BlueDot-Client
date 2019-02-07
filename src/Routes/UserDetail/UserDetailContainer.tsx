@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
@@ -33,8 +33,8 @@ interface IState {
   isSupervisor: boolean;
   isManStaff: boolean;
   isCleanStaff: boolean;
-  startDatetime: Moment;
-  endDatetime: Moment;
+  startDatetime: Date;
+  endDatetime: Date;
   membershipLogs?: Array<getMembershipLogsById_GetMembershipLogsById_membershipLogs | null>;
 }
 
@@ -69,8 +69,8 @@ class UserDetailContainer extends React.Component<IProps, IState> {
         : undefined,
       backUrl: props.location.state.backUrl || "/manage-users",
       endDatetime: props.location.state.endDatetime
-        ? moment(props.location.state.endDatetime)
-        : moment(),
+        ? moment(props.location.state.endDatetime).toDate()
+        : new Date(),
       isCleanStaff: props.location.state.isCleanStaff || false,
       isFranchiser: props.location.state.isFranchiser || false,
       isHead: props.location.state.isHead || false,
@@ -78,8 +78,8 @@ class UserDetailContainer extends React.Component<IProps, IState> {
       isSupervisor: props.location.state.isSupervisor || false,
       showExpirePopUp: false,
       startDatetime: props.location.state.startDatetime
-        ? moment(props.location.state.startDatetime)
-        : moment(),
+        ? moment(props.location.state.startDatetime).toDate()
+        : new Date(),
       userId: props.location.state.userId
     };
   }
@@ -300,13 +300,15 @@ class UserDetailContainer extends React.Component<IProps, IState> {
 
   public onPeriodBtnClick = (hours: number) => {
     this.setState({
-      endDatetime: moment(),
-      startDatetime: moment().subtract(hours, "h")
+      endDatetime: new Date(),
+      startDatetime: moment()
+        .subtract(hours, "h")
+        .toDate()
     });
   };
-  public onStartDatetimeChange = (startDatetimeValue: Moment) => {
+  public onStartDatetimeChange = (startDatetimeValue: Date) => {
     const { endDatetime } = this.state;
-    if (endDatetime < startDatetimeValue) {
+    if (moment(endDatetime) < moment(startDatetimeValue)) {
       toast.warn("기간설정이 잘 못 되었습니다");
     } else {
       this.setState({
@@ -315,9 +317,9 @@ class UserDetailContainer extends React.Component<IProps, IState> {
     }
   };
 
-  public onEndDatetimeChange = (endDatetimeValue: Moment) => {
+  public onEndDatetimeChange = (endDatetimeValue: Date) => {
     const { startDatetime } = this.state;
-    if (endDatetimeValue < startDatetime) {
+    if (moment(endDatetimeValue) < moment(startDatetime)) {
       toast.warn("기간설정이 잘 못 되었습니다");
     } else {
       this.setState({
@@ -347,13 +349,13 @@ class UserDetailContainer extends React.Component<IProps, IState> {
           content: {
             backInfo,
             backUrl,
-            endDatetime: endDatetime.format("YYYY-MM-DD HH:mm:ss"),
+            endDatetime: moment(endDatetime).format("YYYY-MM-DD HH:mm:ss"),
             isCleanStaff,
             isFranchiser,
             isHead,
             isManStaff,
             isSupervisor,
-            startDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss"),
+            startDatetime: moment(startDatetime).format("YYYY-MM-DD HH:mm:ss"),
             userId
           }
         },

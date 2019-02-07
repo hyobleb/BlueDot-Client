@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
@@ -30,7 +30,7 @@ interface IState {
   cabinetNumber: number;
   productId: number;
   productTitle: string;
-  startDatetime: string;
+  startDatetime: Date;
   cabinetId: number;
   tempSetId: number;
   setId: number;
@@ -75,7 +75,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       productId: 0,
       productTitle: "",
       setId: 0,
-      startDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+      startDatetime: new Date(),
       tempSetId: 0,
       verticalNumber: 0
     };
@@ -197,7 +197,9 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                           branchId,
                           cabinetId,
                           productId,
-                          startDatetime
+                          startDatetime: moment(startDatetime).format(
+                            "YYYY-MM-DD HH:mm:ss"
+                          )
                         }}
                       >
                         {userRequestCabinetFn => {
@@ -299,9 +301,9 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onDatetimeChange = (startDatetime: Moment) => {
+  public onDatetimeChange = (startDatetime: Date) => {
     this.setState({
-      startDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss")
+      startDatetime
     });
   };
 

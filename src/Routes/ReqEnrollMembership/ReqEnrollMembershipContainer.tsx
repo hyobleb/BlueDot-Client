@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
@@ -27,7 +27,7 @@ interface IProps extends RouteComponentProps<any> {}
 
 interface IState {
   branchId: number;
-  datetimeValue: string;
+  datetimeValue: Date;
   productId: number;
   productTitle: string;
   branchPopUpShow: boolean;
@@ -40,7 +40,7 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
     this.state = {
       branchId: 0,
       branchPopUpShow: false,
-      datetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
+      datetimeValue: new Date(),
       productId: 0,
       productTitle: ""
     };
@@ -57,7 +57,11 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
     return (
       <RequestMutation
         mutation={USER_REQUEST_MEMBERSHIP}
-        variables={{ branchId, startDatetime: datetimeValue, productId }}
+        variables={{
+          branchId,
+          productId,
+          startDatetime: moment(datetimeValue).format("YYYY-MM-DD HH:mm:ss")
+        }}
       >
         {(userReqMembershipMutationFn, { loading: reqMembershipLoading }) => {
           this.reqMembershipFn = userReqMembershipMutationFn;
@@ -140,9 +144,9 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onDatetimeChange = (datetimeValue: Moment) => {
+  public onDatetimeChange = (datetimeValue: Date) => {
     this.setState({
-      datetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss")
+      datetimeValue
     });
   };
 

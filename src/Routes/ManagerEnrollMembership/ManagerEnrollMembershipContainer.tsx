@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
@@ -34,12 +34,12 @@ interface IProps extends RouteComponentProps<any> {}
 
 interface IState {
   branchId: number;
-  datetimeValue: string;
+  datetimeValue: Date;
   productId: number;
   productTitle: string;
   branchPopUpShow: boolean;
   userId: number;
-  endDatetimeValue: string;
+  endDatetimeValue: Date;
   backUrl: string;
   userName: string;
   userIdName: string;
@@ -73,8 +73,8 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
       backUrl: props.location.state.backUrl,
       branchId: 0,
       branchPopUpShow: false,
-      datetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
-      endDatetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
+      datetimeValue: new Date(),
+      endDatetimeValue: new Date(),
       isCleanStaff: props.location.state.isCleanStaff || false,
       isFranchiser: props.location.state.isFranchiser || false,
       isHead: props.location.state.isHead || false,
@@ -145,7 +145,7 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
                       setTrueBranchPopUpShow={this.setTrueBranchPopUpShow}
                       setFalseBranchPopUpShow={this.setFalseBranchPopUpShow}
                       onBranchClick={this.onBranchClick}
-                      onDatetimeChange={this.onDatetimeChange}
+                      onDatetimeChange={this.onStartDatetimeChange}
                       onCreateMembershipClick={this.onCreateMembershipClick}
                       backUrl={backUrl}
                       onEndDatetimeChange={this.onEndDatetimeChange}
@@ -223,18 +223,18 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onDatetimeChange = (datetimeValue: Moment) => {
+  public onStartDatetimeChange = (datetimeValue: Date) => {
     this.setState({
-      datetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss"),
-      endDatetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss")
+      datetimeValue,
+      endDatetimeValue: datetimeValue
     });
   };
 
-  public onEndDatetimeChange = (datetimeValue: Moment) => {
+  public onEndDatetimeChange = (datetimeValue: Date) => [
     this.setState({
-      endDatetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss")
-    });
-  };
+      endDatetimeValue: datetimeValue
+    })
+  ];
 
   public onCreateMembershipClick = async (
     payMethod?: CreatePaymentMethodOption
@@ -258,12 +258,12 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
       const result = await this.createMembershipFn({
         variables: {
           branchId,
-          endDatetime: endDatetimeValue,
+          endDatetime: moment(endDatetimeValue).format("YYYY-MM-DD HH:mm:ss"),
           payMethod: payMethod ? payMethod : undefined,
           products: payMethod
             ? selProducts.map(product => product.id)
             : undefined,
-          startDatetime: datetimeValue,
+          startDatetime: moment(datetimeValue).format("YYYY-MM-DD HH:mm:ss"),
           userId
         }
       });
@@ -289,7 +289,7 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
     this.setState({
       endDatetimeValue: moment(this.state.endDatetimeValue)
         .add(hours, "h")
-        .format("YYYY-MM-DD HH:mm:ss"),
+        .toDate(),
       selProducts
     });
   };
@@ -319,7 +319,7 @@ class ManagerEnrollMembershipContainer extends React.Component<IProps, IState> {
   };
   public setDatetimeValueNow = () => {
     this.setState({
-      datetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
+      datetimeValue: new Date(),
       selProducts: []
     });
   };

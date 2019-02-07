@@ -1,6 +1,5 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
-import Datetime from "react-datetime";
 import AlertPopUp from "src/Components/AlertPopUp";
 import DefaultBack from "src/Components/DefaultBack";
 import Loading from "src/Components/Loading";
@@ -10,6 +9,7 @@ import {
   getMembershipLogsById_GetMembershipLogsById_membershipLogs,
   managerGetUserDetail_ManagerGetUserDetail_user
 } from "src/types/api";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
@@ -85,19 +85,6 @@ const MembershipContList = styled.div`
   padding-top: 20px;
   border-bottom: 1px solid #dedede;
   margin-bottom: 20px;
-`;
-
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 100px;
-    height: 30px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
 `;
 
 const MembershipLogSection = styled(Section)``;
@@ -215,11 +202,11 @@ interface IProps {
   onExpireConfirmClick: () => Promise<void>;
   onExtendCabinetClick: (membershipId: number) => void;
   onBackClick: () => void;
-  startDatetime: Moment;
-  endDatetime: Moment;
+  startDatetime: Date;
+  endDatetime: Date;
   onPeriodBtnClick: (hours: number) => void;
-  onStartDatetimeChange: (startDatetimeValue: Moment) => void;
-  onEndDatetimeChange: (endDatetimeValue: Moment) => void;
+  onStartDatetimeChange: (startDatetimeValue: Date) => void;
+  onEndDatetimeChange: (endDatetimeValue: Date) => void;
   membershipLogs?: Array<getMembershipLogsById_GetMembershipLogsById_membershipLogs | null>;
   onPayViewBtnClick: (paymentId: number) => void;
 }
@@ -510,22 +497,16 @@ const UserDetailPresenter: React.SFC<IProps> = ({
               />
             </ButtonSec>
             <PeriodSec>
-              <DatetimeExtended
-                value={startDatetime}
-                dateFormat="YYYY MMMM Do"
-                timeFormat={false}
-                locale="de"
-                onChange={onStartDatetimeChange}
-                closeOnSelect={true}
+              <DatetimePicker
+                flatPickrDate={startDatetime}
+                dateFormat={"Y년 m월 d일"}
+                onFlatPickrChange={onStartDatetimeChange}
               />
               -
-              <DatetimeExtended
-                value={endDatetime}
-                dateFormat="YYYY MMMM Do"
-                timeFormat={false}
-                locale="de"
-                onChange={onEndDatetimeChange}
-                closeOnSelect={true}
+              <DatetimePicker
+                flatPickrDate={endDatetime}
+                dateFormat={"Y년 m월 d일"}
+                onFlatPickrChange={onEndDatetimeChange}
               />
             </PeriodSec>
 

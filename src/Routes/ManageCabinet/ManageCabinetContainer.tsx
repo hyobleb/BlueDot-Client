@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { ApolloConsumer, Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
@@ -25,8 +25,8 @@ import {
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
-  startDatetime: Moment;
-  endDatetime: Moment;
+  startDatetime: Date;
+  endDatetime: Date;
   cabinetId: number;
   selBranchId: number;
   selSetId: number;
@@ -84,7 +84,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
     this.state = {
       branchName,
       cabinetId,
-      endDatetime: moment(),
+      endDatetime: new Date(),
       isFranchiser: props.location.state.isFranchiser,
       isHead: props.location.state.isHead,
       isManStaff: props.location.state.isManStaff,
@@ -95,7 +95,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
       showClearConfirmPopUp: false,
       showExpireConfirmPopUp: false,
       showUserSearchPopUp: false,
-      startDatetime: moment()
+      startDatetime: new Date()
     };
   }
   public render() {
@@ -248,7 +248,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
     );
   }
 
-  public onStartDatetimeChange = (startDatetimeValue: Moment) => {
+  public onStartDatetimeChange = (startDatetimeValue: Date) => {
     const { endDatetime } = this.state;
     if (endDatetime < startDatetimeValue) {
       toast.warn("기간설정이 잘 못 되었습니다");
@@ -259,7 +259,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
     }
   };
 
-  public onEndDatetimeChange = (endDatetimeValue: Moment) => {
+  public onEndDatetimeChange = (endDatetimeValue: Date) => {
     const { startDatetime } = this.state;
     if (endDatetimeValue < startDatetime) {
       toast.warn("기간설정이 잘 못 되었습니다");
@@ -321,8 +321,10 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
   };
   public onPeriodBtnClick = (hours: number) => {
     this.setState({
-      endDatetime: moment(),
-      startDatetime: moment().subtract(hours, "h")
+      endDatetime: new Date(),
+      startDatetime: moment()
+        .subtract(hours, "h")
+        .toDate()
     });
   };
 

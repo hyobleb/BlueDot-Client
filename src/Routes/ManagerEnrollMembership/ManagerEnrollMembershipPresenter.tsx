@@ -1,7 +1,6 @@
 import moment = require("moment");
 import "moment/locale/ko";
 import React from "react";
-import Datetime from "react-datetime";
 import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
 import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
@@ -14,6 +13,7 @@ import {
   userGetProducts,
   userGetProducts_UserGetBranch_branch_products
 } from "src/types/api";
+import DatetimePicker from "../../Components/DatetimePicker";
 import Loading from "../../Components/Loading";
 
 const FormExtended = styled(Form)`
@@ -63,7 +63,7 @@ const BackArrowExtended = styled(BackArrow)`
 const DatetimeTitle = styled.div`
   margin-bottom: 10px;
 `;
-const DatetimePicker = styled.div`
+const DatetimePickerCon = styled.div`
   &:hover {
     cursor: pointer;
   }
@@ -114,18 +114,6 @@ const ResetButton = styled(Button)`
   width: 200px;
 `;
 
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 160px;
-    height: 35px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-`;
 const BackContainer = styled.div``;
 
 const EndDatetime = styled.div`
@@ -133,6 +121,8 @@ const EndDatetime = styled.div`
   display: inline-block;
   padding: 8px;
   font-size: 13px;
+  width: 100%;
+  text-align: center;
 `;
 
 const ProductsSection = styled.div`
@@ -157,8 +147,13 @@ const ProductItem = styled.div`
 
 const BranchBtn = styled(Button)``;
 
+const ExtendedDatetimePicker = styled(DatetimePicker)`
+  width: 100%;
+  font-size: 13px;
+`;
+
 interface IProps {
-  datetimeValue: string;
+  datetimeValue: Date;
   productId: number;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   productDatas?: userGetProducts;
@@ -169,13 +164,13 @@ interface IProps {
   setTrueBranchPopUpShow: () => void;
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
-  onDatetimeChange: (datetimeValue: moment.Moment) => void;
+  onDatetimeChange: (datetimeValue: Date) => void;
   onCreateMembershipClick: (
     payMethod?: CreatePaymentMethodOption | undefined
   ) => Promise<void>;
   backUrl: string;
-  onEndDatetimeChange: (datetimeValue: moment.Moment) => void;
-  endDatetimeValue: string;
+  onEndDatetimeChange: (datetimeValue: Date) => void;
+  endDatetimeValue: Date;
   onDateTimeAddClick: (
     product: userGetProducts_UserGetBranch_branch_products,
     hours: number
@@ -278,15 +273,12 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
         </BranchSection>
         <DatetimeSection>
           <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
-          <DatetimePicker>
-            <DatetimeExtended
-              value={moment(datetimeValue)}
-              dateFormat="YYYY MMMM Do"
-              timeFormat="A hh:mm"
-              locale="de"
-              onChange={onDatetimeChange}
+          <DatetimePickerCon>
+            <ExtendedDatetimePicker
+              flatPickrDate={datetimeValue}
+              onFlatPickrChange={onDatetimeChange}
             />
-          </DatetimePicker>
+          </DatetimePickerCon>
           <ResetButton
             value={"현재시각으로 맞추기"}
             onClick={setDatetimeValueNow}
@@ -294,11 +286,12 @@ const ManagerEnrollMembershipPresenter: React.SFC<IProps> = ({
         </DatetimeSection>
         <DatetimeSection>
           <DatetimeTitle>이용 종료 일시를 선택해주세요</DatetimeTitle>
-          <DatetimePicker>
+          <DatetimePickerCon>
             <EndDatetime>
-              {moment(endDatetimeValue).format("YYYY MMMM Do a hh:mm")}
+              {moment(endDatetimeValue).format("YYYY년 MMMM Do")}{" "}
+              {moment(endDatetimeValue, "a hh:mm", "en").format("A hh:mm")}
             </EndDatetime>
-          </DatetimePicker>
+          </DatetimePickerCon>
           <ResetButton
             value={"시작일시로 맞추기"}
             onClick={setEndDatetimeToStart}

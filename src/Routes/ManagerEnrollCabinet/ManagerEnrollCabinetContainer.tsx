@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
@@ -40,7 +40,7 @@ interface IState {
   cabinetNumber: number;
   productId: number;
   productTitle: string;
-  startDatetime: string;
+  startDatetime: Date;
   cabinetId: number;
   tempSetId: number;
   setId: number;
@@ -50,7 +50,7 @@ interface IState {
   userId: number;
   userIdName: string;
   userName: string;
-  selEndDatetime: string;
+  selEndDatetime: Date;
   isShifitCabinet: boolean;
   nowMembershipId?: number;
   selProducts: userGetProducts_UserGetBranch_branch_products[];
@@ -130,10 +130,10 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
       nowMembershipId: props.location.state.nowMembershipId,
       productId: 0,
       productTitle: "",
-      selEndDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+      selEndDatetime: new Date(),
       selProducts: [],
       setId,
-      startDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+      startDatetime: new Date(),
       tempSetId: 0,
       userId: props.location.state.userId,
       userIdName: props.location.state.userIdName,
@@ -446,16 +446,16 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onDatetimeChange = (startDatetime: Moment) => {
+  public onDatetimeChange = (startDatetime: Date) => {
     this.setState({
-      selEndDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss"),
-      startDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss")
+      selEndDatetime: startDatetime,
+      startDatetime
     });
   };
 
-  public onEndDatetimeChange = (endDatetime: Moment) => {
+  public onEndDatetimeChange = (endDatetime: Date) => {
     this.setState({
-      selEndDatetime: endDatetime.format("YYYY-MM-DD HH:mm:ss")
+      selEndDatetime: endDatetime
     });
   };
 
@@ -495,12 +495,12 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
           variables: {
             branchId,
             cabinetId,
-            endDatetime: selEndDatetime,
+            endDatetime: moment(selEndDatetime).format("YYYY-MM-DD HH:mm:ss"),
             payMethod: payMethod ? payMethod : undefined,
             products: payMethod
               ? selProducts.map(product => product.id)
               : undefined,
-            startDatetime,
+            startDatetime: moment(startDatetime).format("YYYY-MM-DD HH:mm:ss"),
             userId
           }
         });
@@ -602,16 +602,16 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
     this.setState({
       selEndDatetime: moment(this.state.selEndDatetime)
         .add(hours, "h")
-        .format("YYYY-MM-DD HH:mm:ss"),
+        .toDate(),
       selProducts
     });
   };
 
   public setDatetimeValueNow = () => {
     this.setState({
-      selEndDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+      selEndDatetime: new Date(),
       selProducts: [],
-      startDatetime: moment().format("YYYY-MM-DD HH:mm:ss")
+      startDatetime: new Date()
     });
   };
 
@@ -649,9 +649,9 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
 
   public selProductReset = () => {
     this.setState({
-      selEndDatetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+      selEndDatetime: new Date(),
       selProducts: [],
-      startDatetime: moment().format("YYYY-MM-DD HH:mm:ss")
+      startDatetime: new Date()
     });
   };
 }

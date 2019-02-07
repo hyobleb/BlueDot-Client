@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
@@ -25,7 +25,7 @@ interface IProps extends RouteComponentProps<any> {
   isCleanStaff: boolean;
 }
 interface IState {
-  selDate: Moment;
+  selDate: Date;
   membershipLogsByDate: any[];
   nowUsingUsers: any[];
   branchSearchPopupShow: boolean;
@@ -58,7 +58,7 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
           ? props.location.state.branchId
           : undefined
         : undefined,
-      selDate: moment(),
+      selDate: new Date(),
       showUserSearchPopUp: false
     };
   }
@@ -148,7 +148,7 @@ class ManageUsersContainer extends React.Component<IProps, IState> {
     );
   }
 
-  public onDatetimeChange = (datetimeValue: Moment) => {
+  public onDatetimeChange = (datetimeValue: Date) => {
     this.setState({
       selDate: datetimeValue
     });

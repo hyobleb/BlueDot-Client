@@ -1,6 +1,5 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
-import Datetime from "react-datetime";
 import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
 import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
@@ -9,6 +8,7 @@ import SearchUserPopUp from "src/Components/SearchUserPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import { managerGetManagingBranches_GetManagingBranches_branches } from "src/types/api";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const BackContainer = styled.div``;
 const Container = styled.div`
@@ -46,27 +46,9 @@ const BranchTitleSection = styled(Section)`
 const BranchTitle = styled.h1`
   font-size: 22px;
 `;
-const DatetimePicker = styled.div`
+const DatetimePickerCon = styled.div`
   &:hover {
     cursor: pointer;
-  }
-`;
-
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 100%;
-    height: 35px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-  .rdtPicker {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
   }
 `;
 
@@ -177,8 +159,8 @@ const AnalysisButton = styled(MoreInfoBtn)`
 const OfflineReqButton = styled(MoreInfoBtn)``;
 
 interface IProps {
-  selDate: Moment;
-  onDatetimeChange: (datetimeValue: Moment) => void;
+  selDate: Date;
+  onDatetimeChange: (datetimeValue: Date) => void;
   membershipLogsByDate: any[];
   branchSearchPopupShow: boolean;
   toggleBranchPopUpShow: () => void;
@@ -274,16 +256,14 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
         </BranchTitleSection>
         <DateMemberSection>
           <DatetimeSelRow>
-            <DatetimePicker>
-              <DatetimeExtended
-                value={selDate}
-                dateFormat="YYYY년 MMMM Do"
-                timeFormat={false}
-                viewMode="days"
-                closeOnSelect={true}
-                onChange={onDatetimeChange}
+            <DatetimePickerCon>
+              <DatetimePicker
+                flatPickrDate={selDate}
+                onFlatPickrChange={onDatetimeChange}
+                dateFormat={"Y년 m월 d일"}
+                enableTime={false}
               />
-            </DatetimePicker>
+            </DatetimePickerCon>
           </DatetimeSelRow>
           <DateMembersRow>
             <RegistMembersContainer>

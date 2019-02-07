@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
@@ -18,10 +18,10 @@ import ReqMembershipPresenter from "./ReqMembershipPresenter";
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
   branchId: number;
-  datetimeValue: string;
   productId: number;
   productTitle: string;
   branchPopUpShow: boolean;
+  flatPickrDate: Date;
 }
 
 class GetBranchQuery extends Query<userGetProducts, userGetProductsVariables> {}
@@ -40,7 +40,7 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
     this.state = {
       branchId: props.location.state.branchId,
       branchPopUpShow: false,
-      datetimeValue: moment().format("YYYY-MM-DD HH:mm:ss"),
+      flatPickrDate: new Date(),
       productId: 0,
       productTitle: ""
     };
@@ -48,16 +48,20 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
 
   public render() {
     const {
-      datetimeValue,
       branchId,
       productId,
       productTitle,
-      branchPopUpShow
+      branchPopUpShow,
+      flatPickrDate
     } = this.state;
     return (
       <RequestMutation
         mutation={USER_REQUEST_MEMBERSHIP}
-        variables={{ branchId, startDatetime: datetimeValue, productId }}
+        variables={{
+          branchId,
+          productId,
+          startDatetime: moment(flatPickrDate).format("YYYY-MM-DD HH:mm:ss")
+        }}
       >
         {userReqMembershipMutationFn => {
           this.reqMembershipFn = userReqMembershipMutationFn;
@@ -76,7 +80,6 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
               {({ data: productDatas, loading: productsLoading }) => (
                 <ReqMembershipPresenter
                   productId={productId}
-                  datetimeValue={datetimeValue}
                   onSubmit={this.onSubmit}
                   productDatas={productDatas}
                   productsLoading={productsLoading}
@@ -86,9 +89,10 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
                   setTrueBranchPopUpShow={this.setTrueBranchPopUpShow}
                   setFalseBranchPopUpShow={this.setFalseBranchPopUpShow}
                   onBranchClick={this.onBranchClick}
-                  onDatetimeChange={this.onDatetimeChange}
                   onThrowBasketButtonClick={this.onThrowBasketButtonClick}
                   onCancelClick={this.onCancelClick}
+                  onFlatPickrChange={this.onFlatPickrChange}
+                  flatPickrDate={flatPickrDate}
                 />
               )}
             </GetBranchQuery>
@@ -100,11 +104,11 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
 
   public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
-    const { branchId, datetimeValue, productId } = this.state;
+    const { branchId, flatPickrDate, productId } = this.state;
 
     if (!branchId) {
       toast.error("지점정보가 입력되지 않았습니다!");
-    } else if (!datetimeValue) {
+    } else if (!flatPickrDate) {
       toast.error("시작기간을 입력해주세요");
     } else if (!productId) {
       toast.error("이용기간을 선택해주세요");
@@ -138,18 +142,18 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onDatetimeChange = (datetimeValue: Moment) => {
+  public onFlatPickrChange = (datetimeValue: Date) => {
     this.setState({
-      datetimeValue: datetimeValue.format("YYYY-MM-DD HH:mm:ss")
+      flatPickrDate: datetimeValue
     });
   };
 
   public onThrowBasketButtonClick = async () => {
-    const { branchId, datetimeValue, productId } = this.state;
+    const { branchId, flatPickrDate, productId } = this.state;
     const { history } = this.props;
     if (!branchId) {
       toast.error("지점 선택이 이루어지지 않았습니다");
-    } else if (!datetimeValue) {
+    } else if (!flatPickrDate) {
       toast.error("날짜 선택이 이루어지지 않았습니다");
     } else if (!productId) {
       toast.error("기간 선택이 이루어지지 않았습니다");

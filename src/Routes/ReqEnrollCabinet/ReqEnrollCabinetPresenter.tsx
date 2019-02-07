@@ -1,7 +1,5 @@
-import moment from "moment";
 import "moment/locale/ko";
 import React from "react";
-import Datetime from "react-datetime";
 import Dropdown from "react-dropdown";
 import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
@@ -17,6 +15,7 @@ import {
 } from "src/types/api";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 import CabinetDisplay from "../../Components/CabinetDisplay";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const FormExtended = styled(Form)`
   width: 90%;
@@ -72,7 +71,7 @@ const BackArrowExtended = styled(BackArrow)`
 const DatetimeTitle = styled.div`
   margin-bottom: 10px;
 `;
-const DatetimePicker = styled.div`
+const DatetimePickerCon = styled.div`
   &:hover {
     cursor: pointer;
   }
@@ -123,18 +122,6 @@ const DropdonwContainer = styled.div`
   }
 `;
 
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 160px;
-    height: 35px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-`;
 const BackContainer = styled.div``;
 
 const SetTitleContainer = styled.div`
@@ -161,19 +148,23 @@ const CabinetDisplayTitle = styled.div`
   margin-bottom: 10px;
 `;
 
+const ExtendedDatetimePicker = styled(DatetimePicker)`
+  width: 100%;
+`;
+
 interface IProps {
   branchId: number;
   branchPopUpShow: boolean;
   cabinetId: number;
   productTitle: string;
-  startDatetime: string;
+  startDatetime: Date;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   productDatas?: userGetProducts;
   onOptionChange: (arg: any) => void;
   setTrueBranchPopUpShow: () => void;
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
-  onDatetimeChange: (startDatetime: moment.Moment) => void;
+  onDatetimeChange: (startDatetime: Date) => void;
   onThrowBasketButtonClick: () => Promise<void>;
   onCancelClick: () => void;
   cabinetSetDatas?: getBranchForEnrollCabinet;
@@ -339,15 +330,12 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
         </CabinetSection>
         <DatetimeSection>
           <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
-          <DatetimePicker>
-            <DatetimeExtended
-              value={moment(startDatetime)}
-              dateFormat="YYYY MMMM Do"
-              timeFormat="A hh:mm"
-              locale="de"
-              onChange={onDatetimeChange}
+          <DatetimePickerCon>
+            <ExtendedDatetimePicker
+              flatPickrDate={startDatetime}
+              onFlatPickrChange={onDatetimeChange}
             />
-          </DatetimePicker>
+          </DatetimePickerCon>
         </DatetimeSection>
 
         {productDatas &&

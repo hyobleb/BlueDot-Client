@@ -108,6 +108,14 @@
     "@types/node" "*"
     "@types/react" "*"
 
+"@types/react-flatpickr@^3.7.0":
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/@types/react-flatpickr/-/react-flatpickr-3.7.0.tgz#af47e6f7e53c1b9406a9687cea3b7f50d84e5c53"
+  integrity sha512-W/Wwi4ObEjeqtQl/ITVb2BmQiXHQzOXzXTYVOPSs8e5MLD2jK+PMFaouUqg5IPoMULw3aSW5GRIo7HdjdWh32Q==
+  dependencies:
+    "@types/react" "*"
+    flatpickr "^4.0.6"
+
 "@types/react-router-dom@^4.3.1":
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-4.3.1.tgz#71fe2918f8f60474a891520def40a63997dafe04"
@@ -3030,6 +3038,11 @@ find-up@^2.0.0, find-up@^2.1.0:
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
   dependencies:
     locate-path "^2.0.0"
+
+flatpickr@^4.0.6, flatpickr@^4.3.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.5.2.tgz#47c8ad472a096e5fb7e74b809b0703535383f20d"
+  integrity sha512-jDy4QYGpmiy7+Qk8QvKJ4spjDdxcx9cxMydmq1x427HkKWBw0qizLYeYM2F6tMcvvqGjU5VpJS55j4LnsaBblA==
 
 flatten@^1.0.2:
   version "1.0.2"
@@ -5997,7 +6010,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@~15.6.0:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.7, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@~15.6.0:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -6175,9 +6188,10 @@ react-apollo@^2.1.11:
     lodash "^4.17.10"
     prop-types "^15.6.0"
 
-react-datetime@^2.15.0:
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/react-datetime/-/react-datetime-2.15.0.tgz#a8f7da6c58b6b45dbeea32d4e8485db17614e12c"
+react-datetime@^2.16.3:
+  version "2.16.3"
+  resolved "https://registry.yarnpkg.com/react-datetime/-/react-datetime-2.16.3.tgz#7f9ac7d4014a939c11c761d0c22d1fb506cb505e"
+  integrity sha512-amWfb5iGEiyqjLmqCLlPpu2oN415jK8wX1qoTq7qn6EYiU7qQgbNHglww014PT4O/3G5eo/3kbJu/M/IxxTyGw==
   dependencies:
     create-react-class "^15.5.2"
     object-assign "^3.0.0"
@@ -6236,6 +6250,14 @@ react-error-overlay@^4.0.1:
 react-facebook-login@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.1.0.tgz#44492e60a17dc337438bc971b7ee04b96965b6e4"
+
+react-flatpickr@^3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/react-flatpickr/-/react-flatpickr-3.7.1.tgz#aaf0d79197f311a89c08c63b9d6a94735c451a73"
+  integrity sha512-VCIxJEyn2uPhwRsBtQL8FlXeaS6Rk/JNXGztqoayD2XFoJ1iMMWcXX318yHSdn0RKyYzsPTbWl/4DVd0toR03A==
+  dependencies:
+    flatpickr "^4.3.2"
+    prop-types "^15.5.10"
 
 react-helmet@^5.2.0:
   version "5.2.0"

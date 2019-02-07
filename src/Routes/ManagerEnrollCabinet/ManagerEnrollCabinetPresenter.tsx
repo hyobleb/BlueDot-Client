@@ -1,7 +1,6 @@
 import moment from "moment";
 import "moment/locale/ko";
 import React from "react";
-import Datetime from "react-datetime";
 import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
 import CabinetSetsContainer from "src/Components/CabinetSetsContainer";
@@ -19,6 +18,7 @@ import {
 } from "src/types/api";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 import CabinetDisplay from "../../Components/CabinetDisplay";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const FormExtended = styled(Form)`
   width: 90%;
@@ -76,7 +76,8 @@ const BackArrowExtended = styled(BackArrow)`
 const DatetimeTitle = styled.div`
   margin-bottom: 10px;
 `;
-const DatetimePicker = styled.div`
+const DatetimePickerCon = styled.div`
+  width: 100%;
   &:hover {
     cursor: pointer;
   }
@@ -102,24 +103,13 @@ const CancleButton = styled(Button)`
   background-color: ${props => props.theme.redColor};
 `;
 
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 160px;
-    height: 35px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-`;
-
 const EndDatetime = styled.div`
   border: 1px solid #dedede;
   display: inline-block;
   padding: 8px;
   font-size: 13px;
+  width: 100%;
+  text-align: center;
 `;
 
 const BackContainer = styled.div``;
@@ -193,19 +183,24 @@ const FieldCardCreateMembershipBtn = styled(Button)`
 
 const BranchBtn = styled(Button)``;
 
+const ExtendedDatetimePicker = styled(DatetimePicker)`
+  width: 100%;
+  font-size: 13px;
+`;
+
 interface IProps {
   branchId: number;
   branchPopUpShow: boolean;
   cabinetId: number;
   productTitle: string;
-  startDatetime: string;
+  startDatetime: Date;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   productDatas?: userGetProducts;
   onOptionChange: (arg: any) => void;
   setTrueBranchPopUpShow: () => void;
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
-  onDatetimeChange: (startDatetime: moment.Moment) => void;
+  onDatetimeChange: (startDatetime: Date) => void;
   onEnrollClick: (
     payMethod?: CreatePaymentMethodOption | undefined
   ) => Promise<void>;
@@ -221,8 +216,8 @@ interface IProps {
   cabinetNumber: number;
   cabinetSetLoading: boolean;
   isFirstLoaidng: boolean;
-  selEndDatetime: string;
-  onEndDatetimeChange: (endDatetime: moment.Moment) => void;
+  selEndDatetime: Date;
+  onEndDatetimeChange: (endDatetime: Date) => void;
   onDateTimeAddClick: (
     product: userGetProducts_UserGetBranch_branch_products,
     hours: number
@@ -467,15 +462,20 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
             <>
               <DatetimeSection>
                 <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
-                <DatetimePicker>
-                  <DatetimeExtended
+                <DatetimePickerCon>
+                  {/* <DatetimeExtended
                     value={moment(startDatetime)}
                     dateFormat="YYYY MMMM Do"
                     timeFormat="A hh:mm"
                     locale="de"
                     onChange={onDatetimeChange}
+                  /> */}
+
+                  <ExtendedDatetimePicker
+                    flatPickrDate={startDatetime}
+                    onFlatPickrChange={onDatetimeChange}
                   />
-                </DatetimePicker>
+                </DatetimePickerCon>
                 <ResetButton
                   value={"현재시각으로 맞추기"}
                   onClick={setDatetimeValueNow}
@@ -483,11 +483,12 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
               </DatetimeSection>
               <DatetimeSection>
                 <DatetimeTitle>이용 종료 일시</DatetimeTitle>
-                <DatetimePicker>
+                <DatetimePickerCon>
                   <EndDatetime>
-                    {moment(selEndDatetime).format("YYYY MMMM Do a hh:mm")}
+                    {moment(selEndDatetime).format("YYYY MMMM Do")}{" "}
+                    {moment(selEndDatetime, "a hh:mm", "en").format("A hh:mm")}
                   </EndDatetime>
-                </DatetimePicker>
+                </DatetimePickerCon>
                 <ResetButton
                   value={"시작일시로 맞추기"}
                   onClick={setEndDatetimeToStart}

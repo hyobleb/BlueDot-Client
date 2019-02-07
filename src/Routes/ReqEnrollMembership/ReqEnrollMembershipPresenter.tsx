@@ -1,7 +1,5 @@
-import moment = require("moment");
 import "moment/locale/ko";
 import React from "react";
-import Datetime from "react-datetime";
 import Dropdown from "react-dropdown";
 import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
@@ -10,6 +8,7 @@ import Form from "src/Components/Form";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import { userGetProducts } from "src/types/api";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const FormExtended = styled(Form)`
   width: 90%;
@@ -58,7 +57,7 @@ const BackArrowExtended = styled(BackArrow)`
 const DatetimeTitle = styled.div`
   margin-bottom: 10px;
 `;
-const DatetimePicker = styled.div`
+const DatetimePickerCon = styled.div`
   &:hover {
     cursor: pointer;
   }
@@ -109,22 +108,14 @@ const DropdonwContainer = styled.div`
   }
 `;
 
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 160px;
-    height: 35px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-`;
 const BackContainer = styled.div``;
 
+const ExtendedDatetimePicker = styled(DatetimePicker)`
+  width: 100%;
+`;
+
 interface IProps {
-  datetimeValue: string;
+  datetimeValue: Date;
   productId: number;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   productDatas?: userGetProducts;
@@ -135,7 +126,7 @@ interface IProps {
   setTrueBranchPopUpShow: () => void;
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
-  onDatetimeChange: (datetimeValue: moment.Moment) => void;
+  onDatetimeChange: (datetimeValue: Date) => void;
   onThrowBasketButtonClick: () => Promise<void>;
   onCancelClick: () => void;
   reqMembershipLoading: boolean;
@@ -204,15 +195,12 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
         </BranchSection>
         <DatetimeSection>
           <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
-          <DatetimePicker>
-            <DatetimeExtended
-              value={moment(datetimeValue)}
-              dateFormat="YYYY MMMM Do"
-              timeFormat="A hh:mm"
-              locale="de"
-              onChange={onDatetimeChange}
+          <DatetimePickerCon>
+            <ExtendedDatetimePicker
+              flatPickrDate={datetimeValue}
+              onFlatPickrChange={onDatetimeChange}
             />
-          </DatetimePicker>
+          </DatetimePickerCon>
         </DatetimeSection>
 
         {productDatas &&

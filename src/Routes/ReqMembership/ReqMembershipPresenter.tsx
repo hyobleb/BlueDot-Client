@@ -1,7 +1,5 @@
-import moment from "moment";
+import "flatpickr/dist/themes/material_blue.css";
 import React from "react";
-import Datetime from "react-datetime";
-import "react-datetime/css/react-datetime.css";
 import Dropdown from "react-dropdown";
 import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
@@ -11,6 +9,7 @@ import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import { userGetProducts } from "src/types/api";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const BackContainer = styled.div``;
 const FormExtended = styled(Form)`
@@ -60,11 +59,6 @@ const BackArrowExtended = styled(BackArrow)`
 const DatetimeTitle = styled.div`
   margin-bottom: 10px;
 `;
-const DatetimePicker = styled.div`
-  &:hover {
-    cursor: pointer;
-  }
-`;
 const DatetimeSection = styled(Section)`
   display: flex;
   flex-direction: column;
@@ -111,21 +105,7 @@ const DropdonwContainer = styled.div`
   }
 `;
 
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 160px;
-    height: 35px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-`;
-
 interface IProps {
-  datetimeValue: string;
   productId: number;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   productDatas?: userGetProducts;
@@ -136,13 +116,13 @@ interface IProps {
   setTrueBranchPopUpShow: () => void;
   setFalseBranchPopUpShow: () => void;
   onBranchClick: (branchId: number) => void;
-  onDatetimeChange: (datetimeValue: moment.Moment) => void;
   onThrowBasketButtonClick: () => Promise<void>;
   onCancelClick: () => void;
+  onFlatPickrChange: (datetimeValue: Date) => void;
+  flatPickrDate: Date;
 }
 
 const ReqMembershipPresenter: React.SFC<IProps> = ({
-  datetimeValue,
   onSubmit,
   productDatas,
   productsLoading,
@@ -153,9 +133,10 @@ const ReqMembershipPresenter: React.SFC<IProps> = ({
   setTrueBranchPopUpShow,
   setFalseBranchPopUpShow,
   onBranchClick,
-  onDatetimeChange,
   onThrowBasketButtonClick,
-  onCancelClick
+  onCancelClick,
+  onFlatPickrChange,
+  flatPickrDate
 }) => {
   require("moment");
   require("moment/locale/ko");
@@ -204,15 +185,10 @@ const ReqMembershipPresenter: React.SFC<IProps> = ({
             </BranchSection>
             <DatetimeSection>
               <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
-              <DatetimePicker>
-                <DatetimeExtended
-                  value={moment(datetimeValue)}
-                  dateFormat="YYYY MMMM Do"
-                  timeFormat="A hh:mm"
-                  locale="de"
-                  onChange={onDatetimeChange}
-                />
-              </DatetimePicker>
+              <DatetimePicker
+                flatPickrDate={flatPickrDate}
+                onFlatPickrChange={onFlatPickrChange}
+              />
             </DatetimeSection>
             <PeriodSection>
               <InputLabel>

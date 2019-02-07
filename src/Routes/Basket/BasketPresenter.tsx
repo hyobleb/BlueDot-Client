@@ -270,7 +270,7 @@ const BasketPresenter: React.SFC<IProps> = ({
                       }
                     }}
                   />
-                  <PayButton
+                  {/* <PayButton
                     value={"실시간 계좌이체"}
                     onClick={() => {
                       const baseRequestMembership =
@@ -288,7 +288,7 @@ const BasketPresenter: React.SFC<IProps> = ({
                         toast.error("결제 모듈을 불러올 수 없습니다");
                       }
                     }}
-                  />
+                  /> */}
                   {/* <PayButton
                     value={"가상계좌 이체"}
                     onClick={() => {

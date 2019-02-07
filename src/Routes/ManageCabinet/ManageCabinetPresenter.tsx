@@ -1,6 +1,5 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import React from "react";
-import Datetime from "react-datetime";
 import AlertPopUp from "src/Components/AlertPopUp";
 import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
 import DefaultBack from "src/Components/DefaultBack";
@@ -9,6 +8,7 @@ import SearchUserPopUp from "src/Components/SearchUserPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import { managerGetCabinetLogs_ManagerGetCabinetLogs_cabinet } from "src/types/api";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const Back = styled(DefaultBack)``;
 
@@ -89,19 +89,6 @@ const EnrollBtnSec = styled(Section)`
 `;
 const EnrollBtn = styled(Button)``;
 
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 100px;
-    height: 30px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-`;
-
 const NoContentTitle = styled.div`
   margin-top: 20px;
   margin-bottom: 20px;
@@ -163,10 +150,10 @@ const ClrBtn = styled(CabButton)`
 // `;
 
 interface IProps {
-  endDatetime: Moment;
-  startDatetime: Moment;
-  onStartDatetimeChange: (startDatetimeValue: Moment) => void;
-  onEndDatetimeChange: (endDatetimeValue: Moment) => void;
+  endDatetime: Date;
+  startDatetime: Date;
+  onStartDatetimeChange: (startDatetimeValue: Date) => void;
+  onEndDatetimeChange: (endDatetimeValue: Date) => void;
   onBackClick: () => void;
   cabinetLogs?: any;
   getCabinetLogsLoading: boolean;
@@ -302,22 +289,18 @@ const ManageCabinetPresenter: React.SFC<IProps> = ({
             />
           </ButtonSec>
           <PeriodSec>
-            <DatetimeExtended
-              value={startDatetime}
-              dateFormat="YYYY MMMM Do"
-              timeFormat={false}
-              locale="de"
-              onChange={onStartDatetimeChange}
-              closeOnSelect={true}
+            <DatetimePicker
+              flatPickrDate={startDatetime}
+              onFlatPickrChange={onStartDatetimeChange}
+              dateFormat={"Y년 m월 d일"}
+              enableTime={false}
             />
             -
-            <DatetimeExtended
-              value={endDatetime}
-              dateFormat="YYYY MMMM Do"
-              timeFormat={false}
-              locale="de"
-              onChange={onEndDatetimeChange}
-              closeOnSelect={true}
+            <DatetimePicker
+              flatPickrDate={endDatetime}
+              onFlatPickrChange={onEndDatetimeChange}
+              dateFormat={"Y년 m월 d일"}
+              enableTime={false}
             />
           </PeriodSec>
           <ContentsSec>

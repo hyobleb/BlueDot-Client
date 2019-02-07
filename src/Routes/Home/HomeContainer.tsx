@@ -113,22 +113,6 @@ class NewMessageNotification extends React.Component<IMessageProps> {
     });
   };
 
-  // public onBtnClick = () => {
-  //   const {
-  //     extendMembershipId,
-  //     extendCabinetMembershipId,
-  //     branchId
-  //   } = this.props;
-
-  //   if (extendMembershipId) {
-  //     this.moveToExtendMembership(extendMembershipId);
-  //   } else if (branchId) {
-  //     this.moveToEnrollMembership(branchId);
-  //   } else if (extendCabinetMembershipId) {
-  //     this.moveToExtendCabinetMembership(extendCabinetMembershipId);
-  //   }
-  // };
-
   public render() {
     const {
       message,
