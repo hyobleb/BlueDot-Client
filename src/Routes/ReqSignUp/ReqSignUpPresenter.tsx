@@ -1,7 +1,6 @@
-import moment, { Moment } from "moment";
+import moment from "moment";
 import "moment/locale/ko";
 import React from "react";
-import Datetime from "react-datetime";
 import Dropdown from "react-dropdown";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
@@ -11,6 +10,7 @@ import Input from "src/Components/Input";
 import { genderTypeOptions } from "src/Components/shareOptions";
 import styled from "src/typed-components";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const BackContainer = styled.div``;
 const Container = styled.div`
@@ -66,7 +66,7 @@ const SelBranchDisplay = styled.div`
 const DatetimeTitle = styled.div`
   margin-bottom: 10px;
 `;
-const DatetimePicker = styled.div`
+const DatetimePickerCon = styled.div`
   &:hover {
     cursor: pointer;
   }
@@ -75,24 +75,6 @@ const DatetimeSection = styled(Section)`
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-`;
-
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 100%;
-    height: 35px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-  .rdtPicker {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-  }
 `;
 
 const DropdonwContainer = styled.div`
@@ -112,6 +94,10 @@ const ConfirmButton = styled(Button)`
   &:hover {
     background-color: ${props => props.theme.greyColor};
   }
+`;
+
+const ExtendedDatetimePicker = styled(DatetimePicker)`
+  width: 100%;
 `;
 
 // const BirthContainer = styled.div``;
@@ -136,7 +122,7 @@ interface IProps {
   toggleShowBranchSearch: () => void;
   baseBranchName: string;
   onBranchClick: (branchId: number) => Promise<void>;
-  onDatetimeChange: (datetimeValue: Moment) => void;
+  onDatetimeChange: (datetimeValue: Date) => void;
   onOptionChange: (arg: any) => void;
   selGenderFirst: boolean;
 }
@@ -179,19 +165,18 @@ const ReqSignUpPresenter: React.SFC<IProps> = ({
         <ExtendedForm submitFn={onSubmit}>
           <DatetimeSection>
             <DatetimeTitle>생년월일을 선택해주세요</DatetimeTitle>
-            <DatetimePicker>
-              <DatetimeExtended
-                value={moment()
+            <DatetimePickerCon>
+              <ExtendedDatetimePicker
+                flatPickrDate={moment()
                   .set("year", birthYear)
                   .set("month", birthMonth)
-                  .set("date", birthDay)}
-                dateFormat="YYYY MMMM Do"
-                timeFormat={false}
-                viewMode="years"
-                onChange={onDatetimeChange}
-                closeOnSelect={true}
+                  .set("date", birthDay)
+                  .toDate()}
+                onFlatPickrChange={onDatetimeChange}
+                enableTime={false}
+                dateFormat={"Y년 m월 d일"}
               />
-            </DatetimePicker>
+            </DatetimePickerCon>
           </DatetimeSection>
           <DropdonwContainer>
             <Dropdown

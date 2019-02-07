@@ -1,4 +1,4 @@
-import { Moment } from "moment";
+import moment from "moment";
 import React from "react";
 import { ApolloConsumer, Mutation, MutationFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
@@ -235,11 +235,11 @@ class ReqSignUpContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public onDatetimeChange = (datetimeValue: Moment) => {
+  public onDatetimeChange = (datetimeValue: Date) => {
     this.setState({
-      birthDay: datetimeValue.date(),
-      birthMonth: datetimeValue.month(),
-      birthYear: datetimeValue.year(),
+      birthDay: moment(datetimeValue).date(),
+      birthMonth: moment(datetimeValue).month(),
+      birthYear: moment(datetimeValue).year(),
       selBirthFirst: false
     });
   };
