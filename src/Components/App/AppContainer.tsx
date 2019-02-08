@@ -1,7 +1,8 @@
 import React from "react";
-import { graphql } from "react-apollo";
+import { graphql, Mutation, MutationFn } from "react-apollo";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { LOG_USER_OUT } from "../../sharedQueries.local";
 import theme from "../../theme";
 import { ThemeProvider } from "../../typed-components";
 import AppPresenter from "./AppPresenter";
@@ -16,11 +17,18 @@ interface IState {
 }
 
 class AppContainer extends React.Component<IProps, IState> {
+  public timeoutLogout;
+  public logoutMutationFn: MutationFn;
   constructor(props) {
     super(props);
     this.state = {
       isMenuOpen: false
     };
+  }
+
+  public componentWillUpdate() {
+    this.stopLogoutFn();
+    this.setTimeLogout();
   }
 
   public render() {
@@ -29,16 +37,23 @@ class AppContainer extends React.Component<IProps, IState> {
     return (
       <React.Fragment>
         <ThemeProvider theme={theme}>
-          <AppPresenter
-            isLoggedIn={data.auth.isLoggedIn}
-            isHead={data.auth.isHead}
-            isSupervisor={data.auth.isSupervisor}
-            isFranchiser={data.auth.isFranchiser}
-            isCleanStaff={data.auth.isCleanStaff}
-            isManStaff={data.auth.isManStaff}
-            isMenuOpen={isMenuOpen}
-            toggleMenu={this.toggleMenu}
-          />
+          <Mutation mutation={LOG_USER_OUT}>
+            {logUserOutMutation => {
+              this.logoutMutationFn = logUserOutMutation;
+              return (
+                <AppPresenter
+                  isLoggedIn={data.auth.isLoggedIn}
+                  isHead={data.auth.isHead}
+                  isSupervisor={data.auth.isSupervisor}
+                  isFranchiser={data.auth.isFranchiser}
+                  isCleanStaff={data.auth.isCleanStaff}
+                  isManStaff={data.auth.isManStaff}
+                  isMenuOpen={isMenuOpen}
+                  toggleMenu={this.toggleMenu}
+                />
+              );
+            }}
+          </Mutation>
         </ThemeProvider>
         <ToastContainer
           draggable={true}
@@ -54,6 +69,16 @@ class AppContainer extends React.Component<IProps, IState> {
         isMenuOpen: !state.isMenuOpen
       };
     });
+  };
+
+  public setTimeLogout = () => {
+    this.timeoutLogout = setTimeout(() => {
+      this.logoutMutationFn();
+    }, 60000);
+  };
+
+  public stopLogoutFn = () => {
+    clearTimeout(this.timeoutLogout);
   };
 }
 // const AppContainer = ({ data }) => {
