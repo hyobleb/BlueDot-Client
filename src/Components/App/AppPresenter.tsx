@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-// import Sidebar from "react-sidebar";
+import Sidebar from "react-sidebar";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
 import Basket from "../../Routes/Basket";
@@ -47,24 +47,24 @@ import UserDetail from "../../Routes/UserDetail";
 import VbankList from "../../Routes/VbankList";
 import ViewPayInfo from "../../Routes/ViewPayInfo";
 import ViewReqSignUp from "../../Routes/ViewReqSignUp";
-// import styled from "../../typed-components";
-// import Menu from "../Menu";
+import styled from "../../typed-components";
+import Menu from "../Menu";
 
-// const MenuButton = styled.button`
-//   appearance: none;
-//   padding: 10px;
-//   position: absolute;
-//   top: 10px;
-//   right: 10px;
-//   text-align: center;
-//   font-weight: 800;
-//   border: 0;
-//   cursor: pointer;
-//   font-size: 20px;
-//   transform: rotate(90deg);
-//   z-index: 2;
-//   background-color: transparent;
-// `;
+const MenuButton = styled.button`
+  appearance: none;
+  padding: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: center;
+  font-weight: 800;
+  border: 0;
+  cursor: pointer;
+  font-size: 20px;
+  transform: rotate(90deg);
+  z-index: 2;
+  background-color: transparent;
+`;
 
 interface IProps {
   isLoggedIn: boolean;
@@ -145,255 +145,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
 }) => {
   return (
     <>
-      <Switch>
-        <Route path={"/"} exact={true} component={Home} />
-        <Route path={"/membership"} exact={true} component={Membership} />
-        <Route
-          path={"/request-membership"}
-          exact={true}
-          component={ReqMembership}
-        />
-        <Route path={"/basket"} exact={true} component={Basket} />
-        <Route
-          path={"/enroll-req-membership"}
-          exact={true}
-          component={ReqEnrollMembership}
-        />
-        <Route
-          path={"/extend-req-membership"}
-          exact={true}
-          component={ReqExtendMembership}
-        />
-        <Route
-          path={"/enroll-req-cabinet"}
-          exact={true}
-          component={ReqEnrollCabinet}
-        />
-        <Route
-          path={"/extend-req-cabinet"}
-          exact={true}
-          component={ReqExtendCabinet}
-        />
-        <Route path={"/edit-profile"} exact={true} component={EditProfile} />
-        <Route path={"/vbank-list"} exact={true} component={VbankList} />
-        {(isHead ||
-          isFranchiser ||
-          isSupervisor ||
-          isManStaff ||
-          isCleanStaff) && [
-          <Route
-            key={23}
-            path={"/manage-seats"}
-            exact={true}
-            render={props => (
-              <ManageSeats
-                {...props}
-                isHead={isHead}
-                isFranchiser={isFranchiser}
-                isSupervisor={isSupervisor}
-                isManStaff={isManStaff}
-                isCleanStaff={isCleanStaff}
-              />
-            )}
-          />,
-          <Route
-            key={24}
-            path={"/manage-seat"}
-            exact={true}
-            component={ManageSeat}
-          />,
-          <Route
-            key={25}
-            path={"/manage-cabinets"}
-            exact={true}
-            render={props => (
-              <ManageCabinets
-                {...props}
-                isHead={isHead}
-                isFranchiser={isFranchiser}
-                isSupervisor={isSupervisor}
-                isManStaff={isManStaff}
-                isCleanStaff={isCleanStaff}
-              />
-            )}
-          />,
-          <Route
-            key={26}
-            path={"/manage-cabinet"}
-            exact={true}
-            component={ManageCabinet}
-          />
-        ]}
-        {(isHead || isFranchiser || isSupervisor || isManStaff) && [
-          <Route
-            key={14}
-            path={"/manage-users"}
-            exact={true}
-            render={props => (
-              <ManageUsers
-                {...props}
-                isHead={isHead}
-                isFranchiser={isFranchiser}
-                isSupervisor={isSupervisor}
-                isManStaff={isManStaff}
-                isCleanStaff={isCleanStaff}
-              />
-            )}
-          />,
-          <Route
-            key={15}
-            path={"/user-detail"}
-            exact={true}
-            component={UserDetail}
-          />,
-          <Route
-            key={16}
-            path={"/manager-enroll-membership"}
-            exact={true}
-            component={ManagerEnrollMembership}
-          />,
-          <Route
-            key={17}
-            path={"/manager-enroll-cabinet"}
-            exact={true}
-            component={ManagerEnrollCabinet}
-          />,
-          <Route
-            key={18}
-            path={"/manager-extend-membership"}
-            exact={true}
-            component={ManagerExtendMembership}
-          />,
-          <Route
-            key={19}
-            path={"/manager-extend-cabinet"}
-            exact={true}
-            component={ManagerExtendCabinet}
-          />,
-          <Route
-            key={21}
-            path={"/view-req-sign-up"}
-            exact={true}
-            component={ViewReqSignUp}
-          />
-        ]}
-        {(isHead || isFranchiser || isSupervisor) && [
-          <Route
-            key={1}
-            path={"/branch-setting"}
-            exact={true}
-            render={props => (
-              <BranchSetting
-                {...props}
-                isHead={isHead}
-                isFranchiser={isFranchiser}
-                isSupervisor={isSupervisor}
-              />
-            )}
-          />,
-          <Route
-            key={5}
-            path={"/branch-modfiy"}
-            exact={true}
-            component={ModifyBranch}
-          />,
-          <Route
-            key={13}
-            path={"/setting-cablock"}
-            exact={true}
-            component={SettingCabLock}
-          />,
-          <Route
-            key={13}
-            path={"/setting-staff"}
-            exact={true}
-            component={SettingStaff}
-          />,
-
-          <Route
-            key={3}
-            path={"/lounge-setting"}
-            exact={true}
-            component={SettingLounge}
-          />,
-
-          <Route
-            key={4}
-            path={"/lounge-modify"}
-            exact={true}
-            component={UpdateLounge}
-          />
-        ]}
-        {isHead && [
-          <Route
-            key={2}
-            path={"/add-branch"}
-            exact={true}
-            component={AddBranch}
-          />,
-
-          <Route
-            key={6}
-            path={"/seat-setting"}
-            exact={true}
-            component={SettingSeats}
-          />,
-          <Route
-            key={7}
-            path={"/set-setting"}
-            exact={true}
-            component={SettingCabinetSets}
-          />,
-          <Route
-            key={8}
-            path={"/set-modify"}
-            exact={true}
-            component={UpdateCabinetSet}
-          />,
-          <Route
-            key={9}
-            path={"/set-cabinets"}
-            exact={true}
-            component={SettingCabinets}
-          />,
-          <Route
-            key={10}
-            path={"/setting-product"}
-            exact={true}
-            component={SettingProduct}
-          />,
-          <Route
-            key={11}
-            path={"/add-product"}
-            exact={true}
-            component={AddProduct}
-          />,
-          <Route
-            key={12}
-            path={"/modify-product"}
-            exact={true}
-            component={ModifyProduct}
-          />,
-
-          <Route key={20} path={"/chart"} exact={true} component={Chart} />,
-
-          <Route
-            key={22}
-            path={"/setting-cobranch"}
-            exact={true}
-            component={SettingCoBranch}
-          />,
-          <Route
-            key={23}
-            path={"/view-payinfo"}
-            exact={true}
-            component={ViewPayInfo}
-          />
-        ]}
-        <Redirect from={"*"} to={"/"} />
-        {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}
-      </Switch>
-      {/* <Sidebar
+      <Sidebar
         sidebar={<Menu toggleMenu={toggleMenu} />}
         open={isMenuOpen}
         onSetOpen={toggleMenu}
@@ -407,7 +159,255 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         }}
       >
         {<MenuButton onClick={toggleMenu}>|||</MenuButton>}
-      </Sidebar> */}
+        <Switch>
+          <Route path={"/"} exact={true} component={Home} />
+          <Route path={"/membership"} exact={true} component={Membership} />
+          <Route
+            path={"/request-membership"}
+            exact={true}
+            component={ReqMembership}
+          />
+          <Route path={"/basket"} exact={true} component={Basket} />
+          <Route
+            path={"/enroll-req-membership"}
+            exact={true}
+            component={ReqEnrollMembership}
+          />
+          <Route
+            path={"/extend-req-membership"}
+            exact={true}
+            component={ReqExtendMembership}
+          />
+          <Route
+            path={"/enroll-req-cabinet"}
+            exact={true}
+            component={ReqEnrollCabinet}
+          />
+          <Route
+            path={"/extend-req-cabinet"}
+            exact={true}
+            component={ReqExtendCabinet}
+          />
+          <Route path={"/edit-profile"} exact={true} component={EditProfile} />
+          <Route path={"/vbank-list"} exact={true} component={VbankList} />
+          {(isHead ||
+            isFranchiser ||
+            isSupervisor ||
+            isManStaff ||
+            isCleanStaff) && [
+            <Route
+              key={23}
+              path={"/manage-seats"}
+              exact={true}
+              render={props => (
+                <ManageSeats
+                  {...props}
+                  isHead={isHead}
+                  isFranchiser={isFranchiser}
+                  isSupervisor={isSupervisor}
+                  isManStaff={isManStaff}
+                  isCleanStaff={isCleanStaff}
+                />
+              )}
+            />,
+            <Route
+              key={24}
+              path={"/manage-seat"}
+              exact={true}
+              component={ManageSeat}
+            />,
+            <Route
+              key={25}
+              path={"/manage-cabinets"}
+              exact={true}
+              render={props => (
+                <ManageCabinets
+                  {...props}
+                  isHead={isHead}
+                  isFranchiser={isFranchiser}
+                  isSupervisor={isSupervisor}
+                  isManStaff={isManStaff}
+                  isCleanStaff={isCleanStaff}
+                />
+              )}
+            />,
+            <Route
+              key={26}
+              path={"/manage-cabinet"}
+              exact={true}
+              component={ManageCabinet}
+            />
+          ]}
+          {(isHead || isFranchiser || isSupervisor || isManStaff) && [
+            <Route
+              key={14}
+              path={"/manage-users"}
+              exact={true}
+              render={props => (
+                <ManageUsers
+                  {...props}
+                  isHead={isHead}
+                  isFranchiser={isFranchiser}
+                  isSupervisor={isSupervisor}
+                  isManStaff={isManStaff}
+                  isCleanStaff={isCleanStaff}
+                />
+              )}
+            />,
+            <Route
+              key={15}
+              path={"/user-detail"}
+              exact={true}
+              component={UserDetail}
+            />,
+            <Route
+              key={16}
+              path={"/manager-enroll-membership"}
+              exact={true}
+              component={ManagerEnrollMembership}
+            />,
+            <Route
+              key={17}
+              path={"/manager-enroll-cabinet"}
+              exact={true}
+              component={ManagerEnrollCabinet}
+            />,
+            <Route
+              key={18}
+              path={"/manager-extend-membership"}
+              exact={true}
+              component={ManagerExtendMembership}
+            />,
+            <Route
+              key={19}
+              path={"/manager-extend-cabinet"}
+              exact={true}
+              component={ManagerExtendCabinet}
+            />,
+            <Route
+              key={21}
+              path={"/view-req-sign-up"}
+              exact={true}
+              component={ViewReqSignUp}
+            />
+          ]}
+          {(isHead || isFranchiser || isSupervisor) && [
+            <Route
+              key={1}
+              path={"/branch-setting"}
+              exact={true}
+              render={props => (
+                <BranchSetting
+                  {...props}
+                  isHead={isHead}
+                  isFranchiser={isFranchiser}
+                  isSupervisor={isSupervisor}
+                />
+              )}
+            />,
+            <Route
+              key={5}
+              path={"/branch-modfiy"}
+              exact={true}
+              component={ModifyBranch}
+            />,
+            <Route
+              key={13}
+              path={"/setting-cablock"}
+              exact={true}
+              component={SettingCabLock}
+            />,
+            <Route
+              key={13}
+              path={"/setting-staff"}
+              exact={true}
+              component={SettingStaff}
+            />,
+
+            <Route
+              key={3}
+              path={"/lounge-setting"}
+              exact={true}
+              component={SettingLounge}
+            />,
+
+            <Route
+              key={4}
+              path={"/lounge-modify"}
+              exact={true}
+              component={UpdateLounge}
+            />
+          ]}
+          {isHead && [
+            <Route
+              key={2}
+              path={"/add-branch"}
+              exact={true}
+              component={AddBranch}
+            />,
+
+            <Route
+              key={6}
+              path={"/seat-setting"}
+              exact={true}
+              component={SettingSeats}
+            />,
+            <Route
+              key={7}
+              path={"/set-setting"}
+              exact={true}
+              component={SettingCabinetSets}
+            />,
+            <Route
+              key={8}
+              path={"/set-modify"}
+              exact={true}
+              component={UpdateCabinetSet}
+            />,
+            <Route
+              key={9}
+              path={"/set-cabinets"}
+              exact={true}
+              component={SettingCabinets}
+            />,
+            <Route
+              key={10}
+              path={"/setting-product"}
+              exact={true}
+              component={SettingProduct}
+            />,
+            <Route
+              key={11}
+              path={"/add-product"}
+              exact={true}
+              component={AddProduct}
+            />,
+            <Route
+              key={12}
+              path={"/modify-product"}
+              exact={true}
+              component={ModifyProduct}
+            />,
+
+            <Route key={20} path={"/chart"} exact={true} component={Chart} />,
+
+            <Route
+              key={22}
+              path={"/setting-cobranch"}
+              exact={true}
+              component={SettingCoBranch}
+            />,
+            <Route
+              key={23}
+              path={"/view-payinfo"}
+              exact={true}
+              component={ViewPayInfo}
+            />
+          ]}
+          <Redirect from={"*"} to={"/"} />
+          {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}
+        </Switch>
+      </Sidebar>
     </>
   );
 };

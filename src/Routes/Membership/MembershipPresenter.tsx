@@ -137,7 +137,6 @@ const MembershipPresenter: React.SFC<IProps> = ({
       <title>membership | BlueDot</title>
     </Helmet>
     <BackArrowExtended backTo="/home" />
-
     {profileLoading || myMembershipDatasLoading ? (
       <Loading />
     ) : (
