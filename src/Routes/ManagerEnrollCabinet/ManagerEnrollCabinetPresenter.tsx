@@ -242,6 +242,7 @@ interface IProps {
   verticalNumber: number;
   productLoading: boolean;
   enrollCabLoading: boolean;
+  shiftCabLoading: boolean;
 }
 
 const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
@@ -292,7 +293,8 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
   selProductReset,
   verticalNumber,
   productLoading,
-  enrollCabLoading
+  enrollCabLoading,
+  shiftCabLoading
 }) => {
   const productOptions = new Array();
   if (
@@ -564,11 +566,15 @@ const ManagerEnrollCabinetPresenter: React.SFC<IProps> = ({
                 ))}
 
               {/* 무결제 등록 숨김 처리 */}
-              {isShifitCabinet && (
-                <ThrowBasketButton
-                  value={"이동하기"}
-                  onClick={() => onEnrollClick()}
-                />
+              {shiftCabLoading ? (
+                <Loading />
+              ) : (
+                isShifitCabinet && (
+                  <ThrowBasketButton
+                    value={"이동하기"}
+                    onClick={() => onEnrollClick()}
+                  />
+                )
               )}
 
               <CancleButton value={"취소"} onClick={onBackClick} />

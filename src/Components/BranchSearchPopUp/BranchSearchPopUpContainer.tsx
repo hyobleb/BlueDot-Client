@@ -60,6 +60,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
         onCompleted={this.updateFields}
         variables={{ text: searchText }}
         skip={!searchText}
+        fetchPolicy={"cache-and-network"}
       >
         {() => (
           <GetAllBranches

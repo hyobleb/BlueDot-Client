@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import Sidebar from "react-sidebar";
+// import Sidebar from "react-sidebar";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
 import Basket from "../../Routes/Basket";
@@ -47,24 +47,24 @@ import UserDetail from "../../Routes/UserDetail";
 import VbankList from "../../Routes/VbankList";
 import ViewPayInfo from "../../Routes/ViewPayInfo";
 import ViewReqSignUp from "../../Routes/ViewReqSignUp";
-import styled from "../../typed-components";
-import Menu from "../Menu";
+// import styled from "../../typed-components";
+// import Menu from "../Menu";
 
-const MenuButton = styled.button`
-  appearance: none;
-  padding: 10px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  text-align: center;
-  font-weight: 800;
-  border: 0;
-  cursor: pointer;
-  font-size: 20px;
-  transform: rotate(90deg);
-  z-index: 2;
-  background-color: transparent;
-`;
+// const MenuButton = styled.button`
+//   appearance: none;
+//   padding: 10px;
+//   position: absolute;
+//   top: 10px;
+//   right: 10px;
+//   text-align: center;
+//   font-weight: 800;
+//   border: 0;
+//   cursor: pointer;
+//   font-size: 20px;
+//   transform: rotate(90deg);
+//   z-index: 2;
+//   background-color: transparent;
+// `;
 
 interface IProps {
   isLoggedIn: boolean;
@@ -393,7 +393,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         <Redirect from={"*"} to={"/"} />
         {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}
       </Switch>
-      <Sidebar
+      {/* <Sidebar
         sidebar={<Menu toggleMenu={toggleMenu} />}
         open={isMenuOpen}
         onSetOpen={toggleMenu}
@@ -407,7 +407,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         }}
       >
         {<MenuButton onClick={toggleMenu}>|||</MenuButton>}
-      </Sidebar>
+      </Sidebar> */}
     </>
   );
 };

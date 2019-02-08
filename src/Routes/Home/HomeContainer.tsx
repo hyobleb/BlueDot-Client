@@ -40,7 +40,7 @@ const Button = styled(SmallButton)`
 `;
 
 interface IState {
-  // isMenuOpen: boolean;
+  isMenuOpen: boolean;
   nowIp: string;
   branchIdByIp: number;
   nowBranchId: number | null;
@@ -178,7 +178,7 @@ class HomeContainer extends React.Component<IProps, IState> {
       branchIdByIp: 0,
       branchLoaded: false,
       branchName: "",
-      // isMenuOpen: false,
+      isMenuOpen: false,
       loungeImage: "",
       minimapImage: "",
       myUsingSeatId: null,
@@ -202,7 +202,7 @@ class HomeContainer extends React.Component<IProps, IState> {
 
   public render() {
     const {
-      // isMenuOpen,
+      isMenuOpen,
       nowIp,
       branchLoaded,
       loungeImage,
@@ -332,8 +332,8 @@ class HomeContainer extends React.Component<IProps, IState> {
                                         <HomePresenter
                                           profileLoading={profileLoading}
                                           branchLoading={branchLoading}
-                                          // isMenuOpen={isMenuOpen}
-                                          // toggleMenu={this.toggleMenu}
+                                          isMenuOpen={isMenuOpen}
+                                          toggleMenu={this.toggleMenu}
                                           branchLoaded={branchLoaded}
                                           loungeImage={loungeImage}
                                           minimapImage={minimapImage}
@@ -376,13 +376,13 @@ class HomeContainer extends React.Component<IProps, IState> {
     );
   }
   // 자동으로 실행되는 query를 skip하고 싶으면 query 속성에 skip을 추가해주면 됨
-  // public toggleMenu = () => {
-  //   this.setState(state => {
-  //     return {
-  //       isMenuOpen: !state.isMenuOpen
-  //     };
-  //   });
-  // };
+  public toggleMenu = () => {
+    this.setState(state => {
+      return {
+        isMenuOpen: !state.isMenuOpen
+      };
+    });
+  };
 
   public updateFields = (
     data:

@@ -189,7 +189,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
               }
             }}
           >
-            {shiftCabinetMutation => {
+            {(shiftCabinetMutation, { loading: shiftCabLoading }) => {
               this.shiftCabinetFn = shiftCabinetMutation;
               return (
                 <GetCabinetQuery
@@ -386,6 +386,7 @@ class ManagerEnrollCabinetContainer extends React.Component<IProps, IState> {
                                             verticalNumber={verticalNumber}
                                             productLoading={productLoading}
                                             enrollCabLoading={enrollCabLoading}
+                                            shiftCabLoading={shiftCabLoading}
                                           />
                                         )}
                                       </GetBranchQuery>
