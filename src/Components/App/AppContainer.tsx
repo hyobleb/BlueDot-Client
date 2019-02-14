@@ -72,9 +72,18 @@ class AppContainer extends React.Component<IProps, IState> {
   };
 
   public setTimeLogout = () => {
-    this.timeoutLogout = setTimeout(() => {
-      this.logoutMutationFn();
-    }, 60000);
+    const filter = "win16|win32|win64|mac|macintel";
+
+    if (navigator.platform) {
+      if (filter.indexOf(navigator.platform.toLowerCase()) < 0) {
+        // 모바일일 경우
+        return;
+      } else {
+        this.timeoutLogout = setTimeout(() => {
+          this.logoutMutationFn();
+        }, 600000);
+      }
+    }
   };
 
   public stopLogoutFn = () => {

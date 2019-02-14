@@ -260,10 +260,6 @@ class BasketContainer extends React.Component<IProps, IState> {
   };
 
   public onPaymentClick = async (baseBranchId: number, payMethod: string) => {
-    // if (payMethod === "CARD") {
-    //   toast.info("카드 결제는 현재 준비중입니다!");
-    //   return;
-    // }
     this.setState(
       {
         baseBranchId

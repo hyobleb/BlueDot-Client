@@ -373,7 +373,24 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
         <TotalMembersSection>
           <TotalMembersHead>
             전체 회원(현재 회원수 : {nowUsingUsers.length}(남 :{" "}
-            {nowUsingUsers.filter(user => user.gender === "MALE").length}(
+            {
+              nowUsingUsers
+                .filter(user => user.gender === "MALE")
+                .filter(user => {
+                  const { memberships } = user;
+                  const nowMembership = memberships.find(
+                    membership =>
+                      moment(membership.endDatetime) >= moment() &&
+                      membership.target === "MEMBERSHIP"
+                  );
+                  if (nowMembership) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                }).length
+            }
+            (
             {
               nowUsingUsers
                 .filter(user => user.gender === "MALE")

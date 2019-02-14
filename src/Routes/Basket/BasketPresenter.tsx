@@ -253,7 +253,7 @@ const BasketPresenter: React.SFC<IProps> = ({
                 <>
                   <PayButton
                     value={"카드 결제"}
-                    onClick={() => {
+                    onClick={async () => {
                       const baseRequestMembership =
                         reqMembershipDatas.UserGetRequest.requestMemberships &&
                         reqMembershipDatas.UserGetRequest.requestMemberships
@@ -261,7 +261,7 @@ const BasketPresenter: React.SFC<IProps> = ({
                         reqMembershipDatas.UserGetRequest.requestMemberships[0];
 
                       if (baseRequestMembership) {
-                        onPaymentClick(
+                        await onPaymentClick(
                           baseRequestMembership.branch.id,
                           CreatePaymentMethodOption.CARD
                         );

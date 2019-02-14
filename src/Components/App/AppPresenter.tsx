@@ -23,6 +23,7 @@ import ManageUsers from "../../Routes/ManageUsers";
 import Membership from "../../Routes/Membership";
 import ModifyBranch from "../../Routes/ModifyBranch";
 import ModifyProduct from "../../Routes/ModifyProduct";
+import MyInfo from "../../Routes/MyInfo";
 import PhoneLogin from "../../Routes/PhoneLogin";
 import ReqEnrollCabinet from "../../Routes/ReqEnrollCabinet";
 import ReqEnrollMembership from "../../Routes/ReqEnrollMembership";
@@ -236,7 +237,8 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
               path={"/manage-cabinet"}
               exact={true}
               component={ManageCabinet}
-            />
+            />,
+            <Route key={27} path={"/myinfo"} exact={true} component={MyInfo} />
           ]}
           {(isHead || isFranchiser || isSupervisor || isManStaff) && [
             <Route
