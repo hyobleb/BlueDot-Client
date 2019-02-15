@@ -50,6 +50,8 @@ class AppContainer extends React.Component<IProps, IState> {
                   isManStaff={data.auth.isManStaff}
                   isMenuOpen={isMenuOpen}
                   toggleMenu={this.toggleMenu}
+                  setTimeLogout={this.setTimeLogout}
+                  stopLogoutFn={this.stopLogoutFn}
                 />
               );
             }}

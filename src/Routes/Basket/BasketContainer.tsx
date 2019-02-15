@@ -34,7 +34,10 @@ import {
   GET_REQUEST_MEMBERSHIPS
 } from "./BasketQueries";
 
-interface IProps extends RouteComponentProps<any> {}
+interface IProps extends RouteComponentProps<any> {
+  setTimeLogout: () => void;
+  stopLogoutFn: () => void;
+}
 interface IState {
   jqueryLoad: boolean;
   importLoad: boolean;
@@ -260,6 +263,8 @@ class BasketContainer extends React.Component<IProps, IState> {
   };
 
   public onPaymentClick = async (baseBranchId: number, payMethod: string) => {
+    const { stopLogoutFn } = this.props;
+    stopLogoutFn();
     this.setState(
       {
         baseBranchId
@@ -327,7 +332,7 @@ class BasketContainer extends React.Component<IProps, IState> {
   };
 
   public processingPayment = async (impId: string, paymentId: number) => {
-    const { history } = this.props;
+    const { history, setTimeLogout } = this.props;
 
     if (!this.state.baseBranchId) {
       toast.error("지점을 먼저 설정하셔야 됩니다");
@@ -397,6 +402,7 @@ class BasketContainer extends React.Component<IProps, IState> {
                       payMethod === "trans"
                     ) {
                       toast.success("결제 및 등록이 완료되었습니다 :)");
+                      setTimeLogout();
                       history.push("/home");
 
                       // KAKAO MESSAGE 전송

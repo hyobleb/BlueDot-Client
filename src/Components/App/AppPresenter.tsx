@@ -76,6 +76,8 @@ interface IProps {
   isManStaff: boolean;
   isMenuOpen: boolean;
   toggleMenu: () => void;
+  setTimeLogout: () => void;
+  stopLogoutFn: () => void;
 }
 
 interface ILoginRouteProps {
@@ -86,6 +88,8 @@ interface ILoginRouteProps {
   isCleanStaff: boolean;
   isMenuOpen: boolean;
   toggleMenu: () => void;
+  setTimeLogout: () => void;
+  stopLogoutFn: () => void;
 }
 
 const AppPresenter: React.SFC<IProps> = ({
@@ -96,7 +100,9 @@ const AppPresenter: React.SFC<IProps> = ({
   isManStaff,
   isFranchiser,
   isMenuOpen,
-  toggleMenu
+  toggleMenu,
+  setTimeLogout,
+  stopLogoutFn
 }) => {
   return (
     <BrowserRouter>
@@ -109,6 +115,8 @@ const AppPresenter: React.SFC<IProps> = ({
           isCleanStaff={isCleanStaff}
           isMenuOpen={isMenuOpen}
           toggleMenu={toggleMenu}
+          setTimeLogout={setTimeLogout}
+          stopLogoutFn={stopLogoutFn}
         />
       ) : (
         <LoggedOutRoute />
@@ -142,7 +150,9 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
   isManStaff,
   isCleanStaff,
   isMenuOpen,
-  toggleMenu
+  toggleMenu,
+  setTimeLogout,
+  stopLogoutFn
 }) => {
   return (
     <>
@@ -168,7 +178,17 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
             exact={true}
             component={ReqMembership}
           />
-          <Route path={"/basket"} exact={true} component={Basket} />
+          <Route
+            path={"/basket"}
+            exact={true}
+            render={props => (
+              <Basket
+                setTimeLogout={setTimeLogout}
+                stopLogoutFn={stopLogoutFn}
+                {...props}
+              />
+            )}
+          />
           <Route
             path={"/enroll-req-membership"}
             exact={true}
