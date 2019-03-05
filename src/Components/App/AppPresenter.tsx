@@ -40,7 +40,6 @@ import SettingCabLock from "../../Routes/SettingCabLock";
 import SettingCoBranch from "../../Routes/SettingCoBranch";
 import SettingLounge from "../../Routes/SettingLounge";
 import SettingProduct from "../../Routes/SettingProduct";
-import SettingSeats from "../../Routes/SettingSeats";
 import SettingSeatsV2 from "../../Routes/SettingSeatsV2";
 import SettingStaff from "../../Routes/SettingStaff";
 import SignUp from "../../Routes/SignUp";
@@ -376,12 +375,6 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
               component={AddBranch}
             />,
 
-            <Route
-              key={6}
-              path={"/seat-setting"}
-              exact={true}
-              component={SettingSeats}
-            />,
             <Route
               key={7}
               path={"/set-setting"}

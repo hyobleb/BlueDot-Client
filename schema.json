@@ -12335,7 +12335,7 @@
                 "defaultValue": null
               },
               {
-                "name": "xpos",
+                "name": "left",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -12349,7 +12349,7 @@
                 "defaultValue": null
               },
               {
-                "name": "ypos",
+                "name": "top",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -12464,7 +12464,7 @@
                 "defaultValue": null
               },
               {
-                "name": "xpos",
+                "name": "left",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -12478,7 +12478,7 @@
                 "defaultValue": null
               },
               {
-                "name": "ypos",
+                "name": "top",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",

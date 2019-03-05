@@ -201,10 +201,10 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
                     variables={{
                       branchId,
                       isFlip,
+                      left: xpos,
                       roomId,
                       rotate,
-                      xpos,
-                      ypos
+                      top: ypos
                     }}
                     onCompleted={data => {
                       const { HeadCreateDoor } = data;
@@ -269,13 +269,13 @@ class SettingSeatsContainer extends React.Component<IProps, IState> {
                                 variables={{
                                   branchId,
                                   femaleUsable,
+                                  left: xpos,
                                   maleUsable,
                                   roomId,
                                   rotate,
                                   seatNumber,
-                                  usable,
-                                  xpos,
-                                  ypos
+                                  top: ypos,
+                                  usable
                                 }}
                                 refetchQueries={[
                                   {

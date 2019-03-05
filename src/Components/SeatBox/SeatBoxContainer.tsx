@@ -22,6 +22,14 @@ interface IProps {
   assignSeatLoading?: boolean;
   seats: Array<getSeatsV2_GetSeatsV2_seats | null> | null;
   getSeatsLoading: boolean;
+  editMode?: boolean;
+  newSeat?: boolean;
+  newTop?: number;
+  newLeft?: number;
+  newRotate?: number;
+  newIsFlip?: boolean;
+  newSeatNumber?: number;
+  newIsDoor?: boolean;
 }
 
 interface IState {
@@ -94,7 +102,15 @@ class SeatBoxContainer extends React.Component<IProps, IState> {
       assignSeatId,
       assignSeatLoading,
       seats,
-      getSeatsLoading
+      getSeatsLoading,
+      editMode = false,
+      newSeat,
+      newTop,
+      newLeft,
+      newRotate,
+      newIsFlip,
+      newSeatNumber,
+      newIsDoor
     } = this.props;
 
     return (
@@ -119,6 +135,14 @@ class SeatBoxContainer extends React.Component<IProps, IState> {
         tempSeatNumber={tempSeatNumber}
         assignSeatId={assignSeatId}
         assignSeatLoading={assignSeatLoading}
+        editMode={editMode}
+        newIsFlip={newIsFlip}
+        newIsDoor={newIsDoor}
+        newLeft={newLeft}
+        newRotate={newRotate}
+        newSeat={newSeat}
+        newSeatNumber={newSeatNumber}
+        newTop={newTop}
       />
     );
   }

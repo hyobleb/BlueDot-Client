@@ -34,6 +34,14 @@ interface IProps {
   tempSeatNumber?: number;
   assignSeatId?: number;
   assignSeatLoading?: boolean;
+  editMode: boolean;
+  newIsFlip?: boolean;
+  newIsDoor?: boolean;
+  newLeft?: number;
+  newRotate?: number;
+  newSeat?: boolean;
+  newSeatNumber?: number;
+  newTop?: number;
 }
 interface ISeatProps {
   left: number;
@@ -45,7 +53,7 @@ interface ISeatProps {
   isFlip?: boolean;
   containerWidth: number;
   onSeatClick: (seatId: number) => Promise<void>;
-  id: number;
+  id?: number;
   onSeatHover: (seatId: number) => void;
   onSeatHoverOut: () => void;
   seatIdHovered: number;
@@ -64,6 +72,7 @@ interface ISeatProps {
   tempSeatNumber?: number;
   assignSeatId?: number;
   assignSeatLoading?: boolean;
+  isNewSeat?: boolean;
 }
 
 const Container = styled<
@@ -181,7 +190,8 @@ const Seat: React.SFC<ISeatProps> = ({
   endDatetime,
   tempSeatNumber,
   assignSeatId,
-  assignSeatLoading
+  assignSeatLoading,
+  isNewSeat = false
 }) => {
   const actualUsing: boolean = nowUsing
     ? endDatetime && moment(endDatetime) > moment()
@@ -192,6 +202,8 @@ const Seat: React.SFC<ISeatProps> = ({
   const SEAT_HEIGHT = SEAT_WIDTH;
   const text = isDoor
     ? ""
+    : isNewSeat
+    ? seatNumber || userName
     : selDoorId === id || selSeatId === id
     ? tempSeatNumber
     : forAdmin
@@ -203,7 +215,9 @@ const Seat: React.SFC<ISeatProps> = ({
     : seatNumber;
 
   const displayName =
-    forAdmin && actualUsing && selDoorId !== id && selSeatId !== id;
+    isNewSeat && !seatNumber
+      ? true
+      : forAdmin && actualUsing && selDoorId !== id && selSeatId !== id;
   const seatLeft =
     selDoorId === id || selSeatId === id
       ? tempLeft !== undefined
@@ -242,19 +256,22 @@ const Seat: React.SFC<ISeatProps> = ({
       isFlip={seatFlip}
       containerWidth={containerWidth}
       containerHeight={containerWidth}
-      onClick={async () => (!isDoor ? await onSeatClick(id) : onDoorClick(id))}
-      onPointerEnter={() => onSeatHover(id)}
+      onClick={async () =>
+        !isDoor ? id && (await onSeatClick(id)) : id && onDoorClick(id)
+      }
+      onPointerEnter={() => id && onSeatHover(id)}
       onPointerLeave={onSeatHoverOut}
       isHover={!actualUsing && !isDoor && id === seatIdHovered}
     >
-      {/* {assignSeatId === id ? "배정중" : "배정완료"} */}
       {assignSeatId === id && assignSeatLoading ? (
         <SeatImg src={`${process.env.PUBLIC_URL}/img/seats/loading_eyes.gif`} />
       ) : (
         <>
           <SeatImg
             src={
-              selSeatId === id
+              isNewSeat
+                ? seatImg
+                : selSeatId === id
                 ? TEMP_SEAT
                 : actualUsing
                 ? seatImg
@@ -298,7 +315,14 @@ const SeatBoxPresenter: React.SFC<IProps> = ({
   tempFlip,
   tempSeatNumber,
   assignSeatId,
-  assignSeatLoading
+  assignSeatLoading,
+  newIsFlip,
+  newIsDoor,
+  newLeft,
+  newRotate,
+  newSeat,
+  newSeatNumber,
+  newTop
 }) => {
   return (
     <Container
@@ -345,6 +369,37 @@ const SeatBoxPresenter: React.SFC<IProps> = ({
               />
             )
         )
+      )}
+
+      {newSeat ? (
+        <Seat
+          containerWidth={containerWidth}
+          left={newLeft || 0}
+          top={newTop || 0}
+          rotate={newRotate || 0}
+          seatNumber={newSeatNumber || 0}
+          onSeatClick={onSeatClick}
+          isDoor={newIsDoor}
+          onSeatHover={onSeatHover}
+          onSeatHoverOut={onSeatHoverOut}
+          seatIdHovered={seatIdHovered}
+          nowUsing={false}
+          seatImg={
+            newIsDoor
+              ? `${process.env.PUBLIC_URL}/img/seats/door.png`
+              : `${process.env.PUBLIC_URL}/img/seats/temp_seat.png`
+          }
+          onDoorClick={() => {
+            return;
+          }}
+          userName={"새좌석"}
+          forAdmin={true}
+          tempSeatNumber={newSeatNumber}
+          isFlip={newIsFlip}
+          isNewSeat={true}
+        />
+      ) : (
+        ""
       )}
     </Container>
   );

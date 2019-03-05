@@ -2933,10 +2933,10 @@ export interface headCreateSeatVariables {
   seatNumber: number;
   usable: boolean;
   rotate: number;
-  xpos: number;
-  ypos: number;
   maleUsable: boolean;
   femaleUsable: boolean;
+  left: number;
+  top: number;
 }
 
 /* tslint:disable */
@@ -2992,8 +2992,8 @@ export interface headCreateDoorVariables {
   branchId: number;
   roomId: number;
   rotate: number;
-  xpos: number;
-  ypos: number;
+  left: number;
+  top: number;
   isFlip: boolean;
 }
 

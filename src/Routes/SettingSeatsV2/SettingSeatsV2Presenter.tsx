@@ -1,3 +1,4 @@
+import Button from "@atlaskit/button";
 import React from "react";
 import Switch from "react-toggle-switch";
 import DefaultBack from "../../Components/DefaultBack";
@@ -85,6 +86,18 @@ const SwitchTitle = styled.div`
 
 const FormTitle = styled.h2``;
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
+const ButtonCloth = styled.div`
+  margin-left: 5px;
+  margin-right: 5px;
+`;
+
 interface IProps {
   roomId: number;
   forAdmin: boolean;
@@ -111,6 +124,17 @@ interface IProps {
   onBackClick: () => void;
   seats: Array<getSeatsV2_GetSeatsV2_seats | null> | null;
   getSeatsLoading: boolean;
+  onCreateSeatClick: () => void;
+  newSeat?: boolean;
+  newTop?: number;
+  newLeft?: number;
+  newRotate?: number;
+  newIsFlip?: boolean;
+  newSeatNumber?: number;
+  newIsDoor?: boolean;
+  newUsable?: boolean;
+  newMaleUsable?: boolean;
+  newFemaleUsable?: boolean;
 }
 
 const SettingSeatsV2Presenter: React.SFC<IProps> = ({
@@ -136,7 +160,18 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
   updateSeatLoading,
   onBackClick,
   seats,
-  getSeatsLoading
+  getSeatsLoading,
+  onCreateSeatClick,
+  newSeat,
+  newTop,
+  newLeft,
+  newRotate,
+  newIsFlip,
+  newSeatNumber,
+  newIsDoor,
+  newUsable,
+  newMaleUsable,
+  newFemaleUsable
 }) => (
   <Back title={"SettingSeats | BlueDot"} backFn={onBackClick}>
     <SeatBox
@@ -155,38 +190,63 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
       getSeatsLoading={Boolean(
         (getSeatsLoading && (selSeatId || selDoorId)) || updateSeatLoading
       )}
+      editMode={true}
+      newSeat={newSeat}
+      newTop={newTop}
+      newLeft={newLeft}
+      newRotate={newRotate}
+      newIsFlip={newIsFlip}
+      newSeatNumber={newSeatNumber}
+      newIsDoor={newIsDoor}
     />
 
     {(((getSeatsLoading && (selSeatId || selDoorId)) || updateSeatLoading) && (
       <Loading />
     )) || (
       <>
+        {
+          <ButtonsContainer>
+            <ButtonCloth>
+              {!newSeat && (
+                <Button
+                  spacing={"compact"}
+                  appearance={"primary"}
+                  onClick={onCreateSeatClick}
+                >
+                  추가
+                </Button>
+              )}
+            </ButtonCloth>
+          </ButtonsContainer>
+        }
         <FormExtended submitFn={onConfirmClick}>
           <FormTitle>
             {selDoorId
               ? "출입구 수정"
               : selSeatId
               ? "좌석 수정"
+              : newSeat
+              ? "좌석 추가"
               : "좌석 또는 출입구를 선택해주세요"}
           </FormTitle>
-          {selSeatId && (
+          {(selSeatId || (newSeat && !newIsDoor)) && (
             <InputLabel>
               <InputTitle>좌석번호 : </InputTitle>
               <InputExtended
-                value={seatNumber}
-                name={"seatNumber"}
+                value={newSeat ? newSeatNumber : seatNumber}
+                name={newSeat ? "newSeatNumber" : "seatNumber"}
                 onChange={onInputChange}
                 type={"number"}
               />
             </InputLabel>
           )}
-          {(selSeatId || selDoorId) && (
+          {(selSeatId || selDoorId || newSeat) && (
             <>
               <InputLabel>
                 <InputTitle>가로 위치 : </InputTitle>
                 <InputExtended
-                  value={left}
-                  name={"left"}
+                  value={newSeat ? newLeft : left}
+                  name={newSeat ? "newLeft" : "left"}
                   onChange={onInputChange}
                   type={"number"}
                 />
@@ -194,8 +254,8 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
               <InputLabel>
                 <InputTitle>세로 위치 : </InputTitle>
                 <InputExtended
-                  value={top}
-                  name={"top"}
+                  value={newSeat ? newTop : top}
+                  name={newSeat ? "newTop" : "top"}
                   onChange={onInputChange}
                   type={"number"}
                 />
@@ -203,8 +263,8 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
               <InputLabel>
                 <InputTitle>회전 값 : </InputTitle>
                 <InputExtended
-                  value={rotate}
-                  name={"rotate"}
+                  value={newSeat ? newRotate : rotate}
+                  name={newSeat ? "newRotate" : "rotate"}
                   onChange={onInputChange}
                   type={"number"}
                 />
@@ -213,17 +273,19 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
           )}
 
           <SwitchBox>
-            {selSeatId &&
-              usable !== undefined &&
-              maleUsable !== undefined &&
-              femaleUsable !== undefined && (
+            {(selSeatId || newSeat) &&
+              (usable !== undefined || newUsable !== undefined) &&
+              (maleUsable !== undefined || newMaleUsable !== undefined) &&
+              (femaleUsable !== undefined || newFemaleUsable !== undefined) && (
                 <>
                   <SwitchRow>
                     <SwitchTitle>이용 가능</SwitchTitle>
                     <SwitchItem>
                       <Switch
-                        onClick={() => toggleSwitch("usable")}
-                        on={usable}
+                        onClick={() =>
+                          toggleSwitch(newSeat ? "newUsable" : "usable")
+                        }
+                        on={newSeat ? newUsable : usable}
                       >
                         <i className="some-icon" />
                       </Switch>
@@ -233,8 +295,10 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
                     <SwitchTitle>남자 이용 가능</SwitchTitle>
                     <SwitchItem>
                       <Switch
-                        onClick={() => toggleSwitch("maleUsable")}
-                        on={maleUsable}
+                        onClick={() =>
+                          toggleSwitch(newSeat ? "newMaleUsable" : "maleUsable")
+                        }
+                        on={newSeat ? newMaleUsable : maleUsable}
                       >
                         <i className="some-icon" />
                       </Switch>
@@ -244,8 +308,12 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
                     <SwitchTitle>여자 이용 가능</SwitchTitle>
                     <SwitchItem>
                       <Switch
-                        onClick={() => toggleSwitch("femaleUsable")}
-                        on={femaleUsable}
+                        onClick={() =>
+                          toggleSwitch(
+                            newSeat ? "newFemaleUsable" : "femaleUsable"
+                          )
+                        }
+                        on={newSeat ? newFemaleUsable : femaleUsable}
                       >
                         <i className="some-icon" />
                       </Switch>
@@ -253,17 +321,36 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
                   </SwitchRow>
                 </>
               )}
-
-            {selDoorId && isFlip !== undefined && (
+            {newSeat && (
               <SwitchRow>
-                <SwitchTitle>좌우반전</SwitchTitle>
+                <SwitchTitle>출입구로 변경</SwitchTitle>
                 <SwitchItem>
-                  <Switch onClick={() => toggleSwitch("isFlip")} on={isFlip}>
+                  <Switch
+                    onClick={() => toggleSwitch("newIsDoor")}
+                    on={newIsDoor}
+                  >
                     <i className="some-icon" />
                   </Switch>
                 </SwitchItem>
               </SwitchRow>
             )}
+
+            {(selDoorId && isFlip !== undefined) ||
+              (newSeat && newIsDoor && newIsFlip !== undefined && (
+                <SwitchRow>
+                  <SwitchTitle>좌우반전</SwitchTitle>
+                  <SwitchItem>
+                    <Switch
+                      onClick={() =>
+                        toggleSwitch(newSeat ? "newIsFlip" : "isFlip")
+                      }
+                      on={newSeat ? newIsFlip : isFlip}
+                    >
+                      <i className="some-icon" />
+                    </Switch>
+                  </SwitchItem>
+                </SwitchRow>
+              ))}
 
             {(selSeatId || selDoorId) && discard !== undefined && (
               <SwitchRow>
@@ -276,9 +363,12 @@ const SettingSeatsV2Presenter: React.SFC<IProps> = ({
               </SwitchRow>
             )}
           </SwitchBox>
-          {(selSeatId || selDoorId) && (
+          {(selSeatId || selDoorId || newSeat) && (
             <AddButtonContainer>
-              <ConfirmButton value={"수정"} onClick={onConfirmClick} />
+              <ConfirmButton
+                value={newSeat ? "추가" : "수정"}
+                onClick={onConfirmClick}
+              />
               <CancleButton value={"취소"} onClick={onCancelClick} />
             </AddButtonContainer>
           )}
