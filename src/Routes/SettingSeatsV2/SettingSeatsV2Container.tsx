@@ -17,13 +17,13 @@ import {
   managerGetSeatV2,
   managerGetSeatVariables
 } from "../../types/api";
+import SettingSeatsV2Presenter from "./SettingSeatsV2Presenter";
 import {
   HEAD_CREATE_DOOR,
   HEAD_CREATE_SEAT,
-  HEAD_UPDATE_SEAT
-} from "../SettingSeats/SettingSeatsQueries";
-import SettingSeatsV2Presenter from "./SettingSeatsV2Presenter";
-import { MANAGER_GET_SEAT_V2 } from "./SettingSeatsV2Queries";
+  HEAD_UPDATE_SEAT,
+  MANAGER_GET_SEAT_V2
+} from "./SettingSeatsV2Queries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {

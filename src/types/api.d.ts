@@ -2914,6 +2914,43 @@ export interface headRemoveProductVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: managerGetSeatV2
+// ====================================================
+
+export interface managerGetSeatV2_ManagerGetSeatV2_seat {
+  __typename: "Seat";
+  id: number;
+  rotate: number;
+  top: number;
+  left: number;
+  isFlip: boolean;
+  discard: boolean;
+  isDoor: boolean;
+  usable: boolean;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+  seatNumber: number;
+}
+
+export interface managerGetSeatV2_ManagerGetSeatV2 {
+  __typename: "ManagerGetSeatV2Response";
+  ok: boolean;
+  error: string | null;
+  seat: managerGetSeatV2_ManagerGetSeatV2_seat | null;
+}
+
+export interface managerGetSeatV2 {
+  ManagerGetSeatV2: managerGetSeatV2_ManagerGetSeatV2;
+}
+
+export interface managerGetSeatV2Variables {
+  seatId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: headCreateSeat
 // ====================================================
 
@@ -3021,43 +3058,6 @@ export interface headUpdateDoorVariables {
   ypos?: number | null;
   discard?: boolean | null;
   isFlip?: boolean | null;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: managerGetSeatV2
-// ====================================================
-
-export interface managerGetSeatV2_ManagerGetSeatV2_seat {
-  __typename: "Seat";
-  id: number;
-  rotate: number;
-  top: number;
-  left: number;
-  isFlip: boolean;
-  discard: boolean;
-  isDoor: boolean;
-  usable: boolean;
-  maleUsable: boolean;
-  femaleUsable: boolean;
-  seatNumber: number;
-}
-
-export interface managerGetSeatV2_ManagerGetSeatV2 {
-  __typename: "ManagerGetSeatV2Response";
-  ok: boolean;
-  error: string | null;
-  seat: managerGetSeatV2_ManagerGetSeatV2_seat | null;
-}
-
-export interface managerGetSeatV2 {
-  ManagerGetSeatV2: managerGetSeatV2_ManagerGetSeatV2;
-}
-
-export interface managerGetSeatV2Variables {
-  seatId: number;
 }
 
 /* tslint:disable */
