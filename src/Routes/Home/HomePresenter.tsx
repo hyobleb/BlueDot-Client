@@ -4,11 +4,15 @@ import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
 import Loading from "src/Components/Loading";
 import LoungeContainer from "src/Components/LoungeContainer";
-import { getBranchByIp_UserGetBranchByIP_branch_rooms } from "src/types/api";
+import {
+  getBranchByIp_UserGetBranchByIP_branch_rooms,
+  getSeatsV2_GetSeatsV2_seats
+} from "src/types/api";
 import BranchesMap from "../../Components/BranchesMap";
 import Footer from "../../Components/Footer";
 // import Menu from "../../Components/Menu";
-import SeatsPopUp from "../../Components/SeatsPopUp";
+// import SeatsPopUp from "../../Components/SeatsPopUp";
+import RoomPopUp from "../../Components/RoomPopUp";
 import styled from "../../typed-components";
 
 // const MenuButton = styled.button`
@@ -65,8 +69,8 @@ interface IProps {
   onRoomClick: (roomId: number) => void;
   nowRoomId: number;
   onSeatsPopUpCloseClick: () => void;
-  onSeatClick: (seatId: number) => void;
-  assignSeatId: number | null;
+  onSeatClick: (seatId: number) => Promise<void>;
+  assignSeatId?: number;
   assignSeatLoading: boolean;
   onEntranceClick: () => void;
   onReturnClick: () => Promise<void>;
@@ -81,6 +85,8 @@ interface IProps {
   transferredLat?: number;
   transferredLng?: number;
   returnSeatLoading: boolean;
+  seats: Array<getSeatsV2_GetSeatsV2_seats | null> | null;
+  getSeatsLoading: boolean;
 }
 
 class HomePresenter extends React.Component<IProps> {
@@ -108,7 +114,9 @@ class HomePresenter extends React.Component<IProps> {
       onBackClick,
       transferredLat,
       transferredLng,
-      returnSeatLoading
+      returnSeatLoading,
+      seats,
+      getSeatsLoading
     } = this.props;
 
     return profileLoading || branchLoading ? (
@@ -152,7 +160,7 @@ class HomePresenter extends React.Component<IProps> {
               </LoungeCol>
             </LoungeSection>
             {nowRoomId > 0 && (
-              <SeatsPopUp
+              <RoomPopUp
                 closeFunc={onSeatsPopUpCloseClick}
                 roomId={nowRoomId}
                 onSeatClick={onSeatClick}
@@ -162,6 +170,9 @@ class HomePresenter extends React.Component<IProps> {
                 canReturn={myUsingSeatId ? true : false}
                 returnFn={onReturnClick}
                 returnSeatLoading={returnSeatLoading}
+                title={"좌석 배정/반납"}
+                seats={seats}
+                getSeatsLoading={getSeatsLoading}
               />
             )}
           </Container>

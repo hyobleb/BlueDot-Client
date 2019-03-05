@@ -122,6 +122,10 @@ interface IProps {
   cabinetLoungeImgLoading: boolean;
   cabinetLoungeImg: string;
   branchLoading: boolean;
+  thumbEnrollId: string;
+  thumbEnrollPs: string;
+  tempEnterId: string;
+  tempEnterPs: string;
 }
 
 const ModifyBranchPresenter: React.SFC<IProps> = ({
@@ -165,7 +169,11 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
   isSupervisor,
   cabinetLoungeImgLoading,
   cabinetLoungeImg,
-  branchLoading
+  branchLoading,
+  thumbEnrollId,
+  thumbEnrollPs,
+  tempEnterId,
+  tempEnterPs
 }) => (
   <BackContainer>
     <Helmet>
@@ -391,7 +399,6 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
                     )}
                 </IpDisplayContainer>
               </Row>
-
               <Row>
                 <InputLabel>
                   <InputTitle>아임포트 가맹점 식별코드: </InputTitle>
@@ -420,6 +427,53 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
                   <InputExtended
                     value={impSecret}
                     name={"impSecret"}
+                    onChange={onInputChange}
+                    required={false}
+                  />
+                </InputLabel>
+              </Row>
+
+              <Row>
+                <InputLabel>
+                  <InputTitle>지문인식 아이디 : </InputTitle>
+                  <InputExtended
+                    value={thumbEnrollId}
+                    name={"thumbEnrollId"}
+                    onChange={onInputChange}
+                    required={false}
+                  />
+                </InputLabel>
+              </Row>
+              <Row>
+                <InputLabel>
+                  <InputTitle>지문인식 비밀번호 : </InputTitle>
+                  <InputExtended
+                    value={thumbEnrollPs}
+                    name={"thumbEnrollPs"}
+                    onChange={onInputChange}
+                    required={false}
+                  />
+                </InputLabel>
+              </Row>
+
+              <Row>
+                <InputLabel>
+                  <InputTitle>임시출입 아아디 : </InputTitle>
+                  <InputExtended
+                    value={tempEnterId}
+                    name={"tempEnterId"}
+                    onChange={onInputChange}
+                    required={false}
+                  />
+                </InputLabel>
+              </Row>
+
+              <Row>
+                <InputLabel>
+                  <InputTitle>임시출입 비밀번호 : </InputTitle>
+                  <InputExtended
+                    value={tempEnterPs}
+                    name={"tempEnterPs"}
                     onChange={onInputChange}
                     required={false}
                   />

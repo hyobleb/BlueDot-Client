@@ -168,6 +168,7 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
                     tempRoomId={tempRoomId}
                     onRoomHoverOut={this.onRoomHoverOut}
                     onEditSeatClick={this.onEditSeatClick}
+                    onEditSeatClick2={this.onEditSeatClick2}
                     isFranchiser={isFranchiser}
                     isHead={isHead}
                     isSupervisor={isSupervisor}
@@ -306,6 +307,31 @@ class AddLoungeContainer extends React.Component<IProps, IState> {
     history.push({
       pathname: "/seat-setting",
       state: {
+        branchId: this.state.branchId,
+        isFranchiser,
+        isHead,
+        isSupervisor,
+        roomId
+      }
+    });
+  };
+
+  public onEditSeatClick2 = (roomId: number) => {
+    const { history } = this.props;
+    const { isFranchiser, isHead, isSupervisor, branchId } = this.state;
+
+    history.push({
+      pathname: "/seat-setting_v2",
+      state: {
+        backInfo: {
+          backUrl: "/lounge-setting",
+          content: {
+            branchId,
+            isFranchiser,
+            isHead,
+            isSupervisor
+          }
+        },
         branchId: this.state.branchId,
         isFranchiser,
         isHead,

@@ -40,6 +40,9 @@ export const HEAD_UPDATE_SEAT = gql`
     $maleUsable: Boolean
     $femaleUsable: Boolean
     $discard: Boolean
+    $left: Int
+    $top: Int
+    $isFlip: Boolean
   ) {
     HeadUpdateSeat(
       seatId: $seatId
@@ -51,6 +54,9 @@ export const HEAD_UPDATE_SEAT = gql`
       maleUsable: $maleUsable
       femaleUsable: $femaleUsable
       discard: $discard
+      left: $left
+      top: $top
+      isFlip: $isFlip
     ) {
       ok
       error

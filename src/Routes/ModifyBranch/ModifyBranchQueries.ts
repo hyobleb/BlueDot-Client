@@ -25,6 +25,10 @@ export const UPDATE_BRANCH = gql`
     $impSecret: String
     $lat: Float
     $lng: Float
+    $thumbEnrollId: String!
+    $thumbEnrollPs: String!
+    $tempEnterId: String
+    $tempEnterPs: String
   ) {
     HeadUpdateBranch(
       branchId: $branchId
@@ -51,6 +55,10 @@ export const UPDATE_BRANCH = gql`
       impSecret: $impSecret
       lat: $lat
       lng: $lng
+      thumbEnrollId: $thumbEnrollId
+      thumbEnrollPs: $thumbEnrollPs
+      tempEnterId: $tempEnterId
+      tempEnterPs: $tempEnterPs
     ) {
       ok
       error
@@ -73,6 +81,10 @@ export const MANAGER_UPDATE_BRANCH = gql`
     $available: Boolean
     $lat: Float
     $lng: Float
+    $thumbEnrollId: String!
+    $thumbEnrollPs: String!
+    $tempEnterId: String!
+    $tempEnterPs: String!
   ) {
     ManagerUpdateBranch(
       branchId: $branchId
@@ -88,6 +100,10 @@ export const MANAGER_UPDATE_BRANCH = gql`
       available: $available
       lat: $lat
       lng: $lng
+      thumbEnrollId: $thumbEnrollId
+      thumbEnrollPs: $thumbEnrollPs
+      tempEnterId: $tempEnterId
+      tempEnterPs: $tempEnterPs
     ) {
       ok
       error

@@ -2,13 +2,19 @@ import React from "react";
 import { Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GET_MANAGING_BRANCHES } from "src/Components/sharedQueries";
+import {
+  GET_MANAGING_BRANCHES,
+  GET_SEATS_V2
+} from "src/Components/sharedQueries";
 import {
   getBranchForManSeat,
   getBranchForManSeat_GetBranchForManSeat_branch_rooms,
   getBranchForManSeatVariables,
   getManaingBranches,
-  getManaingBranches_GetManagingBranches_branches
+  getManaingBranches_GetManagingBranches_branches,
+  getSeatsV2,
+  getSeatsV2_GetSeatsV2_seats,
+  getSeatsV2Variables
 } from "src/types/api";
 import ManageSeatsPresenter from "./ManageSeatsPresenter";
 import { GET_BRANCH_FOR_MAN_SEAT } from "./ManageSeatsQueries";
@@ -29,10 +35,11 @@ interface IState {
   branchName: string;
   nowRoomId: number;
   managingBranches?: Array<getManaingBranches_GetManagingBranches_branches | null>;
+  seats: Array<getSeatsV2_GetSeatsV2_seats | null> | null;
 }
 
+class GetSeats extends Query<getSeatsV2, getSeatsV2Variables> {}
 class GetManagingBranchesQuery extends Query<getManaingBranches> {}
-
 class GetBranchForManSeatQuery extends Query<
   getBranchForManSeat,
   getBranchForManSeatVariables
@@ -53,6 +60,7 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
       minimapImage: "",
       nowRoomId,
       rooms: null,
+      seats: null,
       selBranchId,
       showBranchSearchPopUp: false
     };
@@ -66,7 +74,8 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
       minimapImage,
       branchName,
       nowRoomId,
-      managingBranches
+      managingBranches,
+      seats
     } = this.state;
 
     const {
@@ -78,47 +87,60 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
     } = this.props;
 
     return (
-      <GetManagingBranchesQuery
-        query={GET_MANAGING_BRANCHES}
-        onCompleted={this.updateFields}
+      <GetSeats
+        query={GET_SEATS_V2}
+        variables={{ roomId: nowRoomId }}
         fetchPolicy={"cache-and-network"}
+        onCompleted={this.updateFields}
       >
-        {() => (
-          <GetBranchForManSeatQuery
-            query={GET_BRANCH_FOR_MAN_SEAT}
-            variables={{ branchId: selBranchId }}
-            fetchPolicy={"cache-and-network"}
+        {({ loading: getSeatsLoading }) => (
+          <GetManagingBranchesQuery
+            query={GET_MANAGING_BRANCHES}
             onCompleted={this.updateFields}
-            skip={!Boolean(selBranchId)}
+            fetchPolicy={"cache-and-network"}
           >
-            {({ loading: getBranchLoading }) => (
-              <ManageSeatsPresenter
-                showBranchSearchPopUp={showBranchSearchPopUp}
-                toggleSearchBranchPopUpShow={this.toggleSearchBranchPopUpShow}
-                onBranchClick={this.onBranchClick}
-                getBranchLoading={getBranchLoading}
-                selBranchId={selBranchId}
-                rooms={rooms}
-                loungeImage={loungeImage}
-                minimapImage={minimapImage}
-                branchName={branchName}
-                onRoomClick={this.onRoomClick}
-                nowRoomId={nowRoomId}
-                onSeatsPopUpCloseClick={this.onSeatsPopUpCloseClick}
-                onSeatClick={this.onSeatClick}
-                onEntranceClick={this.onEntranceClick}
-                isHead={isHead}
-                isFranchiser={isFranchiser}
-                isSupervisor={isSupervisor}
-                managingBranches={managingBranches}
-                onBranchBtnClick={this.onBranchBtnClick}
-                isManStaff={isManStaff}
-                isCleanStaff={isCleanStaff}
-              />
+            {() => (
+              <GetBranchForManSeatQuery
+                query={GET_BRANCH_FOR_MAN_SEAT}
+                variables={{ branchId: selBranchId }}
+                fetchPolicy={"cache-and-network"}
+                onCompleted={this.updateFields}
+                skip={!Boolean(selBranchId)}
+              >
+                {({ loading: getBranchLoading }) => (
+                  <ManageSeatsPresenter
+                    showBranchSearchPopUp={showBranchSearchPopUp}
+                    toggleSearchBranchPopUpShow={
+                      this.toggleSearchBranchPopUpShow
+                    }
+                    onBranchClick={this.onBranchClick}
+                    getBranchLoading={getBranchLoading}
+                    selBranchId={selBranchId}
+                    rooms={rooms}
+                    loungeImage={loungeImage}
+                    minimapImage={minimapImage}
+                    branchName={branchName}
+                    onRoomClick={this.onRoomClick}
+                    nowRoomId={nowRoomId}
+                    onSeatsPopUpCloseClick={this.onSeatsPopUpCloseClick}
+                    onSeatClick={this.onSeatClick}
+                    onEntranceClick={this.onEntranceClick}
+                    isHead={isHead}
+                    isFranchiser={isFranchiser}
+                    isSupervisor={isSupervisor}
+                    managingBranches={managingBranches}
+                    onBranchBtnClick={this.onBranchBtnClick}
+                    isManStaff={isManStaff}
+                    isCleanStaff={isCleanStaff}
+                    seats={seats}
+                    getSeatsLoading={getSeatsLoading}
+                  />
+                )}
+              </GetBranchForManSeatQuery>
             )}
-          </GetBranchForManSeatQuery>
+          </GetManagingBranchesQuery>
         )}
-      </GetManagingBranchesQuery>
+      </GetSeats>
     );
   }
 
@@ -144,7 +166,7 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
   };
 
   public updateFields = (
-    data: {} | getBranchForManSeat | getManaingBranches
+    data: {} | getBranchForManSeat | getManaingBranches | getSeatsV2
   ) => {
     if ("GetBranchForManSeat" in data) {
       const {
@@ -190,6 +212,14 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
           selBranchId: oneBranchId
         });
       }
+    } else if ("GetSeatsV2" in data) {
+      const {
+        GetSeatsV2: { seats }
+      } = data;
+
+      this.setState({
+        seats
+      });
     }
   };
 
@@ -211,7 +241,7 @@ class ManageSeatsContainer extends React.Component<IProps, IState> {
     this.setState({ nowRoomId: 0 });
   };
 
-  public onSeatClick = (seatId: number) => {
+  public onSeatClick = async (seatId: number) => {
     const { history } = this.props;
     const { nowRoomId, selBranchId } = this.state;
     history.push({

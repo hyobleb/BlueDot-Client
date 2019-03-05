@@ -3,13 +3,15 @@ import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
 import DefaultBack from "src/Components/DefaultBack";
 import Loading from "src/Components/Loading";
 import LoungeContainer from "src/Components/LoungeContainer";
-import SeatsPopUp from "src/Components/SeatsPopUp";
+// import SeatsPopUp from "src/Components/SeatsPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import {
   getBranchForManSeat_GetBranchForManSeat_branch_rooms,
-  getManaingBranches_GetManagingBranches_branches
+  getManaingBranches_GetManagingBranches_branches,
+  getSeatsV2_GetSeatsV2_seats
 } from "src/types/api";
+import RoomPopUp from "../../Components/RoomPopUp";
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
@@ -50,7 +52,7 @@ interface IProps {
   onRoomClick: (roomId: number) => void;
   nowRoomId: number;
   onSeatsPopUpCloseClick: () => void;
-  onSeatClick: (seatId: number) => void;
+  onSeatClick: (seatId: number) => Promise<void>;
   onEntranceClick: () => void;
   isHead: boolean;
   isFranchiser: boolean;
@@ -59,6 +61,8 @@ interface IProps {
   onBranchBtnClick: (branchId: number) => void;
   isManStaff: boolean;
   isCleanStaff: boolean;
+  seats: Array<getSeatsV2_GetSeatsV2_seats | null> | null;
+  getSeatsLoading: boolean;
 }
 
 const ManageSeatsPresenter: React.SFC<IProps> = ({
@@ -82,7 +86,9 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
   managingBranches,
   onBranchBtnClick,
   isManStaff,
-  isCleanStaff
+  isCleanStaff,
+  seats,
+  getSeatsLoading
 }) => (
   <Back title={"manage-seats"} backUrl={"/"}>
     <HeadSection>
@@ -139,8 +145,20 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
         onBranchClick={onBranchClick}
       />
     )}
-
     {nowRoomId > 0 && (
+      <RoomPopUp
+        closeFunc={onSeatsPopUpCloseClick}
+        roomId={nowRoomId}
+        onSeatClick={onSeatClick}
+        onEntranceClick={onEntranceClick}
+        title={"관리할 좌석을 클릭해주세요"}
+        seats={seats}
+        getSeatsLoading={getSeatsLoading}
+        forAdmin={true}
+      />
+    )}
+
+    {/* {nowRoomId > 0 && (
       <SeatsPopUp
         closeFunc={onSeatsPopUpCloseClick}
         roomId={nowRoomId}
@@ -148,8 +166,21 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
         onEntranceClick={onEntranceClick}
         title={"관리할 좌석을 클릭해주세요"}
       />
-    )}
+    )} */}
   </Back>
 );
 
 export default ManageSeatsPresenter;
+
+// <SeatBox
+// roomId={roomId}
+// forAdmin={forAdmin}
+// onSeatClick={onSeatClick}
+// onDoorClick={onEntranceClick}
+
+// tempSeatNumber={seatNumber}
+// seats={seats}
+// getSeatsLoading={Boolean(
+//   (getSeatsLoading && (selSeatId || selDoorId)) || updateSeatLoading
+// )}
+// />

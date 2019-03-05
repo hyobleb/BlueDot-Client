@@ -6,6 +6,9 @@ import AddProduct from "../../Routes/AddProduct";
 import Basket from "../../Routes/Basket";
 import BranchSetting from "../../Routes/BranchSetting";
 import Chart from "../../Routes/Chart";
+import PrivateInfo from "../../Routes/Danal/PrivateInfo";
+import RefundInfo from "../../Routes/Danal/RefundInfo";
+import ServiceRule from "../../Routes/Danal/ServiceRule";
 import EditProfile from "../../Routes/EditProfile";
 import FindId from "../../Routes/FindId";
 import FindPassword from "../../Routes/FindPassword";
@@ -38,10 +41,12 @@ import SettingCoBranch from "../../Routes/SettingCoBranch";
 import SettingLounge from "../../Routes/SettingLounge";
 import SettingProduct from "../../Routes/SettingProduct";
 import SettingSeats from "../../Routes/SettingSeats";
+import SettingSeatsV2 from "../../Routes/SettingSeatsV2";
 import SettingStaff from "../../Routes/SettingStaff";
 import SignUp from "../../Routes/SignUp";
 import SignUpDetail from "../../Routes/SignUpDetail";
 import SocialLogin from "../../Routes/SocialLogin";
+import Test from "../../Routes/Test";
 import UpdateCabinetSet from "../../Routes/UpdateCabinetSet";
 import UpdateLounge from "../../Routes/UpdateLounge";
 import UserDetail from "../../Routes/UserDetail";
@@ -138,6 +143,9 @@ const LoggedOutRoute: React.SFC = () => (
     {/* ex) /verify-phone/01021231222 */}
     <Route path={"/social-phone"} component={SocialLogin} />
     <Route path={"/req-sign-up"} component={ReqSignUp} />
+    <Route path={"/private-info-rule"} component={PrivateInfo} />
+    <Route path={"/service-rule"} component={ServiceRule} />
+    <Route path={"/refund-rule"} component={RefundInfo} />
 
     <Redirect from={"*"} to={"/"} />
   </Switch>
@@ -424,7 +432,14 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
               path={"/view-payinfo"}
               exact={true}
               component={ViewPayInfo}
-            />
+            />,
+            <Route
+              key={24}
+              path={"/seat-setting_v2"}
+              exact={true}
+              component={SettingSeatsV2}
+            />,
+            <Route key={24} path={"/test"} exact={true} component={Test} />
           ]}
           <Redirect from={"*"} to={"/"} />
           {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}

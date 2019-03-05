@@ -178,52 +178,6 @@ export interface managerRefundVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: getSeats
-// ====================================================
-
-export interface getSeats_GetSeats_seats_user {
-  __typename: "User";
-  id: number;
-  gender: string | null;
-}
-
-export interface getSeats_GetSeats_seats {
-  __typename: "Seat";
-  id: number;
-  seatNumber: number;
-  rotate: number;
-  xpos: number;
-  ypos: number;
-  isFlip: boolean;
-  discard: boolean;
-  isDoor: boolean;
-  user: getSeats_GetSeats_seats_user | null;
-  usable: boolean;
-  nowUsing: boolean;
-  endDatetime: string | null;
-  maleUsable: boolean;
-  femaleUsable: boolean;
-}
-
-export interface getSeats_GetSeats {
-  __typename: "GetSeatsResponse";
-  ok: boolean;
-  error: string | null;
-  seats: (getSeats_GetSeats_seats | null)[] | null;
-}
-
-export interface getSeats {
-  GetSeats: getSeats_GetSeats;
-}
-
-export interface getSeatsVariables {
-  roomId: number;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: searchUsers
 // ====================================================
 
@@ -407,6 +361,10 @@ export interface managerGetBranch_ManagerGetBranch_branch {
   girlAcceptable: boolean | null;
   lat: number;
   lng: number;
+  thumbEnrollId: string | null;
+  thumbEnrollPs: string | null;
+  tempEnterId: string | null;
+  tempEnterPs: string | null;
   products: (managerGetBranch_ManagerGetBranch_branch_products | null)[] | null;
 }
 
@@ -1280,6 +1238,99 @@ export interface getAllBranches {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getSeats
+// ====================================================
+
+export interface getSeats_GetSeats_seats_user {
+  __typename: "User";
+  id: number;
+  gender: string | null;
+}
+
+export interface getSeats_GetSeats_seats {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+  rotate: number;
+  xpos: number;
+  ypos: number;
+  left: number;
+  top: number;
+  isFlip: boolean;
+  discard: boolean;
+  isDoor: boolean;
+  user: getSeats_GetSeats_seats_user | null;
+  userName: string;
+  usable: boolean;
+  nowUsing: boolean;
+  endDatetime: string | null;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+  seatImg: string;
+}
+
+export interface getSeats_GetSeats {
+  __typename: "GetSeatsResponse";
+  ok: boolean;
+  error: string | null;
+  seats: (getSeats_GetSeats_seats | null)[] | null;
+}
+
+export interface getSeats {
+  GetSeats: getSeats_GetSeats;
+}
+
+export interface getSeatsVariables {
+  roomId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: getSeatsV2
+// ====================================================
+
+export interface getSeatsV2_GetSeatsV2_seats {
+  __typename: "Seat";
+  id: number;
+  seatNumber: number;
+  rotate: number;
+  xpos: number;
+  ypos: number;
+  left: number;
+  top: number;
+  isFlip: boolean;
+  discard: boolean;
+  isDoor: boolean;
+  userName: string;
+  usable: boolean;
+  nowUsing: boolean;
+  endDatetime: string | null;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+  seatImg: string;
+}
+
+export interface getSeatsV2_GetSeatsV2 {
+  __typename: "GetSeatsV2Response";
+  ok: boolean;
+  error: string | null;
+  seats: (getSeatsV2_GetSeatsV2_seats | null)[] | null;
+}
+
+export interface getSeatsV2 {
+  GetSeatsV2: getSeatsV2_GetSeatsV2;
+}
+
+export interface getSeatsV2Variables {
+  roomId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -1311,6 +1362,10 @@ export interface addBranchVariables {
   ips?: (string | null)[] | null;
   lat: number;
   lng: number;
+  thumbEnrollId: string;
+  thumbEnrollPs: string;
+  tempEnterId: string;
+  tempEnterPs: string;
 }
 
 /* tslint:disable */
@@ -2382,6 +2437,10 @@ export interface updateBranchVariables {
   impSecret?: string | null;
   lat?: number | null;
   lng?: number | null;
+  thumbEnrollId: string;
+  thumbEnrollPs: string;
+  tempEnterId?: string | null;
+  tempEnterPs?: string | null;
 }
 
 /* tslint:disable */
@@ -2415,6 +2474,10 @@ export interface managerUpdateBranchVariables {
   available?: boolean | null;
   lat?: number | null;
   lng?: number | null;
+  thumbEnrollId: string;
+  thumbEnrollPs: string;
+  tempEnterId: string;
+  tempEnterPs: string;
 }
 
 /* tslint:disable */
@@ -2903,6 +2966,9 @@ export interface headUpdateSeatVariables {
   maleUsable?: boolean | null;
   femaleUsable?: boolean | null;
   discard?: boolean | null;
+  left?: number | null;
+  top?: number | null;
+  isFlip?: boolean | null;
 }
 
 /* tslint:disable */
@@ -2955,6 +3021,43 @@ export interface headUpdateDoorVariables {
   ypos?: number | null;
   discard?: boolean | null;
   isFlip?: boolean | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: managerGetSeatV2
+// ====================================================
+
+export interface managerGetSeatV2_ManagerGetSeatV2_seat {
+  __typename: "Seat";
+  id: number;
+  rotate: number;
+  top: number;
+  left: number;
+  isFlip: boolean;
+  discard: boolean;
+  isDoor: boolean;
+  usable: boolean;
+  maleUsable: boolean;
+  femaleUsable: boolean;
+  seatNumber: number;
+}
+
+export interface managerGetSeatV2_ManagerGetSeatV2 {
+  __typename: "ManagerGetSeatV2Response";
+  ok: boolean;
+  error: string | null;
+  seat: managerGetSeatV2_ManagerGetSeatV2_seat | null;
+}
+
+export interface managerGetSeatV2 {
+  ManagerGetSeatV2: managerGetSeatV2_ManagerGetSeatV2;
+}
+
+export interface managerGetSeatV2Variables {
+  seatId: number;
 }
 
 /* tslint:disable */

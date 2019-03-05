@@ -101,7 +101,6 @@ interface IProps {
   onPaymentClick: (baseBranchId: number, payMethod: string) => Promise<void>;
   importLoad: boolean;
   jqueryLoad: boolean;
-  kakaoLoad: boolean;
   createPaymentLoading: boolean;
   delReqMemLoading: boolean;
 }
@@ -117,11 +116,10 @@ const BasketPresenter: React.SFC<IProps> = ({
   onPaymentClick,
   importLoad,
   jqueryLoad,
-  kakaoLoad,
   createPaymentLoading,
   delReqMemLoading
 }) =>
-  reqMembershipsLoading || !importLoad || !jqueryLoad || !kakaoLoad ? (
+  reqMembershipsLoading || !importLoad || !jqueryLoad ? (
     <Loading />
   ) : (
     <BackContainer>

@@ -18,6 +18,10 @@ export const ADD_BRANCH = gql`
     $ips: [String]
     $lat: Float!
     $lng: Float!
+    $thumbEnrollId: String!
+    $thumbEnrollPs: String!
+    $tempEnterId: String!
+    $tempEnterPs: String!
   ) {
     HeadCreateBranch(
       name: $branchName
@@ -37,6 +41,10 @@ export const ADD_BRANCH = gql`
       cabinetLoungeImage: $cabinetLoungeImg
       lat: $lat
       lng: $lng
+      thumbEnrollId: $thumbEnrollId
+      thumbEnrollPs: $thumbEnrollPs
+      tempEnterId: $tempEnterId
+      tempEnterPs: $tempEnterPs
     ) {
       ok
       error

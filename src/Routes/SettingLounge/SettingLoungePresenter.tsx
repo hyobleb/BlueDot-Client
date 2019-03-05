@@ -206,6 +206,7 @@ interface IProps {
   tempRoomId: number;
   onRoomHoverOut: () => void;
   onEditSeatClick: (roomId: number) => void;
+  onEditSeatClick2: (roomId: number) => void;
   isFranchiser: boolean;
   isHead: boolean;
   isSupervisor: boolean;
@@ -240,7 +241,8 @@ const AddLoungePresenter: React.SFC<IProps> = ({
   onEditSeatClick,
   isFranchiser,
   isHead,
-  isSupervisor
+  isSupervisor,
+  onEditSeatClick2
 }) => {
   return (
     <Container>
@@ -434,6 +436,10 @@ const AddLoungePresenter: React.SFC<IProps> = ({
                                     <EditSeatButton
                                       value={"열람실 좌석"}
                                       onClick={() => onEditSeatClick(room.id)}
+                                    />
+                                    <EditSeatButton
+                                      value={"열람실 좌석V2"}
+                                      onClick={() => onEditSeatClick2(room.id)}
                                     />
                                   </RoomDataCol>
                                 )}

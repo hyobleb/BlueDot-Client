@@ -1,8 +1,8 @@
 import React from "react";
 import { Query } from "react-apollo";
 import { getSeats, getSeatsVariables } from "../../types/api";
+import { GET_SEATS } from "../sharedQueries";
 import RoomPresenter from "./RoomPresenter";
-import { GET_SEATS } from "./RoomQueries";
 
 interface IProps {
   roomId: number;

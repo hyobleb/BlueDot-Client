@@ -43,6 +43,10 @@ interface IState {
   ips: string[];
   lat: number;
   lng: number;
+  thumbEnrollId: string;
+  thumbEnrollPs: string;
+  tempEnterId: string;
+  tempEnterPs: string;
 }
 
 class AddBranchContainer extends React.Component<IProps, IState> {
@@ -72,7 +76,11 @@ class AddBranchContainer extends React.Component<IProps, IState> {
     minimapImgUploading: false,
     postCode: "",
     showDaumPostApi: false,
+    tempEnterId: "",
+    tempEnterPs: "",
     tempIp: "",
+    thumbEnrollId: "",
+    thumbEnrollPs: "",
     womanMax: 80
   };
 
@@ -103,7 +111,11 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       cabinetLoungeImg,
       cabinetLoungeImgLoading,
       lat,
-      lng
+      lng,
+      thumbEnrollId,
+      thumbEnrollPs,
+      tempEnterId,
+      tempEnterPs
     } = this.state;
     const { history } = this.props;
     return (
@@ -126,6 +138,10 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           manMax,
           minimapImg,
           postCode,
+          tempEnterId,
+          tempEnterPs,
+          thumbEnrollId,
+          thumbEnrollPs,
           womanMax
         }}
         onCompleted={data => {
@@ -183,6 +199,10 @@ class AddBranchContainer extends React.Component<IProps, IState> {
               subtractIp={this.subtractIp}
               cabinetLoungeImgLoading={cabinetLoungeImgLoading}
               cabinetLoungeImg={cabinetLoungeImg}
+              thumbEnrollId={thumbEnrollId}
+              thumbEnrollPs={thumbEnrollPs}
+              tempEnterId={tempEnterId}
+              tempEnterPs={tempEnterPs}
             />
           );
         }}

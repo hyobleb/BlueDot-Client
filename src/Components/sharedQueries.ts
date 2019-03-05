@@ -89,6 +89,10 @@ export const MANAGER_GET_BRANCH = gql`
         girlAcceptable
         lat
         lng
+        thumbEnrollId
+        thumbEnrollPs
+        tempEnterId
+        tempEnterPs
         products {
           id
           title
@@ -612,6 +616,66 @@ export const GET_ALL_BRANCHES = gql`
         address
         city
         district
+      }
+    }
+  }
+`;
+
+export const GET_SEATS = gql`
+  query getSeats($roomId: Int!) {
+    GetSeats(roomId: $roomId) {
+      ok
+      error
+      seats {
+        id
+        seatNumber
+        rotate
+        xpos
+        ypos
+        left
+        top
+        isFlip
+        discard
+        isDoor
+        user {
+          id
+          gender
+        }
+        userName
+        usable
+        nowUsing
+        endDatetime
+        maleUsable
+        femaleUsable
+        seatImg
+      }
+    }
+  }
+`;
+
+export const GET_SEATS_V2 = gql`
+  query getSeatsV2($roomId: Int!) {
+    GetSeatsV2(roomId: $roomId) {
+      ok
+      error
+      seats {
+        id
+        seatNumber
+        rotate
+        xpos
+        ypos
+        left
+        top
+        isFlip
+        discard
+        isDoor
+        userName
+        usable
+        nowUsing
+        endDatetime
+        maleUsable
+        femaleUsable
+        seatImg
       }
     }
   }

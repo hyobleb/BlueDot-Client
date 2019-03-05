@@ -58,6 +58,10 @@ interface IState {
   isSupervisor: boolean;
   cabinetLoungeImg: string;
   cabinetLoungeImgLoading: boolean;
+  thumbEnrollId: string;
+  thumbEnrollPs: string;
+  tempEnterId: string;
+  tempEnterPs: string;
 }
 
 class ModifyBranchContainer extends React.Component<IProps, IState> {
@@ -102,7 +106,11 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       minimapImgUploading: false,
       postCode: "",
       showDaumPostApi: false,
+      tempEnterId: "",
+      tempEnterPs: "",
       tempIp: "",
+      thumbEnrollId: "",
+      thumbEnrollPs: "",
       womanMax: 80
     };
   }
@@ -140,7 +148,11 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       isHead,
       isSupervisor,
       cabinetLoungeImg,
-      cabinetLoungeImgLoading
+      cabinetLoungeImgLoading,
+      thumbEnrollId,
+      thumbEnrollPs,
+      tempEnterId,
+      tempEnterPs
     } = this.state;
 
     const { history } = this.props;
@@ -241,6 +253,10 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
                         isSupervisor={isSupervisor}
                         cabinetLoungeImgLoading={cabinetLoungeImgLoading}
                         cabinetLoungeImg={cabinetLoungeImg}
+                        thumbEnrollId={thumbEnrollId}
+                        thumbEnrollPs={thumbEnrollPs}
+                        tempEnterId={tempEnterId}
+                        tempEnterPs={tempEnterPs}
                       />
                     );
                   }}
@@ -415,7 +431,11 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       isMaleAvailable,
       postCode,
       isFemaleAvailable,
-      cabinetLoungeImg
+      cabinetLoungeImg,
+      thumbEnrollId,
+      thumbEnrollPs,
+      tempEnterId,
+      tempEnterPs
     } = this.state;
     let lat;
     let lng;
@@ -452,6 +472,10 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
         manMax,
         minimapImg,
         postCode,
+        tempEnterId,
+        tempEnterPs,
+        thumbEnrollId,
+        thumbEnrollPs,
         womanAcceptable: isFemaleAvailable,
         womanMax
       };
@@ -562,7 +586,11 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
           womanAcceptable,
           boyAcceptable,
           girlAcceptable,
-          cabinetLoungeImage
+          cabinetLoungeImage,
+          thumbEnrollId,
+          thumbEnrollPs,
+          tempEnterId,
+          tempEnterPs
         } = branch;
         this.setState({
           address,
@@ -586,6 +614,10 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
           manMax: maleMax,
           minimapImg: minimapImage,
           postCode: postalCode,
+          tempEnterId: tempEnterId || "",
+          tempEnterPs: tempEnterPs || "",
+          thumbEnrollId,
+          thumbEnrollPs,
           womanMax: femaleMax
         } as any);
       }

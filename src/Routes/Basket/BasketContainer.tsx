@@ -43,7 +43,6 @@ interface IState {
   importLoad: boolean;
   impId: string;
   baseBranchId: number;
-  kakaoLoad: boolean;
 }
 
 class CreatePaymentMutation extends Mutation<
@@ -75,14 +74,12 @@ class BasketContainer extends React.Component<IProps, IState> {
       baseBranchId: 0,
       impId: "",
       importLoad: false,
-      jqueryLoad: false,
-      kakaoLoad: false
+      jqueryLoad: false
     };
   }
 
   public render() {
-    this.sendKakaoMessage();
-    const { importLoad, jqueryLoad, baseBranchId, kakaoLoad } = this.state;
+    const { importLoad, jqueryLoad, baseBranchId } = this.state;
     return (
       <>
         <Script
@@ -98,14 +95,6 @@ class BasketContainer extends React.Component<IProps, IState> {
             this.setImportLoad();
           }}
           onCreate={this.setImportLoad}
-        />
-
-        <Script
-          url="https://developers.kakao.com/sdk/js/kakao.min.js"
-          onLoad={() => {
-            this.setKakaoLoad();
-          }}
-          onCreate={this.setKakaoLoad}
         />
 
         <ApolloConsumer>
@@ -190,7 +179,6 @@ class BasketContainer extends React.Component<IProps, IState> {
                                       onPaymentClick={this.onPaymentClick}
                                       importLoad={importLoad}
                                       jqueryLoad={jqueryLoad}
-                                      kakaoLoad={kakaoLoad}
                                       createPaymentLoading={
                                         createPaymentLoading
                                       }
@@ -308,29 +296,6 @@ class BasketContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public setKakaoLoad = () => {
-    this.setState({
-      kakaoLoad: true
-    });
-  };
-
-  public sendKakaoMessage = async () => {
-    // const result = await axios({
-    //   headers: {
-    //     Authorization: "KakaoAK " + KAKAO_ADMIN_KEY
-    //     // "Content-Type": "application/json"
-    //   }, // 인증 토큰 Authorization header에 추가
-    //   method: "get", // POST method
-    //   url: "http://kapi.kakao.com//v1/push/register"
-    // });
-    // console.log({ result });
-    // const Kakao = (window as any).Kakao;
-    // Kakao.init(KAKAO_JAVASCRIPT_KEY);
-    // Kakao.PlusFriend.chat({
-    //   plusFriendId: "_xmXxiru" // 플러스친구 홈 URL에 명시된 id로 설정합니다.
-    // });
-  };
-
   public processingPayment = async (impId: string, paymentId: number) => {
     const { history, setTimeLogout } = this.props;
 
@@ -406,7 +371,6 @@ class BasketContainer extends React.Component<IProps, IState> {
                       history.push("/home");
 
                       // KAKAO MESSAGE 전송
-                      this.sendKakaoMessage();
                     } else if (payMethod === "vbank") {
                       toast.success("계좌번호를 확인하고 입금해주세요!");
                       history.push("/vbank-list");

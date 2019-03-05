@@ -2,8 +2,8 @@ import React from "react";
 import { ApolloConsumer, Mutation, MutationFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GET_SEATS } from "../../Components/Room/RoomQueries";
 import {
+  GET_SEATS,
   HEAD_GET_ROOM,
   MANAGER_GET_SEAT
 } from "../../Components/sharedQueries";

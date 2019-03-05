@@ -2,6 +2,7 @@ import React from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router-dom";
 import Button from "../../Components/Button";
+import Footer from "../../Components/Footer";
 import Form from "../../Components/Form";
 import Input from "../../Components/Input";
 import styled from "../../typed-components";
@@ -12,6 +13,7 @@ const Container = styled.div`
   justify-content: center;
   height: 100vh;
   min-height: 600px;
+  position: relative;
 `;
 const Header = styled.header`
   display: flex;
@@ -32,7 +34,7 @@ const LogoImg = styled.img`
 `;
 
 const Body = styled.div``;
-const Footer = styled.div`
+const Bottom = styled.div`
   margin-top: 15px;
   text-align: center;
   color: ${props => props.theme.blueColor};
@@ -118,7 +120,7 @@ const LoginPresenter: React.SFC<IProps> = ({
         </Form>
       </FormContainer>
     </Body>
-    <Footer>
+    <Bottom>
       <FooterColumn>
         {/* <Link to={"/sign-up"}>아직 계정이 없으신가요?</Link> */}
       </FooterColumn>
@@ -132,7 +134,8 @@ const LoginPresenter: React.SFC<IProps> = ({
       <FooterColumn>
         <Link to={"/req-sign-up"}>오프라인 가입 신청</Link>
       </FooterColumn>
-    </Footer>
+    </Bottom>
+    <Footer />
   </Container>
 );
 

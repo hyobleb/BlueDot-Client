@@ -113,6 +113,10 @@ interface IProps {
   subtractIp: (targetIp: any) => void;
   cabinetLoungeImgLoading: boolean;
   cabinetLoungeImg: string;
+  thumbEnrollId: string;
+  thumbEnrollPs: string;
+  tempEnterId: string;
+  tempEnterPs: string;
 }
 
 const AddBranchPresenter: React.SFC<IProps> = ({
@@ -148,7 +152,11 @@ const AddBranchPresenter: React.SFC<IProps> = ({
   ips,
   subtractIp,
   cabinetLoungeImgLoading,
-  cabinetLoungeImg
+  cabinetLoungeImg,
+  thumbEnrollId,
+  thumbEnrollPs,
+  tempEnterId,
+  tempEnterPs
 }) => (
   <BackContainer>
     <Helmet>
@@ -203,7 +211,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           />
         </InputLabel>
       </Row>
-
       <Row>
         <InputLabel>
           <InputTitle>위치 설명 : </InputTitle>
@@ -215,7 +222,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           />
         </InputLabel>
       </Row>
-
       <Row>
         <InputLabel>
           <InputTitle>지점 설명 : </InputTitle>
@@ -281,7 +287,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           )}
         </SnapShotContainer>
       </Row>
-
       <Row>
         <InputLabel>
           <InputTitle>미니맵 이미지 : </InputTitle>
@@ -299,7 +304,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           )}
         </SnapShotContainer>
       </Row>
-
       <Row>
         <InputLabel>
           <InputTitle>남자 최대 수용: </InputTitle>
@@ -310,7 +314,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           />
         </InputLabel>
       </Row>
-
       <Row>
         <InputLabel>
           <InputTitle>여자 최대 수용 : </InputTitle>
@@ -321,7 +324,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           />
         </InputLabel>
       </Row>
-
       <Row>
         <InputLabel>
           <InputTitle>IP : </InputTitle>
@@ -344,7 +346,6 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           ))}
         </IpDisplayContainer>
       </Row>
-
       <Row>
         <InputLabel>
           <InputTitle>아임포트 가맹점 식별코드: </InputTitle>
@@ -373,6 +374,50 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           <InputExtended
             value={impSecret}
             name={"impSecret"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>지문인식 아이디 : </InputTitle>
+          <InputExtended
+            value={thumbEnrollId}
+            name={"thumbEnrollId"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>지문인식 비밀번호 : </InputTitle>
+          <InputExtended
+            value={thumbEnrollPs}
+            name={"thumbEnrollPs"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>임시 출입 아이디 : </InputTitle>
+          <InputExtended
+            value={tempEnterId}
+            name={"tempEnterId"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>임시 출입 : </InputTitle>
+          <InputExtended
+            value={tempEnterPs}
+            name={"tempEnterPs"}
             onChange={onInputChange}
             required={false}
           />
