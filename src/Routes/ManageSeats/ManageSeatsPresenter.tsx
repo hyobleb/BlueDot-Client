@@ -3,7 +3,6 @@ import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
 import DefaultBack from "src/Components/DefaultBack";
 import Loading from "src/Components/Loading";
 import LoungeContainer from "src/Components/LoungeContainer";
-// import SeatsPopUp from "src/Components/SeatsPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import {
@@ -157,16 +156,6 @@ const ManageSeatsPresenter: React.SFC<IProps> = ({
         forAdmin={true}
       />
     )}
-
-    {/* {nowRoomId > 0 && (
-      <SeatsPopUp
-        closeFunc={onSeatsPopUpCloseClick}
-        roomId={nowRoomId}
-        onSeatClick={onSeatClick}
-        onEntranceClick={onEntranceClick}
-        title={"관리할 좌석을 클릭해주세요"}
-      />
-    )} */}
   </Back>
 );
 

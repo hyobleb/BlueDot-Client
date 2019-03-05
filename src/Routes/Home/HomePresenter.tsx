@@ -11,7 +11,6 @@ import {
 import BranchesMap from "../../Components/BranchesMap";
 import Footer from "../../Components/Footer";
 // import Menu from "../../Components/Menu";
-// import SeatsPopUp from "../../Components/SeatsPopUp";
 import RoomPopUp from "../../Components/RoomPopUp";
 import styled from "../../typed-components";
 
