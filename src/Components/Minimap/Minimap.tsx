@@ -53,21 +53,24 @@ const Room = styled<
 `;
 const SeatContainer = styled<
   {
-    xpos: number;
-    ypos: number;
+    roomWidth: number;
+    roomHeight: number;
     rotate: number;
     usable: boolean;
     discard: boolean;
     nowUsing: boolean;
     endDatetime: string;
+    left: number;
+    top: number;
   },
   "div"
 >("div")`
   position: absolute;
-  left: ${props => props.xpos}%;
-  top: ${props => props.ypos}%;
-  width: 3px;
-  height: 3px;
+
+  left: ${props => props.roomWidth / 2 + props.left * 0.7 - 3 / 2}px;
+  top: ${props => props.roomHeight / 2 + props.top * 0.7 - 3 / 2}px;
+  width: 4px;
+  height: 4px;
   transform: rotate(${props => props.rotate}deg);
 `;
 
@@ -109,8 +112,10 @@ const Minimap: React.SFC<IProps> = ({ minimapImage, rooms, className }) => (
               seat.usable && (
                 <SeatContainer
                   key={seat.id}
-                  xpos={seat.xpos}
-                  ypos={seat.ypos}
+                  roomWidth={room.width}
+                  roomHeight={room.height}
+                  left={seat.left}
+                  top={seat.top}
                   rotate={seat.rotate}
                   usable={seat.usable}
                   discard={seat.discard}

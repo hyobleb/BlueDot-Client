@@ -1722,6 +1722,8 @@ export interface getBranchByIp_UserGetBranchByIP_branch_rooms_seats {
   endDatetime: string | null;
   usable: boolean;
   rotate: number;
+  left: number;
+  top: number;
 }
 
 export interface getBranchByIp_UserGetBranchByIP_branch_rooms {

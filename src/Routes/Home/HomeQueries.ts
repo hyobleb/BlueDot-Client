@@ -26,6 +26,8 @@ export const USER_GET_BRANCH = gql`
             endDatetime
             usable
             rotate
+            left
+            top
           }
         }
       }
@@ -59,6 +61,8 @@ export const GET_BRANCH_BY_IP = gql`
             endDatetime
             usable
             rotate
+            left
+            top
           }
         }
       }
