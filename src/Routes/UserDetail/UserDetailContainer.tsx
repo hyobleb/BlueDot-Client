@@ -118,7 +118,10 @@ class UserDetailContainer extends React.Component<IProps, IState> {
               { query: MANAGER_GET_USER_DETAIL, variables: { userId } }
             ]}
           >
-            {expireMembershipMutationFn => {
+            {(
+              expireMembershipMutationFn,
+              { loading: expireMembershipLoading }
+            ) => {
               this.expireMembershipFn = expireMembershipMutationFn;
               return (
                 <GetUserDetailQuery
@@ -151,6 +154,7 @@ class UserDetailContainer extends React.Component<IProps, IState> {
                         onEndDatetimeChange={this.onEndDatetimeChange}
                         membershipLogs={membershipLogs}
                         onPayViewBtnClick={this.onPayViewBtnClick}
+                        expireMembershipLoading={expireMembershipLoading}
                       />
                     );
                   }}

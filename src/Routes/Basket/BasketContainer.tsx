@@ -43,6 +43,7 @@ interface IState {
   importLoad: boolean;
   impId: string;
   baseBranchId: number;
+  payProcessing: boolean;
 }
 
 class CreatePaymentMutation extends Mutation<
@@ -74,12 +75,13 @@ class BasketContainer extends React.Component<IProps, IState> {
       baseBranchId: 0,
       impId: "",
       importLoad: false,
-      jqueryLoad: false
+      jqueryLoad: false,
+      payProcessing: false
     };
   }
 
   public render() {
-    const { importLoad, jqueryLoad, baseBranchId } = this.state;
+    const { importLoad, jqueryLoad, baseBranchId, payProcessing } = this.state;
     return (
       <>
         <Script
@@ -183,6 +185,7 @@ class BasketContainer extends React.Component<IProps, IState> {
                                         createPaymentLoading
                                       }
                                       delReqMemLoading={delReqMemLoading}
+                                      payProcessing={payProcessing}
                                     />
                                   )}
                                 </GetRequestMembershipsQuery>
@@ -297,7 +300,10 @@ class BasketContainer extends React.Component<IProps, IState> {
   };
 
   public processingPayment = async (impId: string, paymentId: number) => {
-    const { history, setTimeLogout } = this.props;
+    const {
+      history
+      // setTimeLogout
+    } = this.props;
 
     if (!this.state.baseBranchId) {
       toast.error("지점을 먼저 설정하셔야 됩니다");
@@ -327,7 +333,9 @@ class BasketContainer extends React.Component<IProps, IState> {
             merchant_uid: merchantUid,
             user: { name, phoneNumber: buyerTel, email }
           } = paymentResult.GetPayment.payment;
-
+          this.setState({
+            payProcessing: true
+          });
           await IMP.request_pay(
             {
               // param
@@ -367,7 +375,10 @@ class BasketContainer extends React.Component<IProps, IState> {
                       payMethod === "trans"
                     ) {
                       toast.success("결제 및 등록이 완료되었습니다 :)");
-                      setTimeLogout();
+                      this.setState({
+                        payProcessing: false
+                      });
+                      // setTimeLogout();
                       history.push("/home");
 
                       // KAKAO MESSAGE 전송
@@ -385,6 +396,9 @@ class BasketContainer extends React.Component<IProps, IState> {
                 }
               } else {
                 toast.error("결제에 실패했습니다!");
+                this.setState({
+                  payProcessing: false
+                });
               }
             }
           );

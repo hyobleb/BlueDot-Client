@@ -67,10 +67,10 @@ const SeatContainer = styled<
 >("div")`
   position: absolute;
 
-  left: ${props => props.roomWidth / 2 + props.left * 0.7 - 3 / 2}px;
-  top: ${props => props.roomHeight / 2 + props.top * 0.7 - 3 / 2}px;
-  width: 4px;
-  height: 4px;
+  left: ${props => props.roomWidth / 2 + props.left * 0.4 - 3 / 2}px;
+  top: ${props => props.roomHeight / 2 + props.top * 0.4 - 3 / 2}px;
+  width: 3px;
+  height: 3px;
   transform: rotate(${props => props.rotate}deg);
 `;
 

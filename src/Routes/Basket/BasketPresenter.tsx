@@ -103,6 +103,7 @@ interface IProps {
   jqueryLoad: boolean;
   createPaymentLoading: boolean;
   delReqMemLoading: boolean;
+  payProcessing: boolean;
 }
 
 const BasketPresenter: React.SFC<IProps> = ({
@@ -117,9 +118,10 @@ const BasketPresenter: React.SFC<IProps> = ({
   importLoad,
   jqueryLoad,
   createPaymentLoading,
-  delReqMemLoading
+  delReqMemLoading,
+  payProcessing
 }) =>
-  reqMembershipsLoading || !importLoad || !jqueryLoad ? (
+  payProcessing || reqMembershipsLoading || !importLoad || !jqueryLoad ? (
     <Loading />
   ) : (
     <BackContainer>

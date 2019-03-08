@@ -209,6 +209,7 @@ interface IProps {
   onEndDatetimeChange: (endDatetimeValue: Date) => void;
   membershipLogs?: Array<getMembershipLogsById_GetMembershipLogsById_membershipLogs | null>;
   onPayViewBtnClick: (paymentId: number) => void;
+  expireMembershipLoading: boolean;
 }
 
 const UserDetailPresenter: React.SFC<IProps> = ({
@@ -229,8 +230,10 @@ const UserDetailPresenter: React.SFC<IProps> = ({
   onStartDatetimeChange,
   onEndDatetimeChange,
   membershipLogs,
-  onPayViewBtnClick
+  onPayViewBtnClick,
+  expireMembershipLoading
 }) => {
+
   let memberships;
   let filteredMembershipLogs;
   let cabinetMemberships;
@@ -357,7 +360,9 @@ const UserDetailPresenter: React.SFC<IProps> = ({
             <MembershipContainer>
               <MembershipTitle>이용중인 멤버쉽</MembershipTitle>
               <MembershipContent>
-                {memberships.length > 0 ? (
+                {expireMembershipLoading ? (
+                  <Loading />
+                ) : memberships.length > 0 ? (
                   memberships.map(
                     membership =>
                       membership && (
