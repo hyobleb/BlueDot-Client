@@ -1,34 +1,28 @@
 import React from "react";
-// import SeatBox from "../../Components/SeatBox";
 import styled from "../../typed-components";
+// import SeatBox from "../../Components/SeatBox";
 
-const Container = styled.div`
+const Back = styled.div`
+  background-color: red;
+  color: white;
+`;
+
+const BackInBack = styled.div`
   display: flex;
   justify-content: center;
 `;
-const BoxContainer = styled.div``;
+const Item = styled.div`
+  color: brown;
+`;
 
-interface IProps {
-  onSeatClick: (id: number) => Promise<void>;
-  onDoorClick: () => void;
-  forAdmin: boolean;
-}
-
-const TestPresetner: React.SFC<IProps> = ({
-  onSeatClick,
-  onDoorClick,
-  forAdmin
-}) => (
-  <Container>
-    <BoxContainer>
-      {/* <SeatBox
-        roomId={10}
-        onSeatClick={onSeatClick}
-        onDoorClick={onDoorClick}
-        forAdmin={forAdmin}
-      /> */}
-    </BoxContainer>
-  </Container>
+const TestPresetner: React.SFC = () => (
+  <Back>
+    <BackInBack>
+      <Item>a</Item>
+      <Item>b</Item>
+      <Item>c</Item>
+    </BackInBack>
+  </Back>
 );
 
 export default TestPresetner;

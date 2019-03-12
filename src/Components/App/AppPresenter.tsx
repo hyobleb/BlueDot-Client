@@ -4,6 +4,7 @@ import Sidebar from "react-sidebar";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
 import Basket from "../../Routes/Basket";
+import BasketV2 from "../../Routes/BasketV2";
 import BranchSetting from "../../Routes/BranchSetting";
 import Chart from "../../Routes/Chart";
 import PrivateInfo from "../../Routes/Danal/PrivateInfo";
@@ -218,6 +219,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           />
           <Route path={"/edit-profile"} exact={true} component={EditProfile} />
           <Route path={"/vbank-list"} exact={true} component={VbankList} />
+          <Route path={"/basket2"} exact={true} component={BasketV2} />
           {(isHead ||
             isFranchiser ||
             isSupervisor ||

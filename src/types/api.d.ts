@@ -1668,6 +1668,8 @@ export interface userGetBranch_UserGetBranch_branch_rooms_seats {
   endDatetime: string | null;
   usable: boolean;
   rotate: number;
+  left: number;
+  top: number;
 }
 
 export interface userGetBranch_UserGetBranch_branch_rooms {
@@ -1717,13 +1719,13 @@ export interface getBranchByIp_UserGetBranchByIP_branch_rooms_seats {
   id: number;
   xpos: number;
   ypos: number;
+  left: number;
+  top: number;
   discard: boolean;
   nowUsing: boolean;
   endDatetime: string | null;
   usable: boolean;
   rotate: number;
-  left: number;
-  top: number;
 }
 
 export interface getBranchByIp_UserGetBranchByIP_branch_rooms {

@@ -128,7 +128,7 @@ const MenuPresenter: React.SFC<IProps> = ({
             멤버쉽 정보
           </SLink>
           <SLink to="/basket" onClick={toggleMenu}>
-            장바구니
+            등록/결제하기
           </SLink>
           {checkVbankData &&
             checkVbankData.CheckVbankPayment &&

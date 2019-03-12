@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "../../typed-components";
 const Container = styled.input`
+  -webkit-appearance: none;
   width: 100%;
   background-color: ${props => props.theme.blueColor};
   color: white;

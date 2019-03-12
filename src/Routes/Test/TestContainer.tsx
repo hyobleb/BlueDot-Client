@@ -11,13 +11,7 @@ class TestContainer extends React.Component {
   };
 
   public render() {
-    return (
-      <TestPresenter
-        onSeatClick={this.onSeatClick}
-        onDoorClick={this.onDoorClick}
-        forAdmin={true}
-      />
-    );
+    return <TestPresenter />;
   }
 }
 export default TestContainer;

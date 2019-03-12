@@ -51,11 +51,14 @@ export const GET_BRANCH_BY_IP = gql`
           height
           xpos
           ypos
+
           usable
           seats {
             id
             xpos
             ypos
+            left
+            top
             discard
             nowUsing
             endDatetime
