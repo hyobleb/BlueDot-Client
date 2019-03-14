@@ -26,6 +26,8 @@ export const GET_BRANCH_FOR_MAN_SEAT = gql`
             endDatetime
             usable
             rotate
+            top
+            left
           }
         }
       }

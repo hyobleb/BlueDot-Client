@@ -4,13 +4,14 @@ import { Mutation, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  USER_GET_PRODUCTS,
+  USER_GET_BRANCH_PRODUCTS,
   USER_REQUEST_MEMBERSHIP
 } from "src/Components/sharedQueries";
 
 import {
-  userGetProducts,
-  userGetProductsVariables,
+  userGetBranchProducts,
+  userGetBranchProducts_UserGetBranchProducts_products,
+  userGetBranchProductsVariables,
   userRequestMembership,
   userRequestMembershipVariables
 } from "src/types/api";
@@ -21,7 +22,10 @@ class RequestMutation extends Mutation<
   userRequestMembershipVariables
 > {}
 
-class GetBranchQuery extends Query<userGetProducts, userGetProductsVariables> {}
+class GetBranchProducts extends Query<
+  userGetBranchProducts,
+  userGetBranchProductsVariables
+> {}
 
 interface IProps extends RouteComponentProps<any> {}
 
@@ -31,6 +35,8 @@ interface IState {
   productId: number;
   productTitle: string;
   branchPopUpShow: boolean;
+  branchProducts: Array<userGetBranchProducts_UserGetBranchProducts_products | null> | null;
+  selBranchName?: string | null;
 }
 
 class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
@@ -38,8 +44,13 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
-      branchId: 0,
+      branchId:
+        (props.location &&
+          props.location.state &&
+          props.location.state.branchId) ||
+        0,
       branchPopUpShow: false,
+      branchProducts: null,
       datetimeValue: new Date(),
       productId: 0,
       productTitle: ""
@@ -52,7 +63,9 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
       branchPopUpShow,
       datetimeValue,
       productId,
-      productTitle
+      productTitle,
+      branchProducts,
+      selBranchName
     } = this.state;
     return (
       <RequestMutation
@@ -66,24 +79,19 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
         {(userReqMembershipMutationFn, { loading: reqMembershipLoading }) => {
           this.reqMembershipFn = userReqMembershipMutationFn;
           return (
-            <GetBranchQuery
-              query={USER_GET_PRODUCTS}
+            <GetBranchProducts
+              query={USER_GET_BRANCH_PRODUCTS}
               variables={{ branchId }}
               fetchPolicy={"cache-and-network"}
-              onCompleted={data => {
-                this.setState({
-                  productId: 0,
-                  productTitle: ""
-                });
-              }}
+              onCompleted={this.updateFields}
               skip={branchId === 0}
             >
-              {({ data: productDatas, loading: productsLoading }) => (
+              {({ loading: productsLoading }) => (
                 <ReqEnrollMembershipPresenter
                   productId={productId}
                   datetimeValue={datetimeValue}
                   onSubmit={this.onSubmit}
-                  productDatas={productDatas}
+                  branchProducts={branchProducts}
                   productsLoading={productsLoading}
                   onOptionChange={this.onOptionChange}
                   productTitle={productTitle}
@@ -95,14 +103,39 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
                   onThrowBasketButtonClick={this.onThrowBasketButtonClick}
                   onCancelClick={this.onCancelClick}
                   reqMembershipLoading={reqMembershipLoading}
+                  branchId={branchId}
+                  selBranchName={selBranchName}
                 />
               )}
-            </GetBranchQuery>
+            </GetBranchProducts>
           );
         }}
       </RequestMutation>
     );
   }
+
+  public updateFields = (data: {} | userGetBranchProducts) => {
+    if ("UserGetBranchProducts" in data) {
+      const {
+        UserGetBranchProducts: { products, branchName }
+      } = data;
+
+      if (products !== null) {
+        this.setState(
+          {
+            branchProducts: products,
+            selBranchName: branchName
+          },
+          () => {
+            this.setState({
+              productId: 0,
+              productTitle: ""
+            });
+          }
+        );
+      }
+    }
+  };
 
   public onSubmit: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
@@ -167,7 +200,7 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
       if (RequestRegistMembership.ok) {
         toast.success("장바구니에 무사히 담겼습니다!");
         history.push({
-          pathname: "/basket"
+          pathname: "/basket2"
         });
       } else {
         toast.error(RequestRegistMembership.error);
@@ -178,7 +211,7 @@ class ReqEnrollMembershipContainer extends React.Component<IProps, IState> {
   public onCancelClick = () => {
     const { history } = this.props;
     history.push({
-      pathname: "/basket"
+      pathname: "/basket2"
     });
   };
 }

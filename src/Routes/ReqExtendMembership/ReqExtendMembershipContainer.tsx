@@ -102,7 +102,7 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
               onCompleted={data => {
                 if (data.RequestExtendMembership.ok) {
                   toast.success("장바구니에 담았습니다");
-                  history.push("/basket");
+                  history.push("/basket2");
                 } else {
                   toast.error(data.RequestExtendMembership.error);
                 }
@@ -176,7 +176,7 @@ class ReqExtendMembershipContainer extends React.Component<IProps, IState> {
         );
         if (filteredMemberships.length === 0) {
           toast.error("연장할 멤버쉽이 없습니다");
-          history.push("/basket");
+          history.push("/basket2");
         } else {
           this.setState({
             exstingMemberships: filteredMemberships

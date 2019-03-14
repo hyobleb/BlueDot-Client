@@ -27,6 +27,7 @@ export const GET_REQUEST_MEMBERSHIPS = gql`
         }
         status
       }
+      branchId
     }
   }
 `;
@@ -47,6 +48,14 @@ export const CREATE_PAYMENT = gql`
       error
       payment {
         id
+        payMethod
+        amount
+        merchant_uid
+        user {
+          name
+          phoneNumber
+          email
+        }
       }
     }
   }

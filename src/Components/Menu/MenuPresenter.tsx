@@ -127,7 +127,7 @@ const MenuPresenter: React.SFC<IProps> = ({
           <SLink to="/membership" onClick={toggleMenu}>
             멤버쉽 정보
           </SLink>
-          <SLink to="/basket" onClick={toggleMenu}>
+          <SLink to="/basket2" onClick={toggleMenu}>
             등록/결제하기
           </SLink>
           {checkVbankData &&

@@ -7,8 +7,9 @@ import BranchSearchPopUp from "src/Components/BranchSearchPopUp";
 import Form from "src/Components/Form";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
-import { userGetProducts } from "src/types/api";
+import { userGetBranchProducts_UserGetBranchProducts_products } from "src/types/api";
 import DatetimePicker from "../../Components/DatetimePicker";
+import Loading from "../../Components/Loading";
 
 const FormExtended = styled(Form)`
   width: 90%;
@@ -118,8 +119,6 @@ interface IProps {
   datetimeValue: Date;
   productId: number;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  productDatas?: userGetProducts;
-  productsLoading: boolean;
   onOptionChange: (arg: any) => void;
   productTitle: string;
   branchPopUpShow: boolean;
@@ -130,13 +129,15 @@ interface IProps {
   onThrowBasketButtonClick: () => Promise<void>;
   onCancelClick: () => void;
   reqMembershipLoading: boolean;
+  branchId: number;
+  branchProducts: Array<userGetBranchProducts_UserGetBranchProducts_products | null> | null;
+  productsLoading: boolean;
+  selBranchName?: string | null;
 }
 
 const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
   datetimeValue,
   onSubmit,
-  productDatas,
-  productsLoading,
   onOptionChange,
   productId,
   productTitle,
@@ -147,16 +148,15 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
   onDatetimeChange,
   onThrowBasketButtonClick,
   onCancelClick,
-  reqMembershipLoading
+  reqMembershipLoading,
+  branchId,
+  branchProducts,
+  productsLoading,
+  selBranchName
 }) => {
   const productOptions = new Array();
-  if (
-    productDatas &&
-    productDatas.UserGetBranch &&
-    productDatas.UserGetBranch.branch &&
-    productDatas.UserGetBranch.branch.products
-  ) {
-    productDatas.UserGetBranch.branch.products.forEach(product => {
+  if (branchProducts) {
+    branchProducts.forEach(product => {
       if (product && product.target === "MEMBERSHIP" && !product.discard) {
         const productItem = { value: product.id, label: product.title };
         productOptions.push(productItem);
@@ -169,44 +169,42 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
         <title>Enroll Requset Membership | BlueDot</title>
       </Helmet>
       <BackArrowExtended backTo="/membership" />
-      <FormExtended submitFn={onSubmit}>
-        <TitleSection>
-          <Title>멤버쉽 등록</Title>
-        </TitleSection>
-        <BranchSection>
-          <BranchNameCol>
-            {(productDatas &&
-              productDatas.UserGetBranch &&
-              productDatas.UserGetBranch.branch &&
-              productDatas.UserGetBranch.branch.name) ||
-              "지점을 먼저 선택해주세요"}
-          </BranchNameCol>
-          <BranchButtonCol>
-            <ChangeBranchButton
-              value={`${(productDatas &&
-                productDatas.UserGetBranch &&
-                productDatas.UserGetBranch.branch &&
-                productDatas.UserGetBranch.branch.name &&
-                "지점 변경") ||
-                "지점 선택"}`}
-              onClick={setTrueBranchPopUpShow}
-            />
-          </BranchButtonCol>
-        </BranchSection>
-        <DatetimeSection>
-          <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
-          <DatetimePickerCon>
-            <ExtendedDatetimePicker
-              flatPickrDate={datetimeValue}
-              onFlatPickrChange={onDatetimeChange}
-            />
-          </DatetimePickerCon>
-        </DatetimeSection>
+      {reqMembershipLoading ? (
+        <Loading />
+      ) : (
+        <FormExtended submitFn={onSubmit}>
+          <TitleSection>
+            <Title>멤버쉽 등록</Title>
+          </TitleSection>
 
-        {productDatas &&
-          productDatas.UserGetBranch &&
-          productDatas.UserGetBranch.branch &&
-          productDatas.UserGetBranch.branch.products && (
+          <BranchSection>
+            {branchId && productsLoading ? (
+              <Loading />
+            ) : (
+              <>
+                <BranchNameCol>
+                  {selBranchName || "지점을 먼저 선택해주세요"}
+                </BranchNameCol>
+                <BranchButtonCol>
+                  <ChangeBranchButton
+                    value={`${(branchProducts && "지점 변경") || "지점 선택"}`}
+                    onClick={setTrueBranchPopUpShow}
+                  />
+                </BranchButtonCol>
+              </>
+            )}
+          </BranchSection>
+          <DatetimeSection>
+            <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
+            <DatetimePickerCon>
+              <ExtendedDatetimePicker
+                flatPickrDate={datetimeValue}
+                onFlatPickrChange={onDatetimeChange}
+              />
+            </DatetimePickerCon>
+          </DatetimeSection>
+
+          {branchProducts && (
             <PeriodSection>
               <InputLabel>
                 <InputTitle>이용권 : </InputTitle>
@@ -223,16 +221,19 @@ const ReqEnrollMembershipPresenter: React.SFC<IProps> = ({
             </PeriodSection>
           )}
 
-        <ButtonSection>
-          <ButtonContainer>
-            <ThrowBasketButton
-              value={reqMembershipLoading ? "장바구니 담는중" : "장바구니 담기"}
-              onClick={onThrowBasketButtonClick}
-            />
-            <CancleButton value={"취소"} onClick={onCancelClick} />
-          </ButtonContainer>
-        </ButtonSection>
-      </FormExtended>
+          <ButtonSection>
+            <ButtonContainer>
+              <ThrowBasketButton
+                value={
+                  reqMembershipLoading ? "장바구니 담는중" : "장바구니 담기"
+                }
+                onClick={onThrowBasketButtonClick}
+              />
+              <CancleButton value={"취소"} onClick={onCancelClick} />
+            </ButtonContainer>
+          </ButtonSection>
+        </FormExtended>
+      )}
 
       {branchPopUpShow ? (
         <BranchSearchPopUp

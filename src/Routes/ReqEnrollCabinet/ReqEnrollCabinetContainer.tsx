@@ -7,18 +7,20 @@ import {
   GET_BRANCH_FOR_ERNOLL_CABINET,
   GET_CABINET,
   GET_CABINETS,
-  USER_GET_PRODUCTS,
+  USER_GET_BRANCH_PRODUCTS,
   USER_REQUEST_CABINET
 } from "src/Components/sharedQueries";
 import {
   getBranchForEnrollCabinet,
+  getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets,
   getBranchForEnrollCabinetVariables,
   getCabinet,
   getCabinets,
   getCabinetsVariables,
   getCabinetVariables,
-  userGetProducts,
-  userGetProductsVariables,
+  userGetBranchProducts,
+  userGetBranchProducts_UserGetBranchProducts_products,
+  userGetBranchProductsVariables,
   userRequestCabinet,
   userRequestCabinetVariables
 } from "src/types/api";
@@ -38,11 +40,18 @@ interface IState {
   horizontalNumber: number;
   isFirstLoaidng: boolean;
   verticalNumber: number;
+  branchProducts: Array<userGetBranchProducts_UserGetBranchProducts_products | null> | null;
+  selBranchName?: string | null;
+  cabinetLoungeImage?: string;
+  cabinetSets?: Array<getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets | null> | null;
 }
 
 interface IProps extends RouteComponentProps<any> {}
 
-class GetBranchQuery extends Query<userGetProducts, userGetProductsVariables> {}
+class GetBranchProductsQuery extends Query<
+  userGetBranchProducts,
+  userGetBranchProductsVariables
+> {}
 class UserReqCabinetMutation extends Mutation<
   userRequestCabinet,
   userRequestCabinetVariables
@@ -67,6 +76,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
           : 0
         : 0,
       branchPopUpShow: false,
+      branchProducts: null,
       cabinetId: 0,
       cabinetNumber: 0,
       cabinets: null,
@@ -95,7 +105,11 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       horizontalNumber,
       cabinetNumber,
       isFirstLoaidng,
-      verticalNumber
+      verticalNumber,
+      selBranchName,
+      branchProducts,
+      cabinetLoungeImage,
+      cabinetSets
     } = this.state;
     return (
       <GetCabinetQuery
@@ -153,43 +167,20 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
           <GetCabinetSetQuery
             query={GET_CABINETS}
             variables={{ cabinetSetId: setId }}
-            onCompleted={data => {
-              if ("GetCabinetSet" in data) {
-                const {
-                  GetCabinetSet: { cabinetSet }
-                } = data;
-
-                if (cabinetSet !== null) {
-                  const {
-                    cabinets: findCabinets,
-                    horizontalNumber: findHorizontalNumber,
-                    verticalNumber: findVerticalNumber
-                  } = cabinetSet;
-
-                  if (findCabinets && findHorizontalNumber) {
-                    this.setState({
-                      cabinets: findCabinets.sort((a, b) => {
-                        return a!.id - b!.id;
-                      }),
-                      horizontalNumber: findHorizontalNumber,
-                      verticalNumber: findVerticalNumber
-                    });
-                  }
-                }
-              }
-            }}
+            onCompleted={this.updateFields}
             skip={setId === 0}
             fetchPolicy={"cache-and-network"}
           >
-            {() => {
+            {({ loading: getCabinetSetLoading }) => {
               return (
                 // sometimes this part is not excuted, I expected that it was excuted when render
                 <GetCabinetSetsQuery
                   query={GET_BRANCH_FOR_ERNOLL_CABINET}
                   variables={{ branchId: this.state.branchId }}
                   fetchPolicy={"cache-and-network"}
+                  onCompleted={this.updateFields}
                 >
-                  {({ data: cabinetSetDatas, loading: cabinetSetLoading }) => {
+                  {({ loading: cabinetSetsLoading }) => {
                     return (
                       <UserReqCabinetMutation
                         mutation={USER_REQUEST_CABINET}
@@ -205,19 +196,13 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                         {userRequestCabinetFn => {
                           this.reqCabinetFn = userRequestCabinetFn;
                           return (
-                            <GetBranchQuery
-                              query={USER_GET_PRODUCTS}
+                            <GetBranchProductsQuery
+                              query={USER_GET_BRANCH_PRODUCTS}
                               variables={{ branchId }}
                               fetchPolicy={"cache-and-network"}
-                              onCompleted={data => {
-                                this.setState({
-                                  productId: 0,
-                                  productTitle: ""
-                                });
-                              }}
-                              skip={branchId === 0}
+                              onCompleted={this.updateFields}
                             >
-                              {({ data: productDatas }) => (
+                              {({ loading: getBranchProductsLoading }) => (
                                 <ReqEnrollCabinetPresenter
                                   branchId={branchId}
                                   branchPopUpShow={branchPopUpShow}
@@ -225,7 +210,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                                   productTitle={productTitle}
                                   startDatetime={startDatetime}
                                   onSubmit={this.onSubmit}
-                                  productDatas={productDatas}
+                                  branchProducts={branchProducts}
                                   onOptionChange={this.onOptionChange}
                                   setTrueBranchPopUpShow={
                                     this.setTrueBranchPopUpShow
@@ -239,7 +224,8 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                                     this.onThrowBasketButtonClick
                                   }
                                   onCancelClick={this.onCancelClick}
-                                  cabinetSetDatas={cabinetSetDatas}
+                                  cabinetLoungeImage={cabinetLoungeImage}
+                                  cabinetSets={cabinetSets}
                                   tempSetId={tempSetId}
                                   onSetHover={this.onSetHover}
                                   onSetHoverOut={this.onSetHoverOut}
@@ -249,12 +235,17 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
                                   horizontalNumber={horizontalNumber}
                                   onCabinetClick={this.onCabinetClick}
                                   cabinetNumber={cabinetNumber}
-                                  cabinetSetLoading={cabinetSetLoading}
+                                  cabinetSetsLoading={cabinetSetsLoading}
                                   isFirstLoaidng={isFirstLoaidng}
                                   verticalNumber={verticalNumber}
+                                  selBranchName={selBranchName}
+                                  getBranchProductsLoading={
+                                    getBranchProductsLoading
+                                  }
+                                  getCabinetSetLoading={getCabinetSetLoading}
                                 />
                               )}
-                            </GetBranchQuery>
+                            </GetBranchProductsQuery>
                           );
                         }}
                       </UserReqCabinetMutation>
@@ -268,6 +259,64 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
       </GetCabinetQuery>
     );
   }
+
+  public updateFields = (
+    data: {} | userGetBranchProducts | getBranchForEnrollCabinet | getCabinets
+  ) => {
+    if ("UserGetBranchProducts" in data) {
+      const {
+        UserGetBranchProducts: { products, branchName }
+      } = data;
+
+      if (products !== null) {
+        this.setState(
+          {
+            branchProducts: products,
+            selBranchName: branchName
+          },
+          () => {
+            this.setState({
+              productId: 0,
+              productTitle: ""
+            });
+          }
+        );
+      }
+    } else if ("UserGetBranch" in data) {
+      const {
+        UserGetBranch: { branch }
+      } = data;
+      if (branch) {
+        const { cabinetLoungeImage, cabinetSets } = branch;
+        this.setState({
+          cabinetLoungeImage,
+          cabinetSets
+        });
+      }
+    } else if ("GetCabinetSet" in data) {
+      const {
+        GetCabinetSet: { cabinetSet }
+      } = data;
+
+      if (cabinetSet) {
+        const {
+          cabinets: findCabinets,
+          horizontalNumber: findHorizontalNumber,
+          verticalNumber: findVerticalNumber
+        } = cabinetSet;
+
+        if (findCabinets && findHorizontalNumber) {
+          this.setState({
+            cabinets: findCabinets.sort((a, b) => {
+              return a!.id - b!.id;
+            }),
+            horizontalNumber: findHorizontalNumber,
+            verticalNumber: findVerticalNumber
+          });
+        }
+      }
+    }
+  };
 
   public onSubmit: React.FormEventHandler<HTMLFormElement> = async event => {
     event.preventDefault();
@@ -337,7 +386,7 @@ class ReqEnrollCabinetContainer extends React.Component<IProps, IState> {
   public onCancelClick = () => {
     const { history } = this.props;
     history.push({
-      pathname: "/basket"
+      pathname: "/basket2"
     });
   };
 

@@ -5,17 +5,18 @@ import Helmet from "react-helmet";
 import BackArrow from "src/Components/BackArrow";
 import CabinetSetsContainer from "src/Components/CabinetSetsContainer";
 import Form from "src/Components/Form";
-import Loading from "src/Components/Loading";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import {
   getBranchForEnrollCabinet,
+  getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets,
   getCabinets_GetCabinetSet_cabinetSet_cabinets,
-  userGetProducts
+  userGetBranchProducts_UserGetBranchProducts_products
 } from "src/types/api";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 import CabinetDisplay from "../../Components/CabinetDisplay";
 import DatetimePicker from "../../Components/DatetimePicker";
+import SmallLoading from "../../Components/SmallLoading";
 
 const FormExtended = styled(Form)`
   width: 90%;
@@ -122,7 +123,9 @@ const DropdonwContainer = styled.div`
   }
 `;
 
-const BackContainer = styled.div``;
+const BackContainer = styled.div`
+  margin-bottom: 100px;
+`;
 
 const SetTitleContainer = styled.div`
   display: flex;
@@ -159,7 +162,6 @@ interface IProps {
   productTitle: string;
   startDatetime: Date;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  productDatas?: userGetProducts;
   onOptionChange: (arg: any) => void;
   setTrueBranchPopUpShow: () => void;
   setFalseBranchPopUpShow: () => void;
@@ -177,15 +179,20 @@ interface IProps {
   horizontalNumber: number;
   onCabinetClick: (cabinetId: number) => void;
   cabinetNumber: number;
-  cabinetSetLoading: boolean;
+  cabinetSetsLoading: boolean;
   isFirstLoaidng: boolean;
   verticalNumber: number;
+  branchProducts: Array<userGetBranchProducts_UserGetBranchProducts_products | null> | null;
+  selBranchName?: string | null;
+  getBranchProductsLoading: boolean;
+  cabinetLoungeImage?: string;
+  cabinetSets?: Array<getBranchForEnrollCabinet_UserGetBranch_branch_cabinetSets | null> | null;
+  getCabinetSetLoading: boolean;
 }
 
 const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
   startDatetime,
   onSubmit,
-  productDatas,
   onOptionChange,
   productTitle,
   branchPopUpShow,
@@ -206,18 +213,19 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
   onCabinetClick,
   cabinetId,
   cabinetNumber,
-  cabinetSetLoading,
+  cabinetSetsLoading,
   isFirstLoaidng,
-  verticalNumber
+  verticalNumber,
+  branchProducts,
+  selBranchName,
+  getBranchProductsLoading,
+  cabinetLoungeImage,
+  cabinetSets,
+  getCabinetSetLoading
 }) => {
   const productOptions = new Array();
-  if (
-    productDatas &&
-    productDatas.UserGetBranch &&
-    productDatas.UserGetBranch.branch &&
-    productDatas.UserGetBranch.branch.products
-  ) {
-    productDatas.UserGetBranch.branch.products.forEach(product => {
+  if (branchProducts) {
+    branchProducts.forEach(product => {
       if (product && product.target === "CABINET" && !product.discard) {
         const productItem = { value: product.id, label: product.title };
         productOptions.push(productItem);
@@ -235,39 +243,32 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
         <TitleSection>
           <Title>사물함 등록</Title>
         </TitleSection>
-        <BranchSection>
-          <BranchNameCol>
-            {(productDatas &&
-              productDatas.UserGetBranch &&
-              productDatas.UserGetBranch.branch &&
-              productDatas.UserGetBranch.branch.name) ||
-              "지점을 먼저 선택해주세요"}
-          </BranchNameCol>
-          <BranchButtonCol>
-            <ChangeBranchButton
-              value={`${(productDatas &&
-                productDatas.UserGetBranch &&
-                productDatas.UserGetBranch.branch &&
-                productDatas.UserGetBranch.branch.name &&
-                "지점 변경") ||
-                "지점 선택"}`}
-              onClick={setTrueBranchPopUpShow}
-            />
-          </BranchButtonCol>
-        </BranchSection>
+        {selBranchName && getBranchProductsLoading ? (
+          ""
+        ) : (
+          <BranchSection>
+            <BranchNameCol>
+              {selBranchName || "지점을 먼저 선택해주세요"}
+            </BranchNameCol>
+            <BranchButtonCol>
+              <ChangeBranchButton
+                value={`${(selBranchName && "지점 변경") || "지점 선택"}`}
+                onClick={setTrueBranchPopUpShow}
+              />
+            </BranchButtonCol>
+          </BranchSection>
+        )}
+
         <CabinetSection>
-          {cabinetSetLoading && !isFirstLoaidng ? <Loading /> : ""}
-          {cabinetSetDatas &&
-            cabinetSetDatas.UserGetBranch &&
-            cabinetSetDatas.UserGetBranch.branch &&
-            cabinetSetDatas.UserGetBranch.branch.cabinetLoungeImage && (
+          {cabinetSetsLoading && selBranchName ? (
+            <SmallLoading />
+          ) : (
+            cabinetLoungeImage && (
               <>
                 <CabinetSetsContainer
-                  imgUrl={
-                    cabinetSetDatas.UserGetBranch.branch.cabinetLoungeImage
-                  }
+                  imgUrl={cabinetLoungeImage}
                   showTempCabinetSet={false}
-                  cabinetSets={cabinetSetDatas.UserGetBranch.branch.cabinetSets}
+                  cabinetSets={cabinetSets}
                   tempSelCabinetSetId={tempSetId}
                   onCabinetSetHover={onSetHover}
                   onCabinetSetHoverOut={onSetHoverOut}
@@ -275,8 +276,8 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
                   selectedCabinetId={setId}
                 />
                 <SetTitleContainer>
-                  {cabinetSetDatas.UserGetBranch.branch.cabinetSets &&
-                    cabinetSetDatas.UserGetBranch.branch.cabinetSets.map(
+                  {cabinetSets &&
+                    cabinetSets.map(
                       set =>
                         set && (
                           <SetTitleItem
@@ -304,7 +305,9 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
                         )
                     )}
                 </SetTitleContainer>
-                {cabinets ? (
+                {getCabinetSetLoading && setId ? (
+                  <SmallLoading />
+                ) : cabinets ? (
                   <>
                     <CabinetDisplayTitle>
                       사물함을 선택해주세요!
@@ -326,7 +329,8 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
                   </CabinetDisplayTitle>
                 )}
               </>
-            )}
+            )
+          )}
         </CabinetSection>
         <DatetimeSection>
           <DatetimeTitle>이용 시작 일시를 선택해주세요</DatetimeTitle>
@@ -338,25 +342,22 @@ const ReqEnrollCabinetPresenter: React.SFC<IProps> = ({
           </DatetimePickerCon>
         </DatetimeSection>
 
-        {productDatas &&
-          productDatas.UserGetBranch &&
-          productDatas.UserGetBranch.branch &&
-          productDatas.UserGetBranch.branch.products && (
-            <PeriodSection>
-              <InputLabel>
-                <InputTitle>이용권 : </InputTitle>
-                <DropdonwContainer>
-                  <Dropdown
-                    options={productOptions}
-                    onChange={onOptionChange}
-                    value={productTitle}
-                    placeholder={"이용권을 선택해주세요"}
-                    controlClassName={"control"}
-                  />
-                </DropdonwContainer>
-              </InputLabel>
-            </PeriodSection>
-          )}
+        {branchProducts && (
+          <PeriodSection>
+            <InputLabel>
+              <InputTitle>이용권 : </InputTitle>
+              <DropdonwContainer>
+                <Dropdown
+                  options={productOptions}
+                  onChange={onOptionChange}
+                  value={productTitle}
+                  placeholder={"이용권을 선택해주세요"}
+                  controlClassName={"control"}
+                />
+              </DropdonwContainer>
+            </InputLabel>
+          </PeriodSection>
+        )}
 
         <ButtonSection>
           <ButtonContainer>

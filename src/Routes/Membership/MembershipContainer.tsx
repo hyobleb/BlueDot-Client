@@ -171,7 +171,7 @@ class MembershipContainer extends React.Component<IProps, IState> {
   public onMembershipBranchClick = branchId => {
     const { history } = this.props;
     history.push({
-      pathname: "/request-membership",
+      pathname: "/enroll-req-membership",
       state: {
         branchId
       }

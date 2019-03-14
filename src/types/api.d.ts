@@ -738,6 +738,7 @@ export interface getUsableMyMemberships_GetMyUsableMemberships_memberships {
   branch: getUsableMyMemberships_GetMyUsableMemberships_memberships_branch;
   cabinet: getUsableMyMemberships_GetMyUsableMemberships_memberships_cabinet | null;
   cabinetId: number | null;
+  target: string;
 }
 
 export interface getUsableMyMemberships_GetMyUsableMemberships {
@@ -1331,6 +1332,41 @@ export interface getSeatsV2Variables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: userGetBranchProducts
+// ====================================================
+
+export interface userGetBranchProducts_UserGetBranchProducts_products {
+  __typename: "Product";
+  id: number;
+  title: string;
+  amount: number;
+  target: string;
+  hours: number;
+  available: boolean;
+  discard: boolean;
+  branchName: string;
+}
+
+export interface userGetBranchProducts_UserGetBranchProducts {
+  __typename: "UserGetBranchProductsResponse";
+  ok: boolean;
+  error: string | null;
+  products: (userGetBranchProducts_UserGetBranchProducts_products | null)[] | null;
+  branchName: string | null;
+}
+
+export interface userGetBranchProducts {
+  UserGetBranchProducts: userGetBranchProducts_UserGetBranchProducts;
+}
+
+export interface userGetBranchProductsVariables {
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 
@@ -1442,6 +1478,7 @@ export interface getRequestMemberships_UserGetRequest {
   ok: boolean;
   error: string | null;
   requestMemberships: (getRequestMemberships_UserGetRequest_requestMemberships | null)[] | null;
+  branchId: number | null;
 }
 
 export interface getRequestMemberships {
@@ -1476,9 +1513,20 @@ export interface deleteRequestMembershipVariables {
 // GraphQL mutation operation: createPayment
 // ====================================================
 
+export interface createPayment_CreatePayment_payment_user {
+  __typename: "User";
+  name: string | null;
+  phoneNumber: string | null;
+  email: string;
+}
+
 export interface createPayment_CreatePayment_payment {
   __typename: "Payment";
   id: number;
+  payMethod: string;
+  amount: number;
+  merchant_uid: string;
+  user: createPayment_CreatePayment_payment_user;
 }
 
 export interface createPayment_CreatePayment {
@@ -2182,6 +2230,8 @@ export interface getBranchForManSeat_GetBranchForManSeat_branch_rooms_seats {
   endDatetime: string | null;
   usable: boolean;
   rotate: number;
+  top: number;
+  left: number;
 }
 
 export interface getBranchForManSeat_GetBranchForManSeat_branch_rooms {

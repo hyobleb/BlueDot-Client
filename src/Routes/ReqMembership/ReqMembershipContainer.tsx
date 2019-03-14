@@ -165,7 +165,7 @@ class ReqMembershipContainer extends React.Component<IProps, IState> {
       if (RequestRegistMembership.ok) {
         toast.success("장바구니에 무사히 담겼습니다!");
         history.push({
-          pathname: "/basket"
+          pathname: "/basket2"
         });
       } else {
         toast.error(RequestRegistMembership.error);

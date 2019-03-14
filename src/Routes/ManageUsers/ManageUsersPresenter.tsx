@@ -124,6 +124,12 @@ const ExpireStatus = styled(StatusDisplay)`
   background-color: ${props => props.theme.greyColor};
   color: white;
 `;
+
+const CabinetShiftStatus = styled(StatusDisplay)`
+  background-color: ${props => props.theme.pinkColor};
+  color: white;
+`;
+
 const TotalMembersSection = styled.div`
   margin-top: 20px;
 `;
@@ -288,6 +294,10 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                                 <DatetimeModStatus>수정</DatetimeModStatus>
                               ) : membershipLog.status === "EXPIRED" ? (
                                 <ExpireStatus>만료</ExpireStatus>
+                              ) : membershipLog.status === "CABINET_SHIFT" ? (
+                                <CabinetShiftStatus>
+                                  사물함 이동
+                                </CabinetShiftStatus>
                               ) : (
                                 membershipLog.status
                               )}

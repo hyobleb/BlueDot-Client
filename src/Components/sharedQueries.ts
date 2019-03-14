@@ -332,6 +332,7 @@ export const GET_USABLE_MY_MEMBERSHIPS = gql`
           }
         }
         cabinetId
+        target
       }
     }
   }
@@ -677,6 +678,26 @@ export const GET_SEATS_V2 = gql`
         femaleUsable
         seatImg
       }
+    }
+  }
+`;
+
+export const USER_GET_BRANCH_PRODUCTS = gql`
+  query userGetBranchProducts($branchId: Int!) {
+    UserGetBranchProducts(branchId: $branchId) {
+      ok
+      error
+      products {
+        id
+        title
+        amount
+        target
+        hours
+        available
+        discard
+        branchName
+      }
+      branchName
     }
   }
 `;
