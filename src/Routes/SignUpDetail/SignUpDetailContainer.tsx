@@ -6,13 +6,13 @@ import { toast } from "react-toastify";
 import { GUEST_GET_BRANCH } from "src/Components/sharedQueries";
 import { LOG_USER_IN } from "../../sharedQueries.local";
 import {
-  tempUserIdSignUpMutation,
-  tempUserIdSignUpMutationVariables
+  userIdsignUpMutation,
+  userIdsignUpMutationVariables
 } from "../../types/api";
 import SignUpDetailPresenter from "./SignUpDetailPresenter";
 import {
   GET_CERTIFICATION,
-  TEMP_USER_ID_SIGN_UP_MUTATION
+  USER_ID_SIGN_UP_MUTATION
 } from "./SignUpDetailQueries";
 
 interface IState {
@@ -35,13 +35,14 @@ interface IState {
   imp_uid: string;
   impId: string;
   email: string;
+  certificated: boolean;
 }
 
 interface IProps extends RouteComponentProps<any> {}
 
 class UserIdSignUpMutation extends Mutation<
-  tempUserIdSignUpMutation,
-  tempUserIdSignUpMutationVariables
+  userIdsignUpMutation,
+  userIdsignUpMutationVariables
 > {}
 
 export default class SignUpDetailContainer extends React.Component<
@@ -70,6 +71,7 @@ export default class SignUpDetailContainer extends React.Component<
       birthDay: null,
       birthMonth: null,
       birthYear: null,
+      certificated: false,
       email: "",
       gender: null,
       impId: "",
@@ -90,20 +92,16 @@ export default class SignUpDetailContainer extends React.Component<
     if (this.state.jqueryLoad && this.state.importLoad) {
       if (!this.state.IMP) {
         const IMP = (window as any).IMP;
-        this.setState(
-          {
-            ...this.state,
-            IMP
-          },
-          () => {
-            this.state.IMP.init("imp61646988");
-          }
-        );
+        this.setState({
+          ...this.state,
+          IMP
+        });
       }
     }
   };
 
   public render() {
+    const { certificated } = this.state;
     return (
       <>
         <Script
@@ -124,19 +122,19 @@ export default class SignUpDetailContainer extends React.Component<
         <Mutation mutation={LOG_USER_IN}>
           {logUserIn => (
             <UserIdSignUpMutation
-              mutation={TEMP_USER_ID_SIGN_UP_MUTATION}
+              mutation={USER_ID_SIGN_UP_MUTATION}
               onCompleted={data => {
-                const { TempUserIdSignUp } = data;
-                if (TempUserIdSignUp.ok) {
+                const { UserIdSignUp } = data;
+                if (UserIdSignUp.ok) {
                   logUserIn({
                     variables: {
-                      token: TempUserIdSignUp.token
+                      token: UserIdSignUp.token
                     }
                   });
                   toast.success("가입이 완료되었습니다!");
                   return;
                 } else {
-                  toast.error(TempUserIdSignUp.error);
+                  toast.error(UserIdSignUp.error);
                 }
               }}
             >
@@ -180,6 +178,7 @@ export default class SignUpDetailContainer extends React.Component<
                           loading={loading}
                           userIdSignUp={this.onSubmit}
                           email={this.state.email}
+                          certificated={certificated}
                         />
                       );
                     }}
@@ -287,8 +286,10 @@ export default class SignUpDetailContainer extends React.Component<
     } else if (!baseBranchId) {
       toast.error("지점을 선택해주세요");
     } else if (!name || !gender || !birthYear || !birthMonth || !birthDay) {
-      toast.error("본인인증을 해주세요!");
+      toast.error("인증을 해주세요!");
     }
+
+    console.log(this.state);
 
     await this.userIdSignUpMutation({
       variables: {
@@ -296,7 +297,9 @@ export default class SignUpDetailContainer extends React.Component<
         birthDay,
         birthMonth,
         birthYear,
-        gender,
+        email,
+        gender:
+          gender === "male" ? "MALE" : gender === "female" ? "FEMALE" : "",
         imp_uid,
         name,
         password,
@@ -336,12 +339,12 @@ export default class SignUpDetailContainer extends React.Component<
 
     if (IMP) {
       // IMP.certification(param, callback) 호출
-      // const result = await IMP.init(impId); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
+      IMP.init(impId); // "imp00000000" 대신 발급받은 "가맹점 식별코드"를 사용합니다.
       // console.dir(result);
       // console.log(impId);
       IMP.certification(
         {
-          popup: true
+          // popup: true
           // param
           // merchant_uid: "ORD20180131-0000011" // 옵션 값
         },
@@ -351,39 +354,56 @@ export default class SignUpDetailContainer extends React.Component<
             // 인증 성공 시 로직,
 
             const data = await this.certificateUser(rsp.imp_uid, baseBranchId);
-            if (
-              data &&
-              data.unique_key &&
-              data.name &&
-              data.gender &&
-              data.birthYear &&
-              data.birthMonth &&
-              data.birthDay
-            ) {
-              this.setState({
-                ...this.state,
-                birthDay: data.birthDay,
-                birthMonth: data.birthMonth,
-                birthYear: data.birthYear,
-                gender: data.gender,
-                imp_uid: rsp.imp_uid,
-                name: data.name,
-                unique_key: data.unique_key
-              });
-            }
 
-            // const {
-            //   data: { secure_url }
-            // } = await axios.post(
-            //   "https://api.cloudinary.com/v1_1/drijcu8ak/image/upload/",
-            //   formData
-            // );
-          } else {
-            // 인증 실패 시 로직,
-            toast.error(
-              `인증에 실패했습니다. 에러 내용 :  ${rsp.error_msg &&
-                rsp.error_msg}`
-            );
+            if (data) {
+              if (data.error) {
+                toast.error(data.error);
+                return;
+              }
+              const {
+                GetCertification: {
+                  unique_key,
+                  name,
+                  gender,
+                  birthYear,
+                  birthMonth,
+                  birthDay
+                }
+              } = data;
+              if (
+                unique_key &&
+                name &&
+                gender &&
+                birthYear &&
+                birthMonth &&
+                birthDay
+              ) {
+                this.setState({
+                  ...this.state,
+                  birthDay,
+                  birthMonth,
+                  birthYear,
+                  certificated: true,
+                  gender,
+                  imp_uid: rsp.imp_uid,
+                  name,
+                  unique_key
+                });
+              }
+
+              // const {
+              //   data: { secure_url }
+              // } = await axios.post(
+              //   "https://api.cloudinary.com/v1_1/drijcu8ak/image/upload/",
+              //   formData
+              // );
+            } else {
+              // 인증 실패 시 로직,
+              toast.error(
+                `인증에 실패했습니다. 에러 내용 :  ${rsp.error_msg &&
+                  rsp.error_msg}`
+              );
+            }
           }
         }
       );

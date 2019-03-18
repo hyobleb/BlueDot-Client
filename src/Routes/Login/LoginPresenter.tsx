@@ -45,6 +45,13 @@ const FooterColumn = styled.div`
   margin-bottom: 10px;
 `;
 
+const OffLineSignUpFooterCol = styled.div`
+  position: absolute;
+  right: 10px;
+  bottom: 57px;
+  color: #dedede;
+`;
+
 const Title = styled.h1``;
 
 const FormContainer = styled.div`
@@ -122,7 +129,7 @@ const LoginPresenter: React.SFC<IProps> = ({
     </Body>
     <Bottom>
       <FooterColumn>
-        {/* <Link to={"/sign-up"}>아직 계정이 없으신가요?</Link> */}
+        <Link to={"/sign-up"}>아직 계정이 없으신가요?</Link>
       </FooterColumn>
       <FooterColumn>
         {/* <Link to={"/find-id"}>아이디 찾기</Link> |
@@ -131,9 +138,9 @@ const LoginPresenter: React.SFC<IProps> = ({
       {/* <FooterColumn>
         <Link to={"/social-phone"}>페이스북 로그인</Link>
       </FooterColumn> */}
-      <FooterColumn>
+      <OffLineSignUpFooterCol>
         <Link to={"/req-sign-up"}>오프라인 가입 신청</Link>
-      </FooterColumn>
+      </OffLineSignUpFooterCol>
     </Bottom>
     <Footer />
   </Container>

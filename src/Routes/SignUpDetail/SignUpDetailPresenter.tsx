@@ -26,6 +26,7 @@ interface IProps {
   userIdSignUp: any;
   loading: boolean;
   email: string;
+  certificated: boolean;
 }
 
 const Container = styled.div`
@@ -73,6 +74,14 @@ const IdentificationButton = styled(SmallButton)`
     background-color: ${props => props.theme.greyColor};
   }
 `;
+
+const IdentificationCompleteBtn = styled(SmallButton)`
+  border-radius: 0px;
+  background-color: ${props => props.theme.greyColor};
+  max-width: 200px;
+  width: 200px;
+`;
+
 const IdentificationButtonCon = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -115,7 +124,8 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
   onVerifyingButtonClick,
   loading,
   userIdSignUp,
-  email
+  email,
+  certificated
 }) => (
   <Container>
     <Helmet>
@@ -186,12 +196,18 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
             type={"text"}
             maxlength={11}
           />
-          <IdentificationButtonCon>
-            <IdentificationButton
-              value={"본인인증"}
-              onClick={() => onVerifyingButtonClick()}
-            />
-          </IdentificationButtonCon>
+          {certificated ? (
+            <IdentificationButtonCon>
+              <IdentificationCompleteBtn value={"본인인증이 완료되었습니다"} />
+            </IdentificationButtonCon>
+          ) : (
+            <IdentificationButtonCon>
+              <IdentificationButton
+                value={"본인인증"}
+                onClick={() => onVerifyingButtonClick()}
+              />
+            </IdentificationButtonCon>
+          )}
 
           {loading ? (
             <Loading />
@@ -202,12 +218,6 @@ const SignUpDetailPresenter: React.SFC<IProps> = ({
               onClick={userIdSignUp}
             />
           )}
-
-          {/* {loading ? (
-            <Button value={"로그인 중입니다"} />
-          ) : (
-            <Button value={"로그인"} onClick={onSubmit} />
-          )} */}
         </Form>
       </FormContainer>
     </Body>
