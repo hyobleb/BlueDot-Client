@@ -110,7 +110,7 @@ class ReqSignUpContainer extends React.Component<IProps, IState> {
                 }
               }}
             >
-              {reqSignUpMutationFn => {
+              {(reqSignUpMutationFn, { loading: reqSignUpLoading }) => {
                 this.reqSignUp = reqSignUpMutationFn;
                 return (
                   <ReqSignUpPresenter
@@ -133,6 +133,7 @@ class ReqSignUpContainer extends React.Component<IProps, IState> {
                     onDatetimeChange={this.onDatetimeChange}
                     onOptionChange={this.onOptionChange}
                     selGenderFirst={selGenderFirst}
+                    reqSignUpLoading={reqSignUpLoading}
                   />
                 );
               }}

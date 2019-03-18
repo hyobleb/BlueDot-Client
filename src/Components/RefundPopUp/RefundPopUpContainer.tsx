@@ -62,7 +62,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
           // { query: GET_PAYMENTS_BY_IMPUID, variables: { impUid } }
         ]}
       >
-        {managerRefundMutation => {
+        {(managerRefundMutation, { loading: managerRefundLoading }) => {
           this.refundFn = managerRefundMutation;
           return (
             <RefundPopUpPresenter
@@ -76,6 +76,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
               onOptionChange={this.onOptionChange}
               onBankClick={this.onBankClick}
               paymentMethod={paymentMethod}
+              managerRefundLoading={managerRefundLoading}
             />
           );
         }}

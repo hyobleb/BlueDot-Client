@@ -727,7 +727,7 @@ class HomeContainer extends React.Component<IProps, IState> {
         !user.isFranchiser &&
         !user.isSupervisor)
     ) {
-      toast.error("현재 멤버쉽이 없습니다!");
+      toast.error("현재 멤버쉽이 없습니다!!");
     } else if (branchIdByIp !== nowBranchId) {
       toast.error("좌석 배정은 해당 지점내의 인터넷(와이파이)를 이용해주세요");
     } else {

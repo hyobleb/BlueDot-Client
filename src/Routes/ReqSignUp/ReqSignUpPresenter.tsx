@@ -11,6 +11,7 @@ import { genderTypeOptions } from "src/Components/shareOptions";
 import styled from "src/typed-components";
 import BranchSearchPopUp from "../../Components/BranchSearchPopUp";
 import DatetimePicker from "../../Components/DatetimePicker";
+import Loading from "../../Components/Loading";
 
 const BackContainer = styled.div``;
 const Container = styled.div`
@@ -125,6 +126,7 @@ interface IProps {
   onDatetimeChange: (datetimeValue: Date) => void;
   onOptionChange: (arg: any) => void;
   selGenderFirst: boolean;
+  reqSignUpLoading: boolean;
 }
 
 const ReqSignUpPresenter: React.SFC<IProps> = ({
@@ -146,7 +148,8 @@ const ReqSignUpPresenter: React.SFC<IProps> = ({
   onBranchClick,
   onDatetimeChange,
   onOptionChange,
-  selGenderFirst
+  selGenderFirst,
+  reqSignUpLoading
 }) => (
   <BackContainer>
     <Helmet>
@@ -161,105 +164,109 @@ const ReqSignUpPresenter: React.SFC<IProps> = ({
         </LogoContainer>
         <SubTitleCol>가성비 최고의 학습 공간을 경험해보세요!</SubTitleCol>
       </HeadSection>
-      <FormSection>
-        <ExtendedForm submitFn={onSubmit}>
-          <DatetimeSection>
-            <DatetimeTitle>생년월일을 선택해주세요</DatetimeTitle>
-            <DatetimePickerCon>
-              <ExtendedDatetimePicker
-                flatPickrDate={moment()
-                  .set("year", birthYear)
-                  .set("month", birthMonth)
-                  .set("date", birthDay)
-                  .toDate()}
-                onFlatPickrChange={onDatetimeChange}
-                enableTime={false}
-                dateFormat={"Y년 m월 d일"}
+      {reqSignUpLoading ? (
+        <Loading />
+      ) : (
+        <FormSection>
+          <ExtendedForm submitFn={onSubmit}>
+            <DatetimeSection>
+              <DatetimeTitle>생년월일을 선택해주세요</DatetimeTitle>
+              <DatetimePickerCon>
+                <ExtendedDatetimePicker
+                  flatPickrDate={moment()
+                    .set("year", birthYear)
+                    .set("month", birthMonth)
+                    .set("date", birthDay)
+                    .toDate()}
+                  onFlatPickrChange={onDatetimeChange}
+                  enableTime={false}
+                  dateFormat={"Y년 m월 d일"}
+                />
+              </DatetimePickerCon>
+            </DatetimeSection>
+            <DropdonwContainer>
+              <Dropdown
+                options={genderTypeOptions}
+                onChange={onOptionChange}
+                value={selGenderFirst ? "" : gender}
+                placeholder={"성별을 선택해주세요"}
+                controlClassName={"control"}
               />
-            </DatetimePickerCon>
-          </DatetimeSection>
-          <DropdonwContainer>
-            <Dropdown
-              options={genderTypeOptions}
-              onChange={onOptionChange}
-              value={selGenderFirst ? "" : gender}
-              placeholder={"성별을 선택해주세요"}
-              controlClassName={"control"}
+            </DropdonwContainer>
+            <ExtendInput
+              placeholder={"아이디"}
+              value={inputUserId}
+              name={"inputUserId"}
+              onChange={onInputChange}
+              type={"text"}
+              maxlength={11}
+              autoFocus={true}
+              autoComplete={"username"}
             />
-          </DropdonwContainer>
-          <ExtendInput
-            placeholder={"아이디"}
-            value={inputUserId}
-            name={"inputUserId"}
-            onChange={onInputChange}
-            type={"text"}
-            maxlength={11}
-            autoFocus={true}
-            autoComplete={"username"}
-          />
-          <ExtendInput
-            placeholder={"비밀번호"}
-            value={password}
-            name={"password"}
-            onChange={onInputChange}
-            type={"password"}
-            maxlength={20}
-            autoComplete={"current-password"}
-          />
-          <ExtendInput
-            placeholder={"비밀번호 확인"}
-            value={rePassword}
-            name={"rePassword"}
-            onChange={onInputChange}
-            type={"password"}
-            maxlength={20}
-            autoComplete={"current-password"}
-          />
-          <ExtendInput
-            placeholder={"이름"}
-            value={name}
-            name={"name"}
-            onChange={onInputChange}
-            type={"text"}
-            maxlength={11}
-          />
-          <ExtendInput
-            placeholder={"이메일"}
-            value={email}
-            name={"email"}
-            onChange={onInputChange}
-            type={"email"}
-            maxlength={30}
-            autoFocus={false}
-          />
-          <ExtendInput
-            placeholder={"연락가능한 전화번호('-'없이 입력해주세요)"}
-            value={phoneNumber}
-            name={"phoneNumber"}
-            onChange={onInputChange}
-            type={"tel"}
-            maxlength={11}
-          />
-          <SelBranchButton
-            value={"지점선택"}
-            onClick={toggleShowBranchSearch}
-            type={"button"}
-          />
-          {baseBranchName ? (
-            <SelBranchDisplay>
-              {baseBranchName}을 선택하셨습니다
-            </SelBranchDisplay>
-          ) : (
-            ""
-          )}
-        </ExtendedForm>
+            <ExtendInput
+              placeholder={"비밀번호"}
+              value={password}
+              name={"password"}
+              onChange={onInputChange}
+              type={"password"}
+              maxlength={20}
+              autoComplete={"current-password"}
+            />
+            <ExtendInput
+              placeholder={"비밀번호 확인"}
+              value={rePassword}
+              name={"rePassword"}
+              onChange={onInputChange}
+              type={"password"}
+              maxlength={20}
+              autoComplete={"current-password"}
+            />
+            <ExtendInput
+              placeholder={"이름"}
+              value={name}
+              name={"name"}
+              onChange={onInputChange}
+              type={"text"}
+              maxlength={11}
+            />
+            <ExtendInput
+              placeholder={"이메일"}
+              value={email}
+              name={"email"}
+              onChange={onInputChange}
+              type={"email"}
+              maxlength={30}
+              autoFocus={false}
+            />
+            <ExtendInput
+              placeholder={"연락가능한 전화번호('-'없이 입력해주세요)"}
+              value={phoneNumber}
+              name={"phoneNumber"}
+              onChange={onInputChange}
+              type={"tel"}
+              maxlength={11}
+            />
+            <SelBranchButton
+              value={"지점선택"}
+              onClick={toggleShowBranchSearch}
+              type={"button"}
+            />
+            {baseBranchName ? (
+              <SelBranchDisplay>
+                {baseBranchName}을 선택하셨습니다
+              </SelBranchDisplay>
+            ) : (
+              ""
+            )}
+          </ExtendedForm>
 
-        <ConfirmButton
-          value={"가입 신청하기"}
-          type={"submit"}
-          onClick={onSubmit}
-        />
-      </FormSection>
+          <ConfirmButton
+            value={"가입 신청하기"}
+            type={"submit"}
+            onClick={onSubmit}
+          />
+        </FormSection>
+      )}
     </Container>
     {showBranchSearch ? (
       <BranchSearchPopUp

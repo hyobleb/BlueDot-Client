@@ -94,7 +94,6 @@ class BasketV2Container extends React.Component<IProps, IState> {
       payProcessing
     } = this.state;
 
-
     return (
       <>
         <Script
@@ -114,7 +113,10 @@ class BasketV2Container extends React.Component<IProps, IState> {
 
         <CompletePaymentMutation
           mutation={COMPLETE_PAYMENT}
-          refetchQueries={[{ query: GET_MY_MEMBERSHIPS }]}
+          refetchQueries={[
+            { query: GET_MY_MEMBERSHIPS },
+            { query: GET_USABLE_MY_MEMBERSHIPS }
+          ]}
           onError={err =>
             toast.error(
               `멤버쉽 등록이 정상적으로 이루어지지 않았습니다. 관리자에게 문의해주세요! ${err}`
