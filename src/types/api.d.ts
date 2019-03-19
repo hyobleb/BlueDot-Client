@@ -1367,6 +1367,29 @@ export interface userGetBranchProductsVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getMyUsingSeatId
+// ====================================================
+
+export interface getMyUsingSeatId_GetMyUsingSeatId_seat {
+  __typename: "Seat";
+  id: number;
+}
+
+export interface getMyUsingSeatId_GetMyUsingSeatId {
+  __typename: "GetMyUsingSeatIdResponse";
+  ok: boolean;
+  error: string | null;
+  seat: getMyUsingSeatId_GetMyUsingSeatId_seat | null;
+}
+
+export interface getMyUsingSeatId {
+  GetMyUsingSeatId: getMyUsingSeatId_GetMyUsingSeatId;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 

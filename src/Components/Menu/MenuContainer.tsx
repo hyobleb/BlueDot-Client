@@ -2,7 +2,11 @@ import React from "react";
 import { Mutation, Query } from "react-apollo";
 import { toast } from "react-toastify";
 import { LOG_USER_OUT } from "../../sharedQueries.local";
-import { checkVbankPayment, userProfile } from "../../types/api";
+import {
+  checkVbankPayment,
+  userProfile,
+  userProfile_GetMyProfile_user
+} from "../../types/api";
 import { USER_PROFILE } from "../sharedQueries";
 import MenuPresenter from "./MenuPresenter";
 import { CHECK_VBANK_PAYMENT } from "./MenuQueries";
@@ -11,12 +15,21 @@ interface IProps {
   toggleMenu: () => void;
 }
 
+interface IState {
+  user?: userProfile_GetMyProfile_user | null;
+}
+
 class ProfileQuery extends Query<userProfile> {}
 class CheckVBankQuery extends Query<checkVbankPayment> {}
 
-class MenuContainer extends React.Component<IProps> {
+class MenuContainer extends React.Component<IProps, IState> {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
   public render() {
     const { toggleMenu } = this.props;
+    const { user } = this.state;
     return (
       <CheckVBankQuery
         query={CHECK_VBANK_PAYMENT}
@@ -30,15 +43,16 @@ class MenuContainer extends React.Component<IProps> {
                 <ProfileQuery
                   query={USER_PROFILE}
                   fetchPolicy={"cache-and-network"}
+                  onCompleted={this.updateFields}
                 >
-                  {({ data, loading }) => (
+                  {({ loading: profileLoading }) => (
                     <MenuPresenter
-                      data={data}
-                      loading={loading}
+                      profileLoading={profileLoading}
                       logUserOutMutation={logUserOutMutation}
                       getVbankDataLoading={getVbankDataLoading}
                       checkVbankData={checkVbankData}
                       toggleMenu={toggleMenu}
+                      user={user}
                     />
                   )}
                 </ProfileQuery>
@@ -50,13 +64,22 @@ class MenuContainer extends React.Component<IProps> {
     );
   }
 
-  public updateFields = (data: {} | checkVbankPayment) => {
+  public updateFields = (data: {} | checkVbankPayment | userProfile) => {
     if ("CheckVbankPayment" in data) {
       const {
         CheckVbankPayment: { haveVbank }
       } = data;
       if (haveVbank) {
         toast.info("메뉴의 무통장 결제를 진행해주세요!");
+      }
+    } else if ("GetMyProfile" in data) {
+      const {
+        GetMyProfile: { user }
+      } = data;
+      if (user) {
+        this.setState({
+          user
+        });
       }
     }
   };

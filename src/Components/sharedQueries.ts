@@ -701,3 +701,15 @@ export const USER_GET_BRANCH_PRODUCTS = gql`
     }
   }
 `;
+
+export const GET_MY_USING_SEAT_ID = gql`
+  query getMyUsingSeatId {
+    GetMyUsingSeatId {
+      ok
+      error
+      seat {
+        id
+      }
+    }
+  }
+`;

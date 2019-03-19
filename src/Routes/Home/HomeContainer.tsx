@@ -16,6 +16,7 @@ import {
   getBranchByIp_UserGetBranchByIP_branch_rooms,
   getBranchByIpVariables,
   getMyUsingSeat,
+  getMyUsingSeatId,
   getSeatsV2,
   getSeatsV2_GetSeatsV2_seats,
   getSeatsV2Variables,
@@ -69,6 +70,7 @@ interface IState {
 }
 interface IProps extends RouteComponentProps<any> {
   google: any;
+  appUpdateFields: (data: {} | getMyUsingSeatId | getMyUsingSeat) => void;
 }
 
 interface IMessageProps {
@@ -157,7 +159,7 @@ class NewMessageNotification extends React.Component<IMessageProps> {
 class GetSeats extends Query<getSeatsV2, getSeatsV2Variables> {}
 class GetBranchById extends Query<userGetBranch> {}
 class GetMyUsableMemberships extends Query<getUsableMyMemberships> {}
-class GetMyUsingSeatMutation extends Query<getMyUsingSeat> {}
+class GetMyUsingSeatQuery extends Query<getMyUsingSeat> {}
 class ReturnSeatMutation extends Mutation<userReturnSeat> {}
 class AssignSeatMutation extends Mutation<
   userAssignSeat,
@@ -207,6 +209,7 @@ class HomeContainer extends React.Component<IProps, IState> {
   }
 
   public render() {
+    const { appUpdateFields } = this.props;
     const {
       isMenuOpen,
       nowIp,
@@ -252,12 +255,14 @@ class HomeContainer extends React.Component<IProps, IState> {
                 fetchPolicy={"cache-and-network"}
               >
                 {() => (
-                  <GetMyUsingSeatMutation
+                  <GetMyUsingSeatQuery
                     query={GET_MY_USING_SEAT}
                     onCompleted={data => {
                       if ("GetMyUsingSeat" in data) {
                         const { GetMyUsingSeat } = data;
                         if (GetMyUsingSeat.ok) {
+                          appUpdateFields(data);
+
                           if (GetMyUsingSeat.seat) {
                             this.setState({
                               myUsingSeatId: GetMyUsingSeat.seat.id
@@ -402,7 +407,7 @@ class HomeContainer extends React.Component<IProps, IState> {
                         </ReturnSeatMutation>
                       );
                     }}
-                  </GetMyUsingSeatMutation>
+                  </GetMyUsingSeatQuery>
                 )}
               </GetMyUsableMemberships>
             )}

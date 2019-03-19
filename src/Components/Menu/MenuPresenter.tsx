@@ -2,7 +2,11 @@ import React from "react";
 import { MutationFn } from "react-apollo";
 import { Link } from "react-router-dom";
 import styled from "../../typed-components";
-import { checkVbankPayment, userProfile } from "../../types/api";
+import {
+  checkVbankPayment,
+  userProfile,
+  userProfile_GetMyProfile_user
+} from "../../types/api";
 const Container = styled.div`
   height: 100%;
 `;
@@ -91,23 +95,24 @@ const ToggleAuthor = styled<IToggleProps, any>("button")`
 
 interface IProps {
   data?: userProfile;
-  loading: boolean;
+  profileLoading: boolean;
   logUserOutMutation: MutationFn;
   getVbankDataLoading: boolean;
   checkVbankData?: checkVbankPayment;
   toggleMenu: () => void;
+  user?: userProfile_GetMyProfile_user | null;
 }
 
 const MenuPresenter: React.SFC<IProps> = ({
-  data: { GetMyProfile: { user = null } = {} } = {},
-  loading,
+  user,
+  profileLoading,
   logUserOutMutation,
   checkVbankData,
   toggleMenu
 }) => {
   return (
     <Container>
-      {!loading && user && user.name && (
+      {!profileLoading && user && user.name && (
         <React.Fragment>
           <Header>
             <Grid>

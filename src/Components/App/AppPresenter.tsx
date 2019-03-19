@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Link, Redirect, Route, Switch } from "react-router-dom";
 import Sidebar from "react-sidebar";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
@@ -54,7 +54,13 @@ import VbankList from "../../Routes/VbankList";
 import ViewPayInfo from "../../Routes/ViewPayInfo";
 import ViewReqSignUp from "../../Routes/ViewReqSignUp";
 import styled from "../../typed-components";
+import {
+  getMyUsingSeat,
+  getMyUsingSeat_GetMyUsingSeat_seat,
+  getMyUsingSeatId
+} from "../../types/api";
 import Menu from "../Menu";
+import SmallLoading from "../SmallLoading";
 
 const MenuButton = styled.button`
   appearance: none;
@@ -72,6 +78,62 @@ const MenuButton = styled.button`
   background-color: transparent;
 `;
 
+const SideTagContainer = styled.div`
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const SideTagItem = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background-color: #dedede;
+  }
+  margin-top: 5px;
+`;
+
+const LogoutTag = styled(SideTagItem)`
+  background-color: ${props => props.theme.orangeColor};
+`;
+
+const ReturnSeatTag = styled(SideTagItem)`
+  background-color: ${props => props.theme.pinkColor};
+`;
+
+const EnrollTag = styled(Link)`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background-color: #dedede;
+  }
+  margin-top: 5px;
+  background-color: ${props => props.theme.lightBlueColor};
+  color: white;
+`;
+
+const SideItemText = styled.div``;
+
 interface IProps {
   isLoggedIn: boolean;
   isHead: boolean;
@@ -83,6 +145,11 @@ interface IProps {
   toggleMenu: () => void;
   setTimeLogout: () => void;
   stopLogoutFn: () => void;
+  onLogoutBtnClick: () => Promise<void>;
+  userUsingSeat?: getMyUsingSeat_GetMyUsingSeat_seat | null;
+  appUpdateFields: (data: {} | getMyUsingSeatId | getMyUsingSeat) => void;
+  onReturnSeatClick: () => Promise<void>;
+  returnSeatLoading: boolean;
 }
 
 interface ILoginRouteProps {
@@ -95,6 +162,11 @@ interface ILoginRouteProps {
   toggleMenu: () => void;
   setTimeLogout: () => void;
   stopLogoutFn: () => void;
+  onLogoutBtnClick: () => Promise<void>;
+  userUsingSeat?: getMyUsingSeat_GetMyUsingSeat_seat | null;
+  appUpdateFields: (data: {} | getMyUsingSeatId | getMyUsingSeat) => void;
+  onReturnSeatClick: () => Promise<void>;
+  returnSeatLoading: boolean;
 }
 
 const AppPresenter: React.SFC<IProps> = ({
@@ -107,7 +179,12 @@ const AppPresenter: React.SFC<IProps> = ({
   isMenuOpen,
   toggleMenu,
   setTimeLogout,
-  stopLogoutFn
+  stopLogoutFn,
+  onLogoutBtnClick,
+  userUsingSeat,
+  appUpdateFields,
+  onReturnSeatClick,
+  returnSeatLoading
 }) => {
   return (
     <BrowserRouter>
@@ -122,6 +199,11 @@ const AppPresenter: React.SFC<IProps> = ({
           toggleMenu={toggleMenu}
           setTimeLogout={setTimeLogout}
           stopLogoutFn={stopLogoutFn}
+          onLogoutBtnClick={onLogoutBtnClick}
+          userUsingSeat={userUsingSeat}
+          appUpdateFields={appUpdateFields}
+          onReturnSeatClick={onReturnSeatClick}
+          returnSeatLoading={returnSeatLoading}
         />
       ) : (
         <LoggedOutRoute />
@@ -160,7 +242,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
   isMenuOpen,
   toggleMenu,
   setTimeLogout,
-  stopLogoutFn
+  stopLogoutFn,
+  onLogoutBtnClick,
+  userUsingSeat,
+  appUpdateFields,
+  onReturnSeatClick,
+  returnSeatLoading
 }) => {
   return (
     <>
@@ -178,8 +265,40 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
         }}
       >
         {<MenuButton onClick={toggleMenu}>|||</MenuButton>}
+        {
+          <SideTagContainer>
+            {/* <SmallLoading width={50} height={50} /> */}
+
+            {userUsingSeat ? (
+              returnSeatLoading ? (
+                <SmallLoading width={40} height={40} padding={5} />
+              ) : (
+                <ReturnSeatTag>
+                  <SideItemText onClick={onReturnSeatClick}>
+                    반납하기
+                  </SideItemText>
+                </ReturnSeatTag>
+              )
+            ) : (
+              ""
+            )}
+            <EnrollTag to={"/basket2"}>
+              <SideItemText>등록하기</SideItemText>
+            </EnrollTag>
+
+            <LogoutTag onClick={onLogoutBtnClick}>
+              <SideItemText>로그아웃</SideItemText>
+            </LogoutTag>
+          </SideTagContainer>
+        }
         <Switch>
-          <Route path={"/"} exact={true} component={Home} />
+          <Route
+            path={"/"}
+            exact={true}
+            render={props => (
+              <Home {...props} appUpdateFields={appUpdateFields} />
+            )}
+          />
           <Route path={"/membership"} exact={true} component={Membership} />
           <Route
             path={"/request-membership"}
