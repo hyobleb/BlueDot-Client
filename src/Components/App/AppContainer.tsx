@@ -88,6 +88,7 @@ class AppContainer extends React.Component<IProps, IState> {
                   query={GET_MY_USING_SEAT_ID}
                   onCompleted={this.updateFields}
                   fetchPolicy={"cache-and-network"}
+                  skip={!data.auth.isLoggedIn}
                 >
                   {() => (
                     <Mutation mutation={LOG_USER_OUT}>
