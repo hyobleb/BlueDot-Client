@@ -242,12 +242,20 @@ const BasketV2Presenter: React.SFC<IProps> = ({
 
         <BottomSection>
           {requestMemberships && requestMemberships.length > 0 && (
-            <PayButton
-              value={"카드 결제"}
-              onClick={async () => {
-                await onPaymentClick(CreatePaymentMethodOption.CARD);
-              }}
-            />
+            <>
+              <PayButton
+                value={"카드 결제"}
+                onClick={async () => {
+                  await onPaymentClick(CreatePaymentMethodOption.CARD);
+                }}
+              />
+              <PayButton
+                value={"실시간 계좌이체"}
+                onClick={async () => {
+                  await onPaymentClick(CreatePaymentMethodOption.TRANS);
+                }}
+              />
+            </>
           )}
         </BottomSection>
       </Container>
