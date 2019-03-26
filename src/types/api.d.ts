@@ -1390,6 +1390,29 @@ export interface getMyUsingSeatId {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: getUserId
+// ====================================================
+
+export interface getUserId_GetUserId {
+  __typename: "GetUserIdResponse";
+  ok: boolean;
+  error: string | null;
+  userId: string | null;
+}
+
+export interface getUserId {
+  GetUserId: getUserId_GetUserId;
+}
+
+export interface getUserIdVariables {
+  name: string;
+  phoneNumber: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addBranch
 // ====================================================
 

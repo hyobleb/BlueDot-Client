@@ -79,13 +79,15 @@ interface IProps {
   message: string;
   onCancelClick: () => void;
   onOkClick: () => void;
+  useCancelBtn?: boolean;
 }
 
 const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   closeFunc,
   message,
   onCancelClick,
-  onOkClick
+  onOkClick,
+  useCancelBtn = true
 }) => {
   return (
     <BackContainer>
@@ -95,7 +97,11 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
           <MessageContainer>{message}</MessageContainer>
           <ButtonContainer>
             <ConfirmButton value={"확인"} onClick={onOkClick} />
-            <CancelButton value={"취소"} onClick={onCancelClick} />
+            {useCancelBtn ? (
+              <CancelButton value={"취소"} onClick={onCancelClick} />
+            ) : (
+              ""
+            )}
           </ButtonContainer>
         </BodyContainer>
         <CloseButton onClick={closeFunc}>

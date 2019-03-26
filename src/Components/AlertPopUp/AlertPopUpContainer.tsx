@@ -6,6 +6,7 @@ interface IProps {
   message: string;
   onOkClick: () => void;
   onCancelClick?: () => void;
+  useCancelBtn?: boolean;
 }
 
 interface IState {
@@ -13,6 +14,7 @@ interface IState {
   message: string;
   onOkClick: () => void;
   onCancelClick: () => void;
+  useCancelBtn?: boolean;
 }
 
 class AlertPopUpContainer extends React.Component<IProps, IState> {
@@ -25,18 +27,26 @@ class AlertPopUpContainer extends React.Component<IProps, IState> {
       onCancelClick: props.onCancelClick
         ? props.onCancelClick
         : props.closeFunc,
-      onOkClick: props.onOkClick
+      onOkClick: props.onOkClick,
+      useCancelBtn: props.useCancelBtn
     };
   }
 
   public render() {
-    const { closeFunc, message, onCancelClick, onOkClick } = this.state;
+    const {
+      closeFunc,
+      message,
+      onCancelClick,
+      onOkClick,
+      useCancelBtn
+    } = this.state;
     return (
       <AlertPopUpPresenter
         message={message}
         closeFunc={closeFunc}
         onCancelClick={onCancelClick}
         onOkClick={onOkClick}
+        useCancelBtn={useCancelBtn}
       />
     );
   }

@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Link, Redirect, Route, Switch } from "react-router-dom";
 import Sidebar from "react-sidebar";
+import FindAccount from "../../Routes/Account/FindAccount";
+import FindUserId from "../../Routes/Account/FindUserId";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
 import Basket from "../../Routes/Basket";
@@ -228,6 +230,8 @@ const LoggedOutRoute: React.SFC = () => (
     <Route path={"/private-info-rule"} component={PrivateInfo} />
     <Route path={"/service-rule"} component={ServiceRule} />
     <Route path={"/refund-rule"} component={RefundInfo} />
+    <Route path={"/find-account"} component={FindAccount} />
+    <Route path={"/find-userid"} component={FindUserId} />
 
     <Redirect from={"*"} to={"/"} />
   </Switch>

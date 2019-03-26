@@ -132,8 +132,8 @@ const LoginPresenter: React.SFC<IProps> = ({
         <Link to={"/sign-up"}>아직 계정이 없으신가요?</Link>
       </FooterColumn>
       <FooterColumn>
-        {/* <Link to={"/find-id"}>아이디 찾기</Link> |
-        <Link to={"/find-password"}>비밀번호 찾기</Link> */}
+        <Link to={"/find-account"}>아이디 | 비밀번호 찾기</Link>
+        {/* <Link to={"/find-password"}>비밀번호 찾기</Link> */}
       </FooterColumn>
       {/* <FooterColumn>
         <Link to={"/social-phone"}>페이스북 로그인</Link>
