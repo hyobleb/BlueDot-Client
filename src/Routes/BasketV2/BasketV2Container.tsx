@@ -357,6 +357,7 @@ class BasketV2Container extends React.Component<IProps, IState> {
           merchant_uid,
           user: { name, phoneNumber: buyerTel, email }
         } = payment;
+
         await IMP.request_pay(
           {
             // param
@@ -367,7 +368,7 @@ class BasketV2Container extends React.Component<IProps, IState> {
             m_redirect_url: `${SERVER_HOME_HOST}/payments/complete/mobile`,
             merchant_uid,
             name: "블루닷라운지 멤버쉽 결제",
-            pay_method: payMethod,
+            pay_method: payMethod.toLowerCase(),
             pg: "html5_inicis",
             vbank_due:
               payMethod === "vbank"
