@@ -6,6 +6,7 @@ import FindPassword from "../../Routes/Account/FindPassword";
 import FindUserId from "../../Routes/Account/FindUserId";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
+import EnrollManage from "../../Routes/Admin/EnrollManage";
 import Basket from "../../Routes/Basket";
 import BasketV2 from "../../Routes/BasketV2";
 import BranchSetting from "../../Routes/BranchSetting";
@@ -48,7 +49,6 @@ import SettingStaff from "../../Routes/SettingStaff";
 import SignUp from "../../Routes/SignUp";
 import SignUpDetail from "../../Routes/SignUpDetail";
 import SocialLogin from "../../Routes/SocialLogin";
-import Test from "../../Routes/Test";
 import UpdateCabinetSet from "../../Routes/UpdateCabinetSet";
 import UpdateLounge from "../../Routes/UpdateLounge";
 import UserDetail from "../../Routes/UserDetail";
@@ -65,19 +65,20 @@ import Menu from "../Menu";
 import SmallLoading from "../SmallLoading";
 
 const MenuButton = styled.button`
-  appearance: none;
-  padding: 10px;
   position: absolute;
   top: 10px;
-  right: 10px;
-  text-align: center;
-  font-weight: 800;
-  border: 0;
-  cursor: pointer;
-  font-size: 20px;
-  transform: rotate(90deg);
+  right: 20px;
+  width: 30px;
+  height: 50px;
   z-index: 2;
-  background-color: transparent;
+  border: none;
+  background-image: url("/img/default/menubar.png");
+  background-repeat: no-repeat;
+  background-size: 90% auto;
+  background-position: center;
+  text-indent: -9999px;
+  background-color: inherit;
+  cursor: pointer;
 `;
 
 const SideTagContainer = styled.div`
@@ -267,7 +268,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           }
         }}
       >
-        {<MenuButton onClick={toggleMenu}>|||</MenuButton>}
+        {<MenuButton onClick={toggleMenu} />}
         {
           <SideTagContainer>
             {/* <SmallLoading width={50} height={50} /> */}
@@ -556,7 +557,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
               exact={true}
               component={SettingSeatsV2}
             />,
-            <Route key={24} path={"/test"} exact={true} component={Test} />
+            <Route
+              key={25}
+              path={"/enroll-manage"}
+              exact={true}
+              component={EnrollManage}
+            />
           ]}
           <Redirect from={"*"} to={"/"} />
           {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}
