@@ -49,15 +49,6 @@ export const SEARCH_BRANCH = gql`
   }
 `;
 
-export const CERTIFICATE_USER = gql`
-  query certificateUser($imp_uid: String!, $branchId: Int!) {
-    CertificateUser(imp_uid: $imp_uid, branchId: $branchId) {
-      ok
-      error
-    }
-  }
-`;
-
 export const MANAGER_GET_BRANCH = gql`
   query managerGetBranch($branchId: Int!) {
     ManagerGetBranch(branchId: $branchId) {

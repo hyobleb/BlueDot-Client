@@ -14,13 +14,20 @@ const Btn = styled(Button)``;
 
 interface IProps {
   onFindUserIdBtnClick: () => void;
+  onFindUserPasswordBtnClick: () => void;
 }
 
-const FindAccountPresenter: React.SFC<IProps> = ({ onFindUserIdBtnClick }) => (
-  <Back title={"Template | BlueDot"} backUrl={"/"}>
+const FindAccountPresenter: React.SFC<IProps> = ({
+  onFindUserIdBtnClick,
+  onFindUserPasswordBtnClick
+}) => (
+  <Back title={"FindAccount | BlueDot"} backUrl={"/"}>
     <BtnContainer>
       <Btn value={"아이디를 잊으셨나요?"} onClick={onFindUserIdBtnClick} />
-      <Btn value={"비밀번호 찾기는 준비중입니다 😅"} />
+      <Btn
+        value={"비밀번호를 잊으셨나요?"}
+        onClick={onFindUserPasswordBtnClick}
+      />
     </BtnContainer>
   </Back>
 );

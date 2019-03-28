@@ -289,8 +289,6 @@ export default class SignUpDetailContainer extends React.Component<
       toast.error("인증을 해주세요!");
     }
 
-    console.log(this.state);
-
     await this.userIdSignUpMutation({
       variables: {
         baseBranchId,

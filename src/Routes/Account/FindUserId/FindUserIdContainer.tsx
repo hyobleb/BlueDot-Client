@@ -48,7 +48,7 @@ class FindUserIdContainer extends React.Component<
         }}
         fetchPolicy={"cache-and-network"}
       >
-        {() => (
+        {({ loading: findUserIdLoading }) => (
           <FindUserIdPresenter
             backUrl={backUrl}
             onInputChange={this.onInputChange}
@@ -57,6 +57,8 @@ class FindUserIdContainer extends React.Component<
             onConfirmClick={this.onConfirmClick}
             userId={userId}
             onOkClick={this.onOkClick}
+            findUserIdLoading={findUserIdLoading}
+            doGetUserId={doGetUserId}
           />
         )}
       </GetUserIdQuery>

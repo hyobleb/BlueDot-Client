@@ -233,7 +233,6 @@ const UserDetailPresenter: React.SFC<IProps> = ({
   onPayViewBtnClick,
   expireMembershipLoading
 }) => {
-
   let memberships;
   let filteredMembershipLogs;
   let cabinetMemberships;
@@ -311,9 +310,9 @@ const UserDetailPresenter: React.SFC<IProps> = ({
                 <ProfileItemValue>
                   :{" "}
                   {moment()
-                    .set("year", user.birthYear)
-                    .set("month", user.birthMonth - 1)
-                    .set("date", user.birthDay)
+                    .set("year", parseInt(user.birthYear, 10))
+                    .set("month", parseInt(user.birthMonth, 10) - 1)
+                    .set("date", parseInt(user.birthDay, 10))
                     .format("YYYY-MM-DD")}
                 </ProfileItemValue>
               </ProfileContentRow>

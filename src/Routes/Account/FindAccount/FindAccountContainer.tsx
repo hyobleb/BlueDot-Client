@@ -5,7 +5,10 @@ import FindAccountPresenter from "./FindAccountPresenter";
 class FindAccountContainer extends React.Component<RouteComponentProps<any>> {
   public render() {
     return (
-      <FindAccountPresenter onFindUserIdBtnClick={this.onFindUserIdBtnClick} />
+      <FindAccountPresenter
+        onFindUserIdBtnClick={this.onFindUserIdBtnClick}
+        onFindUserPasswordBtnClick={this.onFindUserPasswordBtnClick}
+      />
     );
   }
 
@@ -21,8 +24,16 @@ class FindAccountContainer extends React.Component<RouteComponentProps<any>> {
     });
   };
 
-  // public onFindUserPasswordBtnClick = () => {
-
-  // };
+  public onFindUserPasswordBtnClick = () => {
+    const { history } = this.props;
+    history.push({
+      pathname: "/find-password",
+      state: {
+        backInfo: {
+          backUrl: "/find-account"
+        }
+      }
+    });
+  };
 }
 export default FindAccountContainer;

@@ -298,28 +298,6 @@ export interface searchBranchVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: certificateUser
-// ====================================================
-
-export interface certificateUser_CertificateUser {
-  __typename: "CertificateUserResponse";
-  ok: boolean;
-  error: string | null;
-}
-
-export interface certificateUser {
-  CertificateUser: certificateUser_CertificateUser;
-}
-
-export interface certificateUserVariables {
-  imp_uid: string;
-  branchId: number;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: managerGetBranch
 // ====================================================
 
@@ -1390,6 +1368,86 @@ export interface getMyUsingSeatId {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: getUserWithUserId
+// ====================================================
+
+export interface getUserWithUserId_GetUserWithUserId_user_baseBranch {
+  __typename: "Branch";
+  id: number;
+  impId: string | null;
+}
+
+export interface getUserWithUserId_GetUserWithUserId_user {
+  __typename: "User";
+  id: number;
+  password: string | null;
+  baseBranch: getUserWithUserId_GetUserWithUserId_user_baseBranch;
+}
+
+export interface getUserWithUserId_GetUserWithUserId {
+  __typename: "GetUserWithUserIdResponse";
+  ok: boolean;
+  error: string | null;
+  user: getUserWithUserId_GetUserWithUserId_user | null;
+}
+
+export interface getUserWithUserId {
+  GetUserWithUserId: getUserWithUserId_GetUserWithUserId;
+}
+
+export interface getUserWithUserIdVariables {
+  userId: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: checkOneself
+// ====================================================
+
+export interface checkOneself_CheckOneself {
+  __typename: "CheckOneselfResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface checkOneself {
+  CheckOneself: checkOneself_CheckOneself;
+}
+
+export interface checkOneselfVariables {
+  userId: number;
+  impUid: string;
+  branchId: number;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: changePassword
+// ====================================================
+
+export interface changePassword_ChangePassword {
+  __typename: "ChangePasswordResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface changePassword {
+  ChangePassword: changePassword_ChangePassword;
+}
+
+export interface changePasswordVariables {
+  userId: number;
+  newPassword: string;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: getUserId
 // ====================================================
 
@@ -1689,9 +1747,9 @@ export interface completePaymentVariables {
 export interface getMembershipLogs_GetMembershipLogs_membershipLogs_user {
   __typename: "User";
   id: number;
-  birthYear: number;
-  birthMonth: number;
-  birthDay: number;
+  birthYear: string;
+  birthMonth: string;
+  birthDay: string;
   gender: string | null;
 }
 
@@ -2334,9 +2392,9 @@ export interface managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLog
   name: string | null;
   userId: string | null;
   phoneNumber: string | null;
-  birthYear: number;
-  birthMonth: number;
-  birthDay: number;
+  birthYear: string;
+  birthMonth: string;
+  birthDay: string;
 }
 
 export interface managerGetMembershipLogs_ManagerGetMembershipLogs_membershipLogs_branch {
@@ -2405,9 +2463,9 @@ export interface managerGetNowUsingUsers_ManagerGetNowUsingUsers_users {
   id: number;
   name: string | null;
   userId: string | null;
-  birthYear: number;
-  birthMonth: number;
-  birthDay: number;
+  birthYear: string;
+  birthMonth: string;
+  birthDay: string;
   phoneNumber: string | null;
   gender: string | null;
   memberships: (managerGetNowUsingUsers_ManagerGetNowUsingUsers_users_memberships | null)[];
@@ -3587,9 +3645,9 @@ export interface managerGetUserDetail_ManagerGetUserDetail_user {
   phoneNumber: string | null;
   profilePhoto: string | null;
   gender: string | null;
-  birthYear: number;
-  birthMonth: number;
-  birthDay: number;
+  birthYear: string;
+  birthMonth: string;
+  birthDay: string;
   email: string;
   isHead: boolean;
   isSupervisor: boolean;

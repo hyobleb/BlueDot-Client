@@ -5,6 +5,7 @@ import DefaultBack from "../../../Components/DefaultBack";
 import Form from "../../../Components/Form";
 import Input from "../../../Components/Input";
 // import SmallButton from "../../../Components/SmallButton";
+import Loading from "../../../Components/Loading";
 import styled from "../../../typed-components";
 
 const Back = styled(DefaultBack)``;
@@ -44,6 +45,8 @@ interface IProps {
   onConfirmClick: () => void;
   userId?: string;
   onOkClick: () => void;
+  findUserIdLoading: boolean;
+  doGetUserId: boolean;
 }
 
 const FindUserIdPresenter: React.SFC<IProps> = ({
@@ -53,31 +56,36 @@ const FindUserIdPresenter: React.SFC<IProps> = ({
   phoneNumber,
   onConfirmClick,
   userId,
-  onOkClick
+  onOkClick,
+  findUserIdLoading,
+  doGetUserId
 }) => (
   <Back title={"FindUserId | BlueDot"} backUrl={backUrl}>
-    <FormContainer>
-      <Form submitFn={onConfirmClick}>
-        <ExtendInput
-          placeholder={"이름"}
-          value={name}
-          name={"name"}
-          onChange={onInputChange}
-          autoComplete={"username"}
-          autoFocus={true}
-        />
-        <ExtendInput
-          placeholder={"핸드폰번호('-'없이 입력해주세요)"}
-          value={phoneNumber}
-          name={"phoneNumber"}
-          onChange={onInputChange}
-          type={"text"}
-          maxlength={11}
-        />
+    {doGetUserId && findUserIdLoading ? (
+      <Loading />
+    ) : (
+      <FormContainer>
+        <Form submitFn={onConfirmClick}>
+          <ExtendInput
+            placeholder={"이름"}
+            value={name}
+            name={"name"}
+            onChange={onInputChange}
+            autoComplete={"username"}
+          />
+          <ExtendInput
+            placeholder={"핸드폰번호('-'없이 입력해주세요)"}
+            value={phoneNumber}
+            name={"phoneNumber"}
+            onChange={onInputChange}
+            type={"text"}
+            maxlength={11}
+          />
 
-        <SubmitBtn value={"아이디 찾기"} />
-      </Form>
-    </FormContainer>
+          <SubmitBtn value={"아이디 찾기"} />
+        </Form>
+      </FormContainer>
+    )}
 
     {userId ? (
       <AlertPopUp

@@ -50,37 +50,3 @@ export const USER_ID_SIGN_UP_MUTATION = gql`
     }
   }
 `;
-
-export const TEMP_USER_ID_SIGN_UP_MUTATION = gql`
-  mutation tempUserIdSignUpMutation(
-    $userId: String!
-    $password: String!
-    $phoneNumber: String!
-    $unique_key: String!
-    $name: String!
-    $gender: UserIdSignUpGender!
-    $birthYear: Int!
-    $birthMonth: Int!
-    $birthDay: Int!
-    $baseBranchId: Int!
-    $imp_uid: String!
-  ) {
-    TempUserIdSignUp(
-      userId: $userId
-      password: $password
-      phoneNumber: $phoneNumber
-      unique_key: $unique_key
-      name: $name
-      gender: $gender
-      birthYear: $birthYear
-      birthMonth: $birthMonth
-      birthDay: $birthDay
-      baseBranchId: $baseBranchId
-      imp_uid: $imp_uid
-    ) {
-      ok
-      error
-      token
-    }
-  }
-`;

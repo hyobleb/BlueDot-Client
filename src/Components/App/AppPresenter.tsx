@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Link, Redirect, Route, Switch } from "react-router-dom";
 import Sidebar from "react-sidebar";
 import FindAccount from "../../Routes/Account/FindAccount";
+import FindPassword from "../../Routes/Account/FindPassword";
 import FindUserId from "../../Routes/Account/FindUserId";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
@@ -14,7 +15,6 @@ import RefundInfo from "../../Routes/Danal/RefundInfo";
 import ServiceRule from "../../Routes/Danal/ServiceRule";
 import EditProfile from "../../Routes/EditProfile";
 import FindId from "../../Routes/FindId";
-import FindPassword from "../../Routes/FindPassword";
 import Home from "../../Routes/Home";
 import Login from "../../Routes/Login";
 import ManageCabinet from "../../Routes/ManageCabinet";
@@ -232,7 +232,6 @@ const LoggedOutRoute: React.SFC = () => (
     <Route path={"/refund-rule"} component={RefundInfo} />
     <Route path={"/find-account"} component={FindAccount} />
     <Route path={"/find-userid"} component={FindUserId} />
-
     <Redirect from={"*"} to={"/"} />
   </Switch>
 );
