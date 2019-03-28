@@ -1,4 +1,6 @@
 import React from "react";
+import Dropdown from "react-dropdown";
+import DatetimePicker from "../../../Components/DatetimePicker";
 import HyobiBack from "../../../Components/HyobiBack";
 import styled from "../../../typed-components";
 
@@ -82,13 +84,17 @@ const FilterUl = styled.div`
   list-style: none;
   margin-left: auto;
   margin-right: auto;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
 `;
 const BranchIcon = styled.li`
   width: 20px;
   height: 20px;
   margin-right: 8px;
-  margin-bottom: 16px;
-  background-image: url("/imgs/branchicon.png");
+  /* margin-bottom: 16px; */
+  background-image: url("/img/default/branchicon.png");
   background-repeat: no-repeat;
   background-size: auto 100%;
   background-position: center;
@@ -97,10 +103,11 @@ const BranchList = styled.div`
   width: 168px;
   height: 24px;
   margin-right: 8px;
-  background-color: #f50;
+  /* background-color: #f50; */
   margin-left: 8px;
   border-bottom: 2px solid #101010;
   cursor: pointer;
+  text-align: center;
 `;
 const CalendarIcon = styled.li`
   width: 20px;
@@ -114,10 +121,12 @@ const BranchDate = styled.div`
   width: 70px;
   height: 24px;
   margin-right: 8px;
-  background-color: #f50;
+  /* background-color: #f50; */
   margin-left: 8px;
   border-bottom: 2px solid #101010;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 const Boxes = styled.div`
   display: flex;
@@ -148,6 +157,36 @@ const Active = styled.div`
   color: #6d95e1;
 `;
 
+const FilterItem = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ExtendedDatetimePicker = styled(DatetimePicker)`
+  height: 100%;
+  width: 100%;
+`;
+
+const ExtendedDropDown = styled(Dropdown)`
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  .control {
+    padding: inherit;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    border: none;
+    &:hover {
+      background-color: ${props => props.theme.lightBlueColor};
+      color: white;
+    }
+  }
+  .arrow {
+    top: 8px;
+  }
+`;
+
 const EnrollManagePresenter: React.SFC = () => (
   // <Back title={"EnrollManage | BlueDot"} backUrl={"/"}>
   //   EnrollManagePresenter
@@ -171,22 +210,43 @@ const EnrollManagePresenter: React.SFC = () => (
     <Bn>가맹점주님과 함께 성장하는 블루닷라운지가 되겠습니다.</Bn>
     <Container>
       <Filter>
-        <div>
+        <FilterItem>
           <FilterUl>
             <BranchIcon />
             <li>지점이름</li>
-            <BranchList />
+            <BranchList>
+              <ExtendedDropDown
+                options={["동래안락점", "명륜점"]}
+                onChange={() => console.log("!")}
+                // value={}
+                placeholder={"지점선택"}
+                controlClassName={"control"}
+                arrowClassName={"arrow"}
+              />
+            </BranchList>
           </FilterUl>
-        </div>
-        <div>
+        </FilterItem>
+        <FilterItem>
           <FilterUl>
             <CalendarIcon />
             <li>기간검색</li>
-            <BranchDate />
+            <BranchDate>
+              <ExtendedDatetimePicker
+                flatPickrDate={new Date()}
+                dateFormat={"Y/m/d"}
+                onFlatPickrChange={() => console.log("!")}
+              />
+            </BranchDate>
             <li>~</li>
-            <BranchDate />
+            <BranchDate>
+              <ExtendedDatetimePicker
+                flatPickrDate={new Date()}
+                dateFormat={"Y/m/d"}
+                onFlatPickrChange={() => console.log("!")}
+              />
+            </BranchDate>
           </FilterUl>
-        </div>
+        </FilterItem>
       </Filter>
       <Boxes>
         <BoxesUl>

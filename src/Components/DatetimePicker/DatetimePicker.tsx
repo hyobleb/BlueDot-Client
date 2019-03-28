@@ -11,7 +11,7 @@ const ExtendedFlatPickr = styled(Flatpickr)`
   border: 1px solid #dedede;
   &:hover {
     cursor: pointer;
-    background-color: ${props => props.theme.blueColor};
+    background-color: ${props => props.theme.lightBlueColor};
     color: white;
   }
 `;
