@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment-timezone";
+import moment from "moment-timezone";
 import React from "react";
 import { Mutation, MutationFn, Query } from "react-apollo";
 import { RouteComponentProps } from "react-router";
@@ -21,8 +21,8 @@ import {
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {
-  startDatetime: Moment;
-  endDatetime: Moment;
+  startDatetime: Date;
+  endDatetime: Date;
   nowRoomId: number;
   seatId: number;
   selBranchId: number;
@@ -56,13 +56,17 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
       props.history.push("/");
     }
     this.state = {
-      endDatetime: moment(),
+      endDatetime: props.location.state.endDatetime
+        ? moment(props.location.state.endDatetime).toDate()
+        : new Date(),
       nowRoomId: props.location.state.nowRoomId,
       seatId: props.location.state.seatId,
       seatLogs: [],
       selBranchId: props.location.state.selBranchId,
       showSearchUserPopUp: false,
-      startDatetime: moment()
+      startDatetime: props.location.state.startDatetime
+        ? moment(props.location.state.startDatetime).toDate()
+        : new Date()
     };
   }
   public render() {
@@ -92,9 +96,9 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
           {
             query: MANAGER_GET_SEAT_LOGS,
             variables: {
-              endDatetime: endDatetime.format("YYYY-MM-DD HH:mm:ss"),
+              endDatetime: moment(endDatetime).format("YYYY-MM-DD HH:mm:ss"),
               seatId,
-              startDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss")
+              startDatetime: moment(startDatetime).format("YYYY-MM-DD HH:mm:ss")
             }
           }
         ]}
@@ -119,9 +123,13 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
                 {
                   query: MANAGER_GET_SEAT_LOGS,
                   variables: {
-                    endDatetime: endDatetime.format("YYYY-MM-DD HH:mm:ss"),
+                    endDatetime: moment(endDatetime).format(
+                      "YYYY-MM-DD HH:mm:ss"
+                    ),
                     seatId,
-                    startDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss")
+                    startDatetime: moment(startDatetime).format(
+                      "YYYY-MM-DD HH:mm:ss"
+                    )
                   }
                 }
               ]}
@@ -132,9 +140,13 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
                   <ManagerGetSeatLogs
                     query={MANAGER_GET_SEAT_LOGS}
                     variables={{
-                      endDatetime: endDatetime.format("YYYY-MM-DD HH:mm:ss"),
+                      endDatetime: moment(endDatetime).format(
+                        "YYYY-MM-DD HH:mm:ss"
+                      ),
                       seatId,
-                      startDatetime: startDatetime.format("YYYY-MM-DD HH:mm:ss")
+                      startDatetime: moment(startDatetime).format(
+                        "YYYY-MM-DD HH:mm:ss"
+                      )
                     }}
                     onCompleted={this.updateFields}
                     fetchPolicy={"cache-and-network"}
@@ -180,10 +192,9 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
       }
     });
   };
-
-  public onStartDatetimeChange = (startDatetimeValue: Moment) => {
+  public onStartDatetimeChange = (startDatetimeValue: Date) => {
     const { endDatetime } = this.state;
-    if (endDatetime < startDatetimeValue) {
+    if (moment(endDatetime) < moment(startDatetimeValue)) {
       toast.warn("기간설정이 잘 못 되었습니다");
     } else {
       this.setState({
@@ -191,10 +202,20 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
       });
     }
   };
+  // public onStartDatetimeChange = (startDatetimeValue: Moment) => {
+  //   const { endDatetime } = this.state;
+  //   if (endDatetime < startDatetimeValue) {
+  //     toast.warn("기간설정이 잘 못 되었습니다");
+  //   } else {
+  //     this.setState({
+  //       startDatetime: startDatetimeValue
+  //     });
+  //   }
+  // };
 
-  public onEndDatetimeChange = (endDatetimeValue: Moment) => {
+  public onEndDatetimeChange = (endDatetimeValue: Date) => {
     const { startDatetime } = this.state;
-    if (endDatetimeValue < startDatetime) {
+    if (moment(endDatetimeValue) < moment(startDatetime)) {
       toast.warn("기간설정이 잘 못 되었습니다");
     } else {
       this.setState({
@@ -237,8 +258,10 @@ class ManageSeatContainer extends React.Component<IProps, IState> {
 
   public onPeriodBtnClick = (days: number) => {
     this.setState({
-      endDatetime: moment(),
-      startDatetime: moment().subtract(days, "d")
+      endDatetime: new Date(),
+      startDatetime: moment()
+        .subtract(days, "d")
+        .toDate()
     });
   };
 

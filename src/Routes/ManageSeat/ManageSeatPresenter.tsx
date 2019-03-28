@@ -1,14 +1,14 @@
 import moment from "moment-timezone";
-import { Moment } from "moment-timezone";
 // import moment, { Moment } from "moment";
 import React from "react";
-import Datetime from "react-datetime";
+// import Datetime from "react-datetime";
 import DefaultBack from "src/Components/DefaultBack";
 import Loading from "src/Components/Loading";
 import SearchUserPopUp from "src/Components/SearchUserPopUp";
 import SmallButton from "src/Components/SmallButton";
 import styled from "src/typed-components";
 import { managerGetSeatLogs_ManagerGetSeatLogs_seat } from "src/types/api";
+import DatetimePicker from "../../Components/DatetimePicker";
 
 const Back = styled(DefaultBack)``;
 const Section = styled.section``;
@@ -35,18 +35,18 @@ const PeriodCalendarSection = styled(Section)`
   margin: 30px 0;
 `;
 
-const DatetimeExtended = styled(Datetime)`
-  input {
-    width: 100px;
-    height: 30px;
-    text-align: center;
-    &:hover {
-      cursor: pointer;
-      background-color: ${props => props.theme.blueColor};
-      color: white;
-    }
-  }
-`;
+// const DatetimeExtended = styled(Datetime)`
+//   input {
+//     width: 100px;
+//     height: 30px;
+//     text-align: center;
+//     &:hover {
+//       cursor: pointer;
+//       background-color: ${props => props.theme.blueColor};
+//       color: white;
+//     }
+//   }
+// `;
 
 const InqueryBtn = styled(Button)`
   margin-left: 10px;
@@ -106,11 +106,11 @@ const NoDataText = styled.div`
 `;
 
 interface IProps {
-  startDatetime: Moment;
-  endDatetime: Moment;
+  startDatetime: Date;
+  endDatetime: Date;
   onBackClick: () => void;
-  onStartDatetimeChange: (startDatetimeValue: Moment) => void;
-  onEndDatetimeChange: (endDatetimeValue: Moment) => void;
+  onStartDatetimeChange: (startDatetimeValue: Date) => void;
+  onEndDatetimeChange: (endDatetimeValue: Date) => void;
   seatLogsLoading: boolean;
   seatLogs: any[];
   onLogClick: (userId: number) => void;
@@ -154,22 +154,32 @@ const ManageSeatPresenter: React.SFC<IProps> = ({
           <PeriodBtn value={"6개월"} onClick={() => onPeriodBtnClick(180)} />
         </PeriodBtnSection>
         <PeriodCalendarSection>
-          <DatetimeExtended
+          <DatetimePicker
+            flatPickrDate={startDatetime}
+            dateFormat={"Y년 m월 d일"}
+            onFlatPickrChange={onStartDatetimeChange}
+          />
+          {/* <DatetimeExtended
             value={startDatetime}
             dateFormat="YYYY MMMM Do"
             timeFormat={false}
             locale="de"
             onChange={onStartDatetimeChange}
             closeOnSelect={true}
-          />
+          /> */}
           -
-          <DatetimeExtended
+          {/* <DatetimeExtended
             value={endDatetime}
             dateFormat="YYYY MMMM Do"
             timeFormat={false}
             locale="de"
             onChange={onEndDatetimeChange}
             closeOnSelect={true}
+          /> */}
+          <DatetimePicker
+            flatPickrDate={endDatetime}
+            dateFormat={"Y년 m월 d일"}
+            onFlatPickrChange={onEndDatetimeChange}
           />
           <InqueryBtn value={"조회"} />
         </PeriodCalendarSection>
