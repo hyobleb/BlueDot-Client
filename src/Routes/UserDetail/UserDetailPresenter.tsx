@@ -248,8 +248,7 @@ const UserDetailPresenter: React.SFC<IProps> = ({
       membership =>
         membership &&
         membership.usable &&
-        membership.cabinetId &&
-        moment(membership.endDatetime) > moment()
+        membership.cabinetId 
     );
   }
 
