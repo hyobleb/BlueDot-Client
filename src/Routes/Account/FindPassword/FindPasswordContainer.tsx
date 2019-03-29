@@ -108,7 +108,7 @@ class FindPasswordContainer extends React.Component<
                 mutation={CHECK_ONESELF}
                 onCompleted={this.updateFields}
               >
-                {checkOneselfMutation => {
+                {(checkOneselfMutation, { loading: checkOneselfLoading }) => {
                   this.checkOneself = checkOneselfMutation;
                   return (
                     <GetUserWithUserId
@@ -131,6 +131,7 @@ class FindPasswordContainer extends React.Component<
                             getUserWithUserIdLoading={getUserWithUserIdLoading}
                             idVerifed={idVerifed}
                             onChangePasswordClick={this.onChangePasswordClick}
+                            checkOneselfLoading={checkOneselfLoading}
                           />
                         );
                       }}

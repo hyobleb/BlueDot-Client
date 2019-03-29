@@ -3,7 +3,7 @@ import Button from "../../../Components/Button";
 import DefaultBack from "../../../Components/DefaultBack";
 import Form from "../../../Components/Form";
 import Input from "../../../Components/Input";
-// import Loading from "../../../Components/Loading";
+import Loading from "../../../Components/Loading";
 import styled from "../../../typed-components";
 
 const Back = styled(DefaultBack)`
@@ -49,6 +49,7 @@ interface IProps {
   getUserWithUserIdLoading: boolean;
   idVerifed: boolean;
   onChangePasswordClick: () => Promise<void>;
+  checkOneselfLoading: boolean;
 }
 
 const FindPasswordPresenter: React.SFC<IProps> = ({
@@ -60,7 +61,8 @@ const FindPasswordPresenter: React.SFC<IProps> = ({
   onVerifyingButtonClick,
   getUserWithUserIdLoading,
   idVerifed,
-  onChangePasswordClick
+  onChangePasswordClick,
+  checkOneselfLoading
 }) => (
   <Back title={"FindPassword | BlueDot"} backUrl={backUrl}>
     {(idVerifed && (
@@ -87,15 +89,19 @@ const FindPasswordPresenter: React.SFC<IProps> = ({
       </FormContainer>
     )) || (
       <FormContainer>
-        <Form submitFn={onVerifyingButtonClick}>
-          <ExtendInput
-            placeholder={"아이디"}
-            value={userId}
-            name={"userId"}
-            onChange={onInputChange}
-          />
-          <SubmitBtn value={"본인인증 하기"} />
-        </Form>
+        {checkOneselfLoading ? (
+          <Loading />
+        ) : (
+          <Form submitFn={onVerifyingButtonClick}>
+            <ExtendInput
+              placeholder={"아이디"}
+              value={userId}
+              name={"userId"}
+              onChange={onInputChange}
+            />
+            <SubmitBtn value={"본인인증 하기"} />
+          </Form>
+        )}
       </FormContainer>
     )}
   </Back>
