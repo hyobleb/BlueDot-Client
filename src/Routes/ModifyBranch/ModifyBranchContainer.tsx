@@ -344,7 +344,12 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
 
   public subtractSnapshot = url => {
     // 해당 url에 해당하는 이미지 빼기
-    const { branchPhotos, loungeImg, minimapImg } = this.state;
+    const {
+      branchPhotos,
+      loungeImg,
+      minimapImg,
+      cabinetLoungeImg
+    } = this.state;
     if (loungeImg === url) {
       this.setState({
         ...this.state,
@@ -354,6 +359,11 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       this.setState({
         ...this.state,
         minimapImg: ""
+      });
+    } else if (cabinetLoungeImg === url) {
+      this.setState({
+        ...this.state,
+        cabinetLoungeImg: ""
       });
     } else {
       branchPhotos.splice(branchPhotos.indexOf(url), 1);
