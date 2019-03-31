@@ -119,24 +119,23 @@ const CabinetDisplay: React.SFC<IProps> = ({
       {verticalCabients.map((rowCabinets, index) => (
         <CabinetRow key={index}>
           {rowCabinets.map(cabinet => {
-            let backgroundColor =
-              !cabinet.usable || !cabinet.lockId
-                ? DANGER_COLOR
-                : !isMan &&
-                  (cabinet.nowUsing || moment(cabinet.endDatetime) > moment())
-                ? WARNING_COLOR
-                : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
-                ? WARNING_COLOR
-                : isMan &&
-                  cabinet.nowUsing &&
-                  moment(cabinet.endDatetime) < moment()
-                ? SEMI_DANGER_COLOR
-                : cabinet.status === "RESERVED" &&
-                  moment(cabinet.reservedDatetime) > moment()
-                ? WARNING_COLOR
-                : cabinet.id === selCabinetId
-                ? SUCCESS_COLOR
-                : PRIMARY_COLOR;
+            let backgroundColor = !cabinet.usable
+              ? DANGER_COLOR
+              : !isMan &&
+                (cabinet.nowUsing || moment(cabinet.endDatetime) > moment())
+              ? WARNING_COLOR
+              : cabinet.nowUsing && moment(cabinet.endDatetime) > moment()
+              ? WARNING_COLOR
+              : isMan &&
+                cabinet.nowUsing &&
+                moment(cabinet.endDatetime) < moment()
+              ? SEMI_DANGER_COLOR
+              : cabinet.status === "RESERVED" &&
+                moment(cabinet.reservedDatetime) > moment()
+              ? WARNING_COLOR
+              : cabinet.id === selCabinetId
+              ? SUCCESS_COLOR
+              : PRIMARY_COLOR;
 
             if (isMan) {
               if (cabinet.id === selCabinetId) {
@@ -153,7 +152,7 @@ const CabinetDisplay: React.SFC<IProps> = ({
                   if (isMan) {
                     onCabinetClick(cabinet.id);
                   } else {
-                    if (!cabinet.usable || !cabinet.lockId) {
+                    if (!cabinet.usable) {
                       toast.error("해당 사물함은 이용할수 없습니다");
                     } else if (
                       cabinet.nowUsing &&
@@ -173,9 +172,7 @@ const CabinetDisplay: React.SFC<IProps> = ({
                 style={{ backgroundColor }}
               >
                 <CabinetNumber>
-                  {!cabinet.usable || !cabinet.lockId
-                    ? "X"
-                    : cabinet.cabinetNumber}
+                  {!cabinet.usable ? "X" : cabinet.cabinetNumber}
                 </CabinetNumber>
               </CabinetItem>
             );
