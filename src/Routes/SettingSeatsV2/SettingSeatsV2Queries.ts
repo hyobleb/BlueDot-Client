@@ -31,8 +31,8 @@ export const HEAD_CREATE_SEAT = gql`
     $rotate: Float!
     $maleUsable: Boolean!
     $femaleUsable: Boolean!
-    $left: Int!
-    $top: Int!
+    $left: Float!
+    $top: Float!
   ) {
     HeadCreateSeat(
       branchId: $branchId
@@ -62,8 +62,8 @@ export const HEAD_UPDATE_SEAT = gql`
     $maleUsable: Boolean
     $femaleUsable: Boolean
     $discard: Boolean
-    $left: Int
-    $top: Int
+    $left: Float
+    $top: Float
     $isFlip: Boolean
   ) {
     HeadUpdateSeat(
@@ -91,8 +91,8 @@ export const HEAD_CREATE_DOOR = gql`
     $branchId: Int!
     $roomId: Int!
     $rotate: Float!
-    $left: Int!
-    $top: Int!
+    $left: Float!
+    $top: Float!
     $isFlip: Boolean!
   ) {
     HeadCreateDoor(
