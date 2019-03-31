@@ -92,10 +92,12 @@ export default class SignUpDetailContainer extends React.Component<
     if (this.state.jqueryLoad && this.state.importLoad) {
       if (!this.state.IMP) {
         const IMP = (window as any).IMP;
-        this.setState({
-          ...this.state,
-          IMP
-        });
+        if (IMP) {
+          this.setState({
+            // ...this.state,
+            IMP
+          });
+        }
       }
     }
   };
@@ -327,7 +329,12 @@ export default class SignUpDetailContainer extends React.Component<
 
     // ------------------------------------------------------------
 
-    const { IMP } = this.state;
+    // const { IMP } = this.state;
+    // if(!IMP){
+    //   this
+    // }
+    const IMP = (window as any).IMP;
+
     const { baseBranchId, impId } = this.state;
 
     if (!baseBranchId || !impId) {
@@ -406,7 +413,7 @@ export default class SignUpDetailContainer extends React.Component<
         }
       );
     } else {
-      toast.error("인증 모듈이 로드 되지 않았습니다");
+      toast.error("모듈이 로드 되지 않았습니다");
     }
     // ------------------------------------------------------------
   };

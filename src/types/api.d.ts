@@ -3385,38 +3385,6 @@ export interface userIdsignUpMutationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: tempUserIdSignUpMutation
-// ====================================================
-
-export interface tempUserIdSignUpMutation_TempUserIdSignUp {
-  __typename: "TempUserIdSignUpResponse";
-  ok: boolean;
-  error: string | null;
-  token: string | null;
-}
-
-export interface tempUserIdSignUpMutation {
-  TempUserIdSignUp: tempUserIdSignUpMutation_TempUserIdSignUp;
-}
-
-export interface tempUserIdSignUpMutationVariables {
-  userId: string;
-  password: string;
-  phoneNumber: string;
-  unique_key: string;
-  name: string;
-  gender: UserIdSignUpGender;
-  birthYear: number;
-  birthMonth: number;
-  birthDay: number;
-  baseBranchId: number;
-  imp_uid: string;
-}
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL mutation operation: facebookConnect
 // ====================================================
 
