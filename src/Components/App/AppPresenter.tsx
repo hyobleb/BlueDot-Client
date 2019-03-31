@@ -62,6 +62,9 @@ import {
   getMyUsingSeatId
 } from "../../types/api";
 import Menu from "../Menu";
+// For Fool's Day
+import { FoolsDayImg } from "../RoomPopUp/RoomPopUpPresenter";
+//
 import SmallLoading from "../SmallLoading";
 
 const MenuButton = styled.button`
@@ -286,6 +289,7 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
             ) : (
               ""
             )}
+
             <EnrollTag to={"/basket2"}>
               <SideItemText>등록하기</SideItemText>
             </EnrollTag>
@@ -295,6 +299,13 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
             </LogoutTag>
           </SideTagContainer>
         }
+        {/* For Fool's Day */}
+        {userUsingSeat && returnSeatLoading ? (
+          <FoolsDayImg src={"/img/event/asitanojoe_illuholic.jpeg"} />
+        ) : (
+          ""
+        )}
+        {/*  */}
         <Switch>
           <Route
             path={"/"}

@@ -54,6 +54,15 @@ const ButtonContainer = styled.div`
 const Button = styled(SmallButton)``;
 const ReturnButton = styled(Button)``;
 
+// For Fool's Day
+export const FoolsDayImg = styled.img`
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 10;
+`;
+//
+
 interface IProps {
   closeFunc: any;
   roomId: number;
@@ -117,6 +126,14 @@ const RoomPopUpPresenter: React.SFC<IProps> = ({
         <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 16.094l-4.157-4.104 4.1-4.141-1.849-1.849-4.105 4.159-4.156-4.102-1.833 1.834 4.161 4.12-4.104 4.157 1.834 1.832 4.118-4.159 4.143 4.102 1.848-1.849z" />
       </svg>
     </CloseButton>
+
+    {/* For Fool's Day */}
+    {canReturn && returnSeatLoading ? (
+      <FoolsDayImg src={"/img/event/asitanojoe_illuholic.jpeg"} />
+    ) : (
+      ""
+    )}
+    {/*  */}
   </Container>
 );
 

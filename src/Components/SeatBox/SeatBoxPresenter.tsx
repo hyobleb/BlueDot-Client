@@ -163,6 +163,17 @@ const SeatText = styled<
   color: ${props => props.theme.blueColor};
 `;
 
+// For Fool's Day
+const FoolsDayImg = styled<{ rotate: number }, "img">("img")`
+  width: 100%;
+  transform: rotate(180deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+`;
+//
+
 const Seat: React.SFC<ISeatProps> = ({
   containerWidth,
   left,
@@ -289,6 +300,19 @@ const Seat: React.SFC<ISeatProps> = ({
               {text}
             </SeatText>
           </SeatTextCon>
+
+          {/* For Fool's Day */}
+          {actualUsing ? (
+            <FoolsDayImg
+              rotate={rotate}
+              src={
+                "/img/event/flames_500_clr_8629.gif.9ad871baf6507367fa72448c1be2662c.gif"
+              }
+            />
+          ) : (
+            ""
+          )}
+          {/*  */}
         </>
       )}
     </SeatItem>
