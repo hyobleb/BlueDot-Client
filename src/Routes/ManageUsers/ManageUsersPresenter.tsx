@@ -214,179 +214,187 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
   onBranchBtnClick,
   isManStaff,
   isCleanStaff
-}) => (
-  <BackContainer>
-    <Helmet>
-      <title>membership | BlueDot</title>
-    </Helmet>
-    <BackArrowExtended backTo="/home" />
-    {membershipLogsLoading || usingUsersLoading ? (
-      <Loading />
-    ) : (
-      <Container>
-        <HeadButtonSection>
-          {isHead && (
-            <SearchBranchButton
-              value={"지점 검색"}
-              onClick={toggleBranchPopUpShow}
-            />
-          )}
+}) => {
+  console.log({ nowUsingUsers });
+  return (
+    <BackContainer>
+      <Helmet>
+        <title>membership | BlueDot</title>
+      </Helmet>
+      <BackArrowExtended backTo="/home" />
+      {membershipLogsLoading || usingUsersLoading ? (
+        <Loading />
+      ) : (
+        <Container>
+          <HeadButtonSection>
+            {isHead && (
+              <SearchBranchButton
+                value={"지점 검색"}
+                onClick={toggleBranchPopUpShow}
+              />
+            )}
 
-          {isHead ? (
-            <TotalBranchButton value={"전체 지점"} onClick={onAllBranchClick} />
-          ) : (
-            (isSupervisor || isFranchiser) &&
-            managingBranches &&
-            managingBranches.length >= 2 && (
+            {isHead ? (
               <TotalBranchButton
                 value={"전체 지점"}
                 onClick={onAllBranchClick}
               />
-            )
-          )}
-
-          {managingBranches &&
-            managingBranches.map(
-              branch =>
-                branch && (
-                  <BranchButton
-                    key={branch.id}
-                    value={`${branch.name}`}
-                    onClick={() => onBranchBtnClick(branch.id)}
-                  />
-                )
+            ) : (
+              (isSupervisor || isFranchiser) &&
+              managingBranches &&
+              managingBranches.length >= 2 && (
+                <TotalBranchButton
+                  value={"전체 지점"}
+                  onClick={onAllBranchClick}
+                />
+              )
             )}
-        </HeadButtonSection>
-        <BranchTitleSection>
-          <BranchTitle>{branchName ? branchName : "전체 지점"}</BranchTitle>
-        </BranchTitleSection>
-        <DateMemberSection>
-          <DatetimeSelRow>
-            <DatetimePickerCon>
-              <DatetimePicker
-                flatPickrDate={selDate}
-                onFlatPickrChange={onDatetimeChange}
-                dateFormat={"Y년 m월 d일"}
-                enableTime={false}
-              />
-            </DatetimePickerCon>
-          </DatetimeSelRow>
-          <DateMembersRow>
-            <RegistMembersContainer>
-              {membershipLogsByDate.length
-                ? membershipLogsByDate.map(membershipLog => {
-                    return (
-                      <RegistMemberList
-                        key={membershipLog.id}
-                        onClick={async () =>
-                          await onUserClick(membershipLog.userId)
-                        }
-                      >
-                        <RegistMemberDataRow>
-                          <RegistMemberDataCol>
-                            <StatusTitle>
-                              {membershipLog.status === "REGIST" ? (
-                                <RegistStatus>등록</RegistStatus>
-                              ) : membershipLog.status === "EXTENDED" ? (
-                                <ExtendStatus>연장</ExtendStatus>
-                              ) : membershipLog.status ===
-                                "DATETIME_MODIFIED" ? (
-                                <DatetimeModStatus>수정</DatetimeModStatus>
-                              ) : membershipLog.status === "EXPIRED" ? (
-                                <ExpireStatus>만료</ExpireStatus>
-                              ) : membershipLog.status === "CABINET_SHIFT" ? (
-                                <CabinetShiftStatus>
-                                  사물함 이동
-                                </CabinetShiftStatus>
-                              ) : (
-                                membershipLog.status
-                              )}
-                            </StatusTitle>
-                          </RegistMemberDataCol>
-                          <RegistMemberDataCol>
-                            <DataItemTitle>지점 :</DataItemTitle>
-                            <DataItemValue>
-                              {membershipLog.branch.name}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                          <RegistMemberDataCol>
-                            <DataItemTitle>등록대상 :</DataItemTitle>
-                            <DataItemValue>
-                              {membershipLog.cabinetId ? "사물함" : "멤버쉽"}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                          {membershipLog.cabinetId && (
+
+            {managingBranches &&
+              managingBranches.map(
+                branch =>
+                  branch && (
+                    <BranchButton
+                      key={branch.id}
+                      value={`${branch.name}`}
+                      onClick={() => onBranchBtnClick(branch.id)}
+                    />
+                  )
+              )}
+          </HeadButtonSection>
+          <BranchTitleSection>
+            <BranchTitle>{branchName ? branchName : "전체 지점"}</BranchTitle>
+          </BranchTitleSection>
+          <DateMemberSection>
+            <DatetimeSelRow>
+              <DatetimePickerCon>
+                <DatetimePicker
+                  flatPickrDate={selDate}
+                  onFlatPickrChange={onDatetimeChange}
+                  dateFormat={"Y년 m월 d일"}
+                  enableTime={false}
+                />
+              </DatetimePickerCon>
+            </DatetimeSelRow>
+            <DateMembersRow>
+              <RegistMembersContainer>
+                {membershipLogsByDate.length
+                  ? membershipLogsByDate.map(membershipLog => {
+                      return (
+                        <RegistMemberList
+                          key={membershipLog.id}
+                          onClick={async () =>
+                            await onUserClick(membershipLog.userId)
+                          }
+                        >
+                          <RegistMemberDataRow>
                             <RegistMemberDataCol>
-                              <DataItemTitle>사물함 :</DataItemTitle>
+                              <StatusTitle>
+                                {membershipLog.status === "REGIST" ? (
+                                  <RegistStatus>등록</RegistStatus>
+                                ) : membershipLog.status === "EXTENDED" ? (
+                                  <ExtendStatus>연장</ExtendStatus>
+                                ) : membershipLog.status ===
+                                  "DATETIME_MODIFIED" ? (
+                                  <DatetimeModStatus>수정</DatetimeModStatus>
+                                ) : membershipLog.status === "EXPIRED" ? (
+                                  <ExpireStatus>만료</ExpireStatus>
+                                ) : membershipLog.status === "CABINET_SHIFT" ? (
+                                  <CabinetShiftStatus>
+                                    사물함 이동
+                                  </CabinetShiftStatus>
+                                ) : (
+                                  membershipLog.status
+                                )}
+                              </StatusTitle>
+                            </RegistMemberDataCol>
+                            <RegistMemberDataCol>
+                              <DataItemTitle>지점 :</DataItemTitle>
                               <DataItemValue>
-                                {membershipLog.cabinet.cabinetNumber}번
+                                {membershipLog.branch.name}
                               </DataItemValue>
                             </RegistMemberDataCol>
-                          )}
+                            <RegistMemberDataCol>
+                              <DataItemTitle>등록대상 :</DataItemTitle>
+                              <DataItemValue>
+                                {membershipLog.cabinetId ? "사물함" : "멤버쉽"}
+                              </DataItemValue>
+                            </RegistMemberDataCol>
+                            {membershipLog.cabinetId && (
+                              <RegistMemberDataCol>
+                                <DataItemTitle>사물함 :</DataItemTitle>
+                                <DataItemValue>
+                                  {membershipLog.cabinet.cabinetNumber}번
+                                </DataItemValue>
+                              </RegistMemberDataCol>
+                            )}
 
-                          <RegistMemberDataCol>
-                            <DataItemTitle>이름 :</DataItemTitle>
-                            <DataItemValue>
-                              {membershipLog.user.name}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                          <RegistMemberDataCol>
-                            <DataItemTitle>아이디 :</DataItemTitle>
-                            <DataItemValue>
-                              {membershipLog.user.userId}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                          <RegistMemberDataCol>
-                            <DataItemTitle>전화번호 :</DataItemTitle>
-                            <DataItemValue>
-                              {membershipLog.user.phoneNumber}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                          <RegistMemberDataCol>
-                            <DataItemTitle>생년월일 :</DataItemTitle>
-                            <DataItemValue>
-                              {moment()
-                                .set("year", membershipLog.user.birthYear)
-                                .set("month", membershipLog.user.birthMonth - 1)
-                                .set("date", membershipLog.user.birthDay)
-                                .format("YYYY-MM-DD")}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                          <RegistMemberDataCol>
-                            <DataItemTitle>등록일시 :</DataItemTitle>
-                            <DataItemValue>
-                              {moment(
-                                new Date(membershipLog.createdAt).toUTCString()
-                              ).format("YYYY-MM-DD HH:mm:ss")}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                          <RegistMemberDataCol>
-                            <DataItemTitle>시작 :</DataItemTitle>
-                            <DataItemValue>
-                              {membershipLog.startDatetime}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                          <RegistMemberDataCol>
-                            <DataItemTitle>종료 :</DataItemTitle>
-                            <DataItemValue>
-                              {membershipLog.endDatetime}
-                            </DataItemValue>
-                          </RegistMemberDataCol>
-                        </RegistMemberDataRow>
-                      </RegistMemberList>
-                    );
-                  })
-                : "해당 날짜의 등록자가 없습니다"}
-            </RegistMembersContainer>
-          </DateMembersRow>
-        </DateMemberSection>
-        <TotalMembersSection>
-          <TotalMembersHead>
-            전체 회원(현재 회원수 : {nowUsingUsers.length}(남 :{" "}
-            {
-              nowUsingUsers
-                .filter(user => user.gender === "MALE")
-                .filter(user => {
+                            <RegistMemberDataCol>
+                              <DataItemTitle>이름 :</DataItemTitle>
+                              <DataItemValue>
+                                {membershipLog.user.name}
+                              </DataItemValue>
+                            </RegistMemberDataCol>
+                            <RegistMemberDataCol>
+                              <DataItemTitle>아이디 :</DataItemTitle>
+                              <DataItemValue>
+                                {membershipLog.user.userId}
+                              </DataItemValue>
+                            </RegistMemberDataCol>
+                            <RegistMemberDataCol>
+                              <DataItemTitle>전화번호 :</DataItemTitle>
+                              <DataItemValue>
+                                {membershipLog.user.phoneNumber}
+                              </DataItemValue>
+                            </RegistMemberDataCol>
+                            <RegistMemberDataCol>
+                              <DataItemTitle>생년월일 :</DataItemTitle>
+                              <DataItemValue>
+                                {moment()
+                                  .set("year", membershipLog.user.birthYear)
+                                  .set(
+                                    "month",
+                                    membershipLog.user.birthMonth - 1
+                                  )
+                                  .set("date", membershipLog.user.birthDay)
+                                  .format("YYYY-MM-DD")}
+                              </DataItemValue>
+                            </RegistMemberDataCol>
+                            <RegistMemberDataCol>
+                              <DataItemTitle>등록일시 :</DataItemTitle>
+                              <DataItemValue>
+                                {moment(
+                                  new Date(
+                                    membershipLog.createdAt
+                                  ).toUTCString()
+                                ).format("YYYY-MM-DD HH:mm:ss")}
+                              </DataItemValue>
+                            </RegistMemberDataCol>
+                            <RegistMemberDataCol>
+                              <DataItemTitle>시작 :</DataItemTitle>
+                              <DataItemValue>
+                                {membershipLog.startDatetime}
+                              </DataItemValue>
+                            </RegistMemberDataCol>
+                            <RegistMemberDataCol>
+                              <DataItemTitle>종료 :</DataItemTitle>
+                              <DataItemValue>
+                                {membershipLog.endDatetime}
+                              </DataItemValue>
+                            </RegistMemberDataCol>
+                          </RegistMemberDataRow>
+                        </RegistMemberList>
+                      );
+                    })
+                  : "해당 날짜의 등록자가 없습니다"}
+              </RegistMembersContainer>
+            </DateMembersRow>
+          </DateMemberSection>
+          <TotalMembersSection>
+            <TotalMembersHead>
+              전체 회원(현재 회원수 :{" "}
+              {
+                nowUsingUsers.filter(user => {
                   const { memberships } = user;
                   const nowMembership = memberships.find(
                     membership =>
@@ -399,187 +407,206 @@ const ManageUsersPresenter: React.SFC<IProps> = ({
                     return false;
                   }
                 }).length
-            }
-            (
-            {
-              nowUsingUsers
-                .filter(user => user.gender === "MALE")
-                .filter(user => {
-                  const { memberships } = user;
-                  const nowMembership = memberships.find(
-                    membership =>
-                      moment(membership.endDatetime) >= moment() &&
-                      membership.target === "MEMBERSHIP"
-                  );
-
-                  if (nowMembership) {
-                    const nowMembershipPeriod = moment.duration(
-                      moment(nowMembership.endDatetime).diff(
-                        nowMembership.startDatetime
-                      )
+              }
+              (남 :{" "}
+              {
+                nowUsingUsers
+                  .filter(user => user.gender === "MALE")
+                  .filter(user => {
+                    const { memberships } = user;
+                    const nowMembership = memberships.find(
+                      membership =>
+                        moment(membership.endDatetime) >= moment() &&
+                        membership.target === "MEMBERSHIP"
                     );
-                    const dayPeriod = nowMembershipPeriod.asDays();
-                    if (dayPeriod > 1) {
+                    if (nowMembership) {
                       return true;
                     } else {
                       return false;
                     }
-                  } else {
-                    return false;
-                  }
-                }).length
-            }
-            /
-            {
-              nowUsingUsers
-                .filter(user => user.gender === "MALE")
-                .filter(user => {
-                  const { memberships } = user;
-                  const nowMembership = memberships.find(
-                    membership =>
-                      moment(membership.endDatetime) >= moment() &&
-                      membership.target === "MEMBERSHIP"
-                  );
-
-                  if (nowMembership) {
-                    const nowMembershipPeriod = moment.duration(
-                      moment(nowMembership.endDatetime).diff(
-                        nowMembership.startDatetime
-                      )
+                  }).length
+              }
+              (
+              {
+                nowUsingUsers
+                  .filter(user => user.gender === "MALE")
+                  .filter(user => {
+                    const { memberships } = user;
+                    const nowMembership = memberships.find(
+                      membership =>
+                        moment(membership.endDatetime) >= moment() &&
+                        membership.target === "MEMBERSHIP"
                     );
-                    const dayPeriod = nowMembershipPeriod.asDays();
-                    if (dayPeriod <= 1) {
-                      return true;
+
+                    if (nowMembership) {
+                      const nowMembershipPeriod = moment.duration(
+                        moment(nowMembership.endDatetime).diff(
+                          nowMembership.startDatetime
+                        )
+                      );
+                      const dayPeriod = nowMembershipPeriod.asDays();
+                      if (dayPeriod > 1) {
+                        return true;
+                      } else {
+                        return false;
+                      }
                     } else {
                       return false;
                     }
-                  } else {
-                    return false;
-                  }
-                }).length
-            }
-            ), 여 :{" "}
-            {nowUsingUsers.filter(user => user.gender === "FEMALE").length}(
-            {
-              nowUsingUsers
-                .filter(user => user.gender === "FEMALE")
-                .filter(user => {
-                  const { memberships } = user;
-                  const nowMembership = memberships.find(
-                    membership => moment(membership.endDatetime) >= moment()
-                  );
-                  if (nowMembership) {
-                    const nowMembershipPeriod = moment.duration(
-                      moment(nowMembership.endDatetime).diff(
-                        nowMembership.startDatetime
-                      )
+                  }).length
+              }
+              /
+              {
+                nowUsingUsers
+                  .filter(user => user.gender === "MALE")
+                  .filter(user => {
+                    const { memberships } = user;
+                    const nowMembership = memberships.find(
+                      membership =>
+                        moment(membership.endDatetime) >= moment() &&
+                        membership.target === "MEMBERSHIP"
                     );
-                    const dayPeriod = nowMembershipPeriod.asDays();
-                    if (dayPeriod > 1) {
-                      return true;
+
+                    if (nowMembership) {
+                      const nowMembershipPeriod = moment.duration(
+                        moment(nowMembership.endDatetime).diff(
+                          nowMembership.startDatetime
+                        )
+                      );
+                      const dayPeriod = nowMembershipPeriod.asDays();
+                      if (dayPeriod <= 1) {
+                        return true;
+                      } else {
+                        return false;
+                      }
                     } else {
                       return false;
                     }
-                  } else {
-                    return false;
-                  }
-                }).length
-            }
-            /
-            {
-              nowUsingUsers
-                .filter(user => user.gender === "FEMALE")
-                .filter(user => {
-                  const { memberships } = user;
-                  const nowMembership = memberships.find(
-                    membership => moment(membership.endDatetime) >= moment()
-                  );
-
-                  if (nowMembership) {
-                    const nowMembershipPeriod = moment.duration(
-                      moment(nowMembership.endDatetime).diff(
-                        nowMembership.startDatetime
-                      )
+                  }).length
+              }
+              ), 여 :{" "}
+              {nowUsingUsers.filter(user => user.gender === "FEMALE").length}(
+              {
+                nowUsingUsers
+                  .filter(user => user.gender === "FEMALE")
+                  .filter(user => {
+                    const { memberships } = user;
+                    const nowMembership = memberships.find(
+                      membership => moment(membership.endDatetime) >= moment()
                     );
-                    const dayPeriod = nowMembershipPeriod.asDays();
-                    if (dayPeriod <= 1) {
-                      return true;
+                    if (nowMembership) {
+                      const nowMembershipPeriod = moment.duration(
+                        moment(nowMembership.endDatetime).diff(
+                          nowMembership.startDatetime
+                        )
+                      );
+                      const dayPeriod = nowMembershipPeriod.asDays();
+                      if (dayPeriod > 1) {
+                        return true;
+                      } else {
+                        return false;
+                      }
                     } else {
                       return false;
                     }
-                  } else {
-                    return false;
-                  }
-                }).length
-            }
-            ))
-          </TotalMembersHead>
-          <TotalMembersBody>
-            <TotalMembersContainer>
-              {nowUsingUsers.length
-                ? nowUsingUsers.map(user => (
-                    <TotalMemberList
-                      key={user.id}
-                      onClick={() => onUserClick(user.id)}
-                    >
-                      <TotalMemberCol>
-                        <DataItemTitle>이름 :</DataItemTitle>
-                        <DataItemValue>{user.name}</DataItemValue>
-                      </TotalMemberCol>
-                      <TotalMemberCol>
-                        <DataItemTitle>생년월일 :</DataItemTitle>
-                        <DataItemValue>
-                          {moment()
-                            .set("year", user.birthYear)
-                            .set("month", user.birthMonth - 1)
-                            .set("date", user.birthDay)
-                            .format("YYYY-MM-DD")}
-                        </DataItemValue>
-                      </TotalMemberCol>
-                      <TotalMemberCol>
-                        <DataItemTitle>아이디 :</DataItemTitle>
-                        <DataItemValue>{user.userId}</DataItemValue>
-                      </TotalMemberCol>
-                      <TotalMemberCol>
-                        <DataItemTitle>전화번호 :</DataItemTitle>
-                        <DataItemValue>{user.phoneNumber}</DataItemValue>
-                      </TotalMemberCol>
-                    </TotalMemberList>
-                  ))
-                : "현재 회원이 없습니다"}
-            </TotalMembersContainer>
-          </TotalMembersBody>
-        </TotalMembersSection>
-        <UserSearchSection>
-          <UserSearchButton
-            value={"사용자 검색"}
-            onClick={toggleShowUserSearchPopUp}
-          />
-          <AnalysisButton
-            value={"통계 보기"}
-            onClick={() => onChartBtnClick()}
-          />
-          <OfflineReqButton
-            value={"오프라인 가입자"}
-            onClick={onOfflineReqBtnClick}
-          />
-        </UserSearchSection>
-      </Container>
-    )}
+                  }).length
+              }
+              /
+              {
+                nowUsingUsers
+                  .filter(user => user.gender === "FEMALE")
+                  .filter(user => {
+                    const { memberships } = user;
+                    const nowMembership = memberships.find(
+                      membership => moment(membership.endDatetime) >= moment()
+                    );
 
-    {branchSearchPopupShow && (
-      <BranchSearchPopUp
-        closeFunc={toggleBranchPopUpShow}
-        onBranchClick={onBranchClick}
-      />
-    )}
-    {showUserSearchPopUp && (
-      <SearchUserPopUp
-        closeFunc={toggleShowUserSearchPopUp}
-        onUserClick={onUserClick}
-      />
-    )}
-  </BackContainer>
-);
+                    if (nowMembership) {
+                      const nowMembershipPeriod = moment.duration(
+                        moment(nowMembership.endDatetime).diff(
+                          nowMembership.startDatetime
+                        )
+                      );
+                      const dayPeriod = nowMembershipPeriod.asDays();
+                      if (dayPeriod <= 1) {
+                        return true;
+                      } else {
+                        return false;
+                      }
+                    } else {
+                      return false;
+                    }
+                  }).length
+              }
+              ))
+            </TotalMembersHead>
+            <TotalMembersBody>
+              <TotalMembersContainer>
+                {nowUsingUsers.length
+                  ? nowUsingUsers.map(user => (
+                      <TotalMemberList
+                        key={user.id}
+                        onClick={() => onUserClick(user.id)}
+                      >
+                        <TotalMemberCol>
+                          <DataItemTitle>이름 :</DataItemTitle>
+                          <DataItemValue>{user.name}</DataItemValue>
+                        </TotalMemberCol>
+                        <TotalMemberCol>
+                          <DataItemTitle>생년월일 :</DataItemTitle>
+                          <DataItemValue>
+                            {moment()
+                              .set("year", user.birthYear)
+                              .set("month", user.birthMonth - 1)
+                              .set("date", user.birthDay)
+                              .format("YYYY-MM-DD")}
+                          </DataItemValue>
+                        </TotalMemberCol>
+                        <TotalMemberCol>
+                          <DataItemTitle>아이디 :</DataItemTitle>
+                          <DataItemValue>{user.userId}</DataItemValue>
+                        </TotalMemberCol>
+                        <TotalMemberCol>
+                          <DataItemTitle>전화번호 :</DataItemTitle>
+                          <DataItemValue>{user.phoneNumber}</DataItemValue>
+                        </TotalMemberCol>
+                      </TotalMemberList>
+                    ))
+                  : "현재 회원이 없습니다"}
+              </TotalMembersContainer>
+            </TotalMembersBody>
+          </TotalMembersSection>
+          <UserSearchSection>
+            <UserSearchButton
+              value={"사용자 검색"}
+              onClick={toggleShowUserSearchPopUp}
+            />
+            <AnalysisButton
+              value={"통계 보기"}
+              onClick={() => onChartBtnClick()}
+            />
+            <OfflineReqButton
+              value={"오프라인 가입자"}
+              onClick={onOfflineReqBtnClick}
+            />
+          </UserSearchSection>
+        </Container>
+      )}
+
+      {branchSearchPopupShow && (
+        <BranchSearchPopUp
+          closeFunc={toggleBranchPopUpShow}
+          onBranchClick={onBranchClick}
+        />
+      )}
+      {showUserSearchPopUp && (
+        <SearchUserPopUp
+          closeFunc={toggleShowUserSearchPopUp}
+          onUserClick={onUserClick}
+        />
+      )}
+    </BackContainer>
+  );
+};
 
 export default ManageUsersPresenter;

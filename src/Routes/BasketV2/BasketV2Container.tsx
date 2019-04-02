@@ -379,6 +379,7 @@ class BasketV2Container extends React.Component<IProps, IState> {
           },
           async rsp => {
             // callback
+            // 모바일에서는 콜백이 실행되지 않음
 
             if (rsp.success) {
               const paymentCompleteResult = await this.completePaymentFn({

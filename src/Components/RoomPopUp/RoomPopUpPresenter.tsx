@@ -128,11 +128,11 @@ const RoomPopUpPresenter: React.SFC<IProps> = ({
     </CloseButton>
 
     {/* For Fool's Day */}
-    {canReturn && returnSeatLoading ? (
+    {/* {canReturn && returnSeatLoading ? (
       <FoolsDayImg src={"/img/event/asitanojoe_illuholic.jpeg"} />
     ) : (
       ""
-    )}
+    )} */}
     {/*  */}
   </Container>
 );

@@ -63,7 +63,7 @@ import {
 } from "../../types/api";
 import Menu from "../Menu";
 // For Fool's Day
-import { FoolsDayImg } from "../RoomPopUp/RoomPopUpPresenter";
+// import { FoolsDayImg } from "../RoomPopUp/RoomPopUpPresenter";
 //
 import SmallLoading from "../SmallLoading";
 
@@ -300,11 +300,11 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
           </SideTagContainer>
         }
         {/* For Fool's Day */}
-        {userUsingSeat && returnSeatLoading ? (
+        {/* {userUsingSeat && returnSeatLoading ? (
           <FoolsDayImg src={"/img/event/asitanojoe_illuholic.jpeg"} />
         ) : (
           ""
-        )}
+        )} */}
         {/*  */}
         <Switch>
           <Route

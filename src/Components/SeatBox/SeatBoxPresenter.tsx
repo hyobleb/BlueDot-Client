@@ -164,14 +164,14 @@ const SeatText = styled<
 `;
 
 // For Fool's Day
-const FoolsDayImg = styled<{ rotate: number }, "img">("img")`
-  width: 100%;
-  transform: rotate(180deg);
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-`;
+// const FoolsDayImg = styled<{ rotate: number }, "img">("img")`
+//   width: 100%;
+//   transform: rotate(180deg);
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   z-index: -1;
+// `;
 //
 
 const Seat: React.SFC<ISeatProps> = ({
@@ -302,7 +302,7 @@ const Seat: React.SFC<ISeatProps> = ({
           </SeatTextCon>
 
           {/* For Fool's Day */}
-          {actualUsing ? (
+          {/* {actualUsing ? (
             <FoolsDayImg
               rotate={rotate}
               src={
@@ -311,7 +311,7 @@ const Seat: React.SFC<ISeatProps> = ({
             />
           ) : (
             ""
-          )}
+          )} */}
           {/*  */}
         </>
       )}
