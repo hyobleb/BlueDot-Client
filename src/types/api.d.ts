@@ -343,6 +343,8 @@ export interface managerGetBranch_ManagerGetBranch_branch {
   thumbEnrollPs: string | null;
   tempEnterId: string | null;
   tempEnterPs: string | null;
+  plusTokUrl: string | null;
+  plustTokTempleteCode: string | null;
   products: (managerGetBranch_ManagerGetBranch_branch_products | null)[] | null;
 }
 
@@ -1506,6 +1508,8 @@ export interface addBranchVariables {
   thumbEnrollPs: string;
   tempEnterId: string;
   tempEnterPs: string;
+  plusTokUrl: string;
+  plustTokTempleteCode: string;
 }
 
 /* tslint:disable */
@@ -2599,6 +2603,8 @@ export interface updateBranchVariables {
   thumbEnrollPs: string;
   tempEnterId?: string | null;
   tempEnterPs?: string | null;
+  plusTokUrl: string;
+  plustTokTempleteCode: string;
 }
 
 /* tslint:disable */
@@ -2636,6 +2642,8 @@ export interface managerUpdateBranchVariables {
   thumbEnrollPs: string;
   tempEnterId: string;
   tempEnterPs: string;
+  plusTokUrl: string;
+  plustTokTempleteCode: string;
 }
 
 /* tslint:disable */

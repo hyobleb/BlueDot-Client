@@ -62,6 +62,8 @@ interface IState {
   thumbEnrollPs: string;
   tempEnterId: string;
   tempEnterPs: string;
+  plusTokUrl: string;
+  plustTokTempleteCode: string;
 }
 
 class ModifyBranchContainer extends React.Component<IProps, IState> {
@@ -104,6 +106,8 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       manMax: 80,
       minimapImg: "",
       minimapImgUploading: false,
+      plusTokUrl: "",
+      plustTokTempleteCode: "",
       postCode: "",
       showDaumPostApi: false,
       tempEnterId: "",
@@ -152,7 +156,9 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       thumbEnrollId,
       thumbEnrollPs,
       tempEnterId,
-      tempEnterPs
+      tempEnterPs,
+      plusTokUrl,
+      plustTokTempleteCode
     } = this.state;
 
     const { history } = this.props;
@@ -257,6 +263,8 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
                         thumbEnrollPs={thumbEnrollPs}
                         tempEnterId={tempEnterId}
                         tempEnterPs={tempEnterPs}
+                        plusTokUrl={plusTokUrl}
+                        plustTokTempleteCode={plustTokTempleteCode}
                       />
                     );
                   }}
@@ -445,7 +453,9 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
       thumbEnrollId,
       thumbEnrollPs,
       tempEnterId,
-      tempEnterPs
+      tempEnterPs,
+      plusTokUrl,
+      plustTokTempleteCode
     } = this.state;
     let lat;
     let lng;
@@ -481,6 +491,8 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
         manAcceptable: isMaleAvailable,
         manMax,
         minimapImg,
+        plusTokUrl,
+        plustTokTempleteCode,
         postCode,
         tempEnterId,
         tempEnterPs,
@@ -600,7 +612,9 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
           thumbEnrollId,
           thumbEnrollPs,
           tempEnterId,
-          tempEnterPs
+          tempEnterPs,
+          plusTokUrl,
+          plustTokTempleteCode
         } = branch;
         this.setState({
           address,
@@ -623,6 +637,8 @@ class ModifyBranchContainer extends React.Component<IProps, IState> {
           loungeImg: loungeImage,
           manMax: maleMax,
           minimapImg: minimapImage,
+          plusTokUrl,
+          plustTokTempleteCode,
           postCode: postalCode,
           tempEnterId: tempEnterId || "",
           tempEnterPs: tempEnterPs || "",

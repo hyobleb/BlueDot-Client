@@ -98,16 +98,12 @@ class BasketV2Container extends React.Component<IProps, IState> {
       <>
         <Script
           url="https://code.jquery.com/jquery-1.12.4.min.js"
-          onLoad={() => {
-            this.setJqueryLoad();
-          }}
+          onLoad={this.setJqueryLoad}
           onCreate={this.setJqueryLoad}
         />
         <Script
           url="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"
-          onLoad={() => {
-            this.setImportLoad();
-          }}
+          onLoad={this.setImportLoad}
           onCreate={this.setImportLoad}
         />
 
@@ -343,80 +339,83 @@ class BasketV2Container extends React.Component<IProps, IState> {
 
   public processingPayment = async (impId: string, paymentId: number) => {
     const { history } = this.props;
-    if (this.state.jqueryLoad && this.state.importLoad) {
-      const IMP = (window as any).IMP;
-      IMP.init(impId);
+    // if (this.state.jqueryLoad && this.state.importLoad) {
+    const IMP = (window as any).IMP;
+    IMP.init(impId);
 
-      const { payment } = this.state;
-      if (!payment) {
-        toast.error("결제 정보가 존재하지 않습니다");
-      } else {
-        const {
-          payMethod,
+    const { payment } = this.state;
+    if (!payment) {
+      toast.error("결제 정보가 존재하지 않습니다");
+    } else {
+      const {
+        payMethod,
+        amount,
+        merchant_uid,
+        user: { name, phoneNumber: buyerTel, email }
+      } = payment;
+
+      await IMP.request_pay(
+        {
+          // param
           amount,
+          buyer_email: email,
+          buyer_name: name,
+          buyer_tel: buyerTel,
+          m_redirect_url: `${SERVER_HOME_HOST}/payments/complete/mobile`,
           merchant_uid,
-          user: { name, phoneNumber: buyerTel, email }
-        } = payment;
+          name: "블루닷라운지 멤버쉽 결제",
+          pay_method: payMethod.toLowerCase(),
+          pg: "html5_inicis",
+          vbank_due:
+            payMethod === "vbank"
+              ? moment()
+                  .add(1, "d")
+                  .format("YYYYMMDDhhmm")
+              : undefined
+        },
+        async rsp => {
+          // callback
+          // 모바일에서는 콜백이 실행되지 않음
 
-        await IMP.request_pay(
-          {
-            // param
-            amount,
-            buyer_email: email,
-            buyer_name: name,
-            buyer_tel: buyerTel,
-            m_redirect_url: `${SERVER_HOME_HOST}/payments/complete/mobile`,
-            merchant_uid,
-            name: "블루닷라운지 멤버쉽 결제",
-            pay_method: payMethod.toLowerCase(),
-            pg: "html5_inicis",
-            vbank_due:
-              payMethod === "vbank"
-                ? moment()
-                    .add(1, "d")
-                    .format("YYYYMMDDhhmm")
-                : undefined
-          },
-          async rsp => {
-            // callback
-            // 모바일에서는 콜백이 실행되지 않음
+          if (rsp.success) {
+            const paymentCompleteResult = await this.completePaymentFn({
+              variables: {
+                imp_uid: rsp.imp_uid,
+                merchant_uid,
+                paymentId
+              }
+            });
 
-            if (rsp.success) {
-              const paymentCompleteResult = await this.completePaymentFn({
-                variables: {
-                  imp_uid: rsp.imp_uid,
-                  merchant_uid,
-                  paymentId
-                }
-              });
-
-              if (paymentCompleteResult) {
-                if (paymentCompleteResult.data.CompletePayment.ok) {
-                  if (
-                    payMethod === CreatePaymentMethodOption.CARD ||
-                    payMethod === CreatePaymentMethodOption.PHONE ||
-                    payMethod === CreatePaymentMethodOption.TRANS
-                  ) {
-                    toast.success("결제 및 등록이 완료되었습니다 :)");
-                    this.setState({
-                      payProcessing: false
-                    });
-                    history.push("/");
-                  }
+            if (paymentCompleteResult) {
+              if (paymentCompleteResult.data.CompletePayment.ok) {
+                if (
+                  payMethod === CreatePaymentMethodOption.CARD ||
+                  payMethod === CreatePaymentMethodOption.PHONE ||
+                  payMethod === CreatePaymentMethodOption.TRANS
+                ) {
+                  toast.success("결제 및 등록이 완료되었습니다 :)");
+                  this.setState({
+                    payProcessing: false
+                  });
+                  setTimeout(() => {
+                    history.push("/membership");
+                  }, 3000);
                 }
               }
-            } else {
-              toast.error("결제에 실패했습니다!");
-              this.setState({
-                payProcessing: false
-              });
             }
+          } else {
+            toast.error("결제에 실패했습니다!");
+            this.setState({
+              payProcessing: false
+            });
           }
-        );
-      }
-    } else {
-      toast.error("결제 모듈이 제대로 불러오지 않았습니다");
+        }
+      );
     }
+    // }
+    //  else {
+    //   toast.error("결제 모듈이 제대로 불러오지 않았습니다");
+    // }
   };
 
   public setJqueryLoad = () => {
