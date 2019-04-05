@@ -492,7 +492,7 @@ class ManageCabinetContainer extends React.Component<IProps, IState> {
               selSetId
             }
           },
-          branchId: selBranchId,
+          branchId,
           isShifitCabinet: true,
           nowMembershipId,
           userId: cabinet.user.userId,
