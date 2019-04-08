@@ -52,11 +52,8 @@ export const ADD_BRANCH = gql`
       tempEnterId: $tempEnterId
       tempEnterPs: $tempEnterPs
       plusTokUrl: $plusTokUrl
-<<<<<<< HEAD
       plusTokTempleteCode: $plusTokTempleteCode
-=======
-      plustTokTempleteCode: $plustTokTempleteCode
->>>>>>> kakaoissue
+
     ) {
       ok
       error
