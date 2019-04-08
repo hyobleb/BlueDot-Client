@@ -118,7 +118,7 @@ interface IProps {
   tempEnterId: string;
   tempEnterPs: string;
   plusTokUrl: string;
-  plustTokTempleteCode: string;
+  plusTokTempleteCode: string;
 }
 
 const AddBranchPresenter: React.SFC<IProps> = ({
@@ -160,7 +160,7 @@ const AddBranchPresenter: React.SFC<IProps> = ({
   tempEnterId,
   tempEnterPs,
   plusTokUrl,
-  plustTokTempleteCode
+  plusTokTempleteCode
 }) => (
   <BackContainer>
     <Helmet>
@@ -442,8 +442,8 @@ const AddBranchPresenter: React.SFC<IProps> = ({
         <InputLabel>
           <InputTitle>플러스톡 URL : </InputTitle>
           <InputExtended
-            value={plustTokTempleteCode}
-            name={"plustTokTempleteCode"}
+            value={plusTokTempleteCode}
+            name={"plusTokTempleteCode"}
             onChange={onInputChange}
             required={false}
           />

@@ -48,7 +48,7 @@ interface IState {
   tempEnterId: string;
   tempEnterPs: string;
   plusTokUrl: string;
-  plustTokTempleteCode: string;
+  plusTokTempleteCode: string;
 }
 
 class AddBranchContainer extends React.Component<IProps, IState> {
@@ -76,8 +76,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
     manMax: 80,
     minimapImg: "",
     minimapImgUploading: false,
+    plusTokTempleteCode: "",
     plusTokUrl: "",
-    plustTokTempleteCode: "",
     postCode: "",
     showDaumPostApi: false,
     tempEnterId: "",
@@ -121,7 +121,7 @@ class AddBranchContainer extends React.Component<IProps, IState> {
       tempEnterId,
       tempEnterPs,
       plusTokUrl,
-      plustTokTempleteCode
+      plusTokTempleteCode
     } = this.state;
     const { history } = this.props;
     return (
@@ -143,8 +143,8 @@ class AddBranchContainer extends React.Component<IProps, IState> {
           loungeImg,
           manMax,
           minimapImg,
+          plusTokTempleteCode,
           plusTokUrl,
-          plustTokTempleteCode,
           postCode,
           tempEnterId,
           tempEnterPs,
@@ -212,7 +212,7 @@ class AddBranchContainer extends React.Component<IProps, IState> {
               tempEnterId={tempEnterId}
               tempEnterPs={tempEnterPs}
               plusTokUrl={plusTokUrl}
-              plustTokTempleteCode={plustTokTempleteCode}
+              plusTokTempleteCode={plusTokTempleteCode}
             />
           );
         }}
