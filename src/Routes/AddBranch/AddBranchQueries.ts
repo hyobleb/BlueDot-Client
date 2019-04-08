@@ -23,7 +23,11 @@ export const ADD_BRANCH = gql`
     $tempEnterId: String!
     $tempEnterPs: String!
     $plusTokUrl: String!
+<<<<<<< HEAD
     $plusTokTempleteCode: String!
+=======
+    $plustTokTempleteCode: String!
+>>>>>>> kakaoissue
   ) {
     HeadCreateBranch(
       name: $branchName
@@ -48,7 +52,11 @@ export const ADD_BRANCH = gql`
       tempEnterId: $tempEnterId
       tempEnterPs: $tempEnterPs
       plusTokUrl: $plusTokUrl
+<<<<<<< HEAD
       plusTokTempleteCode: $plusTokTempleteCode
+=======
+      plustTokTempleteCode: $plustTokTempleteCode
+>>>>>>> kakaoissue
     ) {
       ok
       error

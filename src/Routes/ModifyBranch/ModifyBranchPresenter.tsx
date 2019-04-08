@@ -126,6 +126,8 @@ interface IProps {
   thumbEnrollPs: string;
   tempEnterId: string;
   tempEnterPs: string;
+  plusTokUrl: string;
+  plustTokTempleteCode: string;
 }
 
 const ModifyBranchPresenter: React.SFC<IProps> = ({
@@ -173,7 +175,9 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
   thumbEnrollId,
   thumbEnrollPs,
   tempEnterId,
-  tempEnterPs
+  tempEnterPs,
+  plusTokUrl,
+  plustTokTempleteCode
 }) => (
   <BackContainer>
     <Helmet>
@@ -263,6 +267,7 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
                   />
                 </InputLabel>
               </Row>
+
               <Row>
                 <InputLabel>
                   <InputTitle>지점 이미지 : </InputTitle>
@@ -476,6 +481,30 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
                     name={"tempEnterPs"}
                     onChange={onInputChange}
                     required={false}
+                  />
+                </InputLabel>
+              </Row>
+              <Row>
+                <InputLabel>
+                  <InputTitle>플러스톡 URL : </InputTitle>
+                  <InputExtended
+                    value={plusTokUrl}
+                    onChange={onInputChange}
+                    name={"plusTokUrl"}
+                    placeholder={"알림톡 발송시 하단 버튼 링크로 연결됩니다"}
+                  />
+                </InputLabel>
+              </Row>
+              <Row>
+                <InputLabel>
+                  <InputTitle>플러스톡 템플릿코드 : </InputTitle>
+                  <InputExtended
+                    value={plustTokTempleteCode}
+                    onChange={onInputChange}
+                    name={"plustTokTempleteCode"}
+                    placeholder={
+                      "알림톡 API에 등록된 템플릿코드를 입력해주세요"
+                    }
                   />
                 </InputLabel>
               </Row>

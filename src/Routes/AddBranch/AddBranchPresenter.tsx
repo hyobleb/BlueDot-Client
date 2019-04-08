@@ -117,6 +117,8 @@ interface IProps {
   thumbEnrollPs: string;
   tempEnterId: string;
   tempEnterPs: string;
+  plusTokUrl: string;
+  plustTokTempleteCode: string;
 }
 
 const AddBranchPresenter: React.SFC<IProps> = ({
@@ -156,7 +158,9 @@ const AddBranchPresenter: React.SFC<IProps> = ({
   thumbEnrollId,
   thumbEnrollPs,
   tempEnterId,
-  tempEnterPs
+  tempEnterPs,
+  plusTokUrl,
+  plustTokTempleteCode
 }) => (
   <BackContainer>
     <Helmet>
@@ -418,6 +422,28 @@ const AddBranchPresenter: React.SFC<IProps> = ({
           <InputExtended
             value={tempEnterPs}
             name={"tempEnterPs"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>카카오 알림톡 템플릿 코드 : </InputTitle>
+          <InputExtended
+            value={plusTokUrl}
+            name={"plusTokUrl"}
+            onChange={onInputChange}
+            required={false}
+          />
+        </InputLabel>
+      </Row>
+      <Row>
+        <InputLabel>
+          <InputTitle>플러스톡 URL : </InputTitle>
+          <InputExtended
+            value={plustTokTempleteCode}
+            name={"plustTokTempleteCode"}
             onChange={onInputChange}
             required={false}
           />

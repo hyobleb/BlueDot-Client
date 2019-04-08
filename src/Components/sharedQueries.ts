@@ -84,6 +84,8 @@ export const MANAGER_GET_BRANCH = gql`
         thumbEnrollPs
         tempEnterId
         tempEnterPs
+        plusTokUrl
+        plustTokTempleteCode
         products {
           id
           title

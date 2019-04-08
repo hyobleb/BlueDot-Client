@@ -147,7 +147,7 @@ const BasketV2Presenter: React.SFC<IProps> = ({
         </HeadSection>
         <BodySection>
           {getReqMemsLoading ? (
-            <Loading />
+            <Loading loadingType={"spin"} />
           ) : requestMemberships && requestMemberships.length ? (
             requestMemberships.map(
               reqMem =>

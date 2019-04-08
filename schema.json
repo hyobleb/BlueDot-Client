@@ -2045,7 +2045,11 @@
             "deprecationReason": null
           },
           {
+<<<<<<< HEAD
             "name": "plusTokTempleteCode",
+=======
+            "name": "plustTokTempleteCode",
+>>>>>>> kakaoissue
             "description": "",
             "args": [],
             "type": {
@@ -10163,7 +10167,11 @@
                 "defaultValue": null
               },
               {
+<<<<<<< HEAD
                 "name": "plusTokTempleteCode",
+=======
+                "name": "plustTokTempleteCode",
+>>>>>>> kakaoissue
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -10596,7 +10604,11 @@
                 "defaultValue": null
               },
               {
+<<<<<<< HEAD
                 "name": "plusTokTempleteCode",
+=======
+                "name": "plustTokTempleteCode",
+>>>>>>> kakaoissue
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
@@ -10811,7 +10823,11 @@
                 "defaultValue": null
               },
               {
+<<<<<<< HEAD
                 "name": "plusTokTempleteCode",
+=======
+                "name": "plustTokTempleteCode",
+>>>>>>> kakaoissue
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
