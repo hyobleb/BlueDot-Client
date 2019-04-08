@@ -22,6 +22,8 @@ export const ADD_BRANCH = gql`
     $thumbEnrollPs: String!
     $tempEnterId: String!
     $tempEnterPs: String!
+    $plusTokUrl: String!
+    $plusTokTempleteCode: String!
   ) {
     HeadCreateBranch(
       name: $branchName
@@ -45,6 +47,8 @@ export const ADD_BRANCH = gql`
       thumbEnrollPs: $thumbEnrollPs
       tempEnterId: $tempEnterId
       tempEnterPs: $tempEnterPs
+      plusTokUrl: $plusTokUrl
+      plusTokTempleteCode: $plusTokTempleteCode
     ) {
       ok
       error

@@ -1193,6 +1193,12 @@ export interface getVbankPayments {
 // GraphQL query operation: getAllBranches
 // ====================================================
 
+export interface getAllBranches_GetAllBranches_branches_alliedBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
 export interface getAllBranches_GetAllBranches_branches {
   __typename: "Branch";
   id: number;
@@ -1200,6 +1206,9 @@ export interface getAllBranches_GetAllBranches_branches {
   address: string;
   city: string;
   district: string;
+  descriptionPosition: string;
+  detailAddress: string;
+  alliedBranches: (getAllBranches_GetAllBranches_branches_alliedBranches | null)[] | null;
 }
 
 export interface getAllBranches_GetAllBranches {
@@ -1506,6 +1515,8 @@ export interface addBranchVariables {
   thumbEnrollPs: string;
   tempEnterId: string;
   tempEnterPs: string;
+  plusTokUrl: string;
+  plusTokTempleteCode: string;
 }
 
 /* tslint:disable */

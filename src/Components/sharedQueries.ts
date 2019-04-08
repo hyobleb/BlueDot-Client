@@ -608,6 +608,12 @@ export const GET_ALL_BRANCHES = gql`
         address
         city
         district
+        descriptionPosition
+        detailAddress
+        alliedBranches {
+          id
+          name
+        }
       }
     }
   }

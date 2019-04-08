@@ -2,6 +2,7 @@ import React from "react";
 import { Query } from "react-apollo";
 import {
   getAllBranches,
+  getAllBranches_GetAllBranches_branches,
   getBranchesByDistrict,
   searchBranch
 } from "../../types/api";
@@ -23,6 +24,7 @@ interface IState {
   selCity: string;
   selDistrict: string;
   searchedBranches: any[];
+  branches: Array<getAllBranches_GetAllBranches_branches | null> | null;
 }
 
 class BranchSearchQuery extends Query<searchBranch> {}
@@ -33,6 +35,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = {
+      branches: [],
       districtInfos: [],
       inputBranch: "",
       localInfos: [],
@@ -51,7 +54,8 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
       districtInfos,
       selCity,
       selDistrict,
-      searchedBranches
+      searchedBranches,
+      branches
     } = this.state;
     const { closeFunc, title } = this.props;
     return (
@@ -68,7 +72,7 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
             onCompleted={this.updateFields}
             fetchPolicy={"cache-and-network"}
           >
-            {() => (
+            {({ loading: getAllBranchesLoading }) => (
               <GetBranchesByDistrict
                 query={GET_BRANCHES_BY_DISTRICT}
                 variables={{ city: selCity, district: selDistrict }}
@@ -91,6 +95,8 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
                     searchedBranches={searchedBranches}
                     branchesByDistrictLoading={branchesByDistrictLoading}
                     selDistrict={selDistrict}
+                    branches={branches}
+                    getAllBranchesLoading={getAllBranchesLoading}
                   />
                 )}
               </GetBranchesByDistrict>
@@ -122,6 +128,8 @@ class BranchSearchPopUpContainer extends React.Component<IProps, IState> {
       } = data;
 
       if (branches) {
+        this.setState({ branches });
+
         const { localInfos } = this.state;
         branches.forEach(branch => {
           if (branch) {
