@@ -127,7 +127,7 @@ interface IProps {
   tempEnterId: string;
   tempEnterPs: string;
   plusTokUrl: string;
-  plustTokTempleteCode: string;
+  plusTokTempleteCode: string;
 }
 
 const ModifyBranchPresenter: React.SFC<IProps> = ({
@@ -177,7 +177,7 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
   tempEnterId,
   tempEnterPs,
   plusTokUrl,
-  plustTokTempleteCode
+  plusTokTempleteCode
 }) => (
   <BackContainer>
     <Helmet>
@@ -499,9 +499,9 @@ const ModifyBranchPresenter: React.SFC<IProps> = ({
                 <InputLabel>
                   <InputTitle>플러스톡 템플릿코드 : </InputTitle>
                   <InputExtended
-                    value={plustTokTempleteCode}
+                    value={plusTokTempleteCode}
                     onChange={onInputChange}
-                    name={"plustTokTempleteCode"}
+                    name={"plusTokTempleteCode"}
                     placeholder={
                       "알림톡 API에 등록된 템플릿코드를 입력해주세요"
                     }

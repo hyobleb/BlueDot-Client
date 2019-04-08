@@ -30,7 +30,7 @@ export const UPDATE_BRANCH = gql`
     $tempEnterId: String
     $tempEnterPs: String
     $plusTokUrl: String!
-    $plustTokTempleteCode: String!
+    $plusTokTempleteCode: String!
   ) {
     HeadUpdateBranch(
       branchId: $branchId
@@ -62,7 +62,7 @@ export const UPDATE_BRANCH = gql`
       tempEnterId: $tempEnterId
       tempEnterPs: $tempEnterPs
       plusTokUrl: $plusTokUrl
-      plustTokTempleteCode: $plustTokTempleteCode
+      plusTokTempleteCode: $plusTokTempleteCode
     ) {
       ok
       error
@@ -90,7 +90,7 @@ export const MANAGER_UPDATE_BRANCH = gql`
     $tempEnterId: String!
     $tempEnterPs: String!
     $plusTokUrl: String!
-    $plustTokTempleteCode: String!
+    $plusTokTempleteCode: String!
   ) {
     ManagerUpdateBranch(
       branchId: $branchId
@@ -111,7 +111,7 @@ export const MANAGER_UPDATE_BRANCH = gql`
       tempEnterId: $tempEnterId
       tempEnterPs: $tempEnterPs
       plusTokUrl: $plusTokUrl
-      plustTokTempleteCode: $plustTokTempleteCode
+      plusTokTempleteCode: $plusTokTempleteCode
     ) {
       ok
       error

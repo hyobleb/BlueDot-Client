@@ -344,7 +344,7 @@ export interface managerGetBranch_ManagerGetBranch_branch {
   tempEnterId: string | null;
   tempEnterPs: string | null;
   plusTokUrl: string | null;
-  plustTokTempleteCode: string | null;
+  plusTokTempleteCode: string | null;
   products: (managerGetBranch_ManagerGetBranch_branch_products | null)[] | null;
 }
 
@@ -1195,6 +1195,12 @@ export interface getVbankPayments {
 // GraphQL query operation: getAllBranches
 // ====================================================
 
+export interface getAllBranches_GetAllBranches_branches_alliedBranches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
 export interface getAllBranches_GetAllBranches_branches {
   __typename: "Branch";
   id: number;
@@ -1202,6 +1208,9 @@ export interface getAllBranches_GetAllBranches_branches {
   address: string;
   city: string;
   district: string;
+  descriptionPosition: string;
+  detailAddress: string;
+  alliedBranches: (getAllBranches_GetAllBranches_branches_alliedBranches | null)[] | null;
 }
 
 export interface getAllBranches_GetAllBranches {
@@ -1509,7 +1518,7 @@ export interface addBranchVariables {
   tempEnterId: string;
   tempEnterPs: string;
   plusTokUrl: string;
-  plustTokTempleteCode: string;
+  plusTokTempleteCode: string;
 }
 
 /* tslint:disable */
@@ -2604,7 +2613,7 @@ export interface updateBranchVariables {
   tempEnterId?: string | null;
   tempEnterPs?: string | null;
   plusTokUrl: string;
-  plustTokTempleteCode: string;
+  plusTokTempleteCode: string;
 }
 
 /* tslint:disable */
@@ -2643,7 +2652,7 @@ export interface managerUpdateBranchVariables {
   tempEnterId: string;
   tempEnterPs: string;
   plusTokUrl: string;
-  plustTokTempleteCode: string;
+  plusTokTempleteCode: string;
 }
 
 /* tslint:disable */

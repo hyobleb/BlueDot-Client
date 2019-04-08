@@ -85,7 +85,7 @@ export const MANAGER_GET_BRANCH = gql`
         tempEnterId
         tempEnterPs
         plusTokUrl
-        plustTokTempleteCode
+        plusTokTempleteCode
         products {
           id
           title
@@ -610,6 +610,12 @@ export const GET_ALL_BRANCHES = gql`
         address
         city
         district
+        descriptionPosition
+        detailAddress
+        alliedBranches {
+          id
+          name
+        }
       }
     }
   }

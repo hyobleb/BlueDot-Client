@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "../../typed-components";
+import { getAllBranches_GetAllBranches_branches } from "../../types/api";
 import Button from "../Button";
 import Form from "../Form";
 import Input from "../Input";
@@ -19,6 +20,8 @@ interface IProps {
   searchedBranches: any[];
   branchesByDistrictLoading: boolean;
   selDistrict: string;
+  getAllBranchesLoading: boolean;
+  branches: Array<getAllBranches_GetAllBranches_branches | null> | null;
 }
 const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
@@ -175,7 +178,9 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   onDistrictBtnClick,
   searchedBranches,
   branchesByDistrictLoading,
-  selDistrict
+  selDistrict,
+  branches,
+  getAllBranchesLoading
 }) => {
   return (
     <Container>
@@ -220,6 +225,43 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
             ))}
         </DistrictBtnCon>
       </LocalSelBtnCon>
+
+      <BodyContainer>
+        {getAllBranchesLoading ? (
+          <Loading />
+        ) : (
+          branches &&
+          branches.map(
+            branch =>
+              branch && (
+                <BranchContainer
+                  key={branch.id}
+                  onClick={() => onBranchClick(branch.id)}
+                >
+                  <ContentsContainer>
+                    <PhotoContainer>
+                      <Image src={require("src/images/default_profile.png")} />
+                    </PhotoContainer>
+                    <ContextContainer>
+                      <ContextRow>{branch.name}</ContextRow>
+                      <ContextRow>{branch.descriptionPosition}</ContextRow>
+                      <ContextRow>
+                        {branch.address} {branch.detailAddress}
+                      </ContextRow>
+                      <ContextRow>
+                        {branch.alliedBranches &&
+                          branch.alliedBranches.length > 0 &&
+                          `${branch.alliedBranches.map(
+                            alliedBranch => alliedBranch && alliedBranch.name
+                          )} 이용 가능`}
+                      </ContextRow>
+                    </ContextContainer>
+                  </ContentsContainer>
+                </BranchContainer>
+              )
+          )
+        )}
+      </BodyContainer>
 
       <BodyContainer>
         {branchesByDistrictLoading && selDistrict && <Loading />}

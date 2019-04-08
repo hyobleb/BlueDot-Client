@@ -2045,7 +2045,7 @@
             "deprecationReason": null
           },
           {
-            "name": "plustTokTempleteCode",
+            "name": "plusTokTempleteCode",
             "description": "",
             "args": [],
             "type": {
@@ -10163,7 +10163,7 @@
                 "defaultValue": null
               },
               {
-                "name": "plustTokTempleteCode",
+                "name": "plusTokTempleteCode",
                 "description": "",
                 "type": {
                   "kind": "NON_NULL",
@@ -10596,7 +10596,7 @@
                 "defaultValue": null
               },
               {
-                "name": "plustTokTempleteCode",
+                "name": "plusTokTempleteCode",
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
@@ -10811,7 +10811,7 @@
                 "defaultValue": null
               },
               {
-                "name": "plustTokTempleteCode",
+                "name": "plusTokTempleteCode",
                 "description": "",
                 "type": {
                   "kind": "SCALAR",
