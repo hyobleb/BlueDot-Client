@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "../../typed-components";
 import { getAllBranches_GetAllBranches_branches } from "../../types/api";
-import Button from "../Button";
-import Form from "../Form";
-import Input from "../Input";
+// import Button from "../Button";
+// import Form from "../Form";
+// import Input from "../Input";
 import Loading from "../Loading";
 
 interface IProps {
@@ -27,9 +27,9 @@ const Container = styled.div`
   -webkit-box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.5);
   background-color: white;
-  overflow: scroll;
+  /* overflow: scroll;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: auto; */
   position: fixed;
   margin: auto;
   top: 0;
@@ -37,7 +37,7 @@ const Container = styled.div`
   left: 0;
   right: 0;
   width: 90%;
-  height: 60%;
+  height: 90%;
   z-index: 9;
   padding: 20px;
 `;
@@ -47,52 +47,52 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
-const InputContainer = styled.div`
-  min-width: 150px;
-  max-width: 400px;
-  margin-right: 10px;
-  width: 70%;
-`;
+// const InputContainer = styled.div`
+//   min-width: 150px;
+//   max-width: 400px;
+//   margin-right: 10px;
+//   width: 70%;
+// `;
 
-const ExtendInput = styled(Input)`
-  padding-top: 6px;
-  padding-bottom: 6px;
-  font-size: 12px;
-  margin-right: 10px;
-`;
+// const ExtendInput = styled(Input)`
+//   padding-top: 6px;
+//   padding-bottom: 6px;
+//   font-size: 12px;
+//   margin-right: 10px;
+// `;
 
 const HeadContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const BranchSearchButton = styled(Button)`
-  width: 100px;
-  min-width: 50px;
-  max-width: 150px;
-  background-color: ${props => props.theme.blueColor};
-  color: white;
-  text-transform: uppercase;
-  padding: 3px 3px;
-  font-size: 12px;
-  border: 0;
-  cursor: pointer;
-  font-weight: 500;
-  text-align: center;
-  border-radius: 5%;
-  margin-top: 0px;
-  &:active,
-  &:focus {
-    outline: none;
-  }
-  &:disabled {
-    opacity: 0.8;
-  }
-`;
+// const BranchSearchButton = styled(Button)`
+//   width: 100px;
+//   min-width: 50px;
+//   max-width: 150px;
+//   background-color: ${props => props.theme.blueColor};
+//   color: white;
+//   text-transform: uppercase;
+//   padding: 3px 3px;
+//   font-size: 12px;
+//   border: 0;
+//   cursor: pointer;
+//   font-weight: 500;
+//   text-align: center;
+//   border-radius: 5%;
+//   margin-top: 0px;
+//   &:active,
+//   &:focus {
+//     outline: none;
+//   }
+//   &:disabled {
+//     opacity: 0.8;
+//   }
+// `;
 
-const ExtendForm = styled(Form)`
-  display: flex;
-`;
+// const ExtendForm = styled(Form)`
+//   display: flex;
+// `;
 
 const BodyContainer = styled.div`
   margin-top: 30px;
@@ -142,28 +142,28 @@ const CloseButton = styled.div`
   cursor: pointer;
 `;
 
-const LocalSelBtnCon = styled.div`
-  padding: 10px;
-`;
-const LocalSelBtn = styled(Button)`
-  width: 60px;
-  height: 20px;
-  padding: 0;
-  font-size: 11px;
-  margin-top: 0;
-`;
+// const LocalSelBtnCon = styled.div`
+//   padding: 10px;
+// `;
+// const LocalSelBtn = styled(Button)`
+//   width: 60px;
+//   height: 20px;
+//   padding: 0;
+//   font-size: 11px;
+//   margin-top: 0;
+// `;
 
-const CityBtnCon = styled.div``;
-const CityBtn = styled(LocalSelBtn)`
-  background-color: ${props => props.theme.lightBlueColor};
-`;
+// const CityBtnCon = styled.div``;
+// const CityBtn = styled(LocalSelBtn)`
+//   background-color: ${props => props.theme.lightBlueColor};
+// `;
 
-const DistrictBtnCon = styled.div`
-  margin-top: 5px;
-`;
-const DistrictBtn = styled(LocalSelBtn)`
-  margin-right: 3px;
-`;
+// const DistrictBtnCon = styled.div`
+//   margin-top: 5px;
+// `;
+// const DistrictBtn = styled(LocalSelBtn)`
+//   margin-right: 3px;
+// `;
 
 const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
   inputBranch,
@@ -187,7 +187,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
       <HeadContainer>
         {title ? <Title>{title}</Title> : ""}
 
-        <InputContainer>
+        {/* <InputContainer>
           <ExtendForm submitFn={setSearchText}>
             <ExtendInput
               placeholder={"지점명 or 주소를 입력해주세요"}
@@ -201,9 +201,9 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
               onClick={setSearchText}
             />
           </ExtendForm>
-        </InputContainer>
+        </InputContainer> */}
       </HeadContainer>
-
+      {/* 
       <LocalSelBtnCon>
         <CityBtnCon>
           {localInfos.map(localInfo => (
@@ -224,7 +224,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
               />
             ))}
         </DistrictBtnCon>
-      </LocalSelBtnCon>
+      </LocalSelBtnCon> */}
 
       <BodyContainer>
         {getAllBranchesLoading ? (
@@ -263,7 +263,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
         )}
       </BodyContainer>
 
-      <BodyContainer>
+      {/* <BodyContainer>
         {branchesByDistrictLoading && selDistrict && <Loading />}
         {searchedBranches.length > 0 &&
           searchedBranches.map(
@@ -295,7 +295,7 @@ const BranchSearchPopUpPresenter: React.SFC<IProps> = ({
                 </BranchContainer>
               )
           )}
-      </BodyContainer>
+      </BodyContainer> */}
       <CloseButton onClick={closeFunc}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

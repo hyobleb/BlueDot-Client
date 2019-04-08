@@ -300,6 +300,7 @@ const MembershipPresenter: React.SFC<IProps> = ({
       <BranchSearchPopUp
         closeFunc={popUpCloseFunc}
         onBranchClick={onBranchClick}
+        title={"등록할 지점을 선택해주세요"}
       />
     ) : (
       ""

@@ -68,8 +68,8 @@ const ColorIndexContainer = styled.div`
 const ColorIndex = styled.div`
   padding: 5px;
   color: white;
-  width: 65px;
-  font-size: 10px;
+  width: 100px;
+  font-size: 15px;
   text-align: center;
   margin-left: 3px;
   margin-right: 3px;
