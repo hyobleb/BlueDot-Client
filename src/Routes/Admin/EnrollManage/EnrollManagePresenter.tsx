@@ -1,12 +1,13 @@
 import React from "react";
-import Dropdown from "react-dropdown";
-import DatetimePicker from "../../../Components/DatetimePicker";
+import Dropdown, { Option } from "react-dropdown";
+// import DatetimePicker from "../../../Components/DatetimePicker";
 import HyobiBack from "../../../Components/HyobiBack";
 import Loading from "../../../Components/Loading";
 import styled from "../../../typed-components";
 import {
   shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch,
-  shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships
+  shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships,
+  shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branches
 } from "../../../types/api";
 
 const Back = styled(HyobiBack)``;
@@ -114,25 +115,25 @@ const BranchList = styled.div`
   cursor: pointer;
   text-align: center;
 `;
-const CalendarIcon = styled.li`
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  background-image: url("/img/default/calendaricon.png");
-  background-repeat: no-repeat;
-  background-size: auto 100%;
-`;
-const BranchDate = styled.div`
-  width: 70px;
-  height: 24px;
-  margin-right: 8px;
-  /* background-color: #f50; */
-  margin-left: 8px;
-  border-bottom: 2px solid #101010;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-`;
+// const CalendarIcon = styled.li`
+//   width: 20px;
+//   height: 20px;
+//   margin-right: 8px;
+//   background-image: url("/img/default/calendaricon.png");
+//   background-repeat: no-repeat;
+//   background-size: auto 100%;
+// `;
+// const BranchDate = styled.div`
+//   width: 70px;
+//   height: 24px;
+//   margin-right: 8px;
+//   /* background-color: #f50; */
+//   margin-left: 8px;
+//   border-bottom: 2px solid #101010;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+// `;
 const Boxes = styled.div`
   display: flex;
   flex-direction: row;
@@ -175,10 +176,10 @@ const FilterItem = styled.div`
   align-items: center;
 `;
 
-const ExtendedDatetimePicker = styled(DatetimePicker)`
-  height: 100%;
-  width: 100%;
-`;
+// const ExtendedDatetimePicker = styled(DatetimePicker)`
+//   height: 100%;
+//   width: 100%;
+// `;
 
 const ExtendedDropDown = styled(Dropdown)`
   height: 100%;
@@ -216,6 +217,10 @@ interface IProps {
   noOverlapManMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapGirlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapBoyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  branches: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branches | null> | null;
+  selBranchId?: string;
+  branchSelOptions: Array<{ value: string; label: string }>;
+  onBranchSelChange: (arg: Option) => void;
 }
 
 const EnrollManagePresenter: React.SFC<IProps> = ({
@@ -233,7 +238,11 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
   noOverlapWomanMemberships,
   noOverlapManMemberships,
   noOverlapGirlMemberships,
-  noOverlapBoyMemberships
+  noOverlapBoyMemberships,
+  branches,
+  selBranchId,
+  branchSelOptions,
+  onBranchSelChange
 }) => (
   <Back title={"EnrollManage | BlueDot"} backUrl={"/"}>
     {getBranchInfoLoading ? (
@@ -263,17 +272,17 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                 <li>지점이름</li>
                 <BranchList>
                   <ExtendedDropDown
-                    options={["동래안락점", "명륜점"]}
-                    onChange={() => console.log("!")}
-                    // value={}
+                    options={branchSelOptions}
+                    onChange={onBranchSelChange}
                     placeholder={"지점선택"}
                     controlClassName={"control"}
                     arrowClassName={"arrow"}
+                    value={String(selBranchId)}
                   />
                 </BranchList>
               </FilterUl>
             </FilterItem>
-            <FilterItem>
+            {/* <FilterItem>
               <FilterUl>
                 <CalendarIcon />
                 <li>기간검색</li>
@@ -295,7 +304,7 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   />
                 </BranchDate>
               </FilterUl>
-            </FilterItem>
+            </FilterItem> */}
           </Filter>
           <Boxes>
             <BoxesUl>

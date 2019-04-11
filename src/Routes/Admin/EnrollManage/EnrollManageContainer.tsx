@@ -1,16 +1,19 @@
 import moment from "moment";
 import React from "react";
 import { Query } from "react-apollo";
+import { Option } from "react-dropdown";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   shopkeeprGetBranchInfo,
   shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch,
   shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships,
+  shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branches,
   shopkeeprGetBranchInfoVariables
 } from "../../../types/api";
 import EnrollManagePresenter from "./EnrollManagePresenter";
 import { SHOPKEEPER_GET_BRANCH_INFO } from "./EnrollManageQueries";
+
 export type genderOption = "MALE" | "FEMALE";
 
 interface IProps extends RouteComponentProps<any> {}
@@ -29,6 +32,9 @@ interface IState {
   noOverlapManMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapGirlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapBoyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  selBranchId?: string;
+  branches: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branches | null> | null;
+  branchSelOptions: Array<{ value: string; label: string }>;
 }
 
 class ShopkeeperGetBranchInfo extends Query<
@@ -84,6 +90,8 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
   public constructor(props) {
     super(props);
     this.state = {
+      branchSelOptions: [],
+      branches: [],
       nowCabinetMemberships: [],
       nowMemberships: []
     };
@@ -91,6 +99,7 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
   public render() {
     const {
       branch,
+      branchSelOptions,
       nowMemberships,
       nowCabinetMemberships,
       noOverlapNowMemberships,
@@ -103,7 +112,9 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
       noOverlapWomanMemberships,
       noOverlapManMemberships,
       noOverlapGirlMemberships,
-      noOverlapBoyMemberships
+      noOverlapBoyMemberships,
+      branches,
+      selBranchId
     } = this.state;
 
     return (
@@ -111,6 +122,9 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
         query={SHOPKEEPER_GET_BRANCH_INFO}
         onCompleted={this.updateFields}
         onError={err => toast.error(err)}
+        variables={{
+          branchId: (selBranchId && parseInt(selBranchId, 10)) || undefined
+        }}
       >
         {({ loading: getBranchInfoLoading }) => (
           <EnrollManagePresenter
@@ -129,11 +143,21 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
             noOverlapManMemberships={noOverlapManMemberships}
             noOverlapGirlMemberships={noOverlapGirlMemberships}
             noOverlapBoyMemberships={noOverlapBoyMemberships}
+            branches={branches}
+            selBranchId={selBranchId}
+            branchSelOptions={branchSelOptions}
+            onBranchSelChange={this.onBranchSelChange}
           />
         )}
       </ShopkeeperGetBranchInfo>
     );
   }
+
+  public onBranchSelChange = (arg: Option) => {
+    this.setState({
+      selBranchId: arg.value
+    });
+  };
 
   public updateFields = (data: {} | shopkeeprGetBranchInfo) => {
     const { history } = this.props;
@@ -153,10 +177,10 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
 
     if ("ShopkeeperGetBranchInfo" in data) {
       const {
-        ShopkeeperGetBranchInfo: { branch, error }
+        ShopkeeperGetBranchInfo: { branch, branches, error }
       } = data;
 
-      if (!branch || error) {
+      if (!branch || !branches || error) {
         toast.error(error);
         history.push("/");
         return;
@@ -220,10 +244,19 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
         noOverlapGirlMemberships = [];
       }
 
+      const branchSelOptions = branches.map(branchObj => {
+        return {
+          label: branchObj!.name,
+          value: String(branchObj!.id)
+        };
+      });
+
       if (branch !== null) {
         this.setState({
           boyMemberships,
           branch,
+          branchSelOptions,
+          branches,
           girlMemberships,
           manMemberships,
           noOverlapBoyMemberships,
@@ -235,6 +268,7 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
           nowCabinetMemberships,
           nowMemberships,
           oneDayMemberships,
+          selBranchId: String(branch.id),
           womanMemberships
         } as any);
       }

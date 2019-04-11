@@ -1589,11 +1589,18 @@ export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch {
   memberships: (shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null)[] | null;
 }
 
+export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branches {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
+
 export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo {
   __typename: "ShopkeeperGetBranchInfoResponse";
   ok: boolean;
   error: string | null;
   branch: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch | null;
+  branches: (shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branches | null)[] | null;
 }
 
 export interface shopkeeprGetBranchInfo {

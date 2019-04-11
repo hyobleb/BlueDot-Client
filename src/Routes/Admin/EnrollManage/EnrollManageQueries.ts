@@ -28,6 +28,10 @@ export const SHOPKEEPER_GET_BRANCH_INFO = gql`
           updatedAt
         }
       }
+      branches {
+        id
+        name
+      }
     }
   }
 `;
