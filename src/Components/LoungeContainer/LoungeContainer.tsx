@@ -7,7 +7,7 @@ const ImgContainer = styled.div`
   min-width: 200px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 300px;
+  max-width: 200px;
   position: relative;
 `;
 const LoungeImg = styled.img`

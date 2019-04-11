@@ -2,7 +2,12 @@ import React from "react";
 import Dropdown from "react-dropdown";
 import DatetimePicker from "../../../Components/DatetimePicker";
 import HyobiBack from "../../../Components/HyobiBack";
+import Loading from "../../../Components/Loading";
 import styled from "../../../typed-components";
+import {
+  shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch,
+  shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships
+} from "../../../types/api";
 
 const Back = styled(HyobiBack)``;
 const Header = styled.div`
@@ -145,12 +150,20 @@ const BoxesUl = styled.ul`
   background-color: #fff;
   border: 1px solid #c3c5ca;
   text-align: center;
+  cursor: pointer;
   li {
     font-size: 22px;
   }
   li:last-child {
     margin-bottom: 0;
   } /* 안먹히는 듯*/
+  &:hover {
+    background-color: ${props => props.theme.lightBlueColor};
+    color: white;
+    div {
+      color: white;
+    }
+  }
 `;
 const Active = styled.div`
   font-size: 50px;
@@ -187,94 +200,158 @@ const ExtendedDropDown = styled(Dropdown)`
   }
 `;
 
-const EnrollManagePresenter: React.SFC = () => (
-  // <Back title={"EnrollManage | BlueDot"} backUrl={"/"}>
-  //   EnrollManagePresenter
-  // </Back>
+interface IProps {
+  getBranchInfoLoading: boolean;
+  branch?: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch | null;
+  nowMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  nowCabinetMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  noOverlapNowMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  noOverlapNowCabMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  manMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  womanMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  boyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  girlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  oneDayMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  noOverlapWomanMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  noOverlapManMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  noOverlapGirlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  noOverlapBoyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+}
 
+const EnrollManagePresenter: React.SFC<IProps> = ({
+  getBranchInfoLoading,
+  branch,
+  nowMemberships,
+  nowCabinetMemberships,
+  noOverlapNowMemberships,
+  noOverlapNowCabMemberships,
+  manMemberships,
+  womanMemberships,
+  boyMemberships,
+  girlMemberships,
+  oneDayMemberships,
+  noOverlapWomanMemberships,
+  noOverlapManMemberships,
+  noOverlapGirlMemberships,
+  noOverlapBoyMemberships
+}) => (
   <Back title={"EnrollManage | BlueDot"} backUrl={"/"}>
-    <Header>
-      <HomeTitle>
-        <LogoA href="#">
-          <Logo>bluedot lounge</Logo>
-          <LogoAUl>
-            <LogoType>블루닷라운지</LogoType>
-            <li>관리자페이지</li>
-          </LogoAUl>
-        </LogoA>
-      </HomeTitle>
-      <p>
-        <MenuBar href="#">메뉴 열기</MenuBar>
-      </p>
-    </Header>
-    <Bn>가맹점주님과 함께 성장하는 블루닷라운지가 되겠습니다.</Bn>
-    <Container>
-      <Filter>
-        <FilterItem>
-          <FilterUl>
-            <BranchIcon />
-            <li>지점이름</li>
-            <BranchList>
-              <ExtendedDropDown
-                options={["동래안락점", "명륜점"]}
-                onChange={() => console.log("!")}
-                // value={}
-                placeholder={"지점선택"}
-                controlClassName={"control"}
-                arrowClassName={"arrow"}
-              />
-            </BranchList>
-          </FilterUl>
-        </FilterItem>
-        <FilterItem>
-          <FilterUl>
-            <CalendarIcon />
-            <li>기간검색</li>
-            <BranchDate>
-              <ExtendedDatetimePicker
-                flatPickrDate={new Date()}
-                dateFormat={"Y/m/d"}
-                onFlatPickrChange={() => console.log("!")}
-              />
-            </BranchDate>
-            <li>~</li>
-            <BranchDate>
-              <ExtendedDatetimePicker
-                flatPickrDate={new Date()}
-                dateFormat={"Y/m/d"}
-                onFlatPickrChange={() => console.log("!")}
-              />
-            </BranchDate>
-          </FilterUl>
-        </FilterItem>
-      </Filter>
-      <Boxes>
-        <BoxesUl>
-          <Active>10</Active>
-          <li>장기등록</li>
-        </BoxesUl>
-        <BoxesUl>
-          <Active>10</Active>
-          <li>일 등록</li>
-        </BoxesUl>
-        <BoxesUl>
-          <Active>10</Active>
-          <li>멤버십 등록</li>
-        </BoxesUl>
-        <BoxesUl>
-          <Active>10</Active>
-          <li>멤버십 취소</li>
-        </BoxesUl>
-        <BoxesUl>
-          <Active>10</Active>
-          <li>사물함 등록</li>
-        </BoxesUl>
-        <BoxesUl>
-          <Active>10</Active>
-          <li>사물함 취소</li>
-        </BoxesUl>
-      </Boxes>
-    </Container>
+    {getBranchInfoLoading ? (
+      <Loading />
+    ) : (
+      <>
+        <Header>
+          <HomeTitle>
+            <LogoA href="#">
+              <Logo>bluedot lounge</Logo>
+              <LogoAUl>
+                <LogoType>블루닷라운지</LogoType>
+                <li>관리자페이지</li>
+              </LogoAUl>
+            </LogoA>
+          </HomeTitle>
+          <p>
+            <MenuBar href="#">메뉴 열기</MenuBar>
+          </p>
+        </Header>
+        <Bn>가맹점주님과 함께 성장하는 블루닷라운지가 되겠습니다.</Bn>
+        <Container>
+          <Filter>
+            <FilterItem>
+              <FilterUl>
+                <BranchIcon />
+                <li>지점이름</li>
+                <BranchList>
+                  <ExtendedDropDown
+                    options={["동래안락점", "명륜점"]}
+                    onChange={() => console.log("!")}
+                    // value={}
+                    placeholder={"지점선택"}
+                    controlClassName={"control"}
+                    arrowClassName={"arrow"}
+                  />
+                </BranchList>
+              </FilterUl>
+            </FilterItem>
+            <FilterItem>
+              <FilterUl>
+                <CalendarIcon />
+                <li>기간검색</li>
+                <BranchDate>
+                  <ExtendedDatetimePicker
+                    flatPickrDate={new Date()}
+                    dateFormat={"Y/m/d"}
+                    onFlatPickrChange={() => console.log("!")}
+                    enableTime={false}
+                  />
+                </BranchDate>
+                <li>~</li>
+                <BranchDate>
+                  <ExtendedDatetimePicker
+                    flatPickrDate={new Date()}
+                    dateFormat={"Y/m/d"}
+                    onFlatPickrChange={() => console.log("!")}
+                    enableTime={false}
+                  />
+                </BranchDate>
+              </FilterUl>
+            </FilterItem>
+          </Filter>
+          <Boxes>
+            <BoxesUl>
+              <Active>
+                {nowMemberships &&
+                  nowMemberships.length -
+                    ((oneDayMemberships && oneDayMemberships.length) || 0)}
+              </Active>
+              <li>장기등록</li>
+            </BoxesUl>
+            <BoxesUl>
+              <Active>
+                {(oneDayMemberships && oneDayMemberships.length) || 0}
+              </Active>
+              <li>일 등록</li>
+            </BoxesUl>
+            <BoxesUl>
+              <Active>
+                {(noOverlapManMemberships && noOverlapManMemberships.length) ||
+                  0}
+              </Active>
+              <li>성인 남자</li>
+            </BoxesUl>
+            <BoxesUl>
+              <Active>
+                {(noOverlapWomanMemberships &&
+                  noOverlapWomanMemberships.length) ||
+                  0}
+              </Active>
+              <li>성인 여자</li>
+            </BoxesUl>
+            <BoxesUl>
+              <Active>
+                {(noOverlapBoyMemberships && noOverlapBoyMemberships.length) ||
+                  0}
+              </Active>
+              <li>청소년 남자</li>
+            </BoxesUl>
+            <BoxesUl>
+              <Active>
+                {(noOverlapGirlMemberships &&
+                  noOverlapGirlMemberships.length) ||
+                  0}
+              </Active>
+              <li>청소년 여자</li>
+            </BoxesUl>
+            <BoxesUl>
+              <Active>
+                {(nowCabinetMemberships && nowCabinetMemberships.length) || 0}
+              </Active>
+              <li>사물함 등록</li>
+            </BoxesUl>
+          </Boxes>
+        </Container>
+      </>
+    )}
   </Back>
 );
 

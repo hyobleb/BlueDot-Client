@@ -1551,6 +1551,63 @@ export interface addProductVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: shopkeeprGetBranchInfo
+// ====================================================
+
+export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_cabinet {
+  __typename: "Cabinet";
+  id: number;
+  cabinetNumber: number;
+}
+
+export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_user {
+  __typename: "User";
+  id: number;
+  gender: string | null;
+  birthYear: string;
+}
+
+export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships {
+  __typename: "Membership";
+  id: number;
+  startDatetime: string;
+  endDatetime: string;
+  status: string;
+  usable: boolean;
+  target: string;
+  userId: number | null;
+  cabinet: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_cabinet | null;
+  user: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_user;
+  stoppedAt: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+}
+
+export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch {
+  __typename: "Branch";
+  id: number;
+  memberships: (shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null)[] | null;
+}
+
+export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo {
+  __typename: "ShopkeeperGetBranchInfoResponse";
+  ok: boolean;
+  error: string | null;
+  branch: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch | null;
+}
+
+export interface shopkeeprGetBranchInfo {
+  ShopkeeperGetBranchInfo: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo;
+}
+
+export interface shopkeeprGetBranchInfoVariables {
+  branchId?: number | null;
+}
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: getRequestMemberships
 // ====================================================
 
