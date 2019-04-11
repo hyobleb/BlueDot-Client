@@ -1,5 +1,5 @@
 import ApolloClient, { Operation } from "apollo-boost";
-import { SERVER_HOST } from "./keys";
+import { DEV_HOST, SERVER_HOST } from "./keys";
 
 // AppolloClient는 config object를 가져야됨
 // * clientState : defaultState, 언어선택,화폐 등등의 일을 할 수있음
@@ -9,7 +9,7 @@ import { SERVER_HOST } from "./keys";
 
 const isDev = process.env.NODE_ENV === "development";
 
-const httpLink = isDev ? "http://localhost:4000/graphql" : SERVER_HOST;
+const httpLink = isDev ? DEV_HOST : SERVER_HOST;
 
 const client = new ApolloClient({
   clientState: {
