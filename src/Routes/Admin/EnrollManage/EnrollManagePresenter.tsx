@@ -3,6 +3,7 @@ import Dropdown from "react-dropdown";
 import DatetimePicker from "../../../Components/DatetimePicker";
 import HyobiBack from "../../../Components/HyobiBack";
 import Loading from "../../../Components/Loading";
+import ModalBox from "../../../Components/ModalBox";
 import styled from "../../../typed-components";
 import {
   shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch,
@@ -133,6 +134,58 @@ const BranchDate = styled.div`
   display: flex;
   align-items: center;
 `;
+
+const Modal = styled.div`
+  position: relative;
+  width: 600px;
+  padding: 15px;
+`;
+
+const ModalTitle = styled.h1`
+  font-size: 2em;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  text-align: center;
+`;
+
+const BoxesModal = styled.div`
+  display: flex;
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 800px;
+  background-color: #fff;
+  z-index: 800;
+  transform: translate(-50%, -50%);
+`;
+
+const ModalClose = styled.div`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 20px;
+  height: 20px;
+  text-indent: -9999px;
+  background-image: url("/img/default/close.png");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  cursor: pointer;
+`;
+
+const BoxesModalBg = styled.div`
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0.85;
+  z-index: 500;
+`;
+
 const Boxes = styled.div`
   display: flex;
   flex-direction: row;
@@ -156,7 +209,7 @@ const BoxesUl = styled.ul`
   }
   li:last-child {
     margin-bottom: 0;
-  } /* 안먹히는 듯*/
+  } /* 안먹히는 듯 */
   &:hover {
     background-color: ${props => props.theme.lightBlueColor};
     color: white;
@@ -165,6 +218,7 @@ const BoxesUl = styled.ul`
     }
   }
 `;
+
 const Active = styled.div`
   font-size: 50px;
   color: #6d95e1;
@@ -216,6 +270,13 @@ interface IProps {
   noOverlapManMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapGirlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapBoyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  toggleModal: () => void;
+  showModal: boolean;
+  showModal2: boolean;
+  showModal3: boolean;
+  toggleModal2: () => void;
+  toggleModal3: () => void;
+  toggleModalBox: (showModalName: string) => void;
 }
 
 const EnrollManagePresenter: React.SFC<IProps> = ({
@@ -233,7 +294,14 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
   noOverlapWomanMemberships,
   noOverlapManMemberships,
   noOverlapGirlMemberships,
-  noOverlapBoyMemberships
+  noOverlapBoyMemberships,
+  toggleModal,
+  showModal,
+  showModal2,
+  showModal3,
+  toggleModal2,
+  toggleModal3,
+  toggleModalBox
 }) => (
   <Back title={"EnrollManage | BlueDot"} backUrl={"/"}>
     {getBranchInfoLoading ? (
@@ -297,8 +365,120 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </FilterUl>
             </FilterItem>
           </Filter>
+          {showModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("showModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>월 등록</ModalTitle>
+                <ModalBox
+                  title={"30일 멤버십 등록"}
+                  color={"#4261cd"}
+                  name={"현자"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 연장"}
+                  color={"#01b2aa"}
+                  name={"송군"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 취소"}
+                  color={"#ec5d59"}
+                  name={"김과장"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                  marginBottom={0}
+                />
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {showModal2 ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("showModal2")}>
+                  close
+                </ModalClose>
+                <ModalTitle>월 등록</ModalTitle>
+                <ModalBox
+                  title={"30일 멤버십 등록"}
+                  color={"#4261cd"}
+                  name={"현자"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 연장"}
+                  color={"#01b2aa"}
+                  name={"송군"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 취소"}
+                  color={"#ec5d59"}
+                  name={"김과장"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                  marginBottom={0}
+                />
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {showModal3 ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={toggleModal3}>close</ModalClose>
+                <ModalTitle>월 등록</ModalTitle>
+                <ModalBox
+                  title={"30일 멤버십 등록"}
+                  color={"#4261cd"}
+                  name={"현자"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 연장"}
+                  color={"#01b2aa"}
+                  name={"송군"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 취소"}
+                  color={"#ec5d59"}
+                  name={"김과장"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                  marginBottom={0}
+                />
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
           <Boxes>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("showModal")}>
               <Active>
                 {nowMemberships &&
                   nowMemberships.length -
@@ -306,13 +486,13 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </Active>
               <li>장기등록</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("showModal")}>
               <Active>
                 {(oneDayMemberships && oneDayMemberships.length) || 0}
               </Active>
               <li>일 등록</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={toggleModal3}>
               <Active>
                 {(noOverlapManMemberships && noOverlapManMemberships.length) ||
                   0}

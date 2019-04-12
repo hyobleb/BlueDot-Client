@@ -29,6 +29,9 @@ interface IState {
   noOverlapManMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapGirlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapBoyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  showModal: boolean;
+  showModal2: boolean;
+  showModal3: boolean;
 }
 
 class ShopkeeperGetBranchInfo extends Query<
@@ -80,12 +83,16 @@ const genderBirthFilter = (
         !isAdult &&
         moment().year() - parseInt(membership.user.birthYear, 10) + 1 < 19)
   );
+
 class EnrollManageContainer extends React.Component<IProps, IState> {
   public constructor(props) {
     super(props);
     this.state = {
       nowCabinetMemberships: [],
-      nowMemberships: []
+      nowMemberships: [],
+      showModal: false,
+      showModal2: false,
+      showModal3: false
     };
   }
   public render() {
@@ -103,7 +110,10 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
       noOverlapWomanMemberships,
       noOverlapManMemberships,
       noOverlapGirlMemberships,
-      noOverlapBoyMemberships
+      noOverlapBoyMemberships,
+      showModal,
+      showModal2,
+      showModal3
     } = this.state;
 
     return (
@@ -129,11 +139,52 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
             noOverlapManMemberships={noOverlapManMemberships}
             noOverlapGirlMemberships={noOverlapGirlMemberships}
             noOverlapBoyMemberships={noOverlapBoyMemberships}
+            toggleModal={this.toggleModal}
+            showModal={showModal}
+            showModal2={showModal2}
+            showModal3={showModal3}
+            toggleModal2={this.toggleModal2}
+            toggleModalBox={this.toggleModalBox}
+            toggleModal3={this.toggleModal3}
           />
         )}
       </ShopkeeperGetBranchInfo>
     );
   }
+
+  public toggleModal = () => {
+    this.setState({
+      showModal: !this.state.showModal
+    });
+  };
+
+  public toggleModal2 = () => {
+    this.setState({
+      showModal2: !this.state.showModal2
+    });
+  };
+
+  public toggleModal3 = () => {
+    this.setState({
+      showModal3: !this.state.showModal3
+    });
+  };
+
+  public toggleModalBox = (showModalName: string) => {
+    this.setState({ [showModalName]: !this.state[showModalName] } as any);
+  };
+
+  // public onInputChange: React.ChangeEventHandler<
+  //   HTMLInputElement | HTMLSelectElement
+  // > = event => {
+  //   const {
+  //     target: { name, value }
+  //   } = event;
+
+  //   this.setState({
+  //     [name]: value
+  //   } as any);
+  // };
 
   public updateFields = (data: {} | shopkeeprGetBranchInfo) => {
     const { history } = this.props;
