@@ -7,6 +7,7 @@ import FindUserId from "../../Routes/Account/FindUserId";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
 import EnrollManage from "../../Routes/Admin/EnrollManage";
+import Order from "../../Routes/Admin/Order";
 import Basket from "../../Routes/Basket";
 import BasketV2 from "../../Routes/BasketV2";
 import BranchSetting from "../../Routes/BranchSetting";
@@ -573,6 +574,12 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
               path={"/enroll-manage"}
               exact={true}
               component={EnrollManage}
+            />,
+            <Route
+              key={26}
+              path={"/order-manage"}
+              exact={true}
+              component={Order}
             />
           ]}
           <Redirect from={"*"} to={"/"} />
