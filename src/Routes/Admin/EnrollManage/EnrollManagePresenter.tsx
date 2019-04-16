@@ -256,13 +256,14 @@ interface IProps {
   selBranchId?: string;
   branchSelOptions: Array<{ value: string; label: string }>;
   onBranchSelChange: (arg: Option) => void;
-  toggleModal: () => void;
-  showModal: boolean;
-  showModal2: boolean;
-  showModal3: boolean;
-  toggleModal2: () => void;
-  toggleModal3: () => void;
-  toggleModalBox: (showModalName: string) => void;
+  nowMemsModal: boolean;
+  dayMemsModal: boolean;
+  manMemsModal: boolean;
+  womanMemsModal: boolean;
+  boyMemsModal: boolean;
+  girlMemsModal: boolean;
+  cabinetMemsModal: boolean;
+  toggleModalBox: (modalName: string) => void;
 }
 
 const EnrollManagePresenter: React.SFC<IProps> = ({
@@ -285,12 +286,13 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
   selBranchId,
   branchSelOptions,
   onBranchSelChange,
-  toggleModal,
-  showModal,
-  showModal2,
-  showModal3,
-  toggleModal2,
-  toggleModal3,
+  nowMemsModal,
+  dayMemsModal,
+  manMemsModal,
+  womanMemsModal,
+  boyMemsModal,
+  girlMemsModal,
+  cabinetMemsModal,
   toggleModalBox
 }) => (
   <Back title={"EnrollManage | BlueDot"} backUrl={"/"}>
@@ -355,13 +357,13 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </FilterUl>
             </FilterItem> */}
           </Filter>
-          {showModal ? (
+          {nowMemsModal ? (
             <Modal>
               <BoxesModal>
-                <ModalClose onClick={() => toggleModalBox("showModal")}>
+                <ModalClose onClick={() => toggleModalBox("nowMemsModal")}>
                   close
                 </ModalClose>
-                <ModalTitle>월 등록</ModalTitle>
+                <ModalTitle>장기 등록</ModalTitle>
                 <ModalBox
                   title={"30일 멤버십 등록"}
                   color={"#4261cd"}
@@ -393,13 +395,13 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
           ) : (
             ""
           )}
-          {showModal2 ? (
+          {dayMemsModal ? (
             <Modal>
               <BoxesModal>
-                <ModalClose onClick={() => toggleModalBox("showModal2")}>
+                <ModalClose onClick={() => toggleModalBox("dayMemsModal")}>
                   close
                 </ModalClose>
-                <ModalTitle>월 등록</ModalTitle>
+                <ModalTitle>일 등록</ModalTitle>
                 <ModalBox
                   title={"30일 멤버십 등록"}
                   color={"#4261cd"}
@@ -431,11 +433,165 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
           ) : (
             ""
           )}
-          {showModal3 ? (
+          {manMemsModal ? (
             <Modal>
               <BoxesModal>
-                <ModalClose onClick={toggleModal3}>close</ModalClose>
-                <ModalTitle>월 등록</ModalTitle>
+                <ModalClose onClick={() => toggleModalBox("manMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>성인 남자</ModalTitle>
+                <ModalBox
+                  title={"30일 멤버십 등록"}
+                  color={"#4261cd"}
+                  name={"현자"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 연장"}
+                  color={"#01b2aa"}
+                  name={"송군"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 취소"}
+                  color={"#ec5d59"}
+                  name={"김과장"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                  marginBottom={0}
+                />
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {womanMemsModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("womanMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>성인 여자</ModalTitle>
+                <ModalBox
+                  title={"30일 멤버십 등록"}
+                  color={"#4261cd"}
+                  name={"현자"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 연장"}
+                  color={"#01b2aa"}
+                  name={"송군"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 취소"}
+                  color={"#ec5d59"}
+                  name={"김과장"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                  marginBottom={0}
+                />
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {boyMemsModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("boyMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>청소년 남자</ModalTitle>
+                <ModalBox
+                  title={"30일 멤버십 등록"}
+                  color={"#4261cd"}
+                  name={"현자"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 연장"}
+                  color={"#01b2aa"}
+                  name={"송군"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 취소"}
+                  color={"#ec5d59"}
+                  name={"김과장"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                  marginBottom={0}
+                />
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {girlMemsModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("girlMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>청소년 여자</ModalTitle>
+                <ModalBox
+                  title={"30일 멤버십 등록"}
+                  color={"#4261cd"}
+                  name={"현자"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 연장"}
+                  color={"#01b2aa"}
+                  name={"송군"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                />
+                <ModalBox
+                  title={"30일 멤버십 취소"}
+                  color={"#ec5d59"}
+                  name={"김과장"}
+                  branchName={"반여점"}
+                  startDatetime={"2019-02-04 12:20:11"}
+                  endDatetime={"2019-03-04 12:20:11"}
+                  marginBottom={0}
+                />
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {cabinetMemsModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("cabinetMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>사물함 등록</ModalTitle>
                 <ModalBox
                   title={"30일 멤버십 등록"}
                   color={"#4261cd"}
@@ -468,7 +624,7 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
             ""
           )}
           <Boxes>
-            <BoxesUl onClick={() => toggleModalBox("showModal")}>
+            <BoxesUl onClick={() => toggleModalBox("nowMemsModal")}>
               <Active>
                 {nowMemberships &&
                   nowMemberships.length -
@@ -476,20 +632,20 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </Active>
               <li>장기등록</li>
             </BoxesUl>
-            <BoxesUl onClick={() => toggleModalBox("showModal")}>
+            <BoxesUl onClick={() => toggleModalBox("dayMemsModal")}>
               <Active>
                 {(oneDayMemberships && oneDayMemberships.length) || 0}
               </Active>
               <li>일 등록</li>
             </BoxesUl>
-            <BoxesUl onClick={toggleModal3}>
+            <BoxesUl onClick={() => toggleModalBox("manMemsModal")}>
               <Active>
                 {(noOverlapManMemberships && noOverlapManMemberships.length) ||
                   0}
               </Active>
               <li>성인 남자</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("womanMemsModal")}>
               <Active>
                 {(noOverlapWomanMemberships &&
                   noOverlapWomanMemberships.length) ||
@@ -497,14 +653,14 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </Active>
               <li>성인 여자</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("boyMemsModal")}>
               <Active>
                 {(noOverlapBoyMemberships && noOverlapBoyMemberships.length) ||
                   0}
               </Active>
               <li>청소년 남자</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("girlMemsModal")}>
               <Active>
                 {(noOverlapGirlMemberships &&
                   noOverlapGirlMemberships.length) ||
@@ -512,7 +668,7 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </Active>
               <li>청소년 여자</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("cabinetMemsModal")}>
               <Active>
                 {(nowCabinetMemberships && nowCabinetMemberships.length) || 0}
               </Active>

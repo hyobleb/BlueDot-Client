@@ -35,9 +35,13 @@ interface IState {
   selBranchId?: string;
   branches: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branches | null> | null;
   branchSelOptions: Array<{ value: string; label: string }>;
-  showModal: boolean;
-  showModal2: boolean;
-  showModal3: boolean;
+  nowMemsModal: boolean;
+  dayMemsModal: boolean;
+  manMemsModal: boolean;
+  womanMemsModal: boolean;
+  boyMemsModal: boolean;
+  girlMemsModal: boolean;
+  cabinetMemsModal: boolean;
 }
 
 class ShopkeeperGetBranchInfo extends Query<
@@ -94,13 +98,17 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
   public constructor(props) {
     super(props);
     this.state = {
+      boyMemsModal: false,
       branchSelOptions: [],
       branches: [],
+      cabinetMemsModal: false,
+      dayMemsModal: false,
+      girlMemsModal: false,
+      manMemsModal: false,
       nowCabinetMemberships: [],
       nowMemberships: [],
-      showModal: false,
-      showModal2: false,
-      showModal3: false
+      nowMemsModal: false,
+      womanMemsModal: false
     };
   }
   public render() {
@@ -122,9 +130,13 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
       noOverlapBoyMemberships,
       branches,
       selBranchId,
-      showModal,
-      showModal2,
-      showModal3
+      nowMemsModal,
+      dayMemsModal,
+      manMemsModal,
+      womanMemsModal,
+      boyMemsModal,
+      girlMemsModal,
+      cabinetMemsModal
     } = this.state;
 
     return (
@@ -157,13 +169,14 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
             selBranchId={selBranchId}
             branchSelOptions={branchSelOptions}
             onBranchSelChange={this.onBranchSelChange}
-            toggleModal={this.toggleModal}
-            showModal={showModal}
-            showModal2={showModal2}
-            showModal3={showModal3}
-            toggleModal2={this.toggleModal2}
+            nowMemsModal={nowMemsModal}
+            dayMemsModal={dayMemsModal}
+            manMemsModal={manMemsModal}
+            womanMemsModal={womanMemsModal}
+            boyMemsModal={boyMemsModal}
+            girlMemsModal={girlMemsModal}
+            cabinetMemsModal={cabinetMemsModal}
             toggleModalBox={this.toggleModalBox}
-            toggleModal3={this.toggleModal3}
           />
         )}
       </ShopkeeperGetBranchInfo>
@@ -176,26 +189,8 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public toggleModal = () => {
-    this.setState({
-      showModal: !this.state.showModal
-    });
-  };
-
-  public toggleModal2 = () => {
-    this.setState({
-      showModal2: !this.state.showModal2
-    });
-  };
-
-  public toggleModal3 = () => {
-    this.setState({
-      showModal3: !this.state.showModal3
-    });
-  };
-
-  public toggleModalBox = (showModalName: string) => {
-    this.setState({ [showModalName]: !this.state[showModalName] } as any);
+  public toggleModalBox = (modalName: string) => {
+    this.setState({ [modalName]: !this.state[modalName] } as any);
   };
 
   // public onInputChange: React.ChangeEventHandler<
