@@ -8,7 +8,6 @@ import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
 import EnrollManage from "../../Routes/Admin/EnrollManage";
 import Order from "../../Routes/Admin/Order";
-import Basket from "../../Routes/Basket";
 import BasketV2 from "../../Routes/BasketV2";
 import BranchSetting from "../../Routes/BranchSetting";
 import Chart from "../../Routes/Chart";
@@ -320,17 +319,6 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
             path={"/request-membership"}
             exact={true}
             component={ReqMembership}
-          />
-          <Route
-            path={"/basket"}
-            exact={true}
-            render={props => (
-              <Basket
-                setTimeLogout={setTimeLogout}
-                stopLogoutFn={stopLogoutFn}
-                {...props}
-              />
-            )}
           />
           <Route
             path={"/enroll-req-membership"}
