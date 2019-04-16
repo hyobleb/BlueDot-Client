@@ -14,12 +14,17 @@ export const SHOPKEEPER_GET_BRANCH_INFO = gql`
           usable
           target
           userId
+          branch {
+            id
+            name
+          }
           cabinet {
             id
             cabinetNumber
           }
           user {
             id
+            name
             gender
             birthYear
           }

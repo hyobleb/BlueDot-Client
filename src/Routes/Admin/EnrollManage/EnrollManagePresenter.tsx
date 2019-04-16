@@ -141,6 +141,7 @@ const BoxesModal = styled.div`
   background-color: #fff;
   z-index: 800;
   transform: translate(-50%, -50%);
+  overflow-y: scroll;
 `;
 
 const ModalClose = styled.div`
@@ -248,6 +249,7 @@ interface IProps {
   boyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   girlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   oneDayMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  longTermMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapWomanMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapManMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapGirlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
@@ -278,6 +280,7 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
   boyMemberships,
   girlMemberships,
   oneDayMemberships,
+  longTermMemberships,
   noOverlapWomanMemberships,
   noOverlapManMemberships,
   noOverlapGirlMemberships,
@@ -364,31 +367,45 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   close
                 </ModalClose>
                 <ModalTitle>장기 등록</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                {noOverlapNowMemberships &&
+                  noOverlapNowMemberships.length > 0 &&
+                  noOverlapNowMemberships.map(nowMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = nowMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      nowMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
@@ -402,31 +419,45 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   close
                 </ModalClose>
                 <ModalTitle>일 등록</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                {oneDayMemberships &&
+                  oneDayMemberships.length > 0 &&
+                  oneDayMemberships.map(oneDayMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = oneDayMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      oneDayMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
@@ -440,31 +471,45 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   close
                 </ModalClose>
                 <ModalTitle>성인 남자</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                {manMemberships &&
+                  manMemberships.length > 0 &&
+                  manMemberships.map(manMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = manMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      manMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
@@ -478,31 +523,45 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   close
                 </ModalClose>
                 <ModalTitle>성인 여자</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                {womanMemberships &&
+                  womanMemberships.length > 0 &&
+                  womanMemberships.map(womanMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = womanMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      womanMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
@@ -516,31 +575,45 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   close
                 </ModalClose>
                 <ModalTitle>청소년 남자</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                {boyMemberships &&
+                  boyMemberships.length > 0 &&
+                  boyMemberships.map(boyMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = boyMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      boyMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
@@ -554,31 +627,45 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   close
                 </ModalClose>
                 <ModalTitle>청소년 여자</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                {girlMemberships &&
+                  girlMemberships.length > 0 &&
+                  girlMemberships.map(girlMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = girlMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      girlMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
@@ -592,31 +679,47 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   close
                 </ModalClose>
                 <ModalTitle>사물함 등록</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                {
+                  noOverlapNowCabMemberships &&
+                  noOverlapNowCabMemberships.length > 0 &&
+                  noOverlapNowCabMemberships.map(cabMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = cabMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+                    console.log(noOverlapNowCabMemberships);
+
+                    return (
+                      cabMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
@@ -626,9 +729,7 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
           <Boxes>
             <BoxesUl onClick={() => toggleModalBox("nowMemsModal")}>
               <Active>
-                {nowMemberships &&
-                  nowMemberships.length -
-                    ((oneDayMemberships && oneDayMemberships.length) || 0)}
+                {(longTermMemberships && longTermMemberships.length) || 0}
               </Active>
               <li>장기등록</li>
             </BoxesUl>
