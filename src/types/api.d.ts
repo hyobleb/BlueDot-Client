@@ -1,4 +1,5 @@
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -45,6 +46,7 @@ export interface userGetBranches {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -84,6 +86,7 @@ export interface getBranchesByDistrictVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -108,6 +111,7 @@ export interface createCabinetLockVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -132,6 +136,7 @@ export interface modifyCabinetLockVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -150,6 +155,7 @@ export interface checkVbankPayment {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -175,6 +181,7 @@ export interface managerRefundVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -207,6 +214,7 @@ export interface searchUsersVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -256,6 +264,7 @@ export interface userProfile {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -295,6 +304,7 @@ export interface searchBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -364,6 +374,7 @@ export interface managerGetBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -406,6 +417,7 @@ export interface getBranchForUpdateLoungeVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -459,6 +471,7 @@ export interface headGetRoomVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -520,6 +533,7 @@ export interface managerGetSeatVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -552,6 +566,7 @@ export interface getCabinetSetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -592,6 +607,7 @@ export interface userGetProductsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -615,6 +631,7 @@ export interface userRequestMembershipVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -637,6 +654,7 @@ export interface userRequestExtendMembershipVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -661,6 +679,7 @@ export interface userRequestCabinetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -683,6 +702,7 @@ export interface userRequestExtendCabinetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -733,6 +753,7 @@ export interface getUsableMyMemberships {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -783,6 +804,7 @@ export interface getCabinetsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -816,6 +838,7 @@ export interface getCabinetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -864,6 +887,7 @@ export interface getMyMemberships {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -912,6 +936,7 @@ export interface getMembershipForExtendVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -941,6 +966,7 @@ export interface guestGetBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -990,6 +1016,7 @@ export interface getBranchForEnrollCabinetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1015,6 +1042,7 @@ export interface managerExtendMembershipVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1036,6 +1064,7 @@ export interface managerExpireMembershipVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1070,6 +1099,7 @@ export interface getManaingBranches {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1138,6 +1168,7 @@ export interface getPaymentInfoVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1189,6 +1220,7 @@ export interface getVbankPayments {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1225,6 +1257,7 @@ export interface getAllBranches {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1275,6 +1308,7 @@ export interface getSeatsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1318,6 +1352,7 @@ export interface getSeatsV2Variables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1353,6 +1388,7 @@ export interface userGetBranchProductsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1376,6 +1412,7 @@ export interface getMyUsingSeatId {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1411,6 +1448,7 @@ export interface getUserWithUserIdVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1434,6 +1472,7 @@ export interface checkOneselfVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1456,6 +1495,7 @@ export interface changePasswordVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1479,6 +1519,7 @@ export interface getUserIdVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1522,6 +1563,7 @@ export interface addBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1548,11 +1590,18 @@ export interface addProductVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
 // GraphQL query operation: shopkeeprGetBranchInfo
 // ====================================================
+
+export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_branch {
+  __typename: "Branch";
+  id: number;
+  name: string;
+}
 
 export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_cabinet {
   __typename: "Cabinet";
@@ -1563,6 +1612,7 @@ export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_membershi
 export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_user {
   __typename: "User";
   id: number;
+  name: string | null;
   gender: string | null;
   birthYear: string;
 }
@@ -1576,6 +1626,7 @@ export interface shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_membershi
   usable: boolean;
   target: string;
   userId: number | null;
+  branch: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_branch;
   cabinet: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_cabinet | null;
   user: shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships_user;
   stoppedAt: string | null;
@@ -1612,6 +1663,51 @@ export interface shopkeeprGetBranchInfoVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: shopkeeperGetPayments
+// ====================================================
+
+export interface shopkeeperGetPayments_ShopkeeperGetPayments_payments_user {
+  __typename: "User";
+  id: number;
+  userId: string | null;
+  name: string | null;
+}
+
+export interface shopkeeperGetPayments_ShopkeeperGetPayments_payments {
+  __typename: "Payment";
+  id: number;
+  amount: number;
+  createdAt: string;
+  refunded: boolean;
+  status: string;
+  payMethod: string;
+  updatedAt: string | null;
+  user: shopkeeperGetPayments_ShopkeeperGetPayments_payments_user;
+}
+
+export interface shopkeeperGetPayments_ShopkeeperGetPayments {
+  __typename: "ShopkeeperGetPaymentsResponse";
+  ok: boolean;
+  error: string | null;
+  payments: (shopkeeperGetPayments_ShopkeeperGetPayments_payments | null)[] | null;
+}
+
+export interface shopkeeperGetPayments {
+  ShopkeeperGetPayments: shopkeeperGetPayments_ShopkeeperGetPayments;
+}
+
+export interface shopkeeperGetPaymentsVariables {
+  branchId: number;
+  startDatetime: string;
+  endDatetime: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1667,6 +1763,7 @@ export interface getRequestMemberships {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1688,6 +1785,7 @@ export interface deleteRequestMembershipVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1727,6 +1825,7 @@ export interface createPaymentVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1754,6 +1853,7 @@ export interface getBranchForImpVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1792,6 +1892,7 @@ export interface getPaymentVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1815,6 +1916,7 @@ export interface completePaymentVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1858,6 +1960,7 @@ export interface getMembershipLogsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1881,6 +1984,7 @@ export interface updateProfileVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1937,6 +2041,7 @@ export interface userGetBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -1993,6 +2098,7 @@ export interface getBranchByIpVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2015,6 +2121,7 @@ export interface userAssignSeatVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2032,6 +2139,7 @@ export interface userReturnSeat {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2055,6 +2163,7 @@ export interface getMyUsingSeat {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2088,6 +2197,7 @@ export interface userIdSignInVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2172,6 +2282,7 @@ export interface managerGetCabinetLogsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2199,6 +2310,7 @@ export interface managerGetCabinetMembershipVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2220,6 +2332,7 @@ export interface clearCabinetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2247,6 +2360,7 @@ export interface managerEnrollCabinetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2269,6 +2383,7 @@ export interface managerShiftCabinetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2295,6 +2410,7 @@ export interface managerCreateMembershipVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2350,6 +2466,7 @@ export interface managerGetSeatLogsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2374,6 +2491,7 @@ export interface managerAssignUserVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2395,6 +2513,7 @@ export interface managerReturnSeatVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2451,6 +2570,7 @@ export interface getBranchForManSeatVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2519,6 +2639,7 @@ export interface managerGetMembershipLogsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2564,6 +2685,7 @@ export interface managerGetNowUsingUsersVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2588,6 +2710,7 @@ export interface managerGetManagingBranches {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2631,6 +2754,7 @@ export interface userGetOvertimeCabinetMembershipsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2681,6 +2805,7 @@ export interface updateBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2720,6 +2845,7 @@ export interface managerUpdateBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2747,6 +2873,7 @@ export interface headModfiyProductVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2779,6 +2906,7 @@ export interface headGetProductVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2824,6 +2952,7 @@ export interface getExtendableMembershipsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2854,6 +2983,7 @@ export interface reqSignUpVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2896,6 +3026,7 @@ export interface headGetBranchForCabinetsSettingVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2926,6 +3057,7 @@ export interface headCreateCabinetSetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2961,6 +3093,7 @@ export interface managerGetCablocksVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -2982,6 +3115,7 @@ export interface removeCabinetLockVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3017,6 +3151,7 @@ export interface getCabinetLockVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3056,6 +3191,7 @@ export interface getCoBranchesVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3078,6 +3214,7 @@ export interface setCoBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3100,6 +3237,7 @@ export interface delCoBranchVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3129,6 +3267,7 @@ export interface headCreateRoomVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3150,6 +3289,7 @@ export interface headRemoveProductVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3187,6 +3327,7 @@ export interface managerGetSeatV2Variables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3216,6 +3357,7 @@ export interface headCreateSeatVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3248,6 +3390,7 @@ export interface headUpdateSeatVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3274,6 +3417,7 @@ export interface headCreateDoorVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3300,6 +3444,7 @@ export interface headUpdateDoorVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3354,6 +3499,7 @@ export interface managerGetBranchEmployeeVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3378,6 +3524,7 @@ export interface headSetBranchManagerVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3402,6 +3549,7 @@ export interface managerSetBranchStaffVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3430,6 +3578,7 @@ export interface getCertificationVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3463,6 +3612,7 @@ export interface userIdsignUpMutationVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3487,6 +3637,7 @@ export interface facebookConnectVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3514,6 +3665,7 @@ export interface headUpdateCabinetSetVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3543,6 +3695,7 @@ export interface headUpdateRoomVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3568,6 +3721,7 @@ export interface managerUpdateRoomVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3621,6 +3775,7 @@ export interface managerGetRoomVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3723,6 +3878,7 @@ export interface managerGetUserDetailVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3778,6 +3934,7 @@ export interface getMembershipLogsByIdVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3846,6 +4003,7 @@ export interface getPaymentsByImpUidVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3896,6 +4054,7 @@ export interface getRequestSignUpsVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3917,6 +4076,7 @@ export interface acceptRequestSignUpVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 // ====================================================
@@ -3938,6 +4098,7 @@ export interface rejectRequestSignUpVariables {
 }
 
 /* tslint:disable */
+/* eslint-disable */
 // This file was automatically generated and should not be edited.
 
 //==============================================================
