@@ -70,9 +70,23 @@ const Line = styled.p`
   margin-bottom: 8px;
 `;
 
-const OrderPrice = styled.li``;
+const OrderPrice = styled.li`
+  &:hover {
+    color: #fff;
+    background-color: #6d95e1;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+`;
 
-const ManagementPrice = styled.li``;
+const ManagementPrice = styled.li`
+  &:hover {
+    color: #fff;
+    background-color: #6d95e1;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+`;
 
 const SaveBtn = styled.a`
   display: block;
