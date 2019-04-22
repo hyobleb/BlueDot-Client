@@ -26,14 +26,14 @@ import {
   getUsableMyMemberships,
   getUsableMyMemberships_GetMyUsableMemberships_memberships
 } from "../../types/api";
+import BasketV2Presenter from "./BasketV2Presenter";
 import {
   COMPLETE_PAYMENT,
   CREATE_PAYMENT,
   DELETE_REQUEST_MEMBERSHIP,
   GET_BRANCH_FOR_IMP,
   GET_REQUEST_MEMBERSHIPS
-} from "../Basket/BasketQueries";
-import BasketV2Presenter from "./BasketV2Presenter";
+} from "./BasketV2Queries";
 
 interface IProps extends RouteComponentProps<any> {}
 

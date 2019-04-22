@@ -13,7 +13,7 @@ import {
   userProfile
 } from "src/types/api";
 import MembershipPresenter from "./MembershipPresenter";
-import { USER_GET_OVERTIME_CABINET_MEMBERSHIPS } from "./MembershipQueries.ts";
+import { USER_GET_OVERTIME_CABINET_MEMBERSHIPS } from "./MembershipQueries";
 
 interface IProps extends RouteComponentProps<any> {}
 interface IState {

@@ -8,9 +8,13 @@ const Box = styled.div`
   border: 1px solid #242424;
 `;
 
-const OrderPresenter: React.SFC = () => (
+interface IProps {
+  isOk: boolean
+}
+
+const OrderPresenter: React.SFC<IProps> = ({isOk}) => (
   <Back title={"Order | BlueDot"} backUrl={"/"}>
-    <Box>Hi.</Box>
+    <Box>{isOk ? "isOk" : "notOk"}</Box>
   </Back>
 );
 

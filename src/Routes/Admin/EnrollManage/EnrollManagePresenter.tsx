@@ -141,6 +141,7 @@ const BoxesModal = styled.div`
   background-color: #fff;
   z-index: 800;
   transform: translate(-50%, -50%);
+  overflow-y: scroll;
 `;
 
 const ModalClose = styled.div`
@@ -246,6 +247,7 @@ interface IProps {
   boyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   girlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   oneDayMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  longTermMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapWomanMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapManMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapGirlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
@@ -254,13 +256,14 @@ interface IProps {
   selBranchId?: string;
   branchSelOptions: Array<{ value: string; label: string }>;
   onBranchSelChange: (arg: Option) => void;
-  toggleModal: () => void;
-  showModal: boolean;
-  showModal2: boolean;
-  showModal3: boolean;
-  toggleModal2: () => void;
-  toggleModal3: () => void;
-  toggleModalBox: (showModalName: string) => void;
+  nowMemsModal: boolean;
+  dayMemsModal: boolean;
+  manMemsModal: boolean;
+  womanMemsModal: boolean;
+  boyMemsModal: boolean;
+  girlMemsModal: boolean;
+  cabinetMemsModal: boolean;
+  toggleModalBox: (modalName: string) => void;
 }
 
 const EnrollManagePresenter: React.SFC<IProps> = ({
@@ -275,6 +278,7 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
   boyMemberships,
   girlMemberships,
   oneDayMemberships,
+  longTermMemberships,
   noOverlapWomanMemberships,
   noOverlapManMemberships,
   noOverlapGirlMemberships,
@@ -283,12 +287,13 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
   selBranchId,
   branchSelOptions,
   onBranchSelChange,
-  toggleModal,
-  showModal,
-  showModal2,
-  showModal3,
-  toggleModal2,
-  toggleModal3,
+  nowMemsModal,
+  dayMemsModal,
+  manMemsModal,
+  womanMemsModal,
+  boyMemsModal,
+  girlMemsModal,
+  cabinetMemsModal,
   toggleModalBox
 }) => (
   <Back title={"EnrollManage | BlueDot"} backUrl={"/"}>
@@ -353,119 +358,366 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </FilterUl>
             </FilterItem> */}
           </Filter>
-          {showModal ? (
+          {nowMemsModal ? (
             <Modal>
               <BoxesModal>
-                <ModalClose onClick={() => toggleModalBox("showModal")}>
+                <ModalClose onClick={() => toggleModalBox("nowMemsModal")}>
                   close
                 </ModalClose>
-                <ModalTitle>월 등록</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  button1Func={() => console.log(1)}
-                  button2Func={() => console.log(2)}
-                  displayTitle={false}
-                  highLightBorder={true}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  displayTitle={false}
-                  highLightBorder={true}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                  displayTitle={false}
-                />
+
+                <ModalTitle>장기 등록</ModalTitle>
+                {noOverlapNowMemberships &&
+                  noOverlapNowMemberships.length > 0 &&
+                  noOverlapNowMemberships.map(nowMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = nowMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      nowMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
           ) : (
             ""
           )}
-          {showModal2 ? (
+          {dayMemsModal ? (
             <Modal>
               <BoxesModal>
-                <ModalClose onClick={() => toggleModalBox("showModal2")}>
+                <ModalClose onClick={() => toggleModalBox("dayMemsModal")}>
                   close
                 </ModalClose>
-                <ModalTitle>월 등록</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                <ModalTitle>일 등록</ModalTitle>
+                {oneDayMemberships &&
+                  oneDayMemberships.length > 0 &&
+                  oneDayMemberships.map(oneDayMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = oneDayMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      oneDayMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
           ) : (
             ""
           )}
-          {showModal3 ? (
+          {manMemsModal ? (
             <Modal>
               <BoxesModal>
-                <ModalClose onClick={toggleModal3}>close</ModalClose>
-                <ModalTitle>월 등록</ModalTitle>
-                <ModalBox
-                  title={"30일 멤버십 등록"}
-                  color={"#4261cd"}
-                  name={"현자"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 연장"}
-                  color={"#01b2aa"}
-                  name={"송군"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                />
-                <ModalBox
-                  title={"30일 멤버십 취소"}
-                  color={"#ec5d59"}
-                  name={"김과장"}
-                  branchName={"반여점"}
-                  startDatetime={"2019-02-04 12:20:11"}
-                  endDatetime={"2019-03-04 12:20:11"}
-                  marginBottom={0}
-                />
+                <ModalClose onClick={() => toggleModalBox("manMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>성인 남자</ModalTitle>
+                {manMemberships &&
+                  manMemberships.length > 0 &&
+                  manMemberships.map(manMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = manMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      manMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {womanMemsModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("womanMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>성인 여자</ModalTitle>
+                {womanMemberships &&
+                  womanMemberships.length > 0 &&
+                  womanMemberships.map(womanMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = womanMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      womanMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {boyMemsModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("boyMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>청소년 남자</ModalTitle>
+                {boyMemberships &&
+                  boyMemberships.length > 0 &&
+                  boyMemberships.map(boyMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = boyMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      boyMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {girlMemsModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("girlMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>청소년 여자</ModalTitle>
+                {girlMemberships &&
+                  girlMemberships.length > 0 &&
+                  girlMemberships.map(girlMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = girlMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+
+                    return (
+                      girlMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
+              </BoxesModal>
+              <BoxesModalBg />
+            </Modal>
+          ) : (
+            ""
+          )}
+          {cabinetMemsModal ? (
+            <Modal>
+              <BoxesModal>
+                <ModalClose onClick={() => toggleModalBox("cabinetMemsModal")}>
+                  close
+                </ModalClose>
+                <ModalTitle>사물함 등록</ModalTitle>
+                {noOverlapNowCabMemberships &&
+                  noOverlapNowCabMemberships.length > 0 &&
+                  noOverlapNowCabMemberships.map(cabMembership => {
+                    const {
+                      id,
+                      branch: { name: branchName },
+                      endDatetime,
+                      startDatetime,
+                      status,
+                      membershipTitle,
+                      user: { name: userName }
+                    } = cabMembership as shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships & {
+                      membershipTitle: string;
+                    };
+                    console.log(noOverlapNowCabMemberships);
+
+                    return (
+                      cabMembership &&
+                      status &&
+                      membershipTitle && (
+                        <ModalBox
+                          key={id}
+                          title={membershipTitle}
+                          color={
+                            status === "REGIST"
+                              ? "#4261cd"
+                              : status === "EXTENDED"
+                              ? "#01b2aa"
+                              : status === "EXPIRED"
+                              ? "#ec5d59"
+                              : ""
+                          }
+                          name={userName as string}
+                          branchName={branchName}
+                          startDatetime={startDatetime}
+                          endDatetime={endDatetime}
+                        />
+                      )
+                    );
+                  })}
               </BoxesModal>
               <BoxesModalBg />
             </Modal>
@@ -473,28 +725,26 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
             ""
           )}
           <Boxes>
-            <BoxesUl onClick={() => toggleModalBox("showModal")}>
+            <BoxesUl onClick={() => toggleModalBox("nowMemsModal")}>
               <Active>
-                {nowMemberships &&
-                  nowMemberships.length -
-                    ((oneDayMemberships && oneDayMemberships.length) || 0)}
+                {(longTermMemberships && longTermMemberships.length) || 0}
               </Active>
               <li>장기등록</li>
             </BoxesUl>
-            <BoxesUl onClick={() => toggleModalBox("showModal")}>
+            <BoxesUl onClick={() => toggleModalBox("dayMemsModal")}>
               <Active>
                 {(oneDayMemberships && oneDayMemberships.length) || 0}
               </Active>
               <li>일 등록</li>
             </BoxesUl>
-            <BoxesUl onClick={toggleModal3}>
+            <BoxesUl onClick={() => toggleModalBox("manMemsModal")}>
               <Active>
                 {(noOverlapManMemberships && noOverlapManMemberships.length) ||
                   0}
               </Active>
               <li>성인 남자</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("womanMemsModal")}>
               <Active>
                 {(noOverlapWomanMemberships &&
                   noOverlapWomanMemberships.length) ||
@@ -502,14 +752,14 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </Active>
               <li>성인 여자</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("boyMemsModal")}>
               <Active>
                 {(noOverlapBoyMemberships && noOverlapBoyMemberships.length) ||
                   0}
               </Active>
               <li>청소년 남자</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("girlMemsModal")}>
               <Active>
                 {(noOverlapGirlMemberships &&
                   noOverlapGirlMemberships.length) ||
@@ -517,7 +767,7 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
               </Active>
               <li>청소년 여자</li>
             </BoxesUl>
-            <BoxesUl>
+            <BoxesUl onClick={() => toggleModalBox("cabinetMemsModal")}>
               <Active>
                 {(nowCabinetMemberships && nowCabinetMemberships.length) || 0}
               </Active>

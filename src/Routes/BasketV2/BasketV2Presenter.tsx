@@ -172,11 +172,6 @@ const BasketV2Presenter: React.SFC<IProps> = ({
                       </ReqRow>
                       <ReqRow>이용 시작 : {reqMem.startDatetime}</ReqRow>
                       <ReqRow>
-                        {moment(reqMem.startDatetime!)
-                          .add(reqMem.product.hours, "h")
-                          .format("YYYY-MM-DD HH:mm:ss")}
-                      </ReqRow>
-                      <ReqRow>
                         이용 만료 :{" "}
                         {moment(reqMem.startDatetime!)
                           .add(reqMem.product.hours, "h")

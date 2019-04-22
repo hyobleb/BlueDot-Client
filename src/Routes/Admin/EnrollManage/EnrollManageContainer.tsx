@@ -28,6 +28,7 @@ interface IState {
   boyMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   girlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   oneDayMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
+  longTermMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapWomanMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapManMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
   noOverlapGirlMemberships?: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null> | null;
@@ -35,9 +36,13 @@ interface IState {
   selBranchId?: string;
   branches: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branches | null> | null;
   branchSelOptions: Array<{ value: string; label: string }>;
-  showModal: boolean;
-  showModal2: boolean;
-  showModal3: boolean;
+  nowMemsModal: boolean;
+  dayMemsModal: boolean;
+  manMemsModal: boolean;
+  womanMemsModal: boolean;
+  boyMemsModal: boolean;
+  girlMemsModal: boolean;
+  cabinetMemsModal: boolean;
 }
 
 class ShopkeeperGetBranchInfo extends Query<
@@ -90,17 +95,44 @@ const genderBirthFilter = (
         moment().year() - parseInt(membership.user.birthYear, 10) + 1 < 19)
   );
 
+// 'membershipTitle' 속성 추가
+const setMembershipTitle = someMemberships => {
+  someMemberships.forEach(membership => {
+    const { endDatetime, startDatetime, status } = membership;
+    const hourlyDifference = moment(endDatetime).diff(
+      moment(startDatetime),
+      "h"
+    );
+    const membershipTime =
+      hourlyDifference / 24 > 1 ? hourlyDifference / 24 + "일" : 16 + "시간";
+    const membershipStatus =
+      status === "REGIST"
+        ? "등록"
+        : status === "EXTENDED"
+        ? "연장"
+        : status === "EXPIRED"
+        ? "만료"
+        : "";
+    const membershipTitle = `${membershipTime} 멤버십 ${membershipStatus}`;
+    membership.membershipTitle = membershipTitle;
+  });
+};
+
 class EnrollManageContainer extends React.Component<IProps, IState> {
   public constructor(props) {
     super(props);
     this.state = {
+      boyMemsModal: false,
       branchSelOptions: [],
       branches: [],
+      cabinetMemsModal: false,
+      dayMemsModal: false,
+      girlMemsModal: false,
+      manMemsModal: false,
       nowCabinetMemberships: [],
       nowMemberships: [],
-      showModal: false,
-      showModal2: false,
-      showModal3: false
+      nowMemsModal: false,
+      womanMemsModal: false
     };
   }
   public render() {
@@ -116,15 +148,20 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
       boyMemberships,
       girlMemberships,
       oneDayMemberships,
+      longTermMemberships,
       noOverlapWomanMemberships,
       noOverlapManMemberships,
       noOverlapGirlMemberships,
       noOverlapBoyMemberships,
       branches,
       selBranchId,
-      showModal,
-      showModal2,
-      showModal3
+      nowMemsModal,
+      dayMemsModal,
+      manMemsModal,
+      womanMemsModal,
+      boyMemsModal,
+      girlMemsModal,
+      cabinetMemsModal
     } = this.state;
 
     return (
@@ -149,6 +186,7 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
             boyMemberships={boyMemberships}
             girlMemberships={girlMemberships}
             oneDayMemberships={oneDayMemberships}
+            longTermMemberships={longTermMemberships}
             noOverlapWomanMemberships={noOverlapWomanMemberships}
             noOverlapManMemberships={noOverlapManMemberships}
             noOverlapGirlMemberships={noOverlapGirlMemberships}
@@ -157,13 +195,14 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
             selBranchId={selBranchId}
             branchSelOptions={branchSelOptions}
             onBranchSelChange={this.onBranchSelChange}
-            toggleModal={this.toggleModal}
-            showModal={showModal}
-            showModal2={showModal2}
-            showModal3={showModal3}
-            toggleModal2={this.toggleModal2}
+            nowMemsModal={nowMemsModal}
+            dayMemsModal={dayMemsModal}
+            manMemsModal={manMemsModal}
+            womanMemsModal={womanMemsModal}
+            boyMemsModal={boyMemsModal}
+            girlMemsModal={girlMemsModal}
+            cabinetMemsModal={cabinetMemsModal}
             toggleModalBox={this.toggleModalBox}
-            toggleModal3={this.toggleModal3}
           />
         )}
       </ShopkeeperGetBranchInfo>
@@ -176,26 +215,8 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
     });
   };
 
-  public toggleModal = () => {
-    this.setState({
-      showModal: !this.state.showModal
-    });
-  };
-
-  public toggleModal2 = () => {
-    this.setState({
-      showModal2: !this.state.showModal2
-    });
-  };
-
-  public toggleModal3 = () => {
-    this.setState({
-      showModal3: !this.state.showModal3
-    });
-  };
-
-  public toggleModalBox = (showModalName: string) => {
-    this.setState({ [showModalName]: !this.state[showModalName] } as any);
+  public toggleModalBox = (modalName: string) => {
+    this.setState({ [modalName]: !this.state[modalName] } as any);
   };
 
   // public onInputChange: React.ChangeEventHandler<
@@ -217,6 +238,7 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
     let noOverlapNowMemberships: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null>;
     let noOverlapNowCabMemberships: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null>;
     let oneDayMemberships: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null>;
+    let longTermMemberships: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null>;
     let manMemberships: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null>;
     let womanMemberships: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null>;
     let boyMemberships: Array<shopkeeprGetBranchInfo_ShopkeeperGetBranchInfo_branch_memberships | null>;
@@ -246,11 +268,26 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
             membership.usable &&
             membership.target === "MEMBERSHIP"
         );
+
+        setMembershipTitle(nowMemberships);
+
         oneDayMemberships = nowMemberships.filter(membership => {
           if (membership) {
             const startDatetime = moment(membership.startDatetime);
             const endDatetime = moment(membership.endDatetime);
             if (endDatetime.diff(startDatetime, "h") <= 16) {
+              return true;
+            }
+          }
+          return false;
+        });
+
+        // 장기 등록 멤버십 목록
+        longTermMemberships = nowMemberships.filter(membership => {
+          if (membership) {
+            const startDatetime = moment(membership.startDatetime);
+            const endDatetime = moment(membership.endDatetime);
+            if (endDatetime.diff(startDatetime, "h") > 16) {
               return true;
             }
           }
@@ -270,7 +307,10 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
             membership.target === "CABINET"
         );
 
-        noOverlapManMemberships = makeNoOverlapMemberships(manMemberships);
+        setMembershipTitle(nowCabinetMemberships);
+
+        oneDayMemberships = makeNoOverlapMemberships(oneDayMemberships);
+        longTermMemberships = makeNoOverlapMemberships(longTermMemberships);
         noOverlapManMemberships = makeNoOverlapMemberships(manMemberships);
         noOverlapWomanMemberships = makeNoOverlapMemberships(womanMemberships);
         noOverlapBoyMemberships = makeNoOverlapMemberships(boyMemberships);
@@ -285,6 +325,7 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
         noOverlapNowMemberships = [];
         noOverlapNowCabMemberships = [];
         oneDayMemberships = [];
+        longTermMemberships = [];
         manMemberships = [];
         womanMemberships = [];
         boyMemberships = [];
@@ -309,6 +350,7 @@ class EnrollManageContainer extends React.Component<IProps, IState> {
           branchSelOptions,
           branches,
           girlMemberships,
+          longTermMemberships,
           manMemberships,
           noOverlapBoyMemberships,
           noOverlapGirlMemberships,
