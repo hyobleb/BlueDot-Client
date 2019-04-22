@@ -9,6 +9,10 @@ interface IProps {
   endDatetime: string;
   marginBottom?: number;
   title: string;
+  button1Func?: () => void;
+  button2Func?: () => void;
+  displayTitle?: boolean;
+  highLightBorder?: boolean;
 }
 
 class ModalBoxContainer extends React.Component<IProps> {
@@ -24,7 +28,11 @@ class ModalBoxContainer extends React.Component<IProps> {
       startDatetime,
       endDatetime,
       marginBottom = 20,
-      title
+      title,
+      button1Func,
+      button2Func,
+      displayTitle = true,
+      highLightBorder = false
     } = this.props;
     return (
       <ModalBoxPresenter
@@ -35,6 +43,10 @@ class ModalBoxContainer extends React.Component<IProps> {
         endDatetime={endDatetime}
         marginBottom={marginBottom}
         title={title}
+        button1Func={button1Func}
+        button2Func={button2Func}
+        displayTitle={displayTitle}
+        highLightBorder={highLightBorder}
       />
     );
   }

@@ -4,13 +4,18 @@ import styled from "src/typed-components";
 const ModalBoxBlue = styled<
   {
     marginBottom: number;
+    highLightBorder?: boolean;
+    color?: string;
   },
   "ul"
 >("ul")`
   margin: 0 auto;
   border: 1px solid #c3c5ca;
-  width: 400px;
+  width: 300px;
   margin-bottom: ${props => props.marginBottom}px;
+  position: relative;
+  ${props =>
+    props.highLightBorder ? `border : 2px solid ${props.color || "black"}` : ""}
 `;
 
 const ModalBoxTitle = styled<
@@ -42,13 +47,38 @@ const ModalBoxTitleMore = styled.li`
 
 const ModalList = styled.div`
   display: flex;
-  padding: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 15px;
   font-size: 18px;
   line-height: 24px;
 `;
 
 const ModallistData = styled.ul`
   margin-left: 50px;
+`;
+
+const RefundBtn = styled.button`
+  border: 3px solid black;
+  margin-right: 5px;
+`;
+
+const BtnContainer = styled.div`
+  padding-bottom: 15px;
+  padding-left: 15px;
+`;
+
+const LeftBar = styled<
+  {
+    color: string;
+  },
+  "div"
+>("div")`
+  background-color: ${props => props.color};
+  width: 8px;
+  height: 100%;
+  position: absolute;
+  left: 0;
 `;
 
 interface IProps {
@@ -59,6 +89,10 @@ interface IProps {
   endDatetime: string;
   marginBottom: number;
   title: string;
+  button1Func?: () => void;
+  button2Func?: () => void;
+  displayTitle?: boolean;
+  highLightBorder?: boolean;
 }
 
 const ModalBoxPresenter: React.SFC<IProps> = ({
@@ -68,14 +102,28 @@ const ModalBoxPresenter: React.SFC<IProps> = ({
   startDatetime,
   endDatetime,
   marginBottom,
-  title
+  title,
+  button1Func,
+  button2Func,
+  displayTitle,
+  highLightBorder
 }) => {
   return (
-    <ModalBoxBlue marginBottom={marginBottom}>
-      <ModalBoxTitle color={color}>
-        <li>{title}</li>
-        <ModalBoxTitleMore>더보기</ModalBoxTitleMore>
-      </ModalBoxTitle>
+    <ModalBoxBlue
+      marginBottom={marginBottom}
+      highLightBorder={highLightBorder}
+      color={color}
+    >
+      {displayTitle ? (
+        <ModalBoxTitle color={color}>
+          <li>{title}</li>
+          <ModalBoxTitleMore>더보기</ModalBoxTitleMore>
+        </ModalBoxTitle>
+      ) : (
+        ""
+      )}
+      {displayTitle ? "" : <LeftBar color={color} />}
+
       <ModalList>
         <ul>
           <li>등록자</li>
@@ -90,6 +138,18 @@ const ModalBoxPresenter: React.SFC<IProps> = ({
           <li>{endDatetime}</li>
         </ModallistData>
       </ModalList>
+      <BtnContainer>
+        {button1Func ? (
+          <RefundBtn onClick={button1Func}>전체 환불</RefundBtn>
+        ) : (
+          ""
+        )}
+        {button2Func ? (
+          <RefundBtn onClick={button2Func}>부분 환불</RefundBtn>
+        ) : (
+          ""
+        )}
+      </BtnContainer>
     </ModalBoxBlue>
   );
 };

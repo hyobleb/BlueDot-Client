@@ -6,8 +6,11 @@ import FindPassword from "../../Routes/Account/FindPassword";
 import FindUserId from "../../Routes/Account/FindUserId";
 import AddBranch from "../../Routes/AddBranch";
 import AddProduct from "../../Routes/AddProduct";
+import Calculation from "../../Routes/Admin/Calculation";
 import EnrollManage from "../../Routes/Admin/EnrollManage";
 import Order from "../../Routes/Admin/Order";
+import SalesManagement from "../../Routes/Admin/SalesManagement";
+import Stock from "../../Routes/Admin/Stock";
 import Basket from "../../Routes/Basket";
 import BasketV2 from "../../Routes/BasketV2";
 import BranchSetting from "../../Routes/BranchSetting";
@@ -580,7 +583,20 @@ const LoggedInRoute: React.SFC<ILoginRouteProps> = ({
               path={"/order-manage"}
               exact={true}
               component={Order}
-            />
+            />,
+            <Route
+              key={27}
+              path={"/salesmanagement"}
+              exact={true}
+              component={SalesManagement}
+            />,
+            <Route
+              key={28}
+              path={"/calculation"}
+              exact={true}
+              component={Calculation}
+            />,
+            <Route key={29} path={"/stock"} exact={true} component={Stock} />
           ]}
           <Redirect from={"*"} to={"/"} />
           {/* redirect는 맨 마지막에! 해당되는 라우트가 없다면 reidrect 될수있도록*/}

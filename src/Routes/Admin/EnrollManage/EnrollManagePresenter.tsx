@@ -119,7 +119,7 @@ const BranchList = styled.div`
 
 const Modal = styled.div`
   position: relative;
-  width: 600px;
+  width: 450px;
   padding: 15px;
 `;
 
@@ -136,8 +136,8 @@ const BoxesModal = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 500px;
-  height: 800px;
+  width: 340px;
+  height: 580px;
   background-color: #fff;
   z-index: 800;
   transform: translate(-50%, -50%);
@@ -189,9 +189,7 @@ const BoxesUl = styled.ul`
   li {
     font-size: 22px;
   }
-  li:last-child {
-    margin-bottom: 0;
-  } /* 안먹히는 듯 */
+
   &:hover {
     background-color: ${props => props.theme.lightBlueColor};
     color: white;
@@ -369,6 +367,10 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   branchName={"반여점"}
                   startDatetime={"2019-02-04 12:20:11"}
                   endDatetime={"2019-03-04 12:20:11"}
+                  button1Func={() => console.log(1)}
+                  button2Func={() => console.log(2)}
+                  displayTitle={false}
+                  highLightBorder={true}
                 />
                 <ModalBox
                   title={"30일 멤버십 연장"}
@@ -377,6 +379,8 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   branchName={"반여점"}
                   startDatetime={"2019-02-04 12:20:11"}
                   endDatetime={"2019-03-04 12:20:11"}
+                  displayTitle={false}
+                  highLightBorder={true}
                 />
                 <ModalBox
                   title={"30일 멤버십 취소"}
@@ -386,6 +390,7 @@ const EnrollManagePresenter: React.SFC<IProps> = ({
                   startDatetime={"2019-02-04 12:20:11"}
                   endDatetime={"2019-03-04 12:20:11"}
                   marginBottom={0}
+                  displayTitle={false}
                 />
               </BoxesModal>
               <BoxesModalBg />
